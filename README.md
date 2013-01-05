@@ -1,9 +1,7 @@
 UpStage
 =======
 
-UpStage Video and Audio Streaming Hack
-
-UpStage is a platform for Cyberformance.
+<a href="http://upstage.org.nz/">UpStage</a> is a client-server application platform for <a href="http://en.wikipedia.org/wiki/Cyberformance">Cyberformance</a>.
 
 ## Licence
 
