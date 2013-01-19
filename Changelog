@@ -1,0 +1,191 @@
+Changelog
+
+30-04-2011 (Heath & Henry)
+-Made several changes to syntax.
+-Added missing functions and configuration information.
+
+04-05-2011 (Heath, Vibhu, Henry)
+-Fixed Login bug (74-75) Logs in correctly first attempt on all browsers.
+05-05-2011 (Vibhu, Heath)
+-Added new redirect to home page.
+
+06-05-2011 (Heath, Vibhu)
+-Fixed text-to-speech audio bug so text-to-speech works and the sound slots get re-assigned.
+
+08-05-2011 (Heath)
+-Made some alterations to the install.py namely fixed a bug which caused the script to fail when generating the deb file.
+-The install.py now removes all .svn files till I can figure out how to ignore them. Also fixed the bug with permissions for the debian package scripts.
+-The install.py script can now compile the client if the flex compiler is present on the users system. REFER to README file for instructions.
+
+17-05-2011 (Heath, Moh, Vibhu)
+-Fixed media filter. Now correctly filters media and all names remain in tact.
+-Media upload works correctly in all browsers (including firefox 4).
+
+18-05-2011 (Heath, Moh)
+-Fixed change own password, now correctly changes own password(server side).
+-Added checks to user.js which ensure an empty password cannot be entered.
+
+20-05-2011 (Heath)
+-Fixed Bubble now fades after some time which is calculated based on the length of the message.
+-Fixed the Bubble is removed from the stage when the avatar is dropped.
+
+07-06-2011 (Heath & Mohammed)
+-Fix for duplicate footer in pages stageedit and media edit. Edited file masterpage.js function fillpage line 297.
+
+12-06-2011(Heath & Mohammed)
+-Moved the code to remove duplicated footer into stageEdit() in stageedit.js. Also added the version info
+in master_b.inc to the div.
+
+13-06-2011(Vibhu, Moh, Heath, Henry, JR)
+-Various html layout bugs fixed, the entire website has been revamped using a new template and layout.
+-Fixed image scrolling. Images are now spaced correctly and names do not overlap. Improved look and feel.
+-Fixed server responses which where breaking html layout within tables.
+-Changed versioning information to reflect current version (2.4.1).
+
+15-06-2011 (Vibhu, Heath & Mohammed)
+-Backdrop resizing, so it remains only in stage
+-Centered the stage display
+-Backdrop remains behind avatar
+
+17-06-2011 (Heath Behrens)
+-Fixed updating voices, changing a voice will not require a server restart.
+-Fixed bubble fading, the alpha value now slowly decreases (this can be modified very easily to fade slower or faster, for now its just a static fade duration).
+
+18/06/2011 (Heath Behrens)
+-Increased width of speech bubble and also slightly modified the duration of the speech bubble on stage, to further take into account the length of the text.
+-Fixed 2 errors that prevented audio files from being selected and tested on the mediaedit page. Changes namely made to pages.py. Also removed another log.msg that printed the bytes of audio files to the log file (Twice!).
+
+26/06/2011 (Heath)
+-Fixed error on speech bubble timer which threw an exception, due to not stopping all timers correctly.
+
+05/07/2011 (Heath Behrens)
+-Fix for exception loading audio files, namely null objects. Still no music playback though.
+-Removed the icon from Audio.as as a temporary fix for it covering the play buttons.
+
+28/07/2011 (Heath Behrens / Vibhu Patel)
+-Merged 2.1 client (stage) back into 2.4.1 codebase.
+-removed .pyproject files.
+-Fixed an error when uploading media with more than 1 . character in the name.
+-Changed the layout of stageedit page and removed previous buttons replacing them with radio buttons.
+-Switched assign to stages boxes on the media upload page.
+
+08/08/2011 (Heath Behrens / Vibhu Patel)
+-Fixed Avatar scaling in client, avatars now scale correctly in Actionscript 2 client.
+-Also added the actionscript 2 compile script to the source as it is required.
+-On a side note the AS3.client can be renamed to client. In which case the actionscript 3 client will be used instead of AS2 client.
+-Fixed prop so it scales on stage.
+
+09/08/2011 (Heath Behrens & Vibhu Patel)
+-Merged avatar menu into 2.1 all functions working.
+-Fixed modifying colours in media managment system namely changing the background colour of chat,prop etc.
+The fix is part of an html issue which only changed the background colour of the prop bar. 
+-Radio buttons removed from the stage edit page, instead images are used as it looks more flashy and the requests are sent correctly.
+-compileswf was modified to use the current directory opposed to the home directory.
+
+10/08/2011 (Heath Behrens)
+-Fixed parsing of xml file on server, now the stage access options options are extracted correctly. 
+ However the stageedit page needs some tweaking.
+
+12/08/2011 (Heath Behrens / Vibhu Patel)
+-Reworked retrieving media info on the server side, this was part of a fix which did not show unassigned stages in the workshop. Instead all stages where shown as assigned even if that was not the case.
+-Added session tracking to masterpage.js so a user stays logged in for 24hrs provided cookies are allowed with their browser.
+
+16/08/2011 (Heath Behrens / Vibhu Patel)
+-Completed fixes for assign and unassign stages, so all is working. 
+-Added a patch to the request sent in masterpage to correctly send the request to the server for assigning and unassigning stages.
+-Audience and player counters for each stage are displayed on each web page.
+
+19/08/2011 (Heath Behrens / Vibhu Patel)
+-Filtering optimized and allows multiple filters of the same type. There are two different types of filtering are available. Namely media can be filtering by removing items not matching the filtering criteria. The other method includes all media matching only the filter options.
+-Fixed media scrolling the position is remebered an returned to when selecting an item.
+-Layout of media edit page works cross all browsers (tested browsers).
+-swf files now have a thumbnail which is the actual swf clip. However the audio embedded within the movie clip plays which is annoying (working on a workaround to stop audio playing in a movieclip).
+-Removed a number of unnecessary log messages in the server code.
+
+24/08/2011 (Heath Behrens / Vibhu Patel / Nessa / Craig / Corey / Karena)
+-Added media tagging on server, along with some display fixes when generating html pages in pages.py.
+-Added fix for silly display error and a fix for the previous commit which caused the server to throw and error and not run.
+-Media tagging complete on both client and server side and ready for testing.
+
+26/08/2011 (Heath Behrens / Vibhu Patel / Nessa / Corey / Karena)
+-Added remove tags for media within media edit view. 
+-Players can now tag media before uploading a media file.
+-Players can edit names of media such as prop/audio/avatar and backdrop.
+-Fix for IE which caused the edit media button to break. 
+
+31/08/2011 (Vibhu Patel / Heath Behrens / Corey / Karena)
+-Deleted media is removed from the list on media edit page.
+-Edit player page does not show popup message if change password is not selected.
+-Fixed media tagging.
+-Added change audio type feature.
+-Added change background color feature for page and toolbox on stage.
+
+18/09/2011 (Heath Behrens)
+-Added fix for emb voices which did not work on main server. The scripts now use a temporary file.
+instead of reading from stdin.
+
+26/04/2012 (Daniel Han, Corey Robb, Karena Goh)
+-Added fix for img2swf, that is required for UpStage to run on Debian 6.0.4.
+
+09/07/2012 (Daniel Han)
+- Login does not use cookie to check logged in user. It uses session to be more secure. However, it is only a workaround to fix "unable to log out" bug.
+- Player has "Last Logged in Date" field.
+- Player can edit emails now.
+- Player is now searchable.
+- Testing Voices on Media Edit does not redirect to new page.
+- Cosmetic Changes for Media Edit, Stage Edit, Non Admin Page, and Stage Lists.
+- Page Edit mode enables Admin to edit pages.
+
+23/10/2012 (Scott Riddell, Daniel Han)
+- Added postback after user actions -> globally on the site
+- Authorization bug fixed (admins,player,audience are now treated correctly)
+- Edit player form is now relocated properly, can be closed properly
+- Permission bugs fixed
+- edit player methods in python fixed
+
+- IE8 fixes 
+    - related to javascript 
+    - page edit mode fixed, 
+    - fixed swf size for IE
+    - IE detecting flash player
+    - Fixed IE documentMode issue
+    - Fixed IE problems on Stage
+    - Debug message fix
+    - MediaPage voice testing fix for IE
+    
+- Buttons that displayed incorrectly in browsers now display now
+- Change password bug fix
+- Safari popup issue
+- The links on the footer were removed as they were obsolete and confusing
+- Stage names; "#" "&" and ":" were invalid inputs and should be treated as such.
+- Alert for when user changes password and the inputs don't match user.js
+- Removed Russian text on editable in the context menu
+- Added JW player for audio, so that there are no redirects, can test audio on stage
+- Added background colour on fullpage
+- Stage edit page: added radio buttons for selections instead of tick and cross which were ambiguous
+- Resized images on media/edit page, to be smaller
+- Under development area is greyed out
+- Multiple python file corrections
+- Multiple javascript file corrections
+
+- In the media edit page we
+    - Removed searchByFilter() method
+    - Removed type 1 and typ2 filtering 
+    - Removed help button
+    - Relocated Search by Tags & input box, added the enter key as a valid input for searching by tags.
+    
+- Added parameter whether the save stage button should refresh the stage or not
+    - used this parameter to create a 'Save' and a 'Save and Reload' button in the stage edit
+
+- Added stage loading screen and styles    
+- Added "Go directly to stage" link to the stage edit
+- Renamed set to default button to 'Clear Stage'
+- Added 3 second redirect to workshop page in success.xhtml
+- Re-enabled video avatar upload
+- Cosmetic typo fixes across UpStage universally as per clients request.
+- Cosmetic changes to JW player from black to transparent
+- Redirects user to /home/ instead of /admin/home/
+- Added disclaimer for the rare browser/operating system clash for uploading files
+
+
+ 

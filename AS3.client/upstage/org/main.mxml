@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+* Helps define general swf properties and directs 
+* to the program entry point.
+*
+*@author Shaun Narayan
+*@version   0.1 Initial - Create app and attach to root
+			0.2 Scaling - Based on Screen size and attempts to fix discrepancy issues.
+			0.21 Scaling
+*@modified Shaun Narayan (04/26/10) - included scaling
+						 (04/27/10) - Push scale values to App.
+-->
+<mx:Application
+
+xmlns:mx="http://www.adobe.com/2006/mxml"
+
+layout="absolute"
+
+width="1280"
+
+height="960"
+
+frameRate="30"
+
+backgroundColor="#FFFFFF"
+
+creationComplete="CreationComplete()">
+
+<mx:Script><![CDATA[
+import flash.display.*;
+import mx.core.*;
+import flash.external.*;
+import org.Client;
+/**
+ * Aquires usable screen area from browser and uses the product of that and client size defs to 
+ * define a scale value, which is flattened if proportionate scaling is required.
+ */
+public function CreationComplete():void
+{
+
+	var app:App = new App();
+	trace("loading...");
+	var uic:UIComponent = new UIComponent();
+	//get the screen size from the browser
+	var size:String = ExternalInterface.call('function() \
+	{ \
+		var s =""; \
+		if (navigator.appName.indexOf("Microsoft")!=-1) \
+		{ \
+		    s+=""+(document.documentElement.clientWidth)+"-"; \
+		    s+=""+(document.documentElement.clientHeight); \
+		} \
+		else \
+		{ \
+			s+=""+(window.innerWidth)+"-"; \
+			s+=""+(window.innerHeight); \
+		} \
+		return s; \
+	}')
+	var arr:Array = size.split("-");
+	var w:Number = parseFloat(arr[0]);
+	var h:Number = parseFloat(arr[1]);
+	var scaleAmountX:Number = w/Client.SCREEN_WIDTH
+	var scaleAmountY:Number = h/Client.SCREEN_HEIGHT;
+	if(Client.SCALE_PROPORTIONATE) scaleAmountX = scaleAmountY = Math.min(scaleAmountX, scaleAmountY); // Should scaling be even on X/Y?
+	uic.scaleX = scaleAmountX;
+	uic.scaleY = scaleAmountY;
+	uic.addChild(app);
+	addChild(uic);
+	App.scaleAmountX = scaleAmountX;
+	App.scaleAmountY = scaleAmountY;
+	app.onLoad();
+}
+
+]]></mx:Script>
+
+</mx:Application>
+

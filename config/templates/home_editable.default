@@ -1,0 +1,21 @@
+		<h1>Welcome to UpStage</h1>
+		<p>Here you can see live performances by <a href="http://www.avatarbodycollision.org">Avatar Body Collision</a>, a globally dispersed troup of cyberformers.</p>
+		<p>Shows available from this Foyer:</p>
+		<a href="javascript:navStages()">Current Stages</a>
+		<p>This online performance space uses <a href="http://www.upstage.org.nz" target="other">UpStage</a>, 
+		a web-based venue for live performance. You will need Adobe 
+		Flash Player to watch the performances. This is a standard 
+		plug-in for most web browsers, but if you don't have it, 
+		it's free to download from the <a href="http://www.adobe.com/go/getflashplayer" target="other">Adobe site.</a>
+		</p>
+		<h1>UpStage Stage List</h1>
+			<p>
+				The following stages are viewable on this UpStage server:
+			</p>
+			
+			    %(list)s
+			
+		<h1>Next Show:</h1>
+		[Title &amp; description]
+		<a href="#" class="bodyl">go to stage... </a>
+		<script type="text/javascript">countPlayerAndAudience();</script>

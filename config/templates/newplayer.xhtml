@@ -1,0 +1,67 @@
+<!include master_a.inc>
+<!include workshop_nav.inc>
+<script type="text/javascript">document.title='Creating New Player';</script>
+
+<h1>Adding a player</h1>
+<br />	<!-- PQ: Added to match other pages and moved a few lines below to keep pages consistent -->
+<h3>Pick a username and password</h3><br/>
+
+<form name="rupert" action="%(req:path)s" >
+
+<table>
+	<tr>
+		<td>
+			<b>Username:</b>
+		</td>
+		<td>
+			<input type="text" name="name" id="name" size="30" />
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b>Password:</b>
+		</td>
+		<td>
+			<input type="password" name="password" id="password" size="30" />
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b>Password again:&nbsp;&nbsp;</b>
+		</td>
+		<td>
+			<input type="password" name="password2" id="password2" size="30" />
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b>E-mail address:</b>
+		</td>
+		<td>
+			<input type="text" name="email" id="email" size="30" />
+		</td>
+	</tr>
+</table>
+
+<h2>Player permissions</h2>
+<table>
+<tr><th colspan="2">
+This player can:
+</th></tr>
+<tr>
+<td><input type="checkbox" name="admin" id="admin" checked="checked" /></td>
+<td><b>User</b> - Change stages, avatars etc </td>
+</tr>
+<tr>
+<td><input type="checkbox" name="su" id="su" /></td> 
+<td><b>Administer</b></td>
+</tr>
+<tr>
+<td><input type="checkbox" name="unlimited" id="unlimited" /></td>
+<td><b>Unlimited</b> - No restriction</td>
+</tr>
+</table><br />
+
+<button onclick="javascript:savePlayer(); return false;">Save Player</button>
+</form>
+<!include master_b.inc>

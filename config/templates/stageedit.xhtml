@@ -1,0 +1,170 @@
+<!include master_a.inc>
+<!--
+Modified by Vibhu Patel 22/07/2011 - Made changes to not conflict with the html changes required to move around
+ 										components. Namely rename fields, move the colour selector.
+ 										Added radio buttons next to fields that need to be modified namely colours.
+Modified by Vibhu Patel 09/08/2011 - Changed the color picker buttons to images and made alignment changes.
+Modified by Daniel Han 27/06/2012	- Changed the color picker sizes and divs
+					- changed spelling and grammar errors
+					- changed the general layout
+					- changed the styles
+					- Added Auto Resize handler
+Modified by Craig Farrell 03/09/2012 - changed delete butten handler to proper delete stage
+Modified by Craig Farrell 02/10/2012 - changed  butten layout so it is clearer to read and understand, fixed typos, changed text of headings and buttons.
+Modified by Scott/Gavin/Craig 10/10/2012 - Added stage_saved python variable and successMsg div 
+Modified by Daniel  10/10/2012  - Removed divMessage and relocated successMsg div to come below the stageselection.
+-->
+<!include workshop_nav.inc>
+<script type="text/javascript">
+document.title='Workshop - Stages';
+window.onresize = resizePage;
+</script>
+<div id="stageselection">
+	<h1>Make a new stage, or select one to edit</h1>
+	<form name ="shaun" action="%(req:path)s">
+		<select name="shortName" id="listName">
+			%(list_stages)s
+		</select>
+		<input type="button" onclick="stageChooseSubmit();" value="Select"></input>
+	</form>
+</div>
+
+<div id="successMsg">
+    %(attr:message)s
+</div>
+
+<div id="divForm">
+<form name="rupert" action="">
+	<div id="stagename">
+		<h1>Stage name</h1>
+		<table>
+			<tr>
+				<td>Full name:</td>
+				<td><input type="text" name="longName" id = "longName" value="%(name)s" size="20" /></td>
+			</tr>
+			<tr>
+				<td>Short name for URL:</td>
+				<td><input type="text" name="shortName" value="%(ID)s" size="20" readonly="readonly"/>(Used for URL)</td>
+			</tr>
+            <tr>
+                <td colspan="2"> %(attr:stage_link)s </td>
+            </tr>
+		</table>
+	</div>
+	<!-- -->
+	<div id="edit">
+		<input type="hidden" name="displayaccess" value="%(display_access)s"></input>
+
+		<div id="editStageColor">
+            <h1>Debug message</h1>
+            <input type="checkbox" id="debug" name="debug" onclick="if (this.checked) {debugChecked()}else{debugUnChecked()}"/>
+            Print debug messages on the backdrop? 
+            <br /> <br />
+			<h1>Background colour</h1>
+			<table style="padding:5px">
+				<tr>
+					<th style="width:80px"> <a href='javascript:selectColoring("Prop");'><img id="propIm" alt="" src="/style/radioselect.jpg" width="15" height="15" /> Props & Backdrops </a> </th>
+					<th style="width:80px"> <a href='javascript:selectColoring("Chat");'><img id="chatIm" alt="" src="/style/radioNonSelect.jpg" width="15" height="15" /> Chat Window </a> 
+                    </th>
+					<th style="width:80px"> <a href='javascript:selectColoring("Tools");'><img id="toolsIm" alt="" src="/style/radioNonSelect.jpg" width="15" height="15" /> Tool Palette </a> 
+                    </th>
+                    <th style="width:80px"> <a href='javascript:selectColoring("Page");'><img id="pageIm" alt="" src="/style/radioNonSelect.jpg" width="15" height="15" /> Stage Background </a> </th>
+				</tr>
+				<tr>
+					<td id="colProp" style="border:black 1px solid;"> &nbsp; <input type="hidden" name="colourNumProp" id="colourNumProp" maxlength="8" size="8" class="bgPropBgColour" value="" /> </td>
+					<td id="colChat" style="border:black 1px solid;"> &nbsp;  <input type="hidden" name="colourNumChat" id="colourNumChat" maxlength="8" size="8" class="chatBgColour" value="" /> </td>
+					<td id="colTools" style="border:black 1px solid;"> &nbsp;  <input type="hidden" name="colourNumTools" id="colourNumTools" maxlength="8" size="8" class="toolsBgColour" value="" /> </td>
+					<td id="colPage" style="border:black 1px solid;"> &nbsp;  <input type="hidden" name="colourNumPage" id="colourNumPage" maxlength="8" size="8" class="pageBgColour" value="" /> </td>
+				</tr>
+
+			</table>
+			<table align="left">
+				<tr>
+					<td id="colorpicker"></td>
+				</tr>
+			</table>
+		</div>
+
+		<div id="editStageGeneral">
+		
+			<div id="editStageSplash">		
+				<h1>Splash message</h1>
+				<textarea name="splash_message" class="splash" id="splash_message">%(splash)s</textarea>
+			</div>
+			<div id="editStageAccess">
+				<h1>Users who can access and edit this stage</h1> 
+			<div id="wrapAccess">
+				<p>
+					Sorry, This section is still under development, and not implemented to the stage.
+				</p>
+			</div>
+				<table>
+					<tr>
+						<td>
+							<table>
+								<tr>
+									<td>Audience access only</td>
+									<td></td>
+									<td>Player access</td>
+									<td></td>
+									<td>Player and edit access</td>
+								</tr>
+								<tr>
+									<td>
+										<select size="4" name="cantaccess" style="height: 160px; width:140px; background-color:#ddd;" multiple="multiple" disabled="disabled">
+											%(cant_access)s
+										</select>
+									</td>
+									<td><a class="IconButton" href='javascript:setAccess("one_to_two");'><img src="/style/right.png" alt="&#60;" width="20" height="20" /></a><br />
+										<a class="IconButton" href='javascript:setAccess("two_to_one");'><img src="/style/left.png" alt="&#62;" width="20" height="20" /></a></td>
+									<td>
+										<select size="4" name="canaccess" style="height: 160px; width:140px; background-color:#ddd;" multiple="multiple" disabled="disabled">
+											%(can_access)s
+										</select>
+									</td>
+									<td><a class="IconButton" href='javascript:setAccess("two_to_three");'><img src="/style/right.png" alt="&#60;" width="20" height="20" /></a><br />
+										<a class="IconButton" href='javascript:setAccess("three_to_two");'><img src="/style/left.png" alt="&#62;" width="20" height="20" /></a></td>
+									<td>
+										<select size="4" name="stageaccess" style="height: 160px; width:140px; background-color:#ddd;" multiple="multiple" disabled="disabled">
+											%(stage_access)s
+										</select>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						  <input type="hidden" name="debugTextMsg" id="debugTextMsg" class="debugMsg" value="%(debugMessages)s" />
+						  <input type="hidden" name="colors" id="colorvals" value="%(colours)s"></input>
+						</td>
+					</tr>
+				</table>
+			</div>							
+		</div>
+
+		<!-- -->
+		<div id="submit">
+			<input type="hidden" name="action" value=""></input>
+			<table>
+				<tr>
+					<td style="width:0%;"><input type="button" onclick="embedsMessage();" value="Save stage "></input></td>
+					<td style="width:0%;"><input type="button" onclick="saveStage(0);" value="Save and reload stage"></input></td>
+			  		<td colspan="3" style="width:50%;"><span id="warning">Warning: This will cause the stage to reload for everyone currently on it, and you will lose the chat log.</span></td>
+				</tr>
+				<tr>	
+					<td style="width:0%;"><input type="button" onclick="warn(5);" value="Delete"></input></td>
+					<td style="width:0%;" ><input type="button" onclick="warn(1);" value="Revert changes  "></input></td>					
+					<td style="width:0%;"><input type="button" onclick="warn(3);" value="Clear stage"></input></td>
+					<td style="width:50%;">Clears the text chat and drawing layers.</td>
+				</tr>	
+				<tr>
+				</tr>
+			</table>
+		</div>
+	
+	</div>
+<script type="text/javascript">stageEdit()</script>
+</form>
+</div>
+<!include master_b.inc>
