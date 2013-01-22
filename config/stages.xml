@@ -1,2 +1,4 @@
 <stages>
+	<!-- a default "test" stage -->
+	<stage active="active" id="test" name="test" />
 </stages>
