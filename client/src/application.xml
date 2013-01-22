@@ -62,14 +62,14 @@
   	 Note that Vera.ttf contains only non bold font 
   	 (bold shows nothing)
       -->
-    <font id="Bitstream Vera Bold" import="src/util/VeraBd.ttf" 
+    <font id="Bitstream Vera Bold" import="src/font/VeraBd.ttf" 
   	  glyphs="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&lt;&gt;
   	  &#09;&#10;&#13;&#34;&#38;&#32;&#33;&#34;&#35;&#36;&#37;&#38;&#39;&#40;
   	  &#41;&#42;&#43;&#44;&#45;&#46;&#47;&#58;&#59;&#60;&#61;&#62;&#63;&#64;
   	  &#91;&#92;&#93;&#94;&#95;&#96;&#123;&#124;&#125;&#126;0123456789áÁàÀâÂ
   	  åÅãÃäÄæÆçÇéÉèÈêÊëËíÍììÌîÎïÏñÑóÓòÒôÔøØõÕ&#246;ÖßúÚùÙûÛüÜÿ´" />	
     
-    <font id="Bitstream Vera Sans" import="src/util/Vera.ttf" 
+    <font id="Bitstream Vera Sans" import="src/font/Vera.ttf" 
 	  glyphs="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&lt;&gt;
   	  &#09;&#10;&#13;&#34;&#38;&#32;&#33;&#34;&#35;&#36;&#37;&#38;&#39;&#40;
   	  &#41;&#42;&#43;&#44;&#45;&#46;&#47;&#58;&#59;&#60;&#61;&#62;&#63;&#64;
