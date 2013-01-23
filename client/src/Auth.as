@@ -51,7 +51,7 @@ class Auth
         this.canAdmin = false;       
     }
 
-    function load(drawer: Object){//draweer used for callback
+    function load(drawer: Object){	// drawer used for callback
         trace('   Auth about to load ' + Client.AUTH_URL);
         var auth: Auth = this;
         var decode: LoadVars = new LoadVars();
@@ -84,13 +84,14 @@ class Auth
                             
                 }
         }
-        decode.load( Client.AUTH_URL);
+        decode.load(Client.AUTH_URL);
     };
 
 
 
     //-------------------------------------------------------------------------
     // Accessor functions
+	
     /**
      * @brief Client MD5 key
      * @return MD5 key

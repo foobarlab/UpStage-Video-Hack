@@ -49,7 +49,7 @@ class thing.Thing extends MovieClip
     private var videoSocketID :String;
     private var videoFailures :Number;
 
-    public var image        :MovieClip; //points to the currently showing image
+    public var  image        :MovieClip; //points to the currently showing image
     private var baseLayer    :Number;
     private var layerOffset  :Number;
     private var baseName     :String;
@@ -212,7 +212,7 @@ class thing.Thing extends MovieClip
         var loadWatcher  :MovieClipLoader = new MovieClipLoader();
         var layerName:String = "videolayer" + layer;
         var img:MovieClip = thing.createEmptyMovieClip(layerName, layer);
-  	loadWatcher.addListener(listener);
+		loadWatcher.addListener(listener);
         //because http doesn't always work as expected,
         //make a unique suffix for the url, forcing fresh load.
         var uniquify:String = '&u=' + Math.random();

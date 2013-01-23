@@ -36,9 +36,9 @@ class Sender
      */
     function Sender(transport :Transport)
     {
-	this.transport = transport;
-	trace('Sender constructor...');
-	this.iCount = 0;
+		this.transport = transport;
+		trace('Sender constructor...');
+		this.iCount = 0;
     }
 
 
@@ -55,9 +55,9 @@ class Sender
         //note: starts at i=1, because mode is at 0
         for(i = 1; i < arguments.length; i += 2)
 	    {
-		k = arguments[i];
-		v = arguments[i + 1];
-		msg[k] = v;
+			k = arguments[i];
+			v = arguments[i + 1];
+			msg[k] = v;
 	    }
 
         trace('SENDING: ' + msg);

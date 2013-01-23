@@ -43,15 +43,15 @@ class thing.Avatar extends Thing
     
     //name text field.
     public var tf           :TextField;
-    public var tfBG		 :MovieClip;
+    public var tfBG		 	:MovieClip;
     public var tfText       :String;
     public var tfLayer      :Number;
     public var tfName       :String;
 
     // image and its loader.
-    public var image        :MovieClip;
+    public var image         :MovieClip;
     private var images       :Array;
-    public var baseLayer    :Number;
+    public var baseLayer	 :Number;
     public  var iconLayer    :Number;
     private var layerOffset  :Number;
     private var baseName     :String;

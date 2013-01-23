@@ -42,31 +42,31 @@ import model.TransportInterface;
  */
 class model.ModelAvatars implements TransportInterface
 {
-    var sender       :Sender;    // Handle to Sender
-    var stage        :MovieClip; // Handle to main stage
+    var sender       			:Sender;    // Handle to Sender
+    var stage        			:MovieClip; // Handle to main stage
 
 	//Prop Pane Backdrop Color //AB: added 02.08.08
 	public var NumPropBackGroundColour :Number = 0xFFFFFF;
     // Views
-    private var drawTools    :DrawTools;
-    //public var audioTools   :AudioTools; // PQ: Added 22.9.07
+    private var drawTools    	:DrawTools;
+    //public var audioTools   	:AudioTools; // PQ: Added 22.9.07
     public var audioScrollBar   :AuScrollBar; // PQ: Added 22.9.07
-    private var actorButtons :ActorButtons;
-    private var avScrollBar  :AvScrollBar;
-    private var propIcons    :ItemGroup;
+    private var actorButtons 	:ActorButtons;
+    private var avScrollBar  	:AvScrollBar;
+    private var propIcons    	:ItemGroup;
 
-	private var modelsounds  :ModelSounds;
+	private var modelsounds  	:ModelSounds;
 
     // Internal variables
-    private var avatar    :Avatar;
-    public var avatars    :Array;
-    private var userID    :String;
-    public var moveFast  :Boolean;
+    private var avatar    		:Avatar;
+    public var avatars    		:Array;
+    private var userID    		:String;
+    public var moveFast   		:Boolean;
 
-    private var drawing   :Boolean;
-    private var bAudioing  :Boolean; // PQ: Added
+    private var drawing    		:Boolean;
+    private var bAudioing  		:Boolean; // PQ: Added
 
-    private var renaming    :Boolean; //Vibhu Patel 08/08/2011 - used to check whether avatar is being renamed
+    private var renaming    	:Boolean; //Vibhu Patel 08/08/2011 - used to check whether avatar is being renamed
 
     private var avscrollBarColor    :Number; //Vibhu Patel 31/08/2011 - background color of tool box items
 
@@ -494,6 +494,7 @@ class model.ModelAvatars implements TransportInterface
 
     //-------------------------------------------------------------------------
     // Messages received from the server for AvScrollBar
+	
     /**
      * @brief Server wants model to load an avatar
      */

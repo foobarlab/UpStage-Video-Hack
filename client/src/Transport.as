@@ -43,30 +43,30 @@ import model.ModelDrawing;
 class Transport extends XMLSocket
 {
     // Internal variables
-    private var connectionTried :Number;
+    private var connectionTried 	:Number;
 
     // Instances of classes
-    private var auth     :Auth;      // Auth object
-    private var sender   :Sender;    // Sender object
+    private var auth     			:Auth;      // Auth object
+    private var sender   			:Sender;    // Sender object
 
     // Handlers for various onscreen objects
-    private var modelChat          :ModelChat;
-    private var modelAvatars       :ModelAvatars;
-    private var modelBackDropItems :ModelBackDropItems;
-    private var modelInfo          :ModelInfo;
-    private var modelSplashScreen  :ModelSplashScreen;
-    private var modelSounds        :ModelSounds;
-    private var modelDrawing       :ModelDrawing;
+    private var modelChat          	:ModelChat;
+    private var modelAvatars       	:ModelAvatars;
+    private var modelBackDropItems 	:ModelBackDropItems;
+    private var modelInfo          	:ModelInfo;
+    private var modelSplashScreen  	:ModelSplashScreen;
+    private var modelSounds        	:ModelSounds;
+    private var modelDrawing       	:ModelDrawing;
 
-    private var stage      :MovieClip;  // Handle to main stage movie clip
+    private var stage      			:MovieClip;  // Handle to main stage movie clip
 
-    public var mode        :String;
-    public var swfport     :Number;
-    public var policyport  :Number;
-    public var stageID     :String;
-    //public var player      :String;
+    public var mode        			:String;
+    public var swfport     			:Number;
+    public var policyport  			:Number;
+    public var stageID     			:String;
+    //public var player      		:String;
     
-    static var volunteer  :Boolean;
+    static var volunteer  			:Boolean;
 
     /**
      * @brief Constructor
@@ -74,7 +74,6 @@ class Transport extends XMLSocket
      */
     function Transport(stage :MovieClip)
     {
-    	
         trace('Transport constructor...');
 
         this.stage = stage;
@@ -85,6 +84,7 @@ class Transport extends XMLSocket
         this.parseUrlVars();
 
         this.sender = new Sender(this);
+		
         // Create new handlers for events
         //---------------------------------------------------------------------
 
@@ -92,6 +92,7 @@ class Transport extends XMLSocket
         this.modelSplashScreen = new ModelSplashScreen(sender);
 
         // Order of other handlers doesn't really matter
+		
         /** EB 22/10/07: EXCEPT!! Make modelSounds before modelAvatars
          * 
          * modelAvatars (for some reason known only to Douglas or the previous team)

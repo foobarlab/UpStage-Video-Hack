@@ -40,8 +40,8 @@ class Client
     public static var AVATAR_MAX_HEIGHT  :Number = 100;
     public static var PROP_MAX_WIDTH     :Number = 100;
     public static var PROP_MAX_HEIGHT    :Number = 100;
-    public static var ICON_SIZE      :Number = 10;      // In AvScrollBar & ItemGroup's
-    public static var BORDER_WIDTH   :Number = 0.5;
+    public static var ICON_SIZE      	 :Number = 10;      // In AvScrollBar & ItemGroup's
+    public static var BORDER_WIDTH   	 :Number = 0.5;
 
     public static var RIGHT_BOUND      :Number = 225; // lefthand edge of chat
     public static var BOTTOM_BOUND     :Number = 189; // bottom edge of chat, just above top of background pickers.
@@ -224,8 +224,8 @@ class Client
  	//LK added 25/6/07
     public static var DISPLAY_PROP     :Number = 8;
 
-    public static var VIDEO_INTERVAL_TARGET :Number = 1500; //tries to adapt wait time to reach this rate
-    public static var VIDEO_INTERVAL_MIN    :Number = 500;  //but never waits for less than this.
+    public static var VIDEO_INTERVAL_TARGET :Number = 1500; // tries to adapt wait time to reach this rate
+    public static var VIDEO_INTERVAL_MIN    :Number = 500;  // but never waits for less than this.
     public static var VIDEO_MAX_FAILURES    :Number = 10;   // this many consequtive 404s before quitting
 
     public static var BUBBLE_SOLID_T        :Number = 1800; //how long before bubble starts to fade
@@ -323,6 +323,9 @@ class Client
 	// Path to the music note and sfx icon that display in the audio widget
 	public static var MUSIC_ICON_IMAGE_URL	:String = '/media/thumb/music.jpg';
 	public static var SFX_ICON_IMAGE_URL	:String = '/media/thumb/sfx.jpg';
+	
+	// Icon displayed for stream avatars
+	public static var STREAM_ICON_IMAGE_URL	:String = '/media/thumb/stream.jpg';
 
 	// PQ: Added 30.10.07
 	// Text to display on the audio widget's "Stop All Audio" button
@@ -599,7 +602,7 @@ class Client
     public static var PALETTE_FIXED         :Array = [0xffffff, 0x000000];
 
     //-------------------------------- sound
-    /*8 slots are available -- these numbers need to ad up toi divvy them properly */
+    /* 8 slots are available -- these numbers need to ad up toi divvy them properly */
     public static var SPEECH_SOUNDS         :Number = 5;  // Max concurrent sounds (0, 1, 2)
     //public static var SFX_SOUNDS            :Number = 2;  // For sound effects (slot 3)
     //public static var MUSIC_SOUNDS          :Number = 1;  // For music (slot 4)
@@ -608,7 +611,7 @@ class Client
     // PQ & LK: 31.10.07
     public static var APPLAUSE_SOUNDS       :Number = 10;  // Max concurrent applauses
 
-    //how many things get loaded for each media type (icons, etc count as a separate load)
+    // how many things get loaded for each media type (icons, etc count as a separate load)
     public static var LOADS_PER_AVATAR      :Number = 3;
     public static var LOADS_PER_PROP        :Number = 2;
     public static var LOADS_PER_BACKDROP    :Number = 2;
