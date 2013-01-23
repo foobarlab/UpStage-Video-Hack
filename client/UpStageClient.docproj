@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<docProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <pageTitle>Upstage client API (AS2DOC)</pageTitle>
+  <classPaths>src;src\model;src\thing;src\util;src\view</classPaths>
+  <sourcesList>.*</sourcesList>
+  <outputDirectory>doc</outputDirectory>
+  <activeCompiler>0</activeCompiler>
+  <extraOptions>--sources</extraOptions>
+</docProject>

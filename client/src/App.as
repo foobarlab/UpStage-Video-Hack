@@ -1,4 +1,3 @@
-
 /*
 Copyright (C) 2003-2006 Douglas Bagnall (douglas * paradise-net-nz)
 

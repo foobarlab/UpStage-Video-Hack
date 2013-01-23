@@ -23,7 +23,7 @@ import Sender;
 import thing.Audio;
 import view.AuScrollBar;
 
-import util.newSound;
+import util.NewSound;
 //import model.ModelChat;
 
 /**
@@ -182,7 +182,7 @@ class model.ModelSounds implements TransportInterface
 	        if (isNaN(slot)) //still no luck (all loading?). go for default
 	            slot = offset;
 	
-	        sounds[slot] = new newSound();
+	        sounds[slot] = new NewSound();
 			sounds[slot].url = url;
 			sounds[slot].type = arrayName;
 			sounds[slot].setLooping(false);

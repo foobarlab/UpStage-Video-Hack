@@ -1,3 +1,5 @@
+// TODO is this class used?
+
 /*
   Copyright (C) 2003-2006 Douglas Bagnall (douglas * paradise-net-nz)
 
@@ -24,7 +26,7 @@
  * Notes:
  */
 
-class util.newSound extends Sound
+class util.NewSound extends Sound
 {
 	private var bPlaying    :Boolean;
 	private var bStopped	:Boolean;
@@ -36,7 +38,7 @@ class util.newSound extends Sound
 	*	Constructor
 	**********************************************************/
 	
-	function newSound() {
+	function NewSound() {
 		super();
 		this.updateState(false, true);
 		this.setLooping(false);
@@ -46,8 +48,8 @@ class util.newSound extends Sound
 	*	Local Methods
 	**********************************************************/
 
-	function loadSound(url: String, true: Boolean) {
-		super.loadSound(url, true);
+	function loadSound(url: String, flag: Boolean) {
+		super.loadSound(url, flag);
 		this.updateState(true, false);
 		trace("LOAD SOUND ::::::> isPLaying: " + this.isPlaying());
 	}
