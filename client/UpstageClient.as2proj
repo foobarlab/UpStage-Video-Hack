@@ -27,7 +27,7 @@
     <option useMX="False" />
     <option warnUnusedImports="False" />
     <option traceMode="CustomFunction" />
-    <option traceFunction="App.debug" />
+    <option traceFunction="upstage.App.debug" />
     <option libraryPrefix="" />
     <option excludeFile="" />
     <option groupClasses="False" />
@@ -36,8 +36,8 @@
   </build>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
-    <compile path="src\App.as" />
-    <compile path="src\Client.as" />
+    <compile path="src\upstage\App.as" />
+    <compile path="src\upstage\Client.as" />
   </compileTargets>
   <!-- Assets to embed into the output SWF -->
   <library>
