@@ -1,4 +1,4 @@
 /client/bin/*.swf
-/html/swf/*.swf
 /client/doc/*.*
 /client/doc/
+/server/src/html/swf/*.swf
