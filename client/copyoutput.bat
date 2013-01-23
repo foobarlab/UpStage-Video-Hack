@@ -1,1 +1,1 @@
-COPY /Y "bin\*" "..\html\swf\"
+COPY /Y "bin\*.swf" "..\server\html\swf\"
