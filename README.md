@@ -19,7 +19,7 @@ UpStage requires Python version 2.x with Twisted (&gt;= 8.1 and &lt; 11.0) and z
 
 For media upload some additional tools have to be installed (TBD).
 
-ActionScript code is compiled using <a href="http://www.mtasc.org/">MTASC</a> and <a href="http://swfmill.org/">swfmill</a>, all documentation is generated using <a href="www.doxygen.org/">Doxygen</a>.
+ActionScript code is compiled using <a href="http://www.mtasc.org/">MTASC</a> and <a href="http://swfmill.org/">swfmill</a>, all documentation is generated using <a href="http://www.doxygen.org/">Doxygen</a>.
 
 ### Recommended IDE configuration
 
