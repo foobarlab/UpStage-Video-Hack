@@ -2,3 +2,5 @@
 /client/doc/*.*
 /client/doc/
 /server/src/html/swf/*.swf
+/temp
+/build

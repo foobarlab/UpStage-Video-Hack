@@ -1,4 +1,4 @@
-Used FlashDevelop as IDE (<a href="http://www.flashdevelop.org/">http://www.flashdevelop.org/</a>).
+You may use FlashDevelop as IDE (<a href="http://www.flashdevelop.org/">http://www.flashdevelop.org/</a>).
 
 For generating graphs in documentation install Graphviz (<a href="http://www.graphviz.org/">http://www.graphviz.org/</a>). 
 

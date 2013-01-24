@@ -19,7 +19,7 @@
 */
 
 /**
- * Module: newSound.as
+ * Module: NewSound.as
  * Created: 20.05.08
  * Author: Alan Crow - 2007/2008 AUT UpStage Team
  * Purpose: To allow from much better control over the audio files.

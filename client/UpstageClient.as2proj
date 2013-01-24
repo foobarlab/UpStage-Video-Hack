@@ -5,10 +5,10 @@
     <movie outputType="Application" />
     <movie input="" />
     <movie path="bin\classes.swf" />
-    <movie fps="5" />
+    <movie fps="25" />
     <movie width="320" />
     <movie height="200" />
-    <movie version="9" />
+    <movie version="8" />
     <movie minorVersion="0" />
     <movie platform="Flash Player" />
     <movie background="#000000" />
@@ -50,7 +50,8 @@
   <!-- Executed before build -->
   <preBuildCommand />
   <!-- Executed after build -->
-  <postBuildCommand alwaysRun="True">"$(ToolsDir)\swfmill\swfmill.exe" simple "$(ProjectDir)\src\application.xml" "$(OutputDir)\client.swf"
+  <postBuildCommand alwaysRun="True">"$(ProjectDir)\prepare.bat"
+"$(ToolsDir)\swfmill\swfmill.exe" simple "$(ProjectDir)\src\application.xml" "$(OutputDir)\client.swf"
 "$(ProjectDir)\copyoutput.bat"</postBuildCommand>
   <!-- Other project options -->
   <options>
