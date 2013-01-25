@@ -1,3 +1,0 @@
-ModelXXX actually is a model + controller?
-thing.XXX actually is a model + controller + widget?
-view actually is widget?
