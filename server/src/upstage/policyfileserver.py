@@ -26,19 +26,24 @@ class policy_server(object):
         self.port = port
         self.policy = policy
         if len(policy) > 10000:
-	     raise exceptions.RuntimeError('File probably too large to be a policy file')
+            raise exceptions.RuntimeError('File probably too large to be a policy file')
         if 'cross-domain-policy' not in policy:
             raise exceptions.RuntimeError('Not a valid policy file')
 
         log.msg('Listening on port %d\n' % port)
-        try:
-            self.sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
-        except AttributeError:
-            # AttributeError catches Python built without IPv6
-            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        except socket.error:
-            # socket.error catches OS with IPv6 disabled
-            self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        
+        #try:
+        #    self.sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+        #except AttributeError:
+        #    # AttributeError catches Python built without IPv6
+        #    self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        #except socket.error:
+        #    # socket.error catches OS with IPv6 disabled
+        #    self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        
+        # FIXME currently start with ipv4 only (not working in windows)
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.bind(('', port))
         self.sock.listen(5)
