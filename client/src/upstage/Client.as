@@ -234,11 +234,11 @@ class upstage.Client
     public static var POST_LOAD_WAIT        :Number = 500; //wait after last thing loaded 
 
     //button colours and shapes
-    public static var UI_BUTTON_POINTS      :Array = [01,02, 01,01, 02,01,
-                                                      14,01, 15,01, 15,02,
-                                                      15,07, 15,08, 14,08,
-                                                      02,08, 01,08, 01,07,
-                                                      01,02, 01,02, 01,02];
+    public static var UI_BUTTON_POINTS      :Array = [ 1,2, 1,1, 2,1,
+    												  14,1, 15,1, 15,2,
+    												  15,7, 15,8, 14,8,
+    												  2,8, 1,8, 1,7,
+    												  1,2, 1,2, 1,2];
     public static var UI_BUTTON_WIDTH       :Number = 15;
     public static var UI_BUTTON_HEIGHT      :Number = 8;
     public static var UI_BUTTON_SPACE_W     :Number = 16;
@@ -246,22 +246,22 @@ class upstage.Client
     public static var UI_BUTTON_TEXT_SCALE  :Number = 0.8;
 
 	//LK added 15/10/07 for audience applause button
-	public static var APPLA_UI_BUTTON_POINTS :Array = [01,02, 01,01, 02,01,
-                                                      33,01, 34,01, 34,02,
+	public static var APPLA_UI_BUTTON_POINTS :Array = [1,2, 1,1, 2,1,
+                                                      33,1, 34,1, 34,2,
                                                       34,7, 34,8, 33,8,
-                                                      02,8, 01,8, 01,7,
-                                                      01,02, 01,02, 01,02];
+                                                      2,8, 1,8, 1,7,
+                                                      1,2, 1,2, 1,2];
                                                                                                        
     public static var APPLA_UI_BUTTON_WIDTH       :Number = 34;
     public static var APPLA_UI_BUTTON_HEIGHT      :Number = 8;
     public static var APPLA_UI_BUTTON_TEXT_SCALE  :Number = 0.8;
     
     //LK added 15/10/07 for volunteer drop button
-	public static var DROP_UI_BUTTON_POINTS :Array = [01,02, 01,01, 02,01,
-                                                      19,01, 20,01, 20,02,
+	public static var DROP_UI_BUTTON_POINTS :Array = [1,2, 1,1, 2,1,
+                                                      19,1, 20,1, 20,2,
                                                       20,7, 20,8, 19,8,
-                                                      02,8, 01,8, 01,7,
-                                                      01,02, 01,02, 01,02];
+                                                      2,8, 1,8, 1,7,
+                                                      1,2, 1,2, 1,2];
     public static var DROP_UI_BUTTON_WIDTH       :Number = 20;
     public static var DROP_UI_BUTTON_HEIGHT      :Number = 8;
     public static var DROP_UI_BUTTON_TEXT_SCALE  :Number = 0.8;
@@ -298,19 +298,19 @@ class upstage.Client
                                                       STOPALLAUDIO_UI_BUTTON_TEXT_WIDTH,7,
                                                       STOPALLAUDIO_UI_BUTTON_TEXT_WIDTH,8,
                                                       STOPALLAUDIO_UI_BUTTON_TEXT_WIDTH-1,8,
-                                                      02,8, 01,8, 01,7,
-                                                      01,02, 01,02, 01,02];
+                                                      2,8, 1,8, 1,7,
+                                                      1,2, 1,2, 1,2];
                                                       
                                                       
                                                       
     // AC added (06/05/08)
-    public static var AUDIOSLOT_UI_BUTTON_POINTS :Array = [01,02, 01,01, 02,01,
-                                                      	   15,01, 16,01, 16,02,
-                                                           /*16,07, 16,08, 15,08,
-                                                           02,08, 01,08, 01,07,*/
-                                                           16,06, 16,07, 15,07,
-                                                           02,07, 01,07, 01,06,
-                                                           01,02, 01,02, 01,02];
+    public static var AUDIOSLOT_UI_BUTTON_POINTS :Array = [1,2, 1,1, 2,1,
+                                                      	   15,1, 16,1, 16,2,
+                                                           /*16,7, 16,8, 15,8,
+                                                           2,8, 1,8, 1,7,*/
+                                                           16,6, 16,7, 15,7,
+                                                           2,7, 1,7, 1,6,
+                                                           1,2, 1,2, 1,2];
                                                            
     public static var AUDIOSLOT_UI_BUTTON_TEXT_WIDTH       :Number = 19;//18.8;
     public static var AUDIOSLOT_UI_BUTTON_TEXT_HEIGHT      :Number = 8;

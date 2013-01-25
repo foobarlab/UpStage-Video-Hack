@@ -187,7 +187,7 @@ class upstage.model.ModelSounds implements TransportInterface
 			sounds[slot].type = arrayName;
 			sounds[slot].setLooping(false);
 
-			if arrayName == 'speeches' {
+			if (arrayName == 'speeches') {
 	        	sounds[slot].loadSound(url, true);
 			}
 
@@ -209,7 +209,7 @@ class upstage.model.ModelSounds implements TransportInterface
 		var sounds:Array = this[type];
 
 		for (var x:Number = 0; x < sounds.length; x++) {
-			if (sounds[x].url == url) && (sounds[x] != null) {
+			if ((sounds[x].url == url) && (sounds[x] != null)) {
 
 				// Clear these things
 				sounds[x] = null;

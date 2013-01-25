@@ -433,7 +433,8 @@ class upstage.thing.Avatar extends Thing
     static function avatarStep(av: Avatar) :Void
     {
         //trace("stepping...");
-        if (av.steps > 0){
+        if (av.steps > 0)
+        {
             av._x += av.dx;
             av._y += av.dy;
             //av._rotation += 5;
@@ -456,7 +457,7 @@ class upstage.thing.Avatar extends Thing
 					{ av.bubble.moveBubbleBelow(); }
 					
 				// Is moving bubble above when it is below
-				else if (av.bubble.location == 'Below') && (!(av.bubble.isBubbleOffScreen(av._y)))
+				else if ((av.bubble.location == 'Below') && (!(av.bubble.isBubbleOffScreen(av._y))))
         			{ av.bubble.moveBubbleAbove(); }
         	}
         	
