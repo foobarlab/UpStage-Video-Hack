@@ -14,7 +14,7 @@ from distutils.version import LooseVersion #, StrictVersion
 
 py_version = sys.version_info
 py_version_string = str(py_version[0]) + "." + str(py_version[1]) + "." + str(py_version[2])
-print "=> Installed python version is %s." % py_version_string
+print "=> Installed python version is %s. (2.6.8 recommended)" % py_version_string
 #print sys.version
 if not (py_version >= _MIN_PYTHON and py_version < _MAX_PYTHON):
     print "Build requires that python be in version better or equal", \
@@ -28,24 +28,24 @@ if not (py_version >= _MIN_PYTHON and py_version < _MAX_PYTHON):
 # === check if a supported twisted version is installed ===
 
 _MIN_TWISTED = '8.1.0'   # set this to the minimum required twisted version (included)
-_MAX_TWISTED = '13.0.0'  # set this to the maximum required twisted version (excluded)
+_MAX_TWISTED = '9.0.0'  # set this to the maximum required twisted version (excluded)
 
 try:
     import twisted
 except ImportError:
-    print "No twisted installation found!"
-    print "Build requires that twisted be in version better or equal %s and less than %s installed" % (_MIN_TWISTED, _MAX_TWISTED)
+    print "No Twisted installation found!"
+    print "Build requires that Twisted be in version better or equal %s and less than %s installed" % (_MIN_TWISTED, _MAX_TWISTED)
     sys.exit(1)
 
 try:
     import twisted.web
 except ImportError:
-    print "Twisted installation is incomplete. Please install twisted.web." 
+    print "Twisted installation is incomplete. Please additionally install TwistedWeb." 
     sys.exit(1)
-    
+ 
 twisted_version = twisted.__version__
 
-print "=> Installed twisted version is %s." % twisted_version
+print "=> Installed Twisted version is %s. (8.2.0 recommended)" % twisted_version
 
 if LooseVersion(twisted_version) < LooseVersion(_MIN_TWISTED):
     print "Your twisted version is too old!"
@@ -57,6 +57,7 @@ if not (LooseVersion(twisted_version) >= LooseVersion(_MIN_TWISTED) and LooseVer
     print "Build requires that twisted be in version better or equal %s and less than %s installed" % (_MIN_TWISTED, _MAX_TWISTED)
     sys.exit(1)
 
+# TODO: additionally check for twisted.woven.guard
 
 # === check if zope.interfaces is installed ===
 
