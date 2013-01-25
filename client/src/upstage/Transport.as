@@ -127,7 +127,10 @@ class upstage.Transport extends XMLSocket
         trace('Transport constructor done...');
     };
 
-    function parseUrlVars(){
+    function parseUrlVars() {
+		
+		// TODO set defaults if no vars are given?
+		
         trace("parsing url vars");
         var args:String = _root._url.split('?')[1];
         var decoder:LoadVars = new LoadVars();
@@ -205,6 +208,8 @@ class upstage.Transport extends XMLSocket
 
         while (! connected && (connectionTried < Client.MAX_CONNECTION_ATTEMPTS))
             {
+				// TODO get policy file via http first? 
+				
             	// AC - Get required policy file
        			System.security.loadPolicyFile('xmlsocket://' + domain + ':' + Client.POLICY_PORT.toString());
             	
@@ -238,16 +243,16 @@ class upstage.Transport extends XMLSocket
      */
     function onData(msg :String)  :Void
     {
-//        trace('GOT "' + msg +'"');
+		//trace('GOT "' + msg +'"');
         var vars :LoadVars = new LoadVars();
 
-        //convert the a variable string to a property of specified LoadVars object
+        // convert the a variable string to a property of specified LoadVars object
         vars.decode(msg);
 
         var mode :String = vars.mode.toUpperCase();
         if (mode && this[mode])
             {
-                // Get the reciever functions below to handle the message
+                // Get the receiver functions below to handle the message
                 this[mode](vars);
             }
         else if (msg)
