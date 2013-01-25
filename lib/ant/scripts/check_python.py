@@ -27,8 +27,8 @@ if not (py_version >= _MIN_PYTHON and py_version < _MAX_PYTHON):
 
 # === check if a supported twisted version is installed ===
 
-_MIN_TWISTED = '8.1.0'   # set this to the minimum required twisted version
-_MAX_TWISTED = '11.0.0'  # set this to the maximum required twisted version (excluded)
+_MIN_TWISTED = '8.1.0'   # set this to the minimum required twisted version (included)
+_MAX_TWISTED = '13.0.0'  # set this to the maximum required twisted version (excluded)
 
 try:
     import twisted

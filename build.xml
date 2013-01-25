@@ -271,7 +271,7 @@ January 2013 	Adopted for UpStage 2.4.2 video hack
 				srcdir="${upstage.dir.as2src}"
 				swf="${upstage.mtasc.swf}"
 				classpath="${upstage.dir.as2src}"
-				header="320:200:25"
+				header="320:200:30"
 				version="8"
 				wimp="true"
 				strict="true"

@@ -5,7 +5,7 @@
     <movie outputType="Application" />
     <movie input="" />
     <movie path="bin\classes.swf" />
-    <movie fps="25" />
+    <movie fps="30" />
     <movie width="320" />
     <movie height="200" />
     <movie version="8" />
@@ -20,12 +20,12 @@
   </classpaths>
   <!-- Build options -->
   <build>
-    <option verbose="False" />
-    <option strict="False" />
-    <option infer="False" />
+    <option verbose="True" />
+    <option strict="True" />
+    <option infer="True" />
     <option useMain="False" />
     <option useMX="False" />
-    <option warnUnusedImports="False" />
+    <option warnUnusedImports="True" />
     <option traceMode="CustomFunction" />
     <option traceFunction="upstage.App.debug" />
     <option libraryPrefix="" />

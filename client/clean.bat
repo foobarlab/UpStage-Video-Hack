@@ -1,4 +1,6 @@
 @echo off
+echo Cleaning temp ...
+del /Q "temp"
 echo Cleaning swfs ...
 del /Q "bin\classes.swf"
 del /Q "bin\client.swf"
