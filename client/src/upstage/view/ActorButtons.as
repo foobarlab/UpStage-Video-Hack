@@ -42,8 +42,7 @@ class upstage.view.ActorButtons extends MovieClip
     private var drawBtn    :UiButton;
     private var audioBtn   :UiButton; // PQ: 22.9.07
 
-    public static var symbolName :String =
-        '__Packages.view.ActorButtons';
+    public static var symbolName :String = '__Packages.upstage.view.ActorButtons';
     private static var symbolLinked :Boolean =
         Object.registerClass(symbolName, ActorButtons);
 

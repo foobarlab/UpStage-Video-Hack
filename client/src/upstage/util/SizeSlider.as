@@ -37,7 +37,7 @@ class upstage.util.SizeSlider extends MovieClip
     private var listener     :Function;
 
 
-    public static var symbolName :String = '__Packages.util.SizeSlider';
+    public static var symbolName :String = '__Packages.upstage.util.SizeSlider';
     private static var symbolLinked :Boolean = Object.registerClass(symbolName, SizeSlider);
 
 

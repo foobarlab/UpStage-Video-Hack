@@ -63,7 +63,7 @@ class upstage.view.AuScrollBar extends MovieClip
 	private var audioSlot2 : MovieClip;
 	private var audioSlot3  : MovieClip;
 
-    public static var symbolName :String = '__Packages.view.AuScrollBar';
+    public static var symbolName :String = '__Packages.upstage.view.AuScrollBar';
     private static var symbolLinked :Boolean = Object.registerClass(symbolName, AuScrollBar);
         
 

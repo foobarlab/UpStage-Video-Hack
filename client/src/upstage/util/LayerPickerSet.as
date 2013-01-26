@@ -43,7 +43,7 @@ class upstage.util.LayerPickerSet extends MovieClip
     private var taken        :MovieClip;
 
 
-    public static var symbolName :String = '__Packages.util.LayerPickerSet';
+    public static var symbolName :String = '__Packages.upstage.util.LayerPickerSet';
     private static var symbolLinked :Boolean = Object.registerClass(symbolName, LayerPickerSet);
 
     static var eyePoints:Array = [{line:0x0000ff, fill:0x330077, points:Client.DRAWING_EYE_1},

@@ -52,7 +52,7 @@ class upstage.view.DrawTools extends MovieClip
     private var traceIndex     :Number;
     private var traceInterval   :Number = 0;
     
-    public static var symbolName :String = '__Packages.view.DrawTools';
+    public static var symbolName :String = '__Packages.upstage.view.DrawTools';
     private static var symbolLinked :Boolean = Object.registerClass(symbolName, DrawTools);
 
 

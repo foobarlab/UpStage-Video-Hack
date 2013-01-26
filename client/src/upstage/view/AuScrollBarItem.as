@@ -58,7 +58,7 @@ class upstage.view.AuScrollBarItem extends MovieClip
     public var ID           :Number;   // Of avatar
     public var available    :Boolean;  // Is the avatar currently available
 
-    public static var symbolName :String = '__Packages.view.AuScrollBarItem';
+    public static var symbolName :String = '__Packages.upstage.view.AuScrollBarItem';
     private static var symbolLinknameed :Boolean = Object.registerClass(symbolName, AuScrollBarItem);
 
     static public function create(audio: Audio, scrollbar :MovieClip) :AuScrollBarItem

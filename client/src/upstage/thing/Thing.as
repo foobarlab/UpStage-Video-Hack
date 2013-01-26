@@ -54,7 +54,7 @@ class upstage.thing.Thing extends MovieClip
     private var layerOffset  :Number;
     private var baseName     :String;
 
-    private static var symbolName:String = "__Packages.thing.Thing";
+    private static var symbolName:String = "__Packages.upstage.thing.Thing";
     private static var symbolLinked:Boolean = Object.registerClass(symbolName, Thing);
 
     static var LAYER: Number = Client.L_PROPS_IMG;

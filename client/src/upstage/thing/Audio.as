@@ -41,7 +41,7 @@ class upstage.thing.Audio
 	var icon : AuScrollBarItem;
 	var iconLayer : Number;
 
-    private static var symbolName:String = "__Packages.thing.Audio";
+    private static var symbolName:String = "__Packages.upstage.thing.Audio";
     private static var symbolLinked:Boolean = Object.registerClass(symbolName, Audio);
 
     public static var transportSetFunctionName:String = 'SET_AUDIO';

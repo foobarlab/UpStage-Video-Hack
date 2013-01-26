@@ -55,7 +55,7 @@ class upstage.util.Slider extends MovieClip
     
     public var _onMouseRelease: Function;
 
-    public static var symbolName :String = '__Packages.util.Slider';
+    public static var symbolName :String = '__Packages.upstage.util.Slider';
     private static var symbolLinked :Boolean = Object.registerClass(symbolName, Slider);
 
     /**

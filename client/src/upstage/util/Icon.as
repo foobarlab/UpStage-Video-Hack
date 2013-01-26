@@ -33,7 +33,7 @@ class upstage.util.Icon extends MovieClip
     var baseLayer	:Number;
  
 
-    public static var symbolName :String = '__Packages.util.Icon';
+    public static var symbolName :String = '__Packages.upstage.util.Icon';
     private static var symbolLinked :Boolean = Object.registerClass(symbolName, Icon);
 
     /**

@@ -44,7 +44,7 @@ class upstage.util.ColourPicker extends MovieClip
     private var borderColour :Number = Client.SLIDER_BORDER;
 
 
-    public static var symbolName :String = '__Packages.util.ColourPicker';
+    public static var symbolName :String = '__Packages.upstage.util.ColourPicker';
     private static var symbolLinked :Boolean = Object.registerClass(symbolName, ColourPicker);
 
     static public function factory(parent :MovieClip, layer:Number,

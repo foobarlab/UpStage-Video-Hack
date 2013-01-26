@@ -32,7 +32,7 @@ import upstage.Client;
 class upstage.thing.Prop extends Thing
 {
 
-    private static var symbolName:String = "__Packages.thing.Prop";
+    private static var symbolName:String = "__Packages.upstage.thing.Prop";
     private static var symbolLinked:Boolean = Object.registerClass(symbolName, Prop);
 
     public static var transportSetFunctionName:String = 'SET_PROP';

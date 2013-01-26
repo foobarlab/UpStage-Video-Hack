@@ -34,7 +34,7 @@ class upstage.util.UiButton extends ButtonMc
     private var tf        :TextField;
     private var textLayer :Number;
 
-    private static var symbolName:String = "__Packages.util.UiButton";
+    private static var symbolName:String = "__Packages.upstage.util.UiButton";
     private static var symbolLinked:Boolean = Object.registerClass(symbolName, UiButton);
 
     /* points for standard ui button */

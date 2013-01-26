@@ -28,7 +28,7 @@ class upstage.util.PictureButton extends ButtonMc
 {
     public var value     :Number;
 
-    private static var symbolName:String = "__Packages.util.PictureButton";
+    private static var symbolName:String = "__Packages.upstage.util.PictureButton";
     private static var symbolLinked:Boolean = Object.registerClass(symbolName, PictureButton);
 
     /* factory returns the button */

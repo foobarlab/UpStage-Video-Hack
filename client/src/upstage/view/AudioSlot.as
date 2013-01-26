@@ -54,8 +54,7 @@ class upstage.view.AudioSlot extends MovieClip
 	var mirrorLayer   		 :Number;		// PQ: Added 31.10.0
 	var bPlay		 		 :Boolean;	    // AC: Added 15.05.08
 
-    public static var symbolName :String =
-        '__Packages.view.AudioSlot';
+    public static var symbolName :String = '__Packages.upstage.view.AudioSlot';
     private static var symbolLinked :Boolean =
         Object.registerClass(symbolName, AudioSlot);
 

@@ -62,7 +62,7 @@ class upstage.view.SplashScreen extends MovieClip
 	'browser window, or log in as a different user.';
 
 	
-    public static var symbolName :String = '__Packages.view.SplashScreen';
+    public static var symbolName :String = '__Packages.upstage.view.SplashScreen';
     private static var symbolLinked :Boolean = Object.registerClass(symbolName, SplashScreen);
 
 

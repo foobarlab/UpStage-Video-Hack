@@ -36,7 +36,7 @@ class upstage.thing.BackDrop extends Thing
     private var frameNumber		:Number;
     
     
-    private static var symbolName:String = "__Packages.thing.BackDrop";
+    private static var symbolName:String = "__Packages.upstage.thing.BackDrop";
     private static var symbolLinked:Boolean = Object.registerClass(symbolName, BackDrop);
 
     public static var transportSetFunctionName:String = 'SET_BACKDROP';

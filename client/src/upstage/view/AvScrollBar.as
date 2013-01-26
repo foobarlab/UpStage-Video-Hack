@@ -75,7 +75,7 @@ class upstage.view.AvScrollBar extends MovieClip
 
     var tfBg:Number = Client.UI_BACKGROUND; //Vibhu 31/08/2011 - Background color
 
-    public static var symbolName :String = '__Packages.view.AvScrollBar';
+    public static var symbolName :String = '__Packages.upstage.view.AvScrollBar';
     private static var symbolLinked :Boolean = Object.registerClass(symbolName, AvScrollBar);
         
 

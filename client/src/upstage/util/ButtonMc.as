@@ -37,7 +37,7 @@ class upstage.util.ButtonMc extends MovieClip
     static var _nextButtonLayer: Number = Client.L_UI_BUTTONS;
 
     private var scale     :Number;
-    public static var symbolName :String = '__Packages.util.ButtonMc';
+    public static var symbolName :String = '__Packages.upstage.util.ButtonMc';
     private static var symbolLinked :Boolean = Object.registerClass(symbolName, ButtonMc);
 
 

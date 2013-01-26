@@ -75,7 +75,7 @@ class upstage.view.ItemGroup extends MovieClip
 
     private var textLayer:Number;
 
-    public static var symbolName :String = '__Packages.view.ItemGroup';
+    public static var symbolName :String = '__Packages.upstage.view.ItemGroup';
     private static var symbolLinked :Boolean = Object.registerClass(symbolName, ItemGroup);
 
     /**

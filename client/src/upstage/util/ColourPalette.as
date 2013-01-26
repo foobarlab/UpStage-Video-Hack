@@ -41,7 +41,7 @@ class upstage.util.ColourPalette extends MovieClip
     private var width        :Number;
     private var height       :Number;
 
-    public static var symbolName :String = '__Packages.util.ColourPalette';
+    public static var symbolName :String = '__Packages.upstage.util.ColourPalette';
     private static var symbolLinked :Boolean = Object.registerClass(symbolName, ColourPalette);
 
     static public function factory(parent :MovieClip, layer:Number,

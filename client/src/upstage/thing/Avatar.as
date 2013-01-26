@@ -69,7 +69,7 @@ class upstage.thing.Avatar extends Thing
     private var frameNumber	  :Number;
 
 
-    private static var symbolName:String = "__Packages.thing.Avatar";
+    private static var symbolName:String = "__Packages.upstage.thing.Avatar";
     private static var symbolLinked:Boolean = Object.registerClass(symbolName, Avatar);
 
     
