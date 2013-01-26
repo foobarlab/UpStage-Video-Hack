@@ -15,7 +15,7 @@ See LICENSE.txt for the GNU GENERAL PUBLIC LICENSE
 
 ### Requirements
 
-UpStage requires Python version 2.x with Twisted (&gt;= 8.1 and &lt; 11.0) and zope.interfaces. The following Text-to-Speech software is supported: rsynth, espeak, MBROLA and Festival.  
+UpStage requires Python version 2.x with Twisted (&gt;= 8.1 and &lt; 9.0) and zope.interfaces. The following Text-to-Speech software is supported: rsynth, espeak, MBROLA and Festival.  
 
 For media upload some additional tools have to be installed (TBD).
 

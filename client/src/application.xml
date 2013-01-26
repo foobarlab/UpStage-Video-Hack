@@ -29,7 +29,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 -->
-<movie width="320" height="200" framerate="25" version="8">
+<movie width="320" height="200" framerate="30" version="8">
 	
   <!-- 
        The Application classes have been compiled into the classes.swf file, 
