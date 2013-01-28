@@ -27,6 +27,7 @@ from upstage import config
 from random import choice, random
 import tempfile
 import os, sys
+from time import strftime
 
 def id_generator(start=1, wrap=2000000000, prefix='', suffix='', pattern ='%s%s%s'):
     """Generator that can count. By default returns stringified 
