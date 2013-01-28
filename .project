@@ -11,7 +11,7 @@
 			</arguments>
 		</buildCommand>
 		<buildCommand>
-			<name>com.powerflasher.fdt.core.FlashBuilder</name>
+			<name>org.asdt.compiler.ASBuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
@@ -19,14 +19,8 @@
 	<natures>
 		<nature>org.python.pydev.pythonNature</nature>
 		<nature>org.asdt.core.ASNature</nature>
-		<nature>com.powerflasher.fdt.core.FlashNature</nature>
 	</natures>
 	<linkedResources>
-		<link>
-			<name>core</name>
-			<type>2</type>
-			<locationURI>core</locationURI>
-		</link>
 		<link>
 			<name>std8</name>
 			<type>2</type>

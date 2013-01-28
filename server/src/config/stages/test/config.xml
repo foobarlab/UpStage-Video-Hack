@@ -1,1 +1,12 @@
-<stage active="active" created="" name="test" id="test"></stage>
+<stage active="active" created="" name="test" id="test">
+<showdebugscreen>DEBUG</showdebugscreen>
+<access_one>
+</access_one>
+<access_two>
+</access_two>
+<access_three>
+</access_three>
+<chatbgcolour>0xFFFFFF</chatbgcolour>
+<toolsbgcolour>0xFFFFFF</toolsbgcolour>
+<pagebgcolour>0xFFFFFF</pagebgcolour>
+</stage>

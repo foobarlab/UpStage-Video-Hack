@@ -1,4 +1,4 @@
 <players>
-	<!-- This is the default user "admin" with password "admin" -->
-	<player name="admin" rights="act,admin,su,unlimited" last_login="" date="" password="21232f297a57a5a743894a0e4a801fc3" email="admin@example.com"></player>
+<player name="admin" rights="act,admin,su,unlimited" last_login="" date="" password="21232f297a57a5a743894a0e4a801fc3" email="admin@example.com">
+</player>
 </players>

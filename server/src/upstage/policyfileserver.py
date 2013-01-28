@@ -41,7 +41,7 @@ class policy_server(object):
         #    # socket.error catches OS with IPv6 disabled
         #    self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         
-        # FIXME currently start with ipv4 only (not working in windows)
+        # FIXME currently start with ipv4 only (ipv6 seems not working in windows)
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)

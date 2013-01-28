@@ -46,7 +46,7 @@ January 2013 	Adopted for UpStage 2.4.2 video hack
 	<property file="build.properties"  />
 	
 	<!-- load environment variables -->
-	<!-- <property environment="env" /> -->
+	<property environment="env" />
 	
 	<!-- as2lib ant tasks: compiling as2 files with ant. see: http://osflash.org/ant -->
 	<taskdef name="swf" classname="org.as2lib.ant.Swf" classpath="${upstage.dir.antlib}/as2ant.jar" />
@@ -185,6 +185,15 @@ January 2013 	Adopted for UpStage 2.4.2 video hack
 		<echo message="MTASC       : ${upstage.mtasc.executable}" />
 		<echo message="swfmill     : ${upstage.swfmill.executable}" />
 		<echo message="______________________________________________________" />
+		<echo message="ANT_HOME    : ${env.ANT_HOME}" />
+		<echo message="JAVA_HOME   : ${env.JAVA_HOME}" />
+		<echo message="TEMP        : ${env.TEMP}" />
+		<echo message="______________________________________________________" />
+		<!--
+		<echo message="PLAYERGLOBAL_HOME    : ${env.PLAYERGLOBAL_HOME}" />
+		<echo message="FLASHPLAYER_DEBUGGER : ${env.FLASHPLAYER_DEBUGGER}" />
+		<echo message="______________________________________________________" />
+		-->
 		
 	</target>
 	
@@ -329,21 +338,36 @@ January 2013 	Adopted for UpStage 2.4.2 video hack
 		<echo file="${upstage.dir.tmp}/upstage-server.command" message="${upstage.script.upstage-server.mac}" />
 		<echo file="${upstage.dir.tmp}/upstage-server.sh" message="${upstage.script.upstage-server.linux}" />
 		
-		<condition property="upstage.python.executable.replace.win" value="${upstage.python.executable.win}" else="${upstage.python.executable.default}">
+		<condition property="upstage.python.executable.replace.win" value="${upstage.python.executable.win}">
 			<isset property="upstage.python.executable.win" />
 		</condition>
 		
-		<condition property="upstage.python.executable.replace.mac" value="${upstage.python.executable.mac}" else="${upstage.python.executable.default}">
+		<condition property="upstage.python.executable.replace.mac" value="${upstage.python.executable.mac}">
 			<isset property="upstage.python.executable.mac" />
 		</condition>
 		
-		<condition property="upstage.python.executable.replace.linux" value="${upstage.python.executable.linux}" else="${upstage.python.executable.default}">
+		<condition property="upstage.python.executable.replace.linux" value="${upstage.python.executable.linux}">
 			<isset property="upstage.python.executable.linux" />
 		</condition>
 		
 		<replaceregexp file="${upstage.dir.tmp}/upstage-server.bat" match="\$\{upstage.python.executable\}" replace="${upstage.python.executable.replace.win}" flags="g" />
 		<replaceregexp file="${upstage.dir.tmp}/upstage-server.command" match="\$\{upstage.python.executable\}" replace="${upstage.python.executable.replace.mac}" flags="g" />
 		<replaceregexp file="${upstage.dir.tmp}/upstage-server.sh" match="\$\{upstage.python.executable\}" replace="${upstage.python.executable.replace.linux}" flags="g" />
+		
+		<loadfile property="upstage.file.bat" srcfile="${upstage.dir.tmp}/upstage-server.bat" />
+		<loadfile property="upstage.file.command" srcfile="${upstage.dir.tmp}/upstage-server.command" />
+		<loadfile property="upstage.file.sh" srcfile="${upstage.dir.tmp}/upstage-server.sh" />	
+		
+		<echo message="________________________________________" />
+		<echo message="&lt;upstage.bat&gt;" />
+		<echo message="${upstage.file.bat}" />
+		<echo message="________________________________________" />
+		<echo message="&lt;upstage.command&gt;" />
+		<echo message="${upstage.file.command}" />
+		<echo message="________________________________________" />
+		<echo message="&lt;upstage.sh&gt;" />
+		<echo message="${upstage.file.sh}" />
+		<echo message="________________________________________" />
 		
 	</target>
 	

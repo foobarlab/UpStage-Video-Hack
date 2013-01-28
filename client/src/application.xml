@@ -44,7 +44,7 @@
 	 Application class
       -->
     <library>
-      <clip id="App" class="upstage.App" />
+      <clip id="App" class="App" />
     </library>
     <!-- 
 	 Place an instance of the Application form on Stage to instantiate 

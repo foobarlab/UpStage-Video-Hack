@@ -67,10 +67,11 @@ import upstage.util.Construct;
 
 
 
-class upstage.App extends MovieClip
+class App extends MovieClip
 {
     static var transport : Transport;
     static var debugMsg : TextField;
+    
     /**
      * @brief Constructor
      */
@@ -95,19 +96,19 @@ class upstage.App extends MovieClip
 
     function createLogger()
     {
-	if (Client.LOG_TO_SCREEN){
-	    var format : TextFormat;
-	    // Create a text field for debug messages, covering most of the blank space.
-	    //XXX Flash 8 returns a reference to the field, but Flash 7 does not.
-            
-            debugMsg = Construct.formattedTextField(_level0, 'debugMessages', Client.L_DEBUG, 5, 5, 
-                                                    Client.RIGHT_BOUND - 10, Client.BOTTOM_BOUND - 10,
-                                                    0.9, false, {}, {});
-	    debugMsg.border = true;
-	    debugMsg.wordWrap = true;
-	    debugMsg.borderColor = 0x0000cc;
-	    debugMsg._alpha = 50;        
-	    debugMsg.text = 'debug messages...';
+		if (Client.LOG_TO_SCREEN){
+		    var format : TextFormat;
+		    // Create a text field for debug messages, covering most of the blank space.
+		    //XXX Flash 8 returns a reference to the field, but Flash 7 does not.
+	            
+	            debugMsg = Construct.formattedTextField(_level0, 'debugMessages', Client.L_DEBUG, 5, 5, 
+	                                                    Client.RIGHT_BOUND - 10, Client.BOTTOM_BOUND - 10,
+	                                                    0.9, false, {}, {});
+		    debugMsg.border = true;
+		    debugMsg.wordWrap = true;
+		    debugMsg.borderColor = 0x0000cc;
+		    debugMsg._alpha = 50;        
+		    debugMsg.text = 'debug messages...';
 		}
     };
 
@@ -115,14 +116,14 @@ class upstage.App extends MovieClip
     {
         
         if (Client.LOG_TO_SCREEN && debugMsg != null)
-            {     
-                var scroll:Number = debugMsg.scroll;
-                var bottomish: Boolean = (debugMsg.maxscroll - scroll < 5);
-                //replaceText is much faster than debugMsg.text += '\n' + x;
-                var len : Number = debugMsg.length;
-                debugMsg.replaceText(len, len, '\n' + x);
-                debugMsg.scroll = (bottomish) ? debugMsg.maxscroll : scroll;
-            }
+        {     
+            var scroll:Number = debugMsg.scroll;
+            var bottomish: Boolean = (debugMsg.maxscroll - scroll < 5);
+            //replaceText is much faster than debugMsg.text += '\n' + x;
+            var len : Number = debugMsg.length;
+            debugMsg.replaceText(len, len, '\n' + x);
+            debugMsg.scroll = (bottomish) ? debugMsg.maxscroll : scroll;
+        }
         if (Client.LOG_TO_SERVER){
             transport.sendDebug(x);
         }

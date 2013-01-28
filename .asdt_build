@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AS2Build>
   <project version="8" />
+  <buildItem class="client/src/App" active="true" runnable="false">
+    <in>client/bin/client.swf</in>
+    <out>client.swf</out>
+    <movie width="320" height="200" fps="30">
+      <logger>Console</logger>
+    </movie>
+    <compiler infer="false" keep="false" wimp="true" mx="false" strict="true" />
+    <parameters />
+  </buildItem>
 </AS2Build>
 
