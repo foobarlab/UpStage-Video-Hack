@@ -97,7 +97,7 @@ def website(data):
     # Shaun Narayan (02/01/10) - Added home and signup pages to docroot.
     docroot.putChild('home', HomePage(data.stages))
     docroot.putChild('signup', SignUpPage())
- 	# Daniel Han (03/07/2012) - Added this session page.
+    # Daniel Han (03/07/2012) - Added this session page.
     docroot.putChild('session', SessionCheckPage(data.players))
     # pluck speech directory out of stages
     docroot.putChild(config.SPEECH_SUBURL, data.stages.speech_server)
@@ -110,35 +110,35 @@ def website(data):
 
 #XXX update to new guard? (or bespoke?)
 class AdminRealm:
-	"""The authentication part
+    """The authentication part
 	All comes together here.
 	See twisted docs to try to understand.
 	Newer guard is different: http://twistedmatrix.com/documents/howto/guardindepth
 	"""
 
-	__implements__ = IRealm
+    __implements__ = IRealm
 
-	def __init__(self, data):
-		self.data = data
+    def __init__(self, data):
+        self.data = data
 
 
-	def requestAvatar(self, username, mind, *interfaces):
-		"""Put together a web tree based on player admin permissions
+    def requestAvatar(self, username, mind, *interfaces):
+        """Put together a web tree based on player admin permissions
 		@param username: username of player
 		@param mind: ignored
 		@param interfaces: interfaces
 		"""
 
-		if IResource not in interfaces:
-			raise NotImplementedError("WTF, tried non-web login")
-		player = self.data.players.getPlayer(username)
+        if IResource not in interfaces:
+            raise NotImplementedError("WTF, tried non-web login")
+        player = self.data.players.getPlayer(username)
 
-		self.data.players.update_last_login(player)		
+        self.data.players.update_last_login(player)		
 
-		if player.can_admin(): 
-			tree = Workshop(player, self.data)
-			#Shaun Narayan (02/16/10) - Removed all previous new/edit pages and inserted workshop pages.
-			workshop_pages = {'stage' : (StageEditPage, self.data),
+        if player.can_admin(): 
+            tree = Workshop(player, self.data)
+            #Shaun Narayan (02/16/10) - Removed all previous new/edit pages and inserted workshop pages.
+            workshop_pages = {'stage' : (StageEditPage, self.data),
 							  'mediaupload' : (MediaUploadPage, self.data),
 							  'mediaedit' : (MediaEditPage, self.data),
 							  'user' : (UserPage, self.data.players),
@@ -146,44 +146,44 @@ class AdminRealm:
 							  'editplayers' : (EditPlayer, self.data.players)
 							  }
 
-			""" Admin Only  - Password Page """      
+            """ Admin Only  - Password Page """      
             
-			# AC 01.06.08 - Allows admin only to change only their own password.
-			# Super Admin can change any players details.
-			# NR 03.04.10 - Deprecated due to all users being given access to the User Page and its
-			# password changer.       
-			# Assign the new and edit pages to the website tree         
-			tree.putChild('workshop', CreateDir(player, workshop_pages))
-							                                          
-			tree.putChild('save_thing', SwfConversionWrapper(self.data.mediatypes, player))
-			tree.putChild('save_video', VideoThing(self.data.mediatypes, player))
-			# PQ & EB Added 12.10.07
-			tree.putChild('save_audio', AudioThing(self.data.mediatypes, player))
-			tree.putChild('id', SessionID(player, self.data.clients))
-			# This is the test sound file for testing avatar voices in workshop - NOT for the audio widget
-			tree.putChild('test.mp3', SpeechTest(self.data.stages.speech_server))
+            # AC 01.06.08 - Allows admin only to change only their own password.
+            # Super Admin can change any players details.
+            # NR 03.04.10 - Deprecated due to all users being given access to the User Page and its
+            # password changer.       
+            # Assign the new and edit pages to the website tree         
+            tree.putChild('workshop', CreateDir(player, workshop_pages))
+                                      
+            tree.putChild('save_thing', SwfConversionWrapper(self.data.mediatypes, player))
+            tree.putChild('save_video', VideoThing(self.data.mediatypes, player))
+            # PQ & EB Added 12.10.07
+            tree.putChild('save_audio', AudioThing(self.data.mediatypes, player))
+            tree.putChild('id', SessionID(player, self.data.clients))
+            # This is the test sound file for testing avatar voices in workshop - NOT for the audio widget
+            tree.putChild('test.mp3', SpeechTest(self.data.stages.speech_server))
 
-			if player.can_su():
-				edit_pages = {'home' : (HomeEditPage, self.data),
+            if player.can_su():
+                edit_pages = {'home' : (HomeEditPage, self.data),
 							  'workshop' : (WorkshopEditPage, self.data),
                               'nonadmin' : (NonAdminEditPage, self.data),
                               'stages' : (StagesEditPage, self.data)}
-				tree.putChild('edit', PageEditPage(player, edit_pages))
+                tree.putChild('edit', PageEditPage(player, edit_pages))
                 
 
-		# player, but not admin.
-		elif player.can_act():
-		# Daniel modified 27/06/2012
-			tree = NonAdminPage(player, self.data.stages)	    
-			tree.putChild('id', SessionID(player, self.data.clients))
-		# anon - the audience.
-		else:
-			tree = AdminLoginPage(player)
-			tree.putChild('id', SessionID(player, self.data.clients))
+        # player, but not admin.
+        elif player.can_act():
+            # Daniel modified 27/06/2012
+            tree = NonAdminPage(player, self.data.stages)	    
+            tree.putChild('id', SessionID(player, self.data.clients))
+        # anon - the audience.
+        else:
+            tree = AdminLoginPage(player)
+            tree.putChild('id', SessionID(player, self.data.clients))
         
-		tree.putChild('home', HomePage(self.data.stages, player))
-		tree.putChild('stages', ThingsList(player, childClass=StagePage, collection=self.data.stages)) 
-		return (IResource, tree, lambda : None)
+        tree.putChild('home', HomePage(self.data.stages, player))
+        tree.putChild('stages', ThingsList(player, childClass=StagePage, collection=self.data.stages)) 
+        return (IResource, tree, lambda : None)
 
 
 #XXX remove references to woven.guard. sometime.
@@ -222,10 +222,10 @@ class SessionID(Resource):
         ID = ''
 
         if 'name' in request.args:
-           if request.args['name'][0] == '1':
-              ID = player.name
+            if request.args['name'][0] == '1':
+                ID = player.name
         else:
-              ID = urlencode({
+            ID = urlencode({
                    'player':   player.name,
                    'key':      k,
                    'canAct':   player.can_act(),
@@ -266,9 +266,9 @@ class AudioThing(Resource):
         # Chooses a thumbnail image depending on type (adds to audios.xml file)
         
         if type == 'sfx':
-             thumbnail = config.SFX_ICON_IMAGE_URL
+            thumbnail = config.SFX_ICON_IMAGE_URL
         else:
-             thumbnail = config.MUSIC_ICON_IMAGE_URL
+            thumbnail = config.MUSIC_ICON_IMAGE_URL
 
         self.media_dict = self.mediatypes[mediatype]
         
@@ -473,7 +473,7 @@ class SwfConversionWrapper(Resource):
         """Catch results of the process.  If it seems to have worked,
         register the new thing."""
         if exitcode:
-	    #request.write(exitcode)
+            #request.write(exitcode)
             return self.failure(exitcode, swf, thumbnail, form, request)
 
         # if the name is in use, mangle it until it is not.

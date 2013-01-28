@@ -246,7 +246,7 @@ class _UpstageSocket(LineOnlyReceiver):
             if config.VERBOSE or mode not in self.unlogged_send_modes:
                 log.msg('SENT: ' + msg)
         except:
-             log.msg("Unexpected error: %s : %s" %(sys.exc_info()[0], sys.exc_value)) 
+            log.msg("Unexpected error: %s : %s" %(sys.exc_info()[0], sys.exc_value)) 
 
 
     """ AC (23.02.08) - Lets developer know when length of data sent was exceeded. """

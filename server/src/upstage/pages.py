@@ -269,12 +269,12 @@ class AdminBase(Template):
     def text_nav(self, request):
         try:
             if self.player.can_su():
-               html_list = '<li> <a href="/admin/edit/"> [Edit Page Mode]</a> </li>'
-               return html_list
+                html_list = '<li> <a href="/admin/edit/"> [Edit Page Mode]</a> </li>'
+                return html_list
             else:
                 return '&nbsp;'
         except:
-               return '&nbsp;'
+            return '&nbsp;'
 
 
 
@@ -348,92 +348,92 @@ class PageEditPage(AdminBase):
 
         return self
 
-	def render(self, request):
-		return AdminBase.render(self, request) 
+    def render(self, request):
+        return AdminBase.render(self, request) 
 
 """
 Added by: Daniel Han (29/06/2012) 
 """
 class HomeEditPage(AdminBase):
 
-	filename="edit.xhtml"
-	postback = ''
-	def __init__(self, player, collection={}):
-		AdminBase.__init__(self, player, collection)
-		self.player = player
-		self.collection = collection
+    filename="edit.xhtml"
+    postback = ''
+    def __init__(self, player, collection={}):
+        AdminBase.__init__(self, player, collection)
+        self.player = player
+        self.collection = collection
     
-	def text_editable(self, request):
-		s = get_template('home_editable.inc')	
-		form = request.args
+    def text_editable(self, request):
+        s = get_template('home_editable.inc')	
+        form = request.args
 
-		if 'action' in form:
-			content = form.get('action',[''])[0]
+        if 'action' in form:
+            content = form.get('action',[''])[0]
 
-			if content == 'Default':
-				s = get_template('home_editable.default')
-		
-		return s 
+            if content == 'Default':
+                s = get_template('home_editable.default')
+
+        return s 
         
-	def render_GET(self, request):
-		return AdminBase.render_GET(self, request)
+    def render_GET(self, request):
+        return AdminBase.render_GET(self, request)
 
-	def render_POST(self, request):
-		"""Save changes and create new state"""
-		form = request.args
-		if 'action' in form:		
-			content = form["action"][0]
-			if content == 'Submit':
-				if 'editor' in form:
-					content = form["editor"][0]
-					f = open(os.path.join(config.TEMPLATE_DIR, 'home_editable.inc'), 'w')
-					f.write(content)
-					f.close()
-					self.postback = "Successfully Saved"
+    def render_POST(self, request):
+        """Save changes and create new state"""
+        form = request.args
+        if 'action' in form:		
+            content = form["action"][0]
+            if content == 'Submit':
+                if 'editor' in form:
+                    content = form["editor"][0]
+                    f = open(os.path.join(config.TEMPLATE_DIR, 'home_editable.inc'), 'w')
+                    f.write(content)
+                    f.close()
+                    self.postback = "Successfully Saved"
 
-		return AdminBase.render_POST(self, request)
+        return AdminBase.render_POST(self, request)
 
 """
 Added by: Daniel Han (29/06/2012) 
 """
 class WorkshopEditPage(AdminBase):
 
-	filename="edit.xhtml"
-	postback = ''
-	def __init__(self, player, collection={}):
-		AdminBase.__init__(self, player, collection)
-		self.player = player
-		self.collection = collection
+    filename="edit.xhtml"
+    postback = ''
+    def __init__(self, player, collection={}):
+        AdminBase.__init__(self, player, collection)
+        self.player = player
+        self.collection = collection
     
-	def text_editable(self, request):
-		s = get_template('workshop_editable.inc')	
-		form = request.args
+    def text_editable(self, request):
+        s = get_template('workshop_editable.inc')	
+        form = request.args
 
-		if 'action' in form:
-			content = form.get('action',[''])[0]
+        if 'action' in form:
+            content = form.get('action',[''])[0]
 
-			if content == 'Default':
-				s = get_template('workshop_editable.default')
-				print 'error'
-		
-		return s
+            if content == 'Default':
+                s = get_template('workshop_editable.default')
+                print 'error'
 
-	def render_GET(self, request):
-		return AdminBase.render_GET(self, request)
+        return s
 
-	def render_POST(self, request):
-		"""Save changes and create new state"""
-		form = request.args
-		if 'action' in form:		
-			content = form["action"][0]
-			if content == 'Submit':
-				if 'editor' in form:
-					content = form["editor"][0]
-					f = open(os.path.join(config.TEMPLATE_DIR, 'workshop_editable.inc'), 'w')
-					f.write(content)
-					f.close()
-					self.postback = "Successfully Saved"
-		return AdminBase.render_POST(self, request)
+    def render_GET(self, request):
+        return AdminBase.render_GET(self, request)
+
+    def render_POST(self, request):
+        """Save changes and create new state"""
+        form = request.args
+        if 'action' in form:		
+            content = form["action"][0]
+            if content == 'Submit':
+                if 'editor' in form:
+                    content = form["editor"][0]
+                    f = open(os.path.join(config.TEMPLATE_DIR, 'workshop_editable.inc'), 'w')
+                    f.write(content)
+                    f.close()
+                    self.postback = "Successfully Saved"
+        return AdminBase.render_POST(self, request)
 
 
 """
@@ -441,86 +441,85 @@ Added by: Daniel Han (11/09/2012)
 """
 class StagesEditPage(AdminBase):
 
-	filename="edit.xhtml"
-	postback = ''
-	def __init__(self, player, collection={}):
-		AdminBase.__init__(self, player, collection)
-		self.player = player
-		self.collection = collection
+    filename="edit.xhtml"
+    postback = ''
+    def __init__(self, player, collection={}):
+        AdminBase.__init__(self, player, collection)
+        self.player = player
+        self.collection = collection
     
-	def text_editable(self, request):
-		s = get_template('stages_editable.inc')	
-		form = request.args
+    def text_editable(self, request):
+        s = get_template('stages_editable.inc')	
+        form = request.args
 
-		if 'action' in form:
-			content = form.get('action',[''])[0]
+        if 'action' in form:
+            content = form.get('action',[''])[0]
 
-			if content == 'Default':
-				s = get_template('stages_editable.default')
-		
-		return s 
+            if content == 'Default':
+                s = get_template('stages_editable.default')
+
+        return s 
         
-	def render_GET(self, request):
-		return AdminBase.render_GET(self, request)
+    def render_GET(self, request):
+        return AdminBase.render_GET(self, request)
 
-	def render_POST(self, request):
-		"""Save changes and create new state"""
-		form = request.args
-		if 'action' in form:		
-			content = form["action"][0]
-			if content == 'Submit':
-				if 'editor' in form:
-					content = form["editor"][0]
-					f = open(os.path.join(config.TEMPLATE_DIR, 'stages_editable.inc'), 'w')
-					f.write(content)
-					f.close()
-					self.postback = "Successfully Saved"
+    def render_POST(self, request):
+        """Save changes and create new state"""
+        form = request.args
+        if 'action' in form:		
+            content = form["action"][0]
+            if content == 'Submit':
+                if 'editor' in form:
+                    content = form["editor"][0]
+                    f = open(os.path.join(config.TEMPLATE_DIR, 'stages_editable.inc'), 'w')
+                    f.write(content)
+                    f.close()
+                    self.postback = "Successfully Saved"
 
-		return AdminBase.render_POST(self, request)
+        return AdminBase.render_POST(self, request)
 
 
-        
 """
 Added by: Daniel Han (11/09/2012) 
 """
 class NonAdminEditPage(AdminBase):
 
-	filename="edit.xhtml"
-	postback = ''
-	def __init__(self, player, collection={}):
-		AdminBase.__init__(self, player, collection)
-		self.player = player
-		self.collection = collection
+    filename="edit.xhtml"
+    postback = ''
+    def __init__(self, player, collection={}):
+        AdminBase.__init__(self, player, collection)
+        self.player = player
+        self.collection = collection
     
-	def text_editable(self, request):
-		s = get_template('nonadmin_editable.inc')	
-		form = request.args
+    def text_editable(self, request):
+        s = get_template('nonadmin_editable.inc')	
+        form = request.args
 
-		if 'action' in form:
-			content = form.get('action',[''])[0]
+        if 'action' in form:
+            content = form.get('action',[''])[0]
 
-			if content == 'Default':
-				s = get_template('nonadmin_editable.default')
-		
-		return s 
+            if content == 'Default':
+                s = get_template('nonadmin_editable.default')
+
+        return s 
         
-	def render_GET(self, request):
-		return AdminBase.render_GET(self, request)
+    def render_GET(self, request):
+        return AdminBase.render_GET(self, request)
 
-	def render_POST(self, request):
-		"""Save changes and create new state"""
-		form = request.args
-		if 'action' in form:		
-			content = form["action"][0]
-			if content == 'Submit':
-				if 'editor' in form:
-					content = form["editor"][0]
-					f = open(os.path.join(config.TEMPLATE_DIR, 'nonadmin_editable.inc'), 'w')
-					f.write(content)
-					f.close()
-					self.postback = "Successfully Saved"
+    def render_POST(self, request):
+        """Save changes and create new state"""
+        form = request.args
+        if 'action' in form:		
+            content = form["action"][0]
+            if content == 'Submit':
+                if 'editor' in form:
+                    content = form["editor"][0]
+                    f = open(os.path.join(config.TEMPLATE_DIR, 'nonadmin_editable.inc'), 'w')
+                    f.write(content)
+                    f.close()
+                    self.postback = "Successfully Saved"
 
-		return AdminBase.render_POST(self, request)
+        return AdminBase.render_POST(self, request)
         
 class AdminWarning(AdminError):
     """A wrapper for errors (warnings)"""
@@ -612,27 +611,27 @@ Added by Daniel Han (03/07/2012)	- To set the session of player
 									- it checks both username:password combination to be more safe.
 """
 class SessionCheckPage(Resource):
-	def __init__(self, collection={}):
-		self.collection = collection
+    def __init__(self, collection={}):
+        self.collection = collection
 
-	def render_POST(self, request):
-		session = request.getSession()
-		userSession = websession.IUserSession(session)
-		username = '_NO_PLAYER_'
-		password = ''
+    def render_POST(self, request):
+        session = request.getSession()
+        userSession = websession.IUserSession(session)
+        username = '_NO_PLAYER_'
+        password = ''
 
-		if 'username' in request.args:
-			username = request.args['username'][0]
+        if 'username' in request.args:
+            username = request.args['username'][0]
 
-		if 'password' in request.args:
-			password = request.args['password'][0]		
+        if 'password' in request.args:
+            password = request.args['password'][0]		
 
-		player = self.collection.getPlayer(username)
-		if player.check_password(password):
-			userSession.value = player
-			return 'Success'
-		else:
-			return 'Failure'
+        player = self.collection.getPlayer(username)
+        if player.check_password(password):
+            userSession.value = player
+            return 'Success'
+        else:
+            return 'Failure'
  
 class SignUpPage(AdminBase):
     
@@ -714,9 +713,9 @@ class StageEditPage(Workshop):
         keys = self.collection.stages.getKeys()
         table = []
         if not self.stage:
-           table.extend('<option value="new_stage" selected="selected">New Stage</option>')
+            table.extend('<option value="new_stage" selected="selected">New Stage</option>')
         else:
-           table.extend('<option value="new_stage">New Stage</option>') 
+            table.extend('<option value="new_stage">New Stage</option>') 
            
         for k in keys:
             current_stage = self.collection.stages.getStage(k)
@@ -732,7 +731,7 @@ class StageEditPage(Workshop):
             table = []
             players = self.stage.get_al_two()
             if not players is None:
-               players.sort()
+                players.sort()
             for p in players:
                 table.extend('<option value="%s">%s</option>' %(p, p))
             return ''.join(table)
@@ -744,7 +743,7 @@ class StageEditPage(Workshop):
             table = []
             players = self.stage.get_al_three()
             if not players is None:
-               players.sort()
+                players.sort()
             for p in players:
                 table.extend('<option value="%s">%s</option>' %(p, p))
             return ''.join(table)
@@ -756,7 +755,7 @@ class StageEditPage(Workshop):
             table = []
             players = self.stage.get_al_one()
             if not players is None:
-               players.sort()
+                players.sort()
             for p in players:
                 table.extend('<option value="%s">%s</option>' %(p, p))
             return ''.join(table)
@@ -837,41 +836,40 @@ class StageEditPage(Workshop):
             self.message+='Cancelled selections. '
             
         ### Modified by Daniel, 27/06/2012
-	    ### 	- added for loop to make multiple selects possible
-	    ##one to two
+        ### 	- added for loop to make multiple selects possible
+        ##one to two
         elif action=='one_to_two':
-             items = request.args.get('cantaccess',[''])
-             for i in range(0, len(items)):
-                 pname = items[i]
-                 if self.stagename and pname:
+            items = request.args.get('cantaccess',[''])
+            for i in range(0, len(items)):
+                pname = items[i]
+                if self.stagename and pname:
                     self.stage.remove_al_three(pname)
                     self.stage.add_al_two(pname)
                     self.message+='Changed rights. '
 
-	
         elif action=='two_to_one':
-             items = request.args.get('canaccess',[''])
-             for i in range(0, len(items)):
-                 pname = items[i]
-                 if self.stagename and pname:
+            items = request.args.get('canaccess',[''])
+            for i in range(0, len(items)):
+                pname = items[i]
+                if self.stagename and pname:
                     self.stage.remove_al_two(pname)
                     self.stage.add_al_three(pname)
                     self.message+='Changed rights. '
 
         elif action=='two_to_three':
-             items = request.args.get('canaccess',[''])
-             for i in range(0, len(items)):
-                 pname = items[i]
-                 if self.stagename and pname:
+            items = request.args.get('canaccess',[''])
+            for i in range(0, len(items)):
+                pname = items[i]
+                if self.stagename and pname:
                     self.stage.remove_al_two(pname)
                     self.stage.add_al_one(pname)
                     self.message+='Changed rights. '
 
         elif action=='three_to_two':
-             items = request.args.get('stageaccess',[''])
-             for i in range(0, len(items)):
-                 pname = items[i]
-                 if self.stagename and pname:
+            items = request.args.get('stageaccess',[''])
+            for i in range(0, len(items)):
+                pname = items[i]
+                if self.stagename and pname:
                     self.stage.remove_al_one(pname)
                     self.stage.add_al_two(pname)
                     self.message+='Changed rights. '
@@ -1439,49 +1437,49 @@ class EditPlayer(AdminBase):
 
         # Check if argument 'page' is valid. otherwise current page = 0
         try:
-             current_page = int(request.args['page'][0])
-             if current_page is None:
+            current_page = int(request.args['page'][0])
+            if current_page is None:
                 current_page = 0
         except:
-             current_page = 0
+            current_page = 0
 
         # Check if there is a search text.
         try:
-             search = request.args['search'][0]
-             if search is None:
+            search = request.args['search'][0]
+            if search is None:
                 search = ''
         except:
-             search = ''
+            search = ''
         
         playerlist = self.collection.html_list(search)
 
         # Total Number of pages
         num_pages = len(playerlist) / user_per_page
         if len(playerlist) % user_per_page != 0:
-           num_pages += 1
+            num_pages += 1
 
 
         table = []
         for num in range(user_per_page * current_page, len(playerlist)):
             p = playerlist[num][1]
             if current_user == user_per_page:
-               break
+                break
             else:
-                 rightslist = [ x for x in ('act', 'admin', 'su', 'unlimited') if p[x]]
-                 userdiv = "<div class='user' id='user_%s' onmouseover='this.className=\"user_over\"' onmouseout='this.className=\"user\"' onclick='playerSelect(\"%s\")' selected=''>" %(p['name'],p['name'])
-                 userdiv += "<table class='user_table'> <tr> <th class='row_header'> Name </th> <td> %s (%s) </td> </tr> " %(p['name'], p['email'])
-                 userdiv += "<tr> <th class='row_header'> Register Date </th> <td> %s </td> </tr> " %(p['reg_date']) 
-                 userdiv += "<tr> <th class='row_header'> Last Login Date </th> <td> %s </td> </tr> " %(p['last_login'])
-                 userdiv += "<tr> <th class='row_header'> User Rights </th> <td> %s </td> </tr> " %(rightslist)
-                 userdiv += "</table> </div>"
-                 table.extend(userdiv)
-                 current_user += 1
+                rightslist = [ x for x in ('act', 'admin', 'su', 'unlimited') if p[x]]
+                userdiv = "<div class='user' id='user_%s' onmouseover='this.className=\"user_over\"' onmouseout='this.className=\"user\"' onclick='playerSelect(\"%s\")' selected=''>" %(p['name'],p['name'])
+                userdiv += "<table class='user_table'> <tr> <th class='row_header'> Name </th> <td> %s (%s) </td> </tr> " %(p['name'], p['email'])
+                userdiv += "<tr> <th class='row_header'> Register Date </th> <td> %s </td> </tr> " %(p['reg_date']) 
+                userdiv += "<tr> <th class='row_header'> Last Login Date </th> <td> %s </td> </tr> " %(p['last_login'])
+                userdiv += "<tr> <th class='row_header'> User Rights </th> <td> %s </td> </tr> " %(rightslist)
+                userdiv += "</table> </div>"
+                table.extend(userdiv)
+                current_user += 1
 
         # Show Page links
         table.extend('<div id="pageLink">')
         for i in range(0, num_pages):
-           strLink = ' <a href="?page=%s&search=%s">%s</a> &nbsp; ' %(i, search , i + 1)
-           table.extend(strLink)
+            strLink = ' <a href="?page=%s&search=%s">%s</a> &nbsp; ' %(i, search , i + 1)
+            table.extend(strLink)
         table.extend('</div>')
         return ''.join(table)
 
@@ -1489,11 +1487,11 @@ class EditPlayer(AdminBase):
     # Added by Daniel (03-07-2012)
     def text_search_string(self, request):
         try:
-             search = request.args['search'][0]
-             if search is None:
+            search = request.args['search'][0]
+            if search is None:
                 search = ''
         except:
-             search = ''
+            search = ''
         
         return search
 
@@ -1798,9 +1796,9 @@ class AudioThing(Template):
         # PQ & EB Added 13.10.07
         # Chooses a thumbnail image depending on type (adds to audios.xml file)
         if type == 'sfx':
-             thumbnail = config.SFX_ICON_IMAGE_URL
+            thumbnail = config.SFX_ICON_IMAGE_URL
         else:
-             thumbnail = config.MUSIC_ICON_IMAGE_URL
+            thumbnail = config.MUSIC_ICON_IMAGE_URL
 
         media_dict = self.mediatypes[mediatype]
         log.msg('about to add audio')

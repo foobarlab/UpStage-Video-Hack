@@ -200,7 +200,7 @@ class _Stage(object):
                 self.debugMessages = debugScreenNodes[0].firstChild().toxml()
 
         except Exception, e:
-			print "Couldn't set splash message for '%s', because '%s'" % (self, e)
+            print "Couldn't set splash message for '%s', because '%s'" % (self, e)
         for d in (self.props, self.avatars, self.backdrops, self.audios):
             nodes = tree.getElementsByTagName(d.typename)
             log.msg("Loading media for type %s" %(d.typename))
@@ -248,7 +248,7 @@ class _Stage(object):
         if self.backgroundPropBgColour != self.__class__.backgroundPropBgColour:
             bgPropBgColour = tree.add('bgPropBgColour')
             bgPropBgColour.text(self.backgroundPropBgColour)
-       #Aaron 12 Nov 08 Save the Debug screen Value
+        #Aaron 12 Nov 08 Save the Debug screen Value
         if self.debugMessages != self.__class__.debugMessages:
             showDebugScreen = tree.add('showDebugScreen')
             showDebugScreen.text(self.debugMessages)
@@ -593,11 +593,11 @@ class _Stage(object):
     
     def get_player_access(self, person):
         if person in self.access_level_one:
-           return "Full Access Player"
+            return "Full Access Player"
         elif person in self.access_level_two:
-           return "Player"
+            return "Player"
         else:
-           return "Audience"
+            return "Audience"
 
            
            
@@ -614,8 +614,8 @@ class _Stage(object):
         if text:
             log.msg("text before conversion" + text)
             
-	    text = text.replace('&lt;', '<')# Vishaal 15/10/09 Changed to ACTUALLY fix < > chatlog problem
-            text = text.replace('&gt;', '>')# Vishaal 15/10/09 Changed to ACTUALLY fix < > chatlog problem
+            text = text.replace('&lt;', '<') # Vishaal 15/10/09 Changed to ACTUALLY fix < > chatlog problem
+            text = text.replace('&gt;', '>') # Vishaal 15/10/09 Changed to ACTUALLY fix < > chatlog problem
 
             log.msg("text after conversion" + text)
             self.chat.append(text)
@@ -685,10 +685,10 @@ class _Stage(object):
             self.player_sockets[client.ID] = client
         if client.player.can_su():
             self.admin_sockets[client.ID] = client
-		
-        #Added checking if user is player access or admin access
-        #admin needs to be added to player as well.
-		#Disabling it for now.
+
+        # Added checking if user is player access or admin access
+        # admin needs to be added to player as well.
+        # Disabling it for now.
         """
         if client.player.name in self.access_level_two or client.player.name in self.access_level_one:
             self.player_sockets[client.ID] = client
@@ -794,11 +794,11 @@ class _Stage(object):
     def applause(self, applause):
         self.broadcast('APPLAUSE', applause=applause)    
         
-     # LK: Added to display volunteer button added on 31/10/07
+    # LK: Added to display volunteer button added on 31/10/07
     def volunteerbtn(self, volunteer):
         self.broadcast('VOLUNTEER', volunteer=volunteer)
         
-     # LK: Added to display volunteer button added on 31/10/07
+    # LK: Added to display volunteer button added on 31/10/07
     def novolunteerbtn(self, novolunteer):
         self.broadcast('NO_VOLUNTEER', novolunteer=novolunteer)
 
@@ -815,7 +815,7 @@ class _Stage(object):
         if avatar is not None:
             # save and update the message to broadcast
             #log_msg = '&lt;%s&gt; %s' %(avatar.name, shout)
-		    #Vishaal 15/10/09 Changed to below so can Differentiate from normal text
+            #Vishaal 15/10/09 Changed to below so can Differentiate from normal text
             log_msg = '<%s>! %s' %(avatar.name, shout)
             
             self.broadcast('SHOUT', ID=avatar.ID, shout=shout)

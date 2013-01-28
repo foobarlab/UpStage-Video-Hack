@@ -248,7 +248,7 @@ class PlayerDict(Xml2Dict):
 
         for k, v in self.items():
             if search in k:
-               players.append([k.lower(), {'name': k,
+                players.append([k.lower(), {'name': k,
                                 'checked': '',
                                 'act': v.can_act() and 'act' or '',
                                 'admin': v.can_admin() and 'admin' or '',
@@ -393,13 +393,13 @@ class PlayerDict(Xml2Dict):
     def update_last_login(self, player):
         
         try:
-             new_date = datetime.today().strftime("%A, %d. %B %Y %I:%M%p")
-             log.msg("Name: " + player.name)
-             self[player.name].set_lastlogin(new_date)
-             self.save()  
-             log.msg("-----------------------Setting Last login date --------------------------")
+            new_date = datetime.today().strftime("%A, %d. %B %Y %I:%M%p")
+            log.msg("Name: " + player.name)
+            self[player.name].set_lastlogin(new_date)
+            self.save()  
+            log.msg("-----------------------Setting Last login date --------------------------")
         except:
-               return ''
+            return ''
     """
     
     (19/05/11) Mohammed and Heath - Checks what changes are made before actually saving the changes

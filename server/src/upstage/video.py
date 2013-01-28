@@ -42,8 +42,8 @@ class VideoDirectory(Resource):
         log.msg("Starting VideoDirectory %s" % id(self))
         Resource.__init__(self)
         self.path = path
-        self.children = {} # holds a VideoFile object for each requested subpath
-                           # NB:they should expire from disuse
+        self.children = {}  # holds a VideoFile object for each requested subpath
+                            # NB:they should expire from disuse
 
     def deferable(self, path):
         """is the file deferable? depends on the extension"""

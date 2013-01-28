@@ -212,7 +212,7 @@ class MediaDict(Xml2Dict):
         ThingDict being the relevant collection for this type of
         media, for the corresponding stage.
         """
-         #more direct ways possible -- using a ThingDict 'element'
+        #more direct ways possible -- using a ThingDict 'element'
         collections = []
       
         # Alan (28.01.08) - Enables the sorting of stage collection alphabetically.
