@@ -493,7 +493,7 @@ class SwfConversionWrapper(Resource):
     
         #natasha add to dictionary
         thumbnail_full = os.path.join(config.THUMBNAILS_DIR, thumbnail)
-        pin, pipe = os.popen4(('file', '-ib', thumbnail_full))
+        _pin, pipe = os.popen4(('file', '-ib', thumbnail_full))
         mimetype = pipe.read()
         pipe.close()
         now = datetime.datetime.now() # AC () - Unformated datetime value
@@ -546,7 +546,7 @@ class SwfConversionWrapper(Resource):
         """checking whether a name exists in any media collection"""
         #XXX should perhaps reindex by name.
         log.msg('checking whether "%s" is a used name' %name)
-        for k, d in self.mediatypes.items():
+        for _k, d in self.mediatypes.items():
             for x in d.values():
                 if name == x.name:
                     return True

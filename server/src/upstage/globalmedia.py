@@ -219,7 +219,7 @@ class MediaDict(Xml2Dict):
         stages = self.stages.items() 
         stages.sort()
     
-        for k, s in stages: # Alan (28.01.08) - Added k for key as a set is return from items().
+        for _k, s in stages: # Alan (28.01.08) - Added k for key as a set is return from items().
             for c in s.avatars, s.props, s.backdrops, s.audios: # PQ: Added s.audios 13.10.07
                 if c.globalmedia is self:
                     collections.append((c, s))
@@ -374,7 +374,7 @@ class MediaDict(Xml2Dict):
             things.sort()
             
         collections = self._get_stage_collections() 
-        for n, d in things:
+        for _n, d in things:
             hits = [s.ID for c, s in collections if d['media'] in c.media]
             if hits:
                 links = ', '.join(['%s' % (ID) for ID in hits])

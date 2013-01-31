@@ -1053,7 +1053,7 @@ class StageDict(Xml2Dict):
         tmpl = get_template(include)
         
         if '%(pcount)s' in tmpl and '%(acount)s' and '%(access)s' in tmpl:
-            for n, d in things:
+            for _n, d in things:
                 d['pcount'] = len(self[d['ID']].player_sockets) or ''
                 d['acount'] = (len(self[d['ID']].sockets) - len(self[d['ID']].player_sockets)) or ''
                 d['access'] = self[d['ID']].get_player_access(playerName)

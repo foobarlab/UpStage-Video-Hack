@@ -43,7 +43,7 @@ def new_filename(length=8, suffix='.swf', prefix=''):
     """Make up a short uniquish file name"""
     letters = 'abcdefghijklmnopqrstuvwxyz0123456789_ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     return  "%s%s%s" %(prefix, 
-                       ''.join([choice(letters) for x in range(length)]), 
+                       ''.join([choice(letters) for _x in range(length)]), 
                        suffix)
 
 
