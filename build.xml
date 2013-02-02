@@ -287,7 +287,7 @@ January 2013 	Adopted for UpStage 2.4.2 video hack
 				frame="1"
 				msvc="true"
 				trace="${upstage.mtasc.debug}"
-				verbose="${upstage.debug}"
+				verbose="${upstage.verbose}"
 				mtasc="${upstage.mtasc.executable}" />
 		<!-- prepare files for swfmill -->
 		<copy todir="${upstage.dir.tmp}">
@@ -301,7 +301,7 @@ January 2013 	Adopted for UpStage 2.4.2 video hack
 			 dest="${upstage.swfmill.dest}"
 			 swfmill="${upstage.swfmill.executable}"
 			 quiet="false"
-		     verbose="${upstage.debug}" />
+		     verbose="${upstage.verbose}" />
 	</target>
 	
 	<!-- compiles the python part -->
@@ -578,11 +578,53 @@ January 2013 	Adopted for UpStage 2.4.2 video hack
 		
 	</target>
 	
-	<!--
-	<target name="ftp-upload" description="upload for deployment via FTP" depends="">
-		<echo message="TBD: Not supported yet." />
+	<!-- deploy via FTP -->
+	<target name="deploy-ftp" description="upload for deployment via FTP" depends="build">
+		
+		<echo message="Deploying via FTP to ftp://${upstage.deploy.ftp.username}:${upstage.deploy.ftp.password}@${upstage.deploy.ftp.server}:21/${upstage.deploy.ftp.remotedir} ..." />
+		
+		<!-- make remote dir if not existant -->
+		<!--
+		<ftp verbose="${upstage.verbose}"
+			passive="${upstage.deploy.ftp.passive}"
+			action="mkdir"
+			server="${upstage.deploy.ftp.server}"
+		    userid="${upstage.deploy.ftp.username}"
+		    password="${upstage.deploy.ftp.password}"
+		    remotedir="${upstage.deploy.ftp.remotedir}" />
+		-->
+		
+		<!-- copy files -->
+		<ftp verbose="${upstage.verbose}"
+			passive="${upstage.deploy.ftp.passive}"
+			server="${upstage.deploy.ftp.server}"
+		    userid="${upstage.deploy.ftp.username}"
+		    password="${upstage.deploy.ftp.password}"
+			depends="true"
+			newer="true"
+			remotedir="${upstage.deploy.ftp.remotedir}">
+		    <fileset dir="${basedir}/${upstage.dir.build}">
+		    	<exclude name="**/*.pyc" />
+		    	<exclude name="**/*.pyo" />
+		    	<include name="**/*" />
+			</fileset>
+		</ftp>
+				
+		<!-- set permissions to 755 -->
+		<ftp verbose="${upstage.verbose}"
+			passive="${upstage.deploy.ftp.passive}"
+			server="${upstage.deploy.ftp.server}"
+			action="chmod"
+			chmod="755"
+			remotedir="${upstage.deploy.ftp.remotedir}"
+			userid="${upstage.deploy.ftp.username}"
+			password="${upstage.deploy.ftp.password}">
+			<fileset>
+				<include name="${upstage.deploy.ftp.remotedir}/**/*"/>
+			 </fileset>
+		</ftp>
+		
 	</target>
-	-->
 	
 	<!-- default task to print some help -->
 	<target name="help" description="show some help for usage">
