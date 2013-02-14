@@ -211,7 +211,7 @@ class _SpeechFile(Resource):
     def broken_render(self, result, request):
         log.msg("callback broke!, with result:'%s', request: '%s' " %(result, request))
         e = error.NoResource('not there').render(request)
-        request.setResponseCode(self, 404)
+        request.setResponseCode(404)
         request.write(e)
         request.finish()
         return result
