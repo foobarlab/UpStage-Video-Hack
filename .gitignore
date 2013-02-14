@@ -4,3 +4,5 @@
 /server/src/html/swf/*.swf
 /temp
 /build
+
+/server/src/upstage/*.pyc
