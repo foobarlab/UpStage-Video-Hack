@@ -513,7 +513,7 @@ January 2013 	Adopted for UpStage 2.4.2 video hack
 			<isset property="isWindows" />
 		</condition>
 		<!-- TODO replace executable from properties (without path) -->
-		<condition property="exec.argline-python-kill" value="/c taskkill.exe /F /IM python2.6.exe">
+		<condition property="exec.argline-python-kill" value="/c taskkill.exe /F /IM python2.7.exe">
 			<isset property="isWindows" />
 		</condition>
 		

@@ -14,7 +14,7 @@ from distutils.version import LooseVersion #, StrictVersion
 
 py_version = sys.version_info
 py_version_string = str(py_version[0]) + "." + str(py_version[1]) + "." + str(py_version[2])
-print "=> Installed python version is %s. (2.6 recommended)" % py_version_string
+print "=> Installed python version is %s. (2.7 recommended)" % py_version_string
 #print sys.version
 if not (py_version >= _MIN_PYTHON and py_version < _MAX_PYTHON):
     print "Build requires that python be in version better or equal", \
