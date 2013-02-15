@@ -4,6 +4,8 @@
 </avatar>
 <avatar media="video/video.jpg" voice="default" name="videoav" showname="show">
 </avatar>
+<avatar media="thumb/stream.jpg" voice="default" name="streamav" showname="show">
+</avatar>
 <access_one>
 </access_one>
 <access_two>
