@@ -1,5 +1,9 @@
-<stage active="active" created="" name="test" id="test">
+<stage active="active" created="2013-02-15 05:25:59.203976" name="test" id="test">
 <showdebugscreen>DEBUG</showdebugscreen>
+<avatar media="YIhIQrqE.swf" voice="default" name="avatar" showname="show">
+</avatar>
+<avatar media="video/video.jpg" voice="default" name="videoav" showname="show">
+</avatar>
 <access_one>
 </access_one>
 <access_two>
