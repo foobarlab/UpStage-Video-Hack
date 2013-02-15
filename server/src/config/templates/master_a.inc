@@ -4,7 +4,7 @@
 
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=8, IE=9, IE=10" />
-<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 
 <title>UpStage</title>
 
