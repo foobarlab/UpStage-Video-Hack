@@ -620,7 +620,9 @@ January 2013 	Adopted for UpStage 2.4.2 video hack
 			userid="${upstage.deploy.ftp.username}"
 			password="${upstage.deploy.ftp.password}">
 			<fileset>
-				<include name="${upstage.deploy.ftp.remotedir}/**/*"/>
+				<!-- <include name="**/*.py"/> -->
+				<include name="**/*.sh"/>
+				<include name="**/*.command"/>
 			 </fileset>
 		</ftp>
 		
