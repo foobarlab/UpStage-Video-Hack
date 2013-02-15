@@ -1,9 +1,8 @@
-
-<!--[if lte IE 8]> <!DOCTYPE html> <html class="ie8" xmlns="http://www.w3.org/1999/xhtml"> <![endif]--> 
-<!--[if !IE]><!--><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml"> <!--<![endif]--> 
-
+<!DOCTYPE html>
+<!--[if lte IE 8 ]><html class="ie8"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html> <!--<![endif]-->
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=8, IE=9, IE=10" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 
 <title>UpStage</title>
