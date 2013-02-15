@@ -9,7 +9,7 @@
 <title>UpStage</title>
 
 <link rel="stylesheet" type="text/css" href="/style/main.css" />
-<link rel="shortcut icon" href="favicon.ico" />
+<link rel="shortcut icon" href="/style/favicon.ico" />
 
 <script language="javascript" type="text/javascript" src="/masterpage.js"></script>
 <script language="javascript" type="text/javascript" src="/client.js"></script>
