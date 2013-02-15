@@ -1,8 +1,7 @@
+/server/src/upstage/*.pyc
 /client/bin/*.swf
 /client/doc/*.*
 /client/doc/
 /server/src/html/swf/*.swf
 /temp
 /build
-
-/server/src/upstage/*.pyc
