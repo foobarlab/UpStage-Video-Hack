@@ -1884,8 +1884,8 @@ class VideoThing(Template):
         if self.assignedstages is not None:
             log.msg('Video: Assigned stages is not none')
             for x in self.assignedstages:
-                log.msg("Audio file with stage: %s" % x)
-                self.media_dict.set_media_stage(x, mp3name)
+                log.msg("Video file with stage: %s" % x)
+                self.media_dict.set_media_stage(x, name)
 
         return Template.render(self, request)
     

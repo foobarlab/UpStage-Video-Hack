@@ -362,7 +362,7 @@ class VideoThing(Resource):
         # Natasha - Assign video to stages
         if self.assignedstages is not None:
             for x in self.assignedstages:
-                self.media_dict.set_media_stage(x, mp3name)
+                self.media_dict.set_media_stage(x, name)
         
         self.refresh(request)        
     
