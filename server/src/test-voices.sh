@@ -1,7 +1,7 @@
 #!/bin/bash
 # script to test all configured voices
 # writes result to a temporary folder
- 
+
 TEXT='hello world'
 TMPDIR=`mktemp -d`
 for i in $( ls config/voices); do
