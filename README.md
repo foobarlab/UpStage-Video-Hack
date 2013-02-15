@@ -5,7 +5,7 @@ UpStage
 
 This repository holds a modified version of the <a href="http://sourceforge.net/apps/trac/upstage/browser/branches/2.4.2">official UpStage 2.4.2 branch</a>.
 
-The intention is to extend UpStage with streaming (audio, video) functionality incooperating the <a href="http://www.red5.org/">Red5</a> streaming server.
+The intention is to extend UpStage with streaming (audio, video) functionality incooperating the <a href="http://www.red5.org/">Red5</a> streaming server. Read more on the <a href="http://upstage.org.nz/blog/?p=5256">UpStage Blog Announcement</a>.
 
 ## Licence
 
