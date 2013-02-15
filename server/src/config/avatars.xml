@@ -3,6 +3,6 @@
 </avatar>
 <avatar file="YIhIQrqE.swf" name="avatar" tags="" url="/media/YIhIQrqE.swf" dateTime="" uploader="admin" voice="default" thumbnail="">
 </avatar>
-<avatar medium="stream" name="streamoav" tags="" url="rtmp://localhost/oflaDemo" dateTime="" uploader="admin" voice="default" thumbnail="/media/thumb/stream.jpg">
+<avatar medium="stream" name="streamav" tags="" url="rtmp://localhost/oflaDemo" dateTime="" uploader="admin" voice="default" thumbnail="/media/thumb/stream.jpg">
 </avatar>
 </avatars>
