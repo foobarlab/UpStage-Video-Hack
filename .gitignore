@@ -6,3 +6,4 @@
 /server/src/html/swf/*.swf
 /temp
 /build
+/red5/client/bin/*.swf
