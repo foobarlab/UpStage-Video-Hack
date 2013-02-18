@@ -18,6 +18,7 @@
 */
 
 // ** AUTO-UI IMPORT STATEMENTS **
+import com.blitzagency.Main;
 import org.red5.utils.Connector;
 
 // ** END AUTO-UI IMPORT STATEMENTS **
@@ -47,8 +48,16 @@ class upstage.subscriber.Main extends MovieClip {
 // ** END AUTO-UI ELEMENTS **
 
 // Initialization:
-	private function Main() {XrayLoader.loadConnector("xray.swf");}
-	private function onLoad():Void { configUI(); }
+	private function Main() {
+		//XrayLoader.loadConnector("xray.swf");
+		XrayLoader.addEventListener(XrayLoader.LOADCOMPLETE, this, "xrayLoadComplete");
+		XrayLoader.addEventListener(XrayLoader.LOADERROR, this, "xrayLoadError");
+		XrayLoader.loadConnector("xrayConnector_1.6.3.swf");
+	}
+	
+	private function onLoad():Void {
+		configUI();
+	}
 
 // Public Methods:
 

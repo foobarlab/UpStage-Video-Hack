@@ -4,14 +4,14 @@
   <output>
     <movie outputType="Application" />
     <movie input="" />
-    <movie path="bin\red5classes.swf" />
+    <movie path="bin\classes.swf" />
     <movie fps="30" />
-    <movie width="320" />
-    <movie height="200" />
+    <movie width="360" />
+    <movie height="240" />
     <movie version="8" />
     <movie minorVersion="0" />
     <movie platform="Flash Player" />
-    <movie background="#000000" />
+    <movie background="#C0C0C0" />
     <movie preferredSDK="Mtasc 1.14;1.14;" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
@@ -50,7 +50,9 @@
   <!-- Executed before build -->
   <preBuildCommand />
   <!-- Executed after build -->
-  <postBuildCommand alwaysRun="True" />
+  <postBuildCommand alwaysRun="True">"$(ProjectDir)\prepare.bat"
+"$(ToolsDir)\swfmill\swfmill.exe" simple "$(ProjectDir)\src\application.xml" "$(OutputDir)\stream.swf"
+"$(ProjectDir)\copyoutput.bat"</postBuildCommand>
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="True" />

@@ -19,6 +19,7 @@
 
 // ** AUTO-UI IMPORT STATEMENTS **
 import org.red5.utils.Connector;
+import upstage.subscriber.Main2;
 // ** END AUTO-UI IMPORT STATEMENTS **
 import com.neoarchaic.ui.Tooltip;
 import org.red5.net.Stream;
