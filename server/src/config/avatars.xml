@@ -1,8 +1,8 @@
 <avatars>
-<avatar file="video/video.jpg" medium="video" name="videoav" tags="" url="/media/video/video.jpg" dateTime="" uploader="admin" voice="default" thumbnail="/media/video-still/video.jpg">
+<avatar file="video/video.jpg" medium="video" name="video_av" tags="" url="/media/video/video.jpg" dateTime="" uploader="admin" voice="default" thumbnail="/media/video-still/video.jpg">
 </avatar>
-<avatar file="YIhIQrqE.swf" name="avatar" tags="" url="/media/YIhIQrqE.swf" dateTime="" uploader="admin" voice="default" thumbnail="">
+<avatar file="YIhIQrqE.swf" medium="" name="av" tags="" url="/media/YIhIQrqE.swf" dateTime="" uploader="admin" voice="default" thumbnail="">
 </avatar>
-<avatar file="stream.swf" medium="stream" name="streamav" tags="" url="rtmp://localhost/oflaDemo" dateTime="" uploader="admin" voice="default" thumbnail="/media/thumb/stream.jpg">
+<avatar file="stream.swf" medium="" name="stream_av" tags="" url="/media/stream.swf" dateTime="" uploader="admin" voice="default" thumbnail="">
 </avatar>
 </avatars>
