@@ -1,100 +1,84 @@
 /**
-* RED5 Open Source Flash Server - http://www.osflash.org/red5
-*
-* Copyright (c) 2006-2009 by respective authors (see below). All rights reserved.
-*
-* This library is free software; you can redistribute it and/or modify it under the
-* terms of the GNU Lesser General Public License as published by the Free Software
-* Foundation; either version 2.1 of the License, or (at your option) any later
-* version.
-*
-* This library is distributed in the hope that it will be useful, but WITHOUT ANY
-* WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-* PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public License along
-* with this library; if not, write to the Free Software Foundation, Inc.,
-* 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-*/
-
-// ** AUTO-UI IMPORT STATEMENTS **
-import com.blitzagency.Main;
-import org.red5.utils.Connector;
-
-// ** END AUTO-UI IMPORT STATEMENTS **
-import com.neoarchaic.ui.Tooltip;
-import org.red5.net.Stream;
-//import org.red5.utils.Delegate;
-import com.blitzagency.xray.util.XrayLoader;
-
+ * Simple class to subscribe to a video stream unsing red5
+ */
 class upstage.subscriber.Main extends MovieClip {
 
-// Constants:
+	// Constants:
 	public static var CLASS_REF = upstage.subscriber.Main;
 	public static var LINKAGE_ID:String = "upstage.subscriber.Main";
 
-// Public Properties:
-
-// Private Properties:
-	private var stream:Stream;
+	// Public Properties:
+	
+	// Private Properties:
 	private var cam:Camera;
+	private var mic:Microphone;
+	private var nc:NetConnection;
+	
+	// UI Elements:
 
-// UI Elements:
-
-// ** AUTO-UI ELEMENTS **
-	private var connector:Connector;
-	private var publish_video:Video;
-
-// ** END AUTO-UI ELEMENTS **
-
-// Initialization:
+	private var video:Video;
+	private var stream:NetStream;
+	
+	// Initialization:
 	private function Main() {
 		//XrayLoader.loadConnector("xray.swf");
-		XrayLoader.addEventListener(XrayLoader.LOADCOMPLETE, this, "xrayLoadComplete");
-		XrayLoader.addEventListener(XrayLoader.LOADERROR, this, "xrayLoadError");
-		XrayLoader.loadConnector("xrayConnector_1.6.3.swf");
+		//XrayLoader.addEventListener(XrayLoader.LOADCOMPLETE, this, "xrayLoadComplete");
+		//XrayLoader.addEventListener(XrayLoader.LOADERROR, this, "xrayLoadError");
+		//XrayLoader.loadConnector("xrayConnector_1.6.3.swf");
 	}
 	
 	private function onLoad():Void {
 		configUI();
 	}
 
-// Public Methods:
+	// Public Methods:
 
-// Semi-Private Methods:
+	// Semi-Private Methods:
 
-// Private Methods:
+	// Private Methods:
 
 	private function configUI():Void 
-	{
-		// setup the tooltip defaults
-		Tooltip.options = {size:10, font:"_sans", corner:0};
-		
+	{		
+		/*
 		// setup cam
 		cam = Camera.get();
+		cam.setMode(320, 240, 15); 
+		cam.setQuality(0, 80);
+		*/
 		
-		// get notified of connection changes
-		connector.addEventListener("connectionChange", this);
+		/*
+		// setup microphone
+		mic = Microphone.get();
+		mic.setUseEchoSuppression(true);
+		mic.setSilenceLevel(0);
+		*/
+
+		/*
+		// for broadcaster:
+		var display = _root.attachMovie("VideoDisplay", "display", _root.getNextHighestDepth());
+		display.video._width = 320;
+		display.video._height = 240;
+		display.video.attachVideo(cam);
+		*/
 		
-		// set the uri
-		Connector.red5URI = "rtmp://localhost/oflaDemo";
+		// for subscriber:
 		
-		// initialize the connector
-		connector.configUI();	
+		//_root.attachMovie("Video", "stopVideo", _root.getNextHighestDepth());
+				
+		//var display = _root.attachMovie("VideoDisplay", "display", _root.getNextHighestDepth());
+		var display = _root.attachMovie("VideoDisplay", "display", 101);
+		display.video._width = 320;
+		display.video._height = 240;
+		//display.video.attachVideo(cam);
+		
+		// create connection to red5
+		nc = new NetConnection();
+		nc.connect("rtmp://localhost/oflaDemo");
+		stream = new NetStream(nc);
+		stream.setBufferTime(0.1);
+		
+		stream.play("red5StreamDemo", -1);
+		display.video.attachVideo(stream);
 	}
 
-	private function connectionChange(evtObj:Object):Void
-	{		
-		
-		if(evtObj.connected) 
-		{
-			// setup stream
-			// XXX: odd hack needed for flashIDE.
-			var conn = evtObj.connection; 
-			var x = new Stream(conn);
-			stream = x;
-			stream.play("red5StreamDemo", -1);
-			publish_video.attachVideo(stream);
-		}
-	}
 }

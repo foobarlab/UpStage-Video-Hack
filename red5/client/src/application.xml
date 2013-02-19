@@ -29,28 +29,55 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 -->
-<movie width="360" height="240" framerate="30" version="8">
+
+<!-- see also: http://osflash.org/doku.php?id=swfmill -->
+
+<movie width="320" height="240" framerate="30" version="8" local-access="network">
+
+  <FileAttributes hasMetaData="0" useNetwork="1" />
+  
+  <background color="#C0C0C0"/>
 	
   <!-- 
        The Application classes have been compiled into the classes.swf file, 
        which we import as an asset. 
     -->
   <clip import="temp/classes.swf" />
+
+  <!-- import image to be displayed in the video frame -->
+  <clip id="video" import="src/filmstrip.png"/>
   
   <frame>
-    
+
     <!-- 
 	 The Library contains the Application movieclip, linked to the 
 	 Application class
       -->
     <library>
-      <clip id="App" class="App" />
+		<clip id="VideoDisplay" name="VideoDisplay">
+			<frame>
+				<video id="VideoSurface" width="320" height="240" />
+				<place id="VideoSurface" name="video" depth="101" />
+			</frame>
+		</clip>
+
+		<!--
+	    <clip id="Video">
+		    <frame name="stopVideo">
+				<place id="video" depth="1"/>
+				<stop/>
+			</frame>
+			<frame name="playVideo" depth="1"/>
+		</clip>
+		-->
+		
+	    <clip id="Main" class="upstage.subscriber.Main" />
     </library>
     <!-- 
 	 Place an instance of the Application form on Stage to instantiate 
 	 it and provide the Natural Entry Point. 
       -->
-    <place id="App" name="app" x="0" y="0" depth="0" />
+    <place id="Main" name="app" x="0" y="0" depth="100" />
 
   </frame>
 </movie>

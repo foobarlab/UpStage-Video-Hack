@@ -6,12 +6,12 @@
     <movie input="" />
     <movie path="bin\classes.swf" />
     <movie fps="30" />
-    <movie width="360" />
+    <movie width="320" />
     <movie height="240" />
     <movie version="8" />
     <movie minorVersion="0" />
     <movie platform="Flash Player" />
-    <movie background="#C0C0C0" />
+    <movie background="#FFFFFF" />
     <movie preferredSDK="Mtasc 1.14;1.14;" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
@@ -56,7 +56,8 @@
   <!-- Other project options -->
   <options>
     <option showHiddenPaths="True" />
-    <option testMovie="Default" />
+    <option testMovie="Custom" />
+    <option testMovieCommand="run.bat" />
   </options>
   <!-- Plugin storage -->
   <storage />
