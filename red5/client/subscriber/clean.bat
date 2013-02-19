@@ -1,10 +1,11 @@
 @echo off
 echo Cleaning temp ...
 del /Q "temp"
-rem echo Cleaning swfs ...
-rem del /Q "bin\classes.swf"
-rem del /Q "bin\client.swf"
-rem del /Q "..\server\src\html\swf\client.swf"
+echo Cleaning swfs ...
+del /Q "bin\classes.swf"
+del /Q "bin\stream.swf"
+del /Q "html\stream.swf"
+rem del /Q "..\..\..\server\src\html\media\stream.swf"
 rem echo Cleaning docs ...
 rem rmdir /S /Q "doc\upstage"
 rem rmdir /S /Q "doc\index-files"

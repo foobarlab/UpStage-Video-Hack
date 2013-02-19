@@ -1,3 +1,4 @@
 @echo off
-rem copy /Y "bin\client.swf" "..\server\src\html\swf\"
+copy /Y "bin\stream.swf" "html"
+copy /Y "bin\stream.swf" "..\..\..\server\src\html\media\"
 rmdir /S /Q "temp"
