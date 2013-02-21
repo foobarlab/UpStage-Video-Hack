@@ -21,7 +21,7 @@ The Video Hack makes use of <a href="http://www.red5.org">Red5</a>, which needs 
 
 ## Installation
 
-Please follow the instructions in <a href="http://www.foobarlab.net/blog/2012/11/installing-upstage-from-scratch">Installing UpStage from scratch</a> (although this refers to version 2.1 which is outdated now, but should give some hints).
+See INSTALL.txt for further instructions what software you need and how to compile and deploy the code.
 
 ## Development
 

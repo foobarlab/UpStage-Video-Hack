@@ -1,0 +1,77 @@
+UpStage 2.4.2 Video Hack
+=========================
+
+Requirements:
+-------------
+
+Required:
+
+- Python 2.x (2.7 recommended)
+- Twisted 8.x (8.2.0 recommended)
+- zope.interface from PyPi
+- SWFTools
+- Java 6 SDK
+- Red5 (1.0.1 recommended)
+
+For compiling code:
+
+- Apache Ant
+- MTASC
+- swfmill
+
+Optional for Text-to-Speech:
+
+- Festival 2.1
+- eSpeak
+- Rsynth
+- MBROLA
+
+Code ist tested on Linux, but may also work on Windows (using Cygwin)
+and Mac OSX (using Fink/MacPorts).
+
+
+Compilation:
+------------
+
+Use ant to compile, run and deploy the code.
+You get a list of available options by issueing the following command
+in the root directory:
+
+ant -p
+
+Please customize proper settings in 'build.properties' to suit your needs.
+
+
+Installation
+------------
+
+Use
+
+ant build
+
+to create a deployable directory 'build' in the root folder. Link or copy
+this folder to a location of your choice.
+
+
+Running the server
+------------------
+
+Either use
+
+ant run
+
+or run the file 'upstage-server.sh' from inside the 'build' folder
+(respectively 'upstage-server.bat' on Windows or 'upstage-server.command'
+on Mac).
+
+
+
+Further help
+------------
+
+Please sneak a peek into an older tutorial here:
+http://www.foobarlab.net/blog/2012/11/installing-upstage-from-scratch
+
+For assistance please contact the developers via the developer mailinglist:
+https://lists.sourceforge.net/lists/listinfo/upstage-list
+
