@@ -289,12 +289,13 @@ class upstage.util.Construct
      */
     static function deepTrace(obj : Object) : Void
     {
-        trace("deep tracing " + obj + " -------------------");
+        trace("deep tracing " + obj.toString() + " -------------------");
         for (var x : Object in obj)
-            {
-                trace(x + ': ' + obj[x]);
-            }
+		{
+        	trace(x.toString() + ': ' + obj[x].toString());
+		}
         trace("----------------------------------");
+        
     };
 
     /**
