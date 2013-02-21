@@ -266,7 +266,7 @@ class _UpstageSocket(LineOnlyReceiver):
         except (ValueError, KeyError):
             mode = None
 
-        if config.VERBOSE or mode not in self.unlogged_receive_modes:
+        if ((config.VERBOSE) or (mode not in self.unlogged_receive_modes)):
             log.msg('RECEIVED: %s' % data)
 
         handler = self.modes.get(mode, self.unknown_mode)
