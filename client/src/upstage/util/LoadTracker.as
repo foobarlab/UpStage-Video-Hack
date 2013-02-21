@@ -103,7 +103,7 @@ class upstage.util.LoadTracker
     {
 //        trace('**getting LoadListener. expected is ' + LoadTracker.expected);
         return {
-            onLoadError: function(mc :Object, error :String){
+            onLoadError: function(mc :Object, error :String):Void {
                 LoadTracker.failed++;
                 LoadTracker.redraw();
                 LoadTracker.modelSplash.fail();    
@@ -111,8 +111,9 @@ class upstage.util.LoadTracker
 //                trace('**Didnt load: ' + mc._name + ' because: ' + error);
                 Construct.deepTrace(LoadTracker);
             },
-            onLoadComplete: function(mc :Object){
+            onLoadComplete: function(mc :Object, httpStatus:Number):Void {
                 //trace('Load Complete is done...');
+                trace('Load complete with http status ' + httpStatus);
                 LoadTracker.finished++;
                 ExternalInterface.call("stage_loading("+Math.floor(LoadTracker.finished*100/LoadTracker.expected) +")");
                 LoadTracker.redraw();
@@ -120,7 +121,7 @@ class upstage.util.LoadTracker
                 if(LoadTracker.finished == LoadTracker.expected)
                     LoadTracker.modelSplash.complete();
             },
-            onLoadStart: function(mc :Object){
+            onLoadStart: function(mc :Object):Void {
                 //trace('Load started...');
 //                trace('**started ' + mc._name );
                 LoadTracker.started++;
@@ -130,24 +131,19 @@ class upstage.util.LoadTracker
     }
 
 
-    /**@brief Load an image, keeping track of its progress if its
-     * listener object is null, or derived from
-     * LoadTracker.getLoadListener()
+    /**     * @brief Load an image/swf, keeping track of its progress if its listener object is null, or derived from LoadTracker.getLoadListener()
+     * @see http://livedocs.adobe.com/flash/9.0/main/wwhelp/wwhimpl/common/html/wwhelp.htm?context=LiveDocs_Parts&file=00002104.html
      */
-
-
-    static function loadImage(mc: MovieClip, url : String, 
-                              layer: Number, listener: Object) :MovieClip
+    static function loadImage(mc: MovieClip, url : String, layer: Number, listener: Object) : MovieClip
     {
-        if (!listener){
-            listener = LoadTracker.getLoadListener();
-        }
+        if (!listener){ listener = LoadTracker.getLoadListener(); }
         
-        var layerName:String = "layer" + layer;
-        var img:MovieClip = mc.createEmptyMovieClip(layerName, layer);
-        var loadWatcher  :MovieClipLoader = new MovieClipLoader();
-	loadWatcher.addListener(listener);
+        var layerName : String = "layer" + layer;
+        var img : MovieClip = mc.createEmptyMovieClip(layerName, layer);
+        var loadWatcher : MovieClipLoader = new MovieClipLoader();
+		loadWatcher.addListener(listener);
         loadWatcher.loadClip(url, img);
         return img;
     }
+    
 };
