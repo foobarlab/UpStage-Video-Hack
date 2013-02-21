@@ -31,8 +31,7 @@ Changelog:
 
 from os.path import join as _join
 
-#debug volume
-VERBOSE = 0
+VERBOSE = True
 
 POLICY_FILE = "<?xml version=\"1.0\"?> \
                <cross-domain-policy> \
