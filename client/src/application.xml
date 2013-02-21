@@ -29,7 +29,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 -->
-<movie width="320" height="200" framerate="30" version="8">
+<movie width="320" height="200" framerate="31" version="8" local-access="network">
+
+  <FileAttributes hasMetaData="0" useNetwork="1" />
+  
+  <background color="#C0C0C0"/>
 	
   <!-- 
        The Application classes have been compiled into the classes.swf file, 
