@@ -1,5 +1,5 @@
 <stage active="active" created="2013-02-15 05:25:59.203976" name="test" id="test">
-<!-- <showdebugscreen>DEBUG</showdebugscreen> -->
+<showdebugscreen>DEBUG</showdebugscreen>
 <avatar media="YIhIQrqE.swf" voice="default" name="av" showname="show">
 </avatar>
 <avatar media="video/video.jpg" voice="default" name="video_av" showname="show">
