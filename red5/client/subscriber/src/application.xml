@@ -32,7 +32,7 @@
 
 <!-- see also: http://osflash.org/doku.php?id=swfmill -->
 
-<movie width="320" height="240" framerate="30" version="8" local-access="network">
+<movie width="320" height="240" framerate="31" version="8" local-access="network">
 
   <FileAttributes hasMetaData="0" useNetwork="1" />
   
@@ -43,9 +43,14 @@
        which we import as an asset. 
     -->
   <clip import="temp/classes.swf" />
-
-  <!-- import image to be displayed in the video frame -->
-  <clip id="video" import="src/filmstrip.png"/>
+  
+  <!-- import logger -->
+  <!--
+  <clip import="lib/xrayConnector_1.6.3.swf" />
+  -->
+  
+  <!-- import default image -->
+  <clip id="VideoImage" import="src/filmstrip.png"/>
   
   <frame>
 
@@ -54,13 +59,14 @@
 	 Application class
       -->
     <library>
-		<clip id="VideoDisplay" name="VideoDisplay">
+		<clip id="VideoDisplay" name="display">
 			<frame>
 				<video id="VideoSurface" width="320" height="240" />
-				<place id="VideoSurface" name="video" depth="101" />
+				<place id="VideoSurface" name="video" />
 			</frame>
 		</clip>
-
+		
+		<!-- TODO adopt pattern? -->
 		<!--
 	    <clip id="Video">
 		    <frame name="stopVideo">
@@ -73,11 +79,15 @@
 		
 	    <clip id="Main" class="upstage.subscriber.Main" />
     </library>
+	
     <!-- 
 	 Place an instance of the Application form on Stage to instantiate 
 	 it and provide the Natural Entry Point. 
       -->
-    <place id="Main" name="app" x="0" y="0" depth="100" />
-
+    <place id="Main" name="streamSubscriber" x="0" y="0" depth="0" />
+	
+	<!-- Place image to be displayed by default -->
+	<place id="VideoImage" name="image" x="0" y="0" depth="1" />
+	
   </frame>
 </movie>

@@ -1,34 +1,56 @@
 /**
- * Simple class to subscribe to a video stream unsing red5
+ * Simple class to subscribe to a video stream using red5
  */
 class upstage.subscriber.Main extends MovieClip {
 
 	// Constants:
-	public static var CLASS_REF = upstage.subscriber.Main;
+	public static var CLASS_REF:Object = upstage.subscriber.Main;
 	public static var LINKAGE_ID:String = "upstage.subscriber.Main";
+	
+	//private static var symbolName:String = "__Packages.upstage.subscriber.Main";
+    //private static var symbolLinked:Boolean = Object.registerClass(symbolName, Main);
+	
+	public static var CONNECTION_STRING:String = "rtmp://localhost/oflaDemo";
+	public static var STREAM_NAME:String = "red5StreamDemo";
+	public static var BUFFER_TIME:Number = 0.1;
 
 	// Public Properties:
 	
 	// Private Properties:
-	private var cam:Camera;
-	private var mic:Microphone;
-	private var nc:NetConnection;
+	
+	// hardware access
+	//private var cam:Camera;
+	//private var mic:Microphone;
+	
+	// network
+	private var connection:NetConnection;
+	private var stream:NetStream;
 	
 	// UI Elements:
-
+	private var image:MovieClip;
+	private var display:MovieClip;
 	private var video:Video;
-	private var stream:NetStream;
 	
 	// Initialization:
 	private function Main() {
-		//XrayLoader.loadConnector("xray.swf");
-		//XrayLoader.addEventListener(XrayLoader.LOADCOMPLETE, this, "xrayLoadComplete");
-		//XrayLoader.addEventListener(XrayLoader.LOADERROR, this, "xrayLoadError");
-		//XrayLoader.loadConnector("xrayConnector_1.6.3.swf");
+		
+		trace("Constructor called");
+	
+		// set security for cross-domain scripting (not needed yet)
+    	// see: http://livedocs.adobe.com/flash/9.0/main/wwhelp/wwhimpl/common/html/wwhelp.htm?context=LiveDocs_Parts&file=00002104.html
+		//System.security.allowDomain("*");
+		
+		// TODO initialize logger
 	}
 	
 	private function onLoad():Void {
+		
+		trace("onLoad called");
+		
+		// local testing (not called in UpStage)
 		configUI();
+		startStream();
+		
 	}
 
 	// Public Methods:
@@ -39,6 +61,8 @@ class upstage.subscriber.Main extends MovieClip {
 
 	private function configUI():Void 
 	{		
+		trace("configUI called");
+		
 		/*
 		// setup cam
 		cam = Camera.get();
@@ -62,23 +86,54 @@ class upstage.subscriber.Main extends MovieClip {
 		*/
 		
 		// for subscriber:
-		
-		//_root.attachMovie("Video", "stopVideo", _root.getNextHighestDepth());
-				
-		//var display = _root.attachMovie("VideoDisplay", "display", _root.getNextHighestDepth());
-		var display = _root.attachMovie("VideoDisplay", "display", 101);
-		display.video._width = 320;
-		display.video._height = 240;
-		//display.video.attachVideo(cam);
-		
-		// create connection to red5
-		nc = new NetConnection();
-		nc.connect("rtmp://localhost/oflaDemo");
-		stream = new NetStream(nc);
-		stream.setBufferTime(0.1);
-		
-		stream.play("red5StreamDemo", -1);
-		display.video.attachVideo(stream);
+		this.display = _root.attachMovie("VideoDisplay", "display", _root.getNextHighestDepth(), {_x:0, _y:0, _width:320, _height:240});
+	
 	}
 
+	public function startStream():Void
+	{
+		trace("startStream called");
+		
+		// create connection to red5
+		connection = new NetConnection();
+		connection.connect(null);
+		connection.connect(CONNECTION_STRING);
+		
+		// connect stream
+		stream = new NetStream(connection);
+		stream.setBufferTime(BUFFER_TIME);
+		stream.play(STREAM_NAME, -1);
+		
+		this.video = this.display.video;
+		//this.video.clear();
+		
+		// attach video to display
+		this.video.attachVideo(stream);
+	
+		// automatically set proper size
+		stream.onStatus = function(infoObj:Object) {
+			switch (infoObj.code) {
+				case 'NetStream.Play.Start':
+				case 'NetStream.Buffer.Full':
+					this.video._width = this.video.width;
+					this.video._height = this.video.height;
+					break;
+			}
+		}
+		
+		this.display._visible = true;
+		this.image._visible = false;	// FIXME not working in UpStage
+	}
+	
+	public function stopStream() : Void
+	{
+		trace("stopStream called");
+		
+		stream.close();
+		if(connection.isConnected) connection.close();
+		this.video.clear();
+		
+		this.display._visible = false;
+		this.image._visible = true;		// FIXME not working in UpStage
+	}
 }

@@ -5,13 +5,13 @@
     <movie outputType="Application" />
     <movie input="" />
     <movie path="bin\classes.swf" />
-    <movie fps="30" />
+    <movie fps="31" />
     <movie width="320" />
     <movie height="240" />
     <movie version="8" />
     <movie minorVersion="0" />
     <movie platform="Flash Player" />
-    <movie background="#FFFFFF" />
+    <movie background="#FF0000" />
     <movie preferredSDK="Mtasc 1.14;1.14;" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
@@ -24,9 +24,9 @@
     <option strict="False" />
     <option infer="True" />
     <option useMain="False" />
-    <option useMX="True" />
+    <option useMX="False" />
     <option warnUnusedImports="True" />
-    <option traceMode="Disable" />
+    <option traceMode="FlashViewer" />
     <option traceFunction="" />
     <option libraryPrefix="" />
     <option excludeFile="" />
