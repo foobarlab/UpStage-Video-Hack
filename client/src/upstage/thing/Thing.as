@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 import upstage.util.Icon;
 import upstage.Client;
 import upstage.util.LoadTracker;
-//import upstage.util.Construct;
+import upstage.util.Construct;
 
 
 /**
@@ -48,6 +48,8 @@ class upstage.thing.Thing extends MovieClip
     private var videoWait     :Number;
     private var videoSocketID :String;
     private var videoFailures :Number;
+    
+    // TODO add some stream properties (flag playing, etc...)
 
     public var  image        :MovieClip; //points to the currently showing image
     private var baseLayer    :Number;
@@ -80,10 +82,15 @@ class upstage.thing.Thing extends MovieClip
         thing.url = url;// + '?r=' + Math.random(); //cache busting.
         thing.name = name;
         thing.medium = medium;
-        if (medium == 'video')
+        if (medium == 'video') {
             thing.videoInit();
+        }
+        if (medium == 'stream') {
+        	thing.streamInit();
+        }
         thing.thumbnail = thumbnail;
         thing._visible = false;
+        
         return thing;
     }
 
@@ -96,6 +103,9 @@ class upstage.thing.Thing extends MovieClip
 
     function loadImage(url : String, layer: Number, listener: Object, is_prop: Boolean)
     {
+    	
+    	trace("load image from url " + url);
+    	
         //Heath Behrens / Vibhu Patel 08/08/2011 - Added to check if current thing is a prop and then scale accordingly. 
         if(is_prop && !listener){
             var thing: Thing = this;
@@ -129,6 +139,19 @@ class upstage.thing.Thing extends MovieClip
     public function finalise(){
         //trace("finalising thing " + this.name);
     }
+
+	function streamInit() {
+		trace("in Thing.streamInit");
+		
+		// TODO prepare stream
+		
+		// FIXME not working because swf has not been loaded yet!
+		// ensure presence of display mc:
+		// attach mc for video display (configured in application.xml of stream.swf) 
+		//this.image.streamSubscriber.display = this.image.streamSubscriber.attachMovie(
+		//	"VideoDisplay", "display", this.image.streamSubscriber.getNextHighestDepth(), {_x:0, _y:0, _width:320, _height:240});
+		
+	}
 
     function videoInit(){
         trace("in Thing.videoInit");
@@ -226,15 +249,33 @@ class upstage.thing.Thing extends MovieClip
     function show() :Void
     {
         trace("thing.show with" + this);
-        if (this.medium == 'video'){
+        
+        if (this.medium == 'video') {
             trace("setting video interval " +  Client.VIDEO_INTERVAL_TARGET);
             if (this.videoInterval == 0){
                 this.videoInterval = setInterval(Thing.reloadVideo, Client.VIDEO_INTERVAL_TARGET, this);
             }
         }
-
+        
         this._alpha = 100;
         this._visible = true;
+        
+        if (this.medium == 'stream') {
+        	trace("showing video stream");
+        	
+        	// TODO start video
+        	
+        	//this.image.streamSubscriber.configUI();
+        	
+        	// FIXME create display on init?
+        	this.image.streamSubscriber.display = this.image.streamSubscriber.attachMovie(
+        		"VideoDisplay", "display", this.image.streamSubscriber.getNextHighestDepth(), {_x:0, _y:0, _width:320, _height:240});
+        	
+        	Construct.deepTrace(this.image.streamSubscriber);
+        
+        	this.image.streamSubscriber.startStream();
+        
+        }
     };
 
 	/**
@@ -248,6 +289,16 @@ class upstage.thing.Thing extends MovieClip
             clearInterval(this.videoInterval);
             this.videoInterval = 0;
         }
+        
+        if (this.medium == 'stream') {
+        	trace("hiding video stream");
+        	
+        	// TODO stop video	
+        	
+        	this.image.streamSubscriber.stopStream();
+        	
+        }
+        
         this._visible = false;
         //Construct.deepTrace(this);
     };
