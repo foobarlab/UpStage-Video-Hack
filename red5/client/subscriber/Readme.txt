@@ -1,3 +1,5 @@
+THIS IS OBSOLETE NOW - WILL BE DELETED SOON
+
 Compile:
 
 Compile using FlashDevelop IDE.
