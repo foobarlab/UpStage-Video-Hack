@@ -27,7 +27,7 @@ class upstage.subscriber.Main extends MovieClip {
 	private var stream:NetStream;
 	
 	// UI Elements:
-	private var image:MovieClip;
+	//private var image:MovieClip;
 	private var display:MovieClip;
 	private var video:Video;
 	
@@ -122,7 +122,7 @@ class upstage.subscriber.Main extends MovieClip {
 		}
 		
 		this.display._visible = true;
-		this.image._visible = false;	// FIXME not working in UpStage
+		//this.image._visible = false;	// FIXME not working in UpStage
 	}
 	
 	public function stopStream() : Void
@@ -134,6 +134,6 @@ class upstage.subscriber.Main extends MovieClip {
 		this.video.clear();
 		
 		this.display._visible = false;
-		this.image._visible = true;		// FIXME not working in UpStage
+		//this.image._visible = true;		// FIXME not working in UpStage
 	}
 }

@@ -48,8 +48,6 @@ class upstage.thing.Thing extends MovieClip
     private var videoWait     :Number;
     private var videoSocketID :String;
     private var videoFailures :Number;
-    
-    // TODO add some stream properties (flag playing, etc...)
 
     public var  image        :MovieClip; //points to the currently showing image
     private var baseLayer    :Number;
@@ -60,6 +58,15 @@ class upstage.thing.Thing extends MovieClip
     private static var symbolLinked:Boolean = Object.registerClass(symbolName, Thing);
 
     static var LAYER: Number = Client.L_PROPS_IMG;
+
+	// streaming properties
+	public var videodisplay : MovieClip;	// videodisplay (carries video)
+    public var video : Video;				// video itself
+	public var streamName : String;			// name of the stream, e.g. 'red5StreamDemo'
+	public var streamServer : String;		// url of the stream server, e.g. 'rtmp://localhost/oflaDemo'
+	private var connection:NetConnection;	// the network connection to the stream server
+	private var stream:NetStream;			// the network stream of a connected stream server
+
 
     /**
      * @brief Constructor
@@ -82,6 +89,12 @@ class upstage.thing.Thing extends MovieClip
         thing.url = url;// + '?r=' + Math.random(); //cache busting.
         thing.name = name;
         thing.medium = medium;
+        
+        // TODO collect streaming params, hardcoded for now:
+        // TODO initialize in constructor
+        thing.streamName = 'red5StreamDemo';
+        thing.streamServer = 'rtmp://localhost/oflaDemo'
+        
         if (medium == 'video') {
             thing.videoInit();
         }
@@ -145,12 +158,18 @@ class upstage.thing.Thing extends MovieClip
 		
 		// TODO prepare stream
 		
+		// OBSOLETE:
 		// FIXME not working because swf has not been loaded yet!
 		// ensure presence of display mc:
 		// attach mc for video display (configured in application.xml of stream.swf) 
 		//this.image.streamSubscriber.display = this.image.streamSubscriber.attachMovie(
 		//	"VideoDisplay", "display", this.image.streamSubscriber.getNextHighestDepth(), {_x:0, _y:0, _width:320, _height:240});
 		
+		// attach videodisplay from library
+		// TODO can this be attached before image is loaded?
+		//this.videodisplay = _root.attachMovie("VideoDisplay", "videodisplay", _root.getNextHighestDepth(), {_x:0, _y:0, _width:120, _height:90});
+
+		// TODO should connection to the streaming server be already established here? does it work with multiple stream avatars then?
 	}
 
     function videoInit(){
@@ -216,7 +235,7 @@ class upstage.thing.Thing extends MovieClip
     static function reloadVideo(thing: Thing) : Void
     {
         //XXX neeed to check that nothing is loading. if it is don't restart.
-        //this is becuase this function gets called by setting visibility, not only
+        //this is because this function gets called by setting visibility, not only
         //from videoLoaded
         trace("in reload video with thing " + thing);
         clearInterval(thing.videoInterval);
@@ -265,6 +284,8 @@ class upstage.thing.Thing extends MovieClip
         	
         	// TODO start video
         	
+        	// OBSOLETE:
+        	/*
         	//this.image.streamSubscriber.configUI();
         	
         	// FIXME create display on init?
@@ -274,7 +295,44 @@ class upstage.thing.Thing extends MovieClip
         	Construct.deepTrace(this.image.streamSubscriber);
         
         	this.image.streamSubscriber.startStream();
-        
+        	*/
+        	
+        	// TODO resize videodisplay (steps 320x240 => 160x120 => 120x90 => 80x60)
+        	
+        	//this.image = this.videodisplay;
+        	//this.videodisplay = _root.attachMovie("VideoDisplay", "videodisplay", _root.getNextHighestDepth(), {_x:0, _y:0, _width:120, _height:90});
+        	this.videodisplay = this.attachMovie("VideoDisplay", "videodisplay", _root.getNextHighestDepth(), {_x:0, _y:0, _width:120, _height:90});
+        	
+        	// hide avatar image (frame)
+        	//this.image._visible = false;
+        	
+        	// create connection to server
+			connection = new NetConnection();
+			connection.connect(null);
+			connection.connect(this.streamServer);
+			
+			// connect stream
+			stream = new NetStream(connection);
+			stream.setBufferTime(0.1);
+			stream.play(this.streamName, -1);
+			
+			this.video = this.videodisplay.video;
+			//this.video.clear();
+			
+			// attach video to display
+			this.video.attachVideo(stream);
+		
+			// automatically set proper size
+			stream.onStatus = function(infoObj:Object) {
+				switch (infoObj.code) {
+					case 'NetStream.Play.Start':
+					case 'NetStream.Buffer.Full':
+						this.video._width = this.video.width;
+						this.video._height = this.video.height;
+						break;
+				}
+			}
+        	
         }
     };
 
@@ -295,7 +353,15 @@ class upstage.thing.Thing extends MovieClip
         	
         	// TODO stop video	
         	
-        	this.image.streamSubscriber.stopStream();
+        	// OBSOLETE:
+        	//this.image.streamSubscriber.stopStream();
+        	
+        	// TODO show image again
+        	//this.image._visible = true;
+        	
+        	stream.close();
+			if(connection.isConnected) connection.close();
+			this.video.clear();
         	
         }
         

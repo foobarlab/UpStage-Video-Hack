@@ -50,7 +50,9 @@
   -->
   
   <!-- import default image -->
+  <!--
   <clip id="VideoImage" import="src/filmstrip.png"/>
+  -->
   
   <frame>
 
@@ -61,7 +63,7 @@
     <library>
 		<clip id="VideoDisplay" name="display">
 			<frame>
-				<video id="VideoSurface" width="320" height="240" />
+				<video id="VideoSurface" width="160" height="120" />
 				<place id="VideoSurface" name="video" />
 			</frame>
 		</clip>
@@ -87,7 +89,9 @@
     <place id="Main" name="streamSubscriber" x="0" y="0" depth="0" />
 	
 	<!-- Place image to be displayed by default -->
+	<!--
 	<place id="VideoImage" name="image" x="0" y="0" depth="1" />
+	-->
 	
   </frame>
 </movie>

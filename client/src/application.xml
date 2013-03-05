@@ -48,7 +48,18 @@
 	 Application class
       -->
     <library>
-      <clip id="App" class="App" />
+    	
+    	<!-- library object for video display -->
+    	<clip id="VideoDisplay" name="videodisplay">
+			<frame>
+				<video id="VideoSurface" width="320" height="240" />
+				<place id="VideoSurface" name="video" />
+			</frame>
+		</clip>
+		
+    	<!-- the main app -->
+      	<clip id="App" class="App" />
+      	
     </library>
     <!-- 
 	 Place an instance of the Application form on Stage to instantiate 

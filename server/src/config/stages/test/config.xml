@@ -2,9 +2,15 @@
 <showdebugscreen>DEBUG</showdebugscreen>
 <avatar media="YIhIQrqE.swf" voice="default" name="av" showname="show">
 </avatar>
+<!-- 
 <avatar media="video/video.jpg" voice="default" name="video_av" showname="show">
 </avatar>
+-->
+<!-- 
 <avatar media="stream.swf" voice="default" name="stream_av" showname="show">
+</avatar>
+-->
+<avatar media="JbrX5b7b.swf" voice="" name="megaphone" showname="show">
 </avatar>
 <access_one>
 </access_one>

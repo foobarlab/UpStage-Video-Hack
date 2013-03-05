@@ -107,7 +107,7 @@ class upstage.view.AvScrollBarItem extends MovieClip
 
         this.btn = LoadTracker.loadImage(this, this.thumbUrl, this.thumbLayer, listener);
         trace('');
-        trace('Thumburl: ' + this.thumbUrl + 'thumblayer: ' + this.thumbLayer);
+        trace('Thumburl: ' + this.thumbUrl + ' thumblayer: ' + this.thumbLayer);
         trace('');
     }
 
