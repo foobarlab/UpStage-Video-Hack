@@ -73,13 +73,6 @@ class upstage.thing.Thing extends MovieClip
      * @brief Constructor
      * Initialise the object
      */
-
-	/*
-    static public function factory(ID :Number, name :String, url :String, baseName: String,
-                                   thumbnail :String, medium :String, layer: Number,
-                                   parent:MovieClip, Class: Object) : Thing
-    */
-    // added stream params
     static public function factory(ID :Number, name :String, url :String, baseName: String,
                                    thumbnail :String, medium :String, layer: Number,
                                    parent:MovieClip, Class: Object, streamserver :String, streamname :String) : Thing
@@ -96,13 +89,6 @@ class upstage.thing.Thing extends MovieClip
         thing.url = url;// + '?r=' + Math.random(); //cache busting.
         thing.name = name;
         thing.medium = medium;
-        
-        /*
-        // TODO collect streaming params & initialize in constructor, hardcoded for now
-        thing.streamName = 'red5StreamDemo';
-        thing.streamServer = 'rtmp://localhost/oflaDemo';
-        */
-        
         thing.streamName = streamname;
         thing.streamServer = streamserver;
         

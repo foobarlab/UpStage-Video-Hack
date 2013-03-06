@@ -153,9 +153,6 @@ class _UpstageSocket(LineOnlyReceiver):
 
             # send the avatars, props and backgrounds for preloading
             for av in avatars:
-                
-                # TODO add stream params
-                
                 self.send('LOAD_AV',
                           ID        = av.ID,
                           url       = av.media.url,
@@ -165,11 +162,8 @@ class _UpstageSocket(LineOnlyReceiver):
                           name      = av.name,                          
                           medium    = av.media.medium,
                           frame     = av.frame,
-                          
-                          # add stream parameters
                           streamserver = av.media.streamserver,
                           streamname = av.media.streamname,
-                          
                           )
                 
             # AC - 10/06/08 - Seperated backdrop and prop loop as 

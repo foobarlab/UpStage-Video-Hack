@@ -498,24 +498,12 @@ class upstage.model.ModelAvatars implements TransportInterface
     /**
      * @brief Server wants model to load an avatar
      */
-     /*
-    function GET_LOAD_AV(ID :Number, name :String, url :String,
-                         thumbnail :String, allowed :Boolean, available :Boolean,
-                         medium :String, frame: Number)
-    */
-    // added stream params
     function GET_LOAD_AV(ID :Number, name :String, url :String,
                          thumbnail :String, allowed :Boolean, available :Boolean,
                          medium :String, frame: Number, streamserver :String, streamname :String)
     {
     	var av :Avatar;
 
-        /*
-        av = Avatar.factory(stage, ID, name, url, thumbnail,
-                            medium, this.avScrollBar, available, frame);
-        */
-        
-        // added stream params
         av = Avatar.factory(stage, ID, name, url, thumbnail,
                             medium, this.avScrollBar, available, frame, streamserver, streamname);
 

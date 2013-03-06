@@ -100,8 +100,8 @@ class _MediaFile(object):
         self.tags = kwargs.pop('tags', '')#Karena, Corey, Heath
         
         # add stream parameters
-        self.streamserver = kwargs.pop('streamserver',None) # TODO set empty string or None?
-        self.streamname = kwargs.pop('streamname',None) # TODO set empty string or None?
+        self.streamserver = kwargs.pop('streamserver',None)
+        self.streamname = kwargs.pop('streamname',None)
         
         if kwargs:
             log.msg('left over arguments in _MediaFile', kwargs)
@@ -147,11 +147,8 @@ class MediaDict(Xml2Dict):
                         uploader=node.getAttribute('uploader') or '', # AC - Adds uploader field to dictionary.
                         dateTime=node.getAttribute('dateTime') or '', # AC - Adds dateTime field to dictionary.
                         tags=node.getAttribute('tags') or '', # Heath, Corey, Karena 24/08/2011 - added tags to mediafile
-                        
-                        # add stream parameters
                         streamname=node.getAttribute('streamname') or '',
                         streamserver=node.getAttribute('streamserver') or '',
-                        
                         )           
         dict.__setitem__(self, f, av)
 
@@ -163,11 +160,7 @@ class MediaDict(Xml2Dict):
         #log.msg('should be writing element! %s: %s : %s :%s'%(root,av,dir(mf), self.element))
         #attr['file']=av
         
-        # AC (29.09.07) - Added uploader and datetime fields in XML media item files.
-        #node = root.add(self.element, file=mf.file, url=mf.url, name=mf.name,
-        #                thumbnail=mf.thumbnail, uploader=mf.uploader, dateTime=mf.dateTime, tags=mf.tags)
-        
-        # added stream parameters
+        # TODO writing stream parameters needs testing
         
         node = root.add(self.element, file=mf.file, url=mf.url, name=mf.name,
                         thumbnail=mf.thumbnail, uploader=mf.uploader, dateTime=mf.dateTime, tags=mf.tags,
