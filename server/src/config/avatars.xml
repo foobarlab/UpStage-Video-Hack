@@ -1,7 +1,11 @@
 <avatars>
 <avatar file="video/video.jpg" medium="video" name="video_av" tags="" url="/media/video/video.jpg" dateTime="" uploader="admin" voice="default" thumbnail="/media/video-still/video.jpg">
 </avatar>
+<!-- 
 <avatar file="YIhIQrqE.swf" medium="" name="av" tags="" url="/media/YIhIQrqE.swf" dateTime="" uploader="admin" voice="default" thumbnail="">
+</avatar>
+-->
+<avatar file="YIhIQrqE.swf" medium="stream" name="av" tags="" url="/media/YIhIQrqE.swf" streamserver="rtmp://localhost/oflaDemo" streamname="av" dateTime="" uploader="admin" voice="default" thumbnail="">
 </avatar>
 <!-- 
 <avatar file="stream.swf" medium="stream" name="stream_av" tags="" url="/media/stream.swf" dateTime="" uploader="admin" voice="default" thumbnail="/media/thumb/filmstrip.png">
