@@ -319,20 +319,27 @@ class upstage.thing.Thing extends MovieClip
 				// handle events
 				switch (infoObj.code) {
 					
-					case 'NetStream.Play.PublishNotify':
-					case 'NetStream.Play.Start':
+					// TODO still needs more testing: switching resolution, publish/unpublish, etc.
+					
+					//case 'NetStream.Play.PublishNotify':
+					//case 'NetStream.Play.Start':
 					case 'NetStream.Buffer.Full':
-						// TODO resize avatar layer properly (video size might be 0x0! => default to standard size)
+						// resize avatar layer properly (video width or height might be 0! => revert to default)
 						trace('current video size is ' + thing.video.width + 'x' + thing.video.height);
-						thing.video._width = thing.video.width;
-						thing.video._height = thing.video.height;
+						if(thing.video.width == 0 || thing.video.height == 0) {
+							thing.video._width = Client.STREAM_DEFAULT_WIDTH;
+							thing.video._height = Client.STREAM_DEFAULT_HEIGHT;
+						} else {
+							thing.video._width = thing.video.width;
+							thing.video._height = thing.video.height;	
+						}
 						thing.videodisplay._visible = true;
 						//thing.image._visible = false;		// TODO hide overlay image?
 						break;
 					
 					case 'NetStream.Play.UnpublishNotify':
 					case 'NetStream.Play.Stop':
-					case 'NetStream.Buffer.Empty':
+					//case 'NetStream.Buffer.Empty':
 						// clear the stream
 						trace('clearing stream');
 						thing.video.clear();

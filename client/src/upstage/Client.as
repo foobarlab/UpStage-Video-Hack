@@ -229,6 +229,8 @@ class upstage.Client
     public static var VIDEO_MAX_FAILURES    :Number = 10;   // this many consequtive 404s before quitting
     
     public static var STREAM_BUFFER_TIME	:Number = 0.1;	// for streaming audio/video (see: http://docs.brajeshwar.com/as2/NetStream.html#bufferTime)
+	public static var STREAM_DEFAULT_WIDTH	:Number = 320;
+	public static var STREAM_DEFAULT_HEIGHT	:Number = 240;
 
     public static var BUBBLE_SOLID_T        :Number = 1800; //how long before bubble starts to fade
     public static var SCROLL_REPEAT         :Number = 120;
