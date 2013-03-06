@@ -41,6 +41,12 @@
     -->
   <clip import="temp/classes.swf" />
   
+  <!-- transparent image for video overlay -->
+  <clip id="VideoImage" import="temp/transparent_320x240.png" />
+  <!-- 
+  <clip id="VideoImage" import="temp/transparent_640x480.png" />
+  -->
+  
   <frame>
     
     <!-- 
@@ -48,6 +54,13 @@
 	 Application class
       -->
     <library>
+    
+    	<!-- library object for video overlay (transparent image) -->
+    	<clip id="VideoOverlay" name="videooverlay">
+    		<frame>
+    			<place id="VideoImage" name="image" x="0" y="0" />
+    		</frame>
+    	</clip>
     	
     	<!-- library object for video display -->
     	<clip id="VideoDisplay" name="videodisplay">

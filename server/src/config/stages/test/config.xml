@@ -10,8 +10,13 @@
 <avatar media="stream.swf" voice="default" name="stream_av" showname="show">
 </avatar>
 -->
+<!-- 
 <avatar media="JbrX5b7b.swf" voice="" name="megaphone" showname="show">
 </avatar>
+-->
+<avatar media="transparent_320x240.png" voice="" name="stream_av" showname="show">
+</avatar>
+
 <access_one>
 </access_one>
 <access_two>
