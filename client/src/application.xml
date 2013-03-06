@@ -41,6 +41,7 @@
     -->
   <clip import="temp/classes.swf" />
   
+  <!-- TODO check if needed as default fallback -->
   <!-- transparent image for video overlay -->
   <clip id="VideoImage" import="temp/transparent_320x240.png" />
   <!-- 
@@ -55,6 +56,7 @@
       -->
     <library>
     
+    	<!-- TODO check if needed as default fallback -->
     	<!-- library object for video overlay (transparent image) -->
     	<clip id="VideoOverlay" name="videooverlay">
     		<frame>
