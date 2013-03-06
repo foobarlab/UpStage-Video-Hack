@@ -77,16 +77,30 @@ class upstage.thing.Avatar extends Thing
      * @brief factory.  This function gives you the object.
      */
   
+  	/*
     public static function factory(parent: MovieClip, ID :Number, name :String, url :String,
                                    thumbnail :String, medium :String,
                                    scrollBar: AvScrollBar, available:Boolean, frame: Number):Avatar
+    */
+    // added stream params
+    public static function factory(parent: MovieClip, ID :Number, name :String, url :String,
+                                   thumbnail :String, medium :String,
+                                   scrollBar: AvScrollBar, available:Boolean, frame: Number,
+                                   streamserver :String, streamname :String):Avatar
     {
         //trace("Avatar factory");
         var baseLayer:Number = Client.L_AV_IMG -(-ID * Client.AV_IMG_LAYERS); 
     	var baseName: String = 'avwrap_' + ID;
 
+		/*
         var thing: Thing = Thing.factory(ID, name, url, baseName, 
                                          thumbnail, medium, baseLayer, parent, Avatar);    
+        */
+        // added stream params
+        var thing: Thing = Thing.factory(ID, name, url, baseName, 
+                                         thumbnail, medium, baseLayer, parent, Avatar,
+                                         streamserver, streamname);
+        
         var av:Avatar = Avatar(thing);
         //name text field
         av.tfLayer = Client.L_AV_NAME + ID;

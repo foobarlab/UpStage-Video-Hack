@@ -586,11 +586,17 @@ class upstage.Transport extends XMLSocket
      */
     private function LOAD_AV (x :Object) :Void
     {
-        var ID :Number = Number(x.ID);
+    	var ID :Number = Number(x.ID);
         var allowed :Boolean = (x.allowed == 'True');
         var available :Boolean = (x.available == 'True');
+        /*
         this.modelAvatars.GET_LOAD_AV(ID, x.name, x.url, x.thumbnail, allowed,
                                       available, x.medium, x.frame);
+    	*/
+    	
+    	// added stream params
+    	this.modelAvatars.GET_LOAD_AV(ID, x.name, x.url, x.thumbnail, allowed,
+                                      available, x.medium, x.frame, x.streamserver, x.streamname);
     };
 
 

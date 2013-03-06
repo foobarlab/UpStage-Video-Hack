@@ -74,9 +74,15 @@ class upstage.thing.Thing extends MovieClip
      * Initialise the object
      */
 
+	/*
     static public function factory(ID :Number, name :String, url :String, baseName: String,
                                    thumbnail :String, medium :String, layer: Number,
                                    parent:MovieClip, Class: Object) : Thing
+    */
+    // added stream params
+    static public function factory(ID :Number, name :String, url :String, baseName: String,
+                                   thumbnail :String, medium :String, layer: Number,
+                                   parent:MovieClip, Class: Object, streamserver :String, streamname :String) : Thing
     {
         if (!Class || ! Class.symbolName){
             trace("no class in Thing constructor");
@@ -91,9 +97,14 @@ class upstage.thing.Thing extends MovieClip
         thing.name = name;
         thing.medium = medium;
         
+        /*
         // TODO collect streaming params & initialize in constructor, hardcoded for now
         thing.streamName = 'red5StreamDemo';
-        thing.streamServer = 'rtmp://localhost/oflaDemo'
+        thing.streamServer = 'rtmp://localhost/oflaDemo';
+        */
+        
+        thing.streamName = streamname;
+        thing.streamServer = streamserver;
         
         if (medium == 'video') {
             thing.videoInit();
@@ -325,7 +336,7 @@ class upstage.thing.Thing extends MovieClip
 					//case 'NetStream.Play.Start':
 					case 'NetStream.Buffer.Full':
 						// resize avatar layer properly (video width or height might be 0! => revert to default)
-						trace('current video size is ' + thing.video.width + 'x' + thing.video.height);
+						trace('current videostream size is ' + thing.video.width + 'x' + thing.video.height);
 						if(thing.video.width == 0 || thing.video.height == 0) {
 							thing.video._width = Client.STREAM_DEFAULT_WIDTH;
 							thing.video._height = Client.STREAM_DEFAULT_HEIGHT;
@@ -341,7 +352,7 @@ class upstage.thing.Thing extends MovieClip
 					case 'NetStream.Play.Stop':
 					//case 'NetStream.Buffer.Empty':
 						// clear the stream
-						trace('clearing stream');
+						trace('clear stream');
 						thing.video.clear();
 						thing.videodisplay._visible = false;
 						//thing.image._visible = true;		// TODO show overlay image?

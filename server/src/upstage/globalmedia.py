@@ -91,13 +91,18 @@ class _MediaFile(object):
         self._type = kwargs.pop('type', None)
         self.height = kwargs.pop('height', None)
         self.width = kwargs.pop('width', None)
-        self.medium = kwargs.pop('medium', None) #medium - video for video/ None for stills.
+        self.medium = kwargs.pop('medium', None) # medium: 'video' for video, 'stream' for streaming, None for stills.
         self.description = kwargs.pop('description', '') # no form entry for it.
         
         # AC (29.09.07) - 
         self.uploader = kwargs.pop('uploader', '') # user name of uploader.
         self.dateTime = kwargs.pop('dateTime', '') # Date and time of upload.
         self.tags = kwargs.pop('tags', '')#Karena, Corey, Heath
+        
+        # add stream parameters
+        self.streamserver = kwargs.pop('streamserver',None) # TODO set empty string or None?
+        self.streamname = kwargs.pop('streamname',None) # TODO set empty string or None?
+        
         if kwargs:
             log.msg('left over arguments in _MediaFile', kwargs)
 
@@ -141,7 +146,12 @@ class MediaDict(Xml2Dict):
                         thumbnail=node.getAttribute('thumbnail') or '',
                         uploader=node.getAttribute('uploader') or '', # AC - Adds uploader field to dictionary.
                         dateTime=node.getAttribute('dateTime') or '', # AC - Adds dateTime field to dictionary.
-                        tags=node.getAttribute('tags') or '', #Heath, Corey, Karena 24/08/2011 - added tags to mediafile 
+                        tags=node.getAttribute('tags') or '', # Heath, Corey, Karena 24/08/2011 - added tags to mediafile
+                        
+                        # add stream parameters
+                        streamname=node.getAttribute('streamname') or '',
+                        streamserver=node.getAttribute('streamserver') or '',
+                        
                         )           
         dict.__setitem__(self, f, av)
 
@@ -154,10 +164,17 @@ class MediaDict(Xml2Dict):
         #attr['file']=av
         
         # AC (29.09.07) - Added uploader and datetime fields in XML media item files.
-        node = root.add(self.element, file=mf.file, url=mf.url, name=mf.name,
-                        thumbnail=mf.thumbnail, uploader=mf.uploader, dateTime=mf.dateTime, tags=mf.tags)
+        #node = root.add(self.element, file=mf.file, url=mf.url, name=mf.name,
+        #                thumbnail=mf.thumbnail, uploader=mf.uploader, dateTime=mf.dateTime, tags=mf.tags)
         
-        for attr in ('voice', 'medium'):
+        # added stream parameters
+        
+        node = root.add(self.element, file=mf.file, url=mf.url, name=mf.name,
+                        thumbnail=mf.thumbnail, uploader=mf.uploader, dateTime=mf.dateTime, tags=mf.tags,
+                        streamserver=mf.streamserver, streamname=mf.streamname)
+        
+        #for attr in ('voice', 'medium'):
+        for attr in ('voice', 'medium', 'streamserver', 'streamname'):
             v = getattr(mf, attr, None)
             if v is not None:
                 node[attr] = v
@@ -340,6 +357,8 @@ class MediaDict(Xml2Dict):
             _update('name')
             _update('voice')
             
+            # TODO add stream parameters?
+            
             if 'audio_type' in form:
                 audiotype = form.get('audio_type')[0];
 
@@ -367,7 +386,10 @@ class MediaDict(Xml2Dict):
                             'prefix': prefix,
                             'row_class':v.medium,
                             'stages':'',
-                            'tags':v.tags # Vibhu and Heath (01/09/2011) - Added tags attribute to return associated tags for a media.
+                            'tags':v.tags, # Vibhu and Heath (01/09/2011) - Added tags attribute to return associated tags for a media.
+                            
+                            # TODO add stream parameters?
+                            
                             })
           for k, v in self.iteritems()]
         if things:
