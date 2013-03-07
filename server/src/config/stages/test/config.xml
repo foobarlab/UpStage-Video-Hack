@@ -14,13 +14,23 @@
 <avatar media="JbrX5b7b.swf" voice="" name="megaphone" showname="show">
 </avatar>
 -->
+<!-- 
 <avatar media="transparent_320x240.png" voice="" name="stream_av" showname="show">
 </avatar>
+-->
 <avatar media="library:aaaaaaaa:VideoOverlay" voice="" name="stream1" showname="show">
 </avatar>
 <avatar media="library:bbbbbbbb:VideoOverlay" voice="" name="stream2" showname="show">
 </avatar>
 <avatar media="library:cccccccc:VideoOverlay" voice="" name="stream3" showname="show">
+</avatar>
+<avatar media="library:gggggggg:VideoOverlay" voice="" name="stream_flv" showname="show">
+</avatar>
+<!-- 
+<avatar media="library:iiiiiiii:VideoOverlay" voice="" name="stream_mp3" showname="show">
+</avatar>
+-->
+<avatar media="library:kkkkkkkk:VideoOverlay" voice="" name="stream_mp3" showname="show">
 </avatar>
 <access_one>
 </access_one>

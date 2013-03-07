@@ -264,28 +264,38 @@ class upstage.thing.Thing extends MovieClip
         this._visible = true;
         
         if (this.medium == 'stream') {
-        	trace("showing video stream");
+        	trace("medium stream recognized");
         	
-        	// start video
+        	// start stream
+        	
+        	// for reference see http://docs.brajeshwar.com/as2/NetStream.html
         	
         	// hide avatar image?
         	//this.image._visible = false;
         	
-        	// create connection to server
+        	// create connection to server if parameter is given
 			if(this.connection == null) this.connection = new NetConnection();
-			//this.connection.connect(null);
-			if(!this.connection.isConnected) this.connection.connect(this.streamServer);
+			if(this.streamServer == '') {
+				this.connection.connect(null);
+			} else {
+				if(!this.connection.isConnected) this.connection.connect(this.streamServer);	
+			}
+			
+			// TODO distinguish between live stream, vod stream (flv), mp3 stream, etc ...
 			
 			// (re-)connect stream
 			this.stream = new NetStream(this.connection);
 			this.stream.setBufferTime(Client.STREAM_BUFFER_TIME);
-			this.stream.play(this.streamName, -1);
 			
 			this.video = this.videodisplay.video;
 			this.video.clear();
 			
 			// attach video to display
 			this.video.attachVideo(this.stream);
+		
+			// start playing
+			//this.stream.play(this.streamName, -1);	// did not work playing flv files
+			this.stream.play(this.streamName);
 		
 			// handle events
 			
