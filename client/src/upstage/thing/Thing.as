@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 import upstage.util.Icon;
 import upstage.Client;
 import upstage.util.LoadTracker;
-import upstage.util.Construct;
+//import upstage.util.Construct;
 
 
 /**
@@ -113,50 +113,29 @@ class upstage.thing.Thing extends MovieClip
 
     function loadImage(url : String, layer: Number, listener: Object, is_prop: Boolean)
     {
-    	var isLibraryItem :Boolean = (url.substr(0,8) == 'library:');
-    	
-    	if(isLibraryItem) {
-    		
-    		var libraryItemId   :String = url.substr(8,8);	// NOTE: id is _not_ used for MovieClip creation
-    		var libraryItemName :String = url.slice(17);
-    		
-    		trace("get library item '" + libraryItemName +"' with given ID " + libraryItemId);
- 
- 			// TODO check if valid url parameter was given ('library:XXXXXXXX:YYY...') [XXXXXXXX = ID, YYY... = library item name] 
- 			// TODO handle library images for props (scaling)? (see regular image loader below)
-     		
-    		var thing :Thing = this;
-    		LoadTracker.loadLibraryItem(thing, libraryItemName, layer, listener);
-    		thing.finalise();
-    		
-    	} else {
-    	
-    		trace("load image from url " + url);
-    	
-    		//Heath Behrens / Vibhu Patel 08/08/2011 - Added to check if current thing is a prop and then scale accordingly. 
-		    if(is_prop && !listener){
-		        var thing: Thing = this;
-		        listener = LoadTracker.getLoadListener();
-		        listener.onLoadInit = function(mc: MovieClip){
-		            //Modified by: Heath / Vibhu 08/08/2011 - Added to scale the prop on stage.
-		            mc._width = Client.PROP_MAX_WIDTH;
-		            mc._height = Client.PROP_MAX_HEIGHT;  
-		              
-		            thing.image = mc;
-		            thing.finalise();
-		        };
-		    }
-		    else if (!listener){
-		        var thing: Thing = this;
-		        listener = LoadTracker.getLoadListener();
-		        listener.onLoadInit = function(mc: MovieClip){
-		            
-		            thing.image = mc;
-		            thing.finalise();
-		        };
-		    }
-		    LoadTracker.loadImage(this, url, layer, listener);
-    	}
+		//Heath Behrens / Vibhu Patel 08/08/2011 - Added to check if current thing is a prop and then scale accordingly. 
+	    if(is_prop && !listener){
+	        var thing: Thing = this;
+	        listener = LoadTracker.getLoadListener();
+	        listener.onLoadInit = function(mc: MovieClip){
+	            //Modified by: Heath / Vibhu 08/08/2011 - Added to scale the prop on stage.
+	            mc._width = Client.PROP_MAX_WIDTH;
+	            mc._height = Client.PROP_MAX_HEIGHT;  
+	              
+	            thing.image = mc;
+	            thing.finalise();
+	        };
+	    }
+	    else if (!listener){
+	        var thing: Thing = this;
+	        listener = LoadTracker.getLoadListener();
+	        listener.onLoadInit = function(mc: MovieClip){
+	            
+	            thing.image = mc;
+	            thing.finalise();
+	        };
+	    }
+	    LoadTracker.loadImage(this, url, layer, listener);
     }
 
 

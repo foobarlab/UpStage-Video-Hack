@@ -228,9 +228,6 @@ class upstage.util.Construct
     }
 
 
-
-
-
     // BH 29-Aug-2006 Added
     /**
      * @brief Draw a rounded polygon - Used for drawing buttons See ButtonMc
@@ -270,16 +267,20 @@ class upstage.util.Construct
     /**
      * @brief constrainSize, resizes downwards only, and maintain aspect ratio
      */
-    static function constrainSize(mc: MovieClip, maxw: Number, maxh: Number):Void
+     // FIXME function should not be placed here but another class?
+    static function constrainSize(mc: MovieClip, max_width: Number, max_height: Number):Void
     {
+    	trace("contrainSize: mc='" + mc + "' (original is " + mc._width +" x " + mc._height + ")");
+    	
         // Do we need to scale
-        var scale :Number = Math.min(maxw / mc._width, 
-                                     maxh / mc._height);
+        var scale :Number = Math.min(max_width / mc._width, max_height / mc._height);
         if (scale < 1.0)
-            {
-                mc._width  *= scale;
-                mc._height *= scale;
-            }
+        {
+            mc._width  *= scale;
+            mc._height *= scale;
+        }
+    	
+    	trace("contrainSize: mc='" + mc + "' (scale factor is " + scale + ", new size is "+ mc._width +" x " + mc._height +")");
     }
 
 
@@ -287,21 +288,23 @@ class upstage.util.Construct
      * @brief List the variables inside an to debugger in format "object name: Value"
      * Does first level only
      */
+     // FIXME function should not be placed here but another class?
     static function deepTrace(obj : Object) : Void
     {
+    	trace("");
         trace("deep tracing " + obj.toString() + " -------------------");
         for (var x : Object in obj)
 		{
         	trace(x.toString() + ': ' + obj[x].toString());
 		}
         trace("----------------------------------");
-        
+        trace("");
     };
 
     /**
      * @brief Get the stage to reload
      */
-    //XXX does this belong here?
+    // FIXME function should not be placed here but another class?
     static function reloadStage() :Void
     {
         // Reload the stage

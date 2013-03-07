@@ -38,7 +38,7 @@ class upstage.util.LoadTracker
     private static var finished    :Number;  
     
     // MovieClip constants for on screen display
-    private static var view        :MovieClip;
+    private static var view        :MovieClip;	// TODO: is this needed as it is currently replaced by the HTML progress view (via ExternalInterface)?
     private static var modelSplash :Object;
 
 
@@ -87,6 +87,7 @@ class upstage.util.LoadTracker
      */
     private static function redraw() :Void
     {
+    	// TODO: is this needed as we now have the HTML interface showing the progress (via ExternalInterface)?
         LoadTracker.view.redrawProgressBar(LoadTracker.expected,
                                            LoadTracker.started,
                                            LoadTracker.finished,
@@ -113,7 +114,7 @@ class upstage.util.LoadTracker
             },
             onLoadComplete: function(mc :Object, httpStatus:Number):Void {
                 //trace('Load Complete is done...');
-                trace('Load complete with http status ' + httpStatus);
+                trace('Loading of '+mc+' completed with (http) status ' + httpStatus);
                 LoadTracker.finished++;
                 ExternalInterface.call("stage_loading("+Math.floor(LoadTracker.finished*100/LoadTracker.expected) +")");
                 LoadTracker.redraw();
@@ -138,34 +139,46 @@ class upstage.util.LoadTracker
     {
         if (!listener){ listener = LoadTracker.getLoadListener(); }
         
+        var img : MovieClip;
         var layerName : String = "layer" + layer;
-        var img : MovieClip = mc.createEmptyMovieClip(layerName, layer);
-        var loadWatcher : MovieClipLoader = new MovieClipLoader();
-		loadWatcher.addListener(listener);
-        loadWatcher.loadClip(url, img);
-        return img;
-    }
-    
-    /**
-     * @brief Load a library item into a MovieClip (can be an image, swf, etc.)
-     * @param name the name of the library item
-     */
-    static function loadLibraryItem(mc: MovieClip, name : String, layer: Number, listener: Object) : MovieClip
-    {
-        if (!listener){ listener = LoadTracker.getLoadListener(); }
         
-        // callback: we have started (simulates event normally initiated by MovieClipLoader)
-        listener.onLoadStart();
+        var isLibraryItem :Boolean = (url.substr(0,8) == 'library:');
         
-        var layerName : String = "layer" + layer;
-        var img : MovieClip = mc.attachMovie(name,layerName,layer);
+        if(isLibraryItem) {
+    		
+    		var libraryItemId   :String = url.substr(8,8);	// NOTE: id is _not_ used for MovieClip creation
+    		var libraryItemName :String = url.slice(17);
+    		
+    		trace("get library item '" + libraryItemName +"' with given ID " + libraryItemId);
+ 
+ 			// TODO check if valid url parameter was given ('library:XXXXXXXX:YYY...') [XXXXXXXX = ID, YYY... = library item name] 
+    		
+    		// callback: we have started (simulates event normally initiated by MovieClipLoader)
+		    listener.onLoadStart();
+		    
+		    img = mc.attachMovie(libraryItemName,layerName,layer);
+		    
+		    // callback: ensure some initial operations are executed (simulates event normally initiated by MovieClipLoader)
+		    listener.onLoadInit(img);
+		    
+		    // callback: always successful completed (simulates event normally initiated by MovieClipLoader)
+		    // NOTE: throwing an error event for mismatched items not possible due to runtime restrictions of ActionScript 
+		    listener.onLoadComplete(img,0);
+    		
+    	} else {
+    		
+    		trace("get image from url '" + url + "'");
         
-        // callback: ensure some initial operations are executed (simulates event normally initiated by MovieClipLoader)
-        listener.onLoadInit(img);
+	        img = mc.createEmptyMovieClip(layerName, layer);
+	        var loadWatcher : MovieClipLoader = new MovieClipLoader();
+			loadWatcher.addListener(listener);
+	        loadWatcher.loadClip(url, img);
+	        
+        }
         
-        // callback: always successful completed (simulates event normally initiated by MovieClipLoader)
-        // NOTE: throwing an error event for mismatched items not possible due to runtime restrictions of ActionScript 
-        listener.onLoadComplete(img,0);
+        // DEBUG:
+	    trace('parent mc = '+ mc +' with size: '+ mc._width +' x ' + mc._height);
+	    trace('image mc  = '+ img +' with size: '+ img._width +' x '+ img._height);
         
         return img;
     }

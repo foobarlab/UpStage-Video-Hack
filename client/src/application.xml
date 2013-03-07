@@ -41,11 +41,9 @@
     -->
   <clip import="temp/classes.swf" />
   
-  <!-- transparent image -->
-  <clip id="VideoImage" import="temp/transparent_320x240.png" />
-  <!-- 
-  <clip id="VideoImage" import="temp/transparent_640x480.png" />
-  -->
+  <!-- imported images -->
+  <clip id="TransparentImageWithMarker" import="temp/transparent_320x240.png" />
+  <clip id="FilmStripIconImage" import="temp/filmstrip_icon.png" />
   
   <frame>
     
@@ -55,14 +53,22 @@
       -->
     <library>
     
-    	<!-- library item for video overlay (transparent image) -->
-    	<clip id="VideoOverlay" name="videooverlay">
+    	<!-- library items -->
+    	
+    	<clip id="VideoOverlay">
     		<frame>
-    			<place id="VideoImage" name="image" x="0" y="0" width="320" height="240" depth="0" />
+    			<place id="TransparentImageWithMarker" />
+    		</frame>
+    	</clip>
+    	
+    	<clip id="FilmStripIcon">
+    		<frame>
+    			<place id="FilmStripIconImage" />
     		</frame>
     	</clip>
     	
     	<!-- library object for video display -->
+    	
     	<clip id="VideoDisplay" name="videodisplay">
 			<frame>
 				<video id="VideoSurface" width="320" height="240" />

@@ -17,11 +17,11 @@
 -->
 <avatar file="transparent_320x240.png" medium="stream" name="stream_av" url="/media/transparent_320x240.png" streamserver="rtmp://localhost/oflaDemo" streamname="red5StreamDemo" dateTime="" uploader="admin" voice="" thumbnail="/media/thumb/filmstrip.png">
 </avatar>
-<avatar file="library:aaaaaaaa:VideoOverlay" medium="stream" name="stream1" url="" streamserver="rtmp://localhost/oflaDemo" streamname="stream1" dateTime="" uploader="admin" voice="" thumbnail="/media/thumb/filmstrip.png">
+<avatar file="library:aaaaaaaa:VideoOverlay" medium="stream" name="stream1" url="" streamserver="rtmp://localhost/oflaDemo" streamname="stream1" dateTime="" uploader="admin" voice="" thumbnail="library:dddddddd:FilmStripIcon">
 </avatar>
-<avatar file="library:bbbbbbbb:VideoOverlay" medium="stream" name="stream2" url="" streamserver="rtmp://localhost/oflaDemo" streamname="stream2" dateTime="" uploader="admin" voice="" thumbnail="/media/thumb/filmstrip.png">
+<avatar file="library:bbbbbbbb:VideoOverlay" medium="stream" name="stream2" url="" streamserver="rtmp://localhost/oflaDemo" streamname="stream2" dateTime="" uploader="admin" voice="" thumbnail="library:eeeeeeee:FilmStripIcon">
 </avatar>
-<avatar file="library:cccccccc:VideoOverlay" medium="stream" name="stream3" url="" streamserver="rtmp://localhost/oflaDemo" streamname="stream3" dateTime="" uploader="admin" voice="" thumbnail="/media/thumb/filmstrip.png">
+<avatar file="library:cccccccc:VideoOverlay" medium="stream" name="stream3" url="" streamserver="rtmp://localhost/oflaDemo" streamname="stream3" dateTime="" uploader="admin" voice="" thumbnail="library:ffffffff:FilmStripIcon">
 </avatar>
 
 </avatars>

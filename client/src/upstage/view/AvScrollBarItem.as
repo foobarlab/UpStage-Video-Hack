@@ -96,13 +96,25 @@ class upstage.view.AvScrollBarItem extends MovieClip
      */
     function loadThumb() :Void                       
     {
-        var parent: MovieClip = this;
+        //var parent: MovieClip = this;
         var listener: Object = LoadTracker.getLoadListener();
-        listener.onLoadInit = function()
+        listener.onLoadInit = function(mc: MovieClip)
             {
-                //trace("scrollbar button apparently loaded");
+            	
+            	/*
+                trace('loadTumb(): onLoadInit(): scrollbar button: ' + parent.btn);
+                
+                // FIXME library items seem not be passed correctly
+                
                 // Resize icon to fit on scrollbar
                 Construct.constrainSize(parent.btn, Client.ICON_SIZE, Client.ICON_SIZE);
+                */
+                
+                trace('loadTumb(): onLoadInit(): scrollbar button: ' + mc);
+                
+                // Resize icon to fit on scrollbar
+                Construct.constrainSize(mc, Client.ICON_SIZE, Client.ICON_SIZE);
+                
             };
 
         this.btn = LoadTracker.loadImage(this, this.thumbUrl, this.thumbLayer, listener);
