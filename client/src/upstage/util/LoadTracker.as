@@ -132,7 +132,7 @@ class upstage.util.LoadTracker
 
 
     /**     * @brief Load an image/swf, keeping track of its progress if its listener object is null, or derived from LoadTracker.getLoadListener()
-     * @see http://livedocs.adobe.com/flash/9.0/main/wwhelp/wwhimpl/common/html/wwhelp.htm?context=LiveDocs_Parts&file=00002104.html
+     * @see http://livedocs.adobe.com/flash/9.0/main/wwhelp/wwhimpl/common/html/wwhelp.htm?context=LiveDocs_Parts&file=00001993.html
      */
     static function loadImage(mc: MovieClip, url : String, layer: Number, listener: Object) : MovieClip
     {
@@ -143,6 +143,30 @@ class upstage.util.LoadTracker
         var loadWatcher : MovieClipLoader = new MovieClipLoader();
 		loadWatcher.addListener(listener);
         loadWatcher.loadClip(url, img);
+        return img;
+    }
+    
+    /**
+     * @brief Load a library item into a MovieClip (can be an image, swf, etc.)
+     * @param name the name of the library item
+     */
+    static function loadLibraryItem(mc: MovieClip, name : String, layer: Number, listener: Object) : MovieClip
+    {
+        if (!listener){ listener = LoadTracker.getLoadListener(); }
+        
+        // callback: we have started (simulates event normally initiated by MovieClipLoader)
+        listener.onLoadStart();
+        
+        var layerName : String = "layer" + layer;
+        var img : MovieClip = mc.attachMovie(name,layerName,layer);
+        
+        // callback: ensure some initial operations are executed (simulates event normally initiated by MovieClipLoader)
+        listener.onLoadInit(img);
+        
+        // callback: always successful completed (simulates event normally initiated by MovieClipLoader)
+        // NOTE: throwing an error event for mismatched items not possible due to runtime restrictions of ActionScript 
+        listener.onLoadComplete(img,0);
+        
         return img;
     }
     

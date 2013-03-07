@@ -78,7 +78,10 @@ class _MediaFile(object):
         if (self.file[-4:] == '.mp3'):
             self.url = config.AUDIO_URL + self.file
         else:
-            self.url = config.MEDIA_URL + self.file
+            if(self.file[:8] == 'library:'):   # handle library items (included in client.swf)
+                self.url = self.file
+            else:
+                self.url = config.MEDIA_URL + self.file
         self.thumbnail = ''
         self.web_thumbnail = config.MISSING_THUMB_URL
         tn = kwargs.pop('thumbnail', None)  #or self.file.replace('.swf','.jpg')

@@ -16,11 +16,11 @@
 -->
 <avatar media="transparent_320x240.png" voice="" name="stream_av" showname="show">
 </avatar>
-<avatar media="dummy1.png" voice="" name="stream1" showname="show">
+<avatar media="library:aaaaaaaa:VideoOverlay" voice="" name="stream1" showname="show">
 </avatar>
-<avatar media="dummy2.png" voice="" name="stream2" showname="show">
+<avatar media="library:bbbbbbbb:VideoOverlay" voice="" name="stream2" showname="show">
 </avatar>
-<avatar media="dummy3.png" voice="" name="stream3" showname="show">
+<avatar media="library:cccccccc:VideoOverlay" voice="" name="stream3" showname="show">
 </avatar>
 <access_one>
 </access_one>
