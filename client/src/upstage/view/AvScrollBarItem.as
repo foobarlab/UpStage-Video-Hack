@@ -56,19 +56,15 @@ class upstage.view.AvScrollBarItem extends MovieClip
     public static var symbolName :String = '__Packages.upstage.view.AvScrollBarItem';
     private static var symbolLinked :Boolean = Object.registerClass(symbolName, AvScrollBarItem);
 
-    static public function create(av: Avatar, scrollbar :MovieClip, 
-                                  available: Boolean) :AvScrollBarItem
+    static public function create(av: Avatar, scrollbar :MovieClip, available: Boolean) :AvScrollBarItem
     {
         //trace("in AvScrollBarItem.create()");
         var out :AvScrollBarItem;
         var name :String = "icon_" + av.ID;
-        out = AvScrollBarItem(scrollbar.attachMovie(AvScrollBarItem.symbolName, 
-                                                    name, av.iconLayer));
+        out = AvScrollBarItem(scrollbar.attachMovie(AvScrollBarItem.symbolName, name, av.iconLayer));
         out.nameof = av.name;   // name of avatar not image...
 
         out.ID = av.ID;
-
-
         
         out.baseLayer = av.iconLayer;
         out.thumbLayer = av.iconLayer + 1;
@@ -96,31 +92,22 @@ class upstage.view.AvScrollBarItem extends MovieClip
      */
     function loadThumb() :Void                       
     {
-        //var parent: MovieClip = this;
+    	
+    	trace('');
+        trace('loadThumb(): thumb URL: ' + this.thumbUrl + ' thumb layer: ' + this.thumbLayer);
+        trace('');
+    	
+    	//var parent: MovieClip = this;
         var listener: Object = LoadTracker.getLoadListener();
         listener.onLoadInit = function(mc: MovieClip)
-            {
-            	
-            	/*
-                trace('loadTumb(): onLoadInit(): scrollbar button: ' + parent.btn);
-                
-                // FIXME library items seem not be passed correctly
-                
-                // Resize icon to fit on scrollbar
-                Construct.constrainSize(parent.btn, Client.ICON_SIZE, Client.ICON_SIZE);
-                */
-                
-                trace('loadTumb(): onLoadInit(): scrollbar button: ' + mc);
-                
-                // Resize icon to fit on scrollbar
-                Construct.constrainSize(mc, Client.ICON_SIZE, Client.ICON_SIZE);
-                
-            };
+        {
+            trace('loadTumb(): onLoadInit(): ' + mc);
+            
+            // Resize icon to fit on scrollbar
+            Construct.constrainSize(mc, Client.ICON_SIZE, Client.ICON_SIZE);
+        };
 
         this.btn = LoadTracker.loadImage(this, this.thumbUrl, this.thumbLayer, listener);
-        trace('');
-        trace('Thumburl: ' + this.thumbUrl + ' thumblayer: ' + this.thumbLayer);
-        trace('');
     }
 
     /**
@@ -128,21 +115,37 @@ class upstage.view.AvScrollBarItem extends MovieClip
      */
     function loadMirror(scrollBar:MovieClip)                       
     {
+    	
+    	trace('');
+        trace('loadMirror(): scrollbar: ' + scrollBar + ' icon layer: ' + this.mirrorLayer);
+        trace('');
+    	
         var parent: MovieClip = this;
         var listener: Object = LoadTracker.getLoadListener();
-        listener.onLoadInit = function()
-            {
-                // Shrink to mirror size, move into position, and turn invisible.
-                //trace("mirror image apparently loaded");
-                parent.mir._visible = false;
-                Construct.constrainSize(parent.mir, Client.MIRROR_ICON_W, Client.MIRROR_ICON_H);
-                parent.mir._x = (Client.AV_MIRROR_WIDTH - parent.mir._width) / 2;
-                parent.mir._y = (Client.AV_MIRROR_HEIGHT - parent.mir._height) / 2;
+       
+        listener.onLoadInit = function(mc : MovieClip)	
+        {
+        	trace('loadMirror(): onLoadInit(): mc=' + mc + ', parent = ' + parent + ', parent.mir (mirror icon) = ' + parent.mir);
+        	
+        	// handle library items accordingly (passed as mc not as parent.mir)
+        	if (parent.mir == undefined) {
+        		parent.mir = mc;
+        		trace('loadMirror(): onLoadInit(): possibly handed over library item => parent.mir was undefined and is now the passed mc ' + parent.mir);
+        	} else {
+        		trace('loadMirror(): onLoadInit(): passed mc '+ mc +' is ignored as parent.mir is set');
+        	}
+        	
+            // Shrink to mirror size, move into position, and turn invisible.
+            parent.mir._visible = false;
+            Construct.constrainSize(parent.mir, Client.MIRROR_ICON_W, Client.MIRROR_ICON_H);
+            parent.mir._x = (Client.AV_MIRROR_WIDTH - parent.mir._width) / 2;
+            parent.mir._y = (Client.AV_MIRROR_HEIGHT - parent.mir._height) / 2;
 
-                parent.loaded();
-            };
-
+            parent.loaded();
+        };
+        
         this.mir = LoadTracker.loadImage(scrollBar, this.thumbUrl, this.mirrorLayer, listener);
+        trace('loadMirror(): completed loading mirror image ' + this.mir);
     }
 
     function createName()

@@ -187,8 +187,8 @@ class upstage.view.AvScrollBar extends MovieClip
      * @brief Add an avatar to the scrollbar, called by Avatar
      */
     function addAvatar(av: Avatar)
-    {
-        //trace("addAvatar begins");
+    {   
+        trace('addAvatar(): adding AvScrollBarItem ' + av.icon);
         this.items.push(av.icon);
     };
 
@@ -407,10 +407,12 @@ class upstage.view.AvScrollBar extends MovieClip
     /**
      * @brief turn on/off animator
      */
+     // FIXME obsolete
+     /*
     function showFrame(): Void
     { //XXX eh?
     }
-
+	*/
 
     function AvScrollBar(){}
 
