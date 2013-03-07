@@ -59,7 +59,7 @@ class _UpstageSocket(LineOnlyReceiver):
     stage = None
     ID = None
     avatar = None
-    client_hash = None  #randomish string used to link the web and socket interfaces.
+    client_hash = None  # random string used to link the web and socket interfaces.
     unlogged_send_modes = ('DRAW_LINE', 'LOAD_CHAT')
     unlogged_receive_modes = ('DRAW_LINE', 'DRAW_MOVE')
 
@@ -268,8 +268,9 @@ class _UpstageSocket(LineOnlyReceiver):
         except (ValueError, KeyError):
             mode = None
 
-        if ((config.VERBOSE) or (mode not in self.unlogged_receive_modes)):
-            log.msg('RECEIVED: %s' % data)
+        # temporarily disabled to show less 'garbage' in log
+        #if ((config.VERBOSE) or (mode not in self.unlogged_receive_modes)):
+        #    log.msg('RECEIVED: %s' % data)
 
         handler = self.modes.get(mode, self.unknown_mode)
         try:
