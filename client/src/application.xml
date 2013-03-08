@@ -109,10 +109,8 @@
   	  &#91;&#92;&#93;&#94;&#95;&#96;&#123;&#124;&#125;&#126;0123456789áÁàÀâÂ
   	  åÅãÃäÄæÆçÇéÉèÈêÊëËíÍììÌîÎïÏñÑóÓòÒôÔøØõÕ&#246;ÖßúÚùÙûÛüÜÿ´" />
   	
-  	<!-- 
   	<font id="FontAwesome" import="temp/fontawesome-webfont.ttf" name="FontAwesome"
-  	  glyphs="" />
-  	-->
+  	  glyphs="&#xf03d;" />
   	  
   </frame>
 </movie>
