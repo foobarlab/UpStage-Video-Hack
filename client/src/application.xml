@@ -42,7 +42,7 @@
   <clip import="temp/classes.swf" />
   
   <!-- imported images -->
-  <clip id="TransparentImageWithMarker" import="temp/transparent_320x240.png" />
+  <clip id="TransparentImageWithMarker" import="temp/transparent_marker_320x240.png" />
   <clip id="FilmStripIconImage" import="temp/filmstrip_icon.png" />
   
   <frame>
