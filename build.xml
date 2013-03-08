@@ -294,7 +294,7 @@ January 2013 	Adopted for UpStage 2.4.2 video hack
 			<fileset dir="${upstage.swfmill.fonts}">
 				<include name="*.ttf" />
 			</fileset>
-			<fileset dir="${upstage.dir.as2src}">
+			<fileset dir="${upstage.swfmill.images}">
 				<include name="*.png" />
 			</fileset>
 		</copy>
