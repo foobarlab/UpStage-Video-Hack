@@ -42,6 +42,7 @@
   <clip import="temp/classes.swf" />
   
   <!-- imported images -->
+  <clip id="TransparentImage" import="temp/transparent_320x240.png" />
   <clip id="TransparentImageWithMarker" import="temp/transparent_marker_320x240.png" />
   <clip id="FilmStripIconImage" import="temp/filmstrip_icon.png" />
   
@@ -56,6 +57,12 @@
     	<!-- library items -->
     	
     	<clip id="VideoOverlay">
+    		<frame>
+    			<place id="TransparentImage" />
+    		</frame>
+    	</clip>
+    	
+    	<clip id="VideoOverlayMarker">
     		<frame>
     			<place id="TransparentImageWithMarker" />
     		</frame>
