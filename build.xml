@@ -36,8 +36,9 @@ in the separate properties file named 'build.properties'.
  
 Changelog:
  
-March 2011	Initial Version for Version 2.1
+March 2011		Initial Version for Version 2.1
 January 2013 	Adopted for UpStage 2.4.2 video hack
+March 2013		Added minify with YUI Compressor
 
 -->
 <project name="UpStage" default="help" basedir=".">
@@ -48,17 +49,35 @@ January 2013 	Adopted for UpStage 2.4.2 video hack
 	<!-- load environment variables -->
 	<property environment="env" />
 	
-	<!-- as2lib ant tasks: compiling as2 files with ant. see: http://osflash.org/ant -->
+	<!-- as2lib ant tasks: compiling as2 files with ant, see: http://osflash.org/ant -->
 	<taskdef name="swf" classname="org.as2lib.ant.Swf" classpath="${upstage.dir.antlib}/as2ant.jar" />
 	<taskdef name="mtasc" classname="org.as2lib.ant.Mtasc" classpath="${upstage.dir.antlib}/as2ant.jar" />
 	<taskdef name="swfmill" classname="org.as2lib.ant.Swfmill" classpath="${upstage.dir.antlib}/as2ant.jar" />
 	
-	<!-- doxygen-task: generating doxygen documentation. see: http://ant-doxygen.blogspot.com/ -->
+	<!-- doxygen-task: generating doxygen documentation, see: http://ant-doxygen.blogspot.com/ -->
 	<taskdef name="doxygen" classname="org.doxygen.tools.DoxygenTask" classpath="${upstage.dir.antlib}/ant_doxygen.jar" />
 	
-	<!-- pyanttask: python ant tasks. see: http://code.google.com/p/pyanttasks/ -->
+	<!-- pyanttask: python ant tasks, see: http://code.google.com/p/pyanttasks/ -->
 	<taskdef resource="pyAntTasks.properties" classpath="${upstage.dir.antlib}/pyAntTasks-1.3.3.jar" />
 
+	<!-- ant-contrib: additional ant tasks, see: http://ant-contrib.sourceforge.net/ -->
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+	  <classpath>
+	    <pathelement location="${upstage.dir.antlib}/ant-contrib-1.0b3.jar" />
+	  </classpath>
+	</taskdef>
+	
+	<!-- yui-compressor-ant-task: minify JavaScript and CSS, see: https://github.com/n0ha/yui-compressor-ant-task/ -->
+	<property name="yui-compressor.jar" location="${upstage.dir.antlib}/yuicompressor-2.4.7.jar" />
+	<property name="yui-compressor-ant-task.jar" location="${upstage.dir.antlib}/yui-compressor-ant-task-0.5.1.jar" />
+	<path id="task.yuicompressor.classpath">
+		<pathelement location="${yui-compressor.jar}" />
+		<pathelement location="${yui-compressor-ant-task.jar}" />
+	</path>
+	<taskdef name="yui-compressor" classname="net.noha.tools.ant.yuicompressor.tasks.YuiCompressorTask">
+		<classpath refid="task.yuicompressor.classpath" />
+	</taskdef>
+	
 	<!-- target for initialization procedure - called from other tasks -->
 	<target name="init" depends="set-variables" >
 		<echo message="Finished initialization." />
@@ -332,6 +351,60 @@ January 2013 	Adopted for UpStage 2.4.2 video hack
 					optimize="1" />
 	</target>
 	
+	<!-- minify javascript and css -->
+	<target name="minify">
+		<if>
+			<istrue value="${upstage.minify}" />
+				<then>
+					
+					<echo message="Invoking YUI compressor for minification ..." />
+		
+					<!-- TODO: explicit concatenation of files? -->
+					<!-- see also: http://heliologue.com/2008/09/22/using-yui-compressor-in-a-web-project/ -->
+				
+					<!-- invoke compressor globally on js and css -->
+					<yui-compressor
+						warn="false"
+						charset="UTF-8"
+						fromdir="${upstage.dir.build}"
+						todir="${upstage.dir.build}" 
+						jssuffix=".js.${upstage.minify.extension}"
+						csssuffix=".css.${upstage.minify.extension}"
+						munge="true"
+						optimize="true"
+						preserveallsemicolons="false"
+						linebreakposition="4000">
+						
+						<!-- include all js and css files -->
+						<include name="**/*.css" />
+						<include name="**/*.js" />
+						
+					</yui-compressor>
+		
+					<!-- clean up files afterward -->
+					
+					<echo message="Postprocessing ..." />
+					
+					<!-- get all files which have been compressed and overwrite the old ones-->
+					<move todir="${upstage.dir.build}">
+						<fileset dir="${upstage.dir.build}">
+							<include name="**/*.js.${upstage.minify.extension}" />
+							<include name="**/*.css.${upstage.minify.extension}" />
+						</fileset>
+						<!-- rename file extensions -->
+						<mapper type="regexp" from="^(.*)\.${upstage.minify.extension}$" to="\1"/>
+					</move>
+
+				</then>
+				<else>
+					
+					<echo message="Minify disabled." />
+				
+				</else>
+			</if>
+					
+	</target>
+	
 	<!-- generate batch/shell-scripts -->
 	<target name="create-scripts" depends="set-variables">
 		
@@ -454,6 +527,9 @@ January 2013 	Adopted for UpStage 2.4.2 video hack
 				<include name="*.py"/>
 			</fileset>
 		</chmod>
+		
+		<!-- run minify -->
+		<antcall target="minify" inheritall="true" />
 		
 	</target>
 	
