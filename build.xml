@@ -279,6 +279,7 @@ March 2013		Added minify with YUI Compressor
 	
 	<!-- clean the directory tree to get the original state before compilation -->
 	<target name="clean" depends="kill,init" description="clean up temporary files">
+		<delete dir="${upstage.dir.dist}" />
 		<delete dir="${upstage.dir.build}" />
 		<delete dir="${upstage.dir.tmp}" />
 		<delete dir="${upstage.dir.apidoc}/client/html" />
@@ -530,6 +531,43 @@ March 2013		Added minify with YUI Compressor
 		
 		<!-- run minify -->
 		<antcall target="minify" inheritall="true" />
+		
+	</target>
+	
+	<!-- create distributable files -->
+	<target name="dist" depends="clean,doc,build" description="create distribution files">
+		
+		<!-- generate timestamp and release info -->
+		<if>
+			<istrue value="${upstage.isrelease}" />
+			<then>
+				<property name="TIMESTAMP" value="" />
+				<property name="RELEASEINFO" value="" />
+			</then>
+			<else>
+				<tstamp><format property="TIMESTAMP" pattern=".yyyy-MM-dd-HHmmss" /></tstamp>
+				<property name="RELEASEINFO" value=".dev" />
+			</else>
+		</if>
+		
+		<!-- create dist dir -->
+		<mkdir dir="${upstage.dir.dist}" />
+		
+		<!-- create zip archives -->
+		<zip destfile="${upstage.dir.dist}/upstage-${upstage.version}${RELEASEINFO}-bin${TIMESTAMP}.zip">
+			<zipfileset dir="${upstage.dir.build}" excludes="**/EMPTY,**/*.pyc,**/pychecker*" />
+			<fileset dir="${basedir}" includes="LICENSE.txt" />
+		</zip>
+		
+		<zip destfile="${upstage.dir.dist}/upstage-${upstage.version}${RELEASEINFO}-src${TIMESTAMP}.zip">
+			<zipfileset dir="${upstage.dir.src}" prefix="server" excludes="**/EMPTY,**/*.pyc" />
+			<zipfileset dir="${upstage.dir.as2src}" prefix="client" excludes="**/EMPTY" />
+			<fileset dir="${basedir}" includes="LICENSE.txt" />
+		</zip>
+		
+		<zip destfile="${upstage.dir.dist}/upstage-${upstage.version}${RELEASEINFO}-doc${TIMESTAMP}.zip">
+			<zipfileset dir="${upstage.dir.apidoc}" prefix="api" excludes="**/EMPTY" />
+		</zip>
 		
 	</target>
 	
