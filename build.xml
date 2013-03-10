@@ -380,6 +380,9 @@ March 2013		Added minify with YUI Compressor
 						<include name="**/*.css" />
 						<include name="**/*.js" />
 						
+						<!-- exclude explicit given patterns -->
+						<exclude name="${upstage.minify.exclude}" />
+						
 					</yui-compressor>
 		
 					<!-- clean up files afterward -->
@@ -405,6 +408,12 @@ March 2013		Added minify with YUI Compressor
 			</if>
 					
 	</target>
+	
+	<!-- TODO: remove comments from html code to reduce size -->
+	<!--
+	<target name="html-remove-comments">
+	</target>
+	-->
 	
 	<!-- generate batch/shell-scripts -->
 	<target name="create-scripts" depends="set-variables">
@@ -453,7 +462,7 @@ March 2013		Added minify with YUI Compressor
 		
 		<!-- show some info -->
 		<echo message="==============================================" />
-		<echo message="Ant Build for UpStage ${upstage.version} ..." />
+		<echo message="Ant Build for UpStage ${upstage.version}.${upstage.revision} ..." />
 		<echo message="==============================================" />
 
 		<!-- create build dir -->
@@ -554,18 +563,18 @@ March 2013		Added minify with YUI Compressor
 		<mkdir dir="${upstage.dir.dist}" />
 		
 		<!-- create zip archives -->
-		<zip destfile="${upstage.dir.dist}/upstage-${upstage.version}${RELEASEINFO}-bin${TIMESTAMP}.zip">
+		<zip destfile="${upstage.dir.dist}/upstage-${upstage.version}.${upstage.revision}${RELEASEINFO}-bin${TIMESTAMP}.zip">
 			<zipfileset dir="${upstage.dir.build}" excludes="**/EMPTY,**/*.pyc,**/pychecker*" />
 			<fileset dir="${basedir}" includes="LICENSE.txt" />
 		</zip>
 		
-		<zip destfile="${upstage.dir.dist}/upstage-${upstage.version}${RELEASEINFO}-src${TIMESTAMP}.zip">
+		<zip destfile="${upstage.dir.dist}/upstage-${upstage.version}.${upstage.revision}${RELEASEINFO}-src${TIMESTAMP}.zip">
 			<zipfileset dir="${upstage.dir.src}" prefix="server" excludes="**/EMPTY,**/*.pyc" />
 			<zipfileset dir="${upstage.dir.as2src}" prefix="client" excludes="**/EMPTY" />
 			<fileset dir="${basedir}" includes="LICENSE.txt" />
 		</zip>
 		
-		<zip destfile="${upstage.dir.dist}/upstage-${upstage.version}${RELEASEINFO}-doc${TIMESTAMP}.zip">
+		<zip destfile="${upstage.dir.dist}/upstage-${upstage.version}.${upstage.revision}${RELEASEINFO}-doc${TIMESTAMP}.zip">
 			<zipfileset dir="${upstage.dir.apidoc}" prefix="api" excludes="**/EMPTY" />
 		</zip>
 		
@@ -668,7 +677,7 @@ March 2013		Added minify with YUI Compressor
 		<doxygen doxygenPath="${upstage.doxygen.executable}">
 			<property name="INPUT" value="${upstage.dir.as2src}/upstage" />
 			<property name="PROJECT_NAME" value="UpStage Client API" />
-			<property name="PROJECT_NUMBER" value="${upstage.version}" />
+			<property name="PROJECT_NUMBER" value="${upstage.version}.${upstage.revision}" />
 			<property name="OUTPUT_DIRECTORY" value="${upstage.dir.apidoc}/client" />
 			<property name="RECURSIVE" value="YES" />
 			<property name="GENERATE_LATEX" value="FALSE" />
@@ -683,7 +692,7 @@ March 2013		Added minify with YUI Compressor
 		<doxygen doxygenPath="${upstage.doxygen.executable}">
 			<property name="INPUT" value="${upstage.dir.src}" />
 			<property name="PROJECT_NAME" value="UpStage Server API" />
-			<property name="PROJECT_NUMBER" value="${upstage.version}" />
+			<property name="PROJECT_NUMBER" value="${upstage.version}.${upstage.revision}" />
 			<property name="OUTPUT_DIRECTORY" value="${upstage.dir.apidoc}/server" />
 			<property name="RECURSIVE" value="YES" />
 			<property name="GENERATE_LATEX" value="FALSE" />
@@ -693,6 +702,71 @@ March 2013		Added minify with YUI Compressor
 			-->
 		</doxygen>
 		
+	</target>
+	
+	<!-- generate automatic report for source code issues -->
+	<target name="report" depends="clean,build" description="automatic report and source code analysis">
+		
+		<!-- run pychecker -->
+		<antcall target="pychecker" inheritall="true" />
+		
+		<!-- run jslint -->
+		<antcall target="jslint" inheritall="true" />
+		
+	</target>
+	
+	<!-- run jslint on javascript sources -->
+	<target name="jslint" depends="build">
+		
+		<if>
+			<istrue value="${upstage.jslint}" />
+			<then>
+				
+				<echo message="Invoking JSLint ..." />
+				
+		        <apply dir="${upstage.dir.build}" executable="java" failonerror="${upstage.jslint.failonerror}">
+		            <fileset dir="${upstage.dir.build}">
+		                
+		            	<include name="**/*.js" />
+		            	
+		            	<!-- exclude 3rd party sources -->
+						<exclude name="**/html/ckedit/**" />
+		            	<exclude name="**/html/client.js" />
+		            	<exclude name="**/html/md5.js" />
+		            	<exclude name="**/html/jwplayer.js" />
+		            	
+		            </fileset>
+		            <arg value="-jar" />
+		            <arg path="${upstage.jslint.rhino}" />
+		            <arg path="${upstage.jslint.script}" />
+		            <srcfile />
+		        	
+		        </apply>
+			</then>
+			<else>
+				<echo message="JSLint disabled." />
+			</else>
+		</if>
+		
+    </target>
+	
+	<!-- run pychecker on python sources -->
+	<target name="pychecker" depends="build">
+		
+		<if>
+			<istrue value="${upstage.pychecker}" />
+			<then>
+						
+				<echo message="Invoking PyChecker ..." />
+			
+				<!-- TODO -->
+				
+			</then>
+			<else>
+				<echo message="PyChecker disabled." />
+			</else>
+		</if>	
+	
 	</target>
 	
 	<!-- deploy via FTP -->
