@@ -1,0 +1,10 @@
+File source:
+
+http://commons.wikimedia.org/wiki/File%3AGtk-dialog-warning.svg
+http://upload.wikimedia.org/wikipedia/commons/2/24/Gtk-dialog-warning.svg
+http://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Gtk-dialog-warning.svg/200px-Gtk-dialog-warning.svg.png
+
+Attribution:
+
+By David Vignoni [LGPL (http://www.gnu.org/licenses/lgpl.html)], via Wikimedia Commons
+
