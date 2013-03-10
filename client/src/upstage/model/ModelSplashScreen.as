@@ -49,10 +49,9 @@ class upstage.model.ModelSplashScreen implements TransportInterface
     function drawScreen(stage :MovieClip) :Void
     {
         trace("drawing splash screen");
-        this.splashScreen = SplashScreen.create(stage, 'splashScreen', Client.L_SPLASH_SCREEN,
-                                                0, 0, this);
+        this.splashScreen = SplashScreen.create(stage, 'splashScreen', Client.L_SPLASH_SCREEN, 0, 0, this);
         trace("linking to tracker");
-	LoadTracker.init(this, this.splashScreen);
+		LoadTracker.init(this, this.splashScreen);
     }
 
     /**
@@ -60,8 +59,7 @@ class upstage.model.ModelSplashScreen implements TransportInterface
      * load and string to display on splash screen.
      */
 
-    function GET_SPLASH_DETAILS(avatars:Number, props:Number,
-                                backdrops:Number, msg:String) :Void
+    function GET_SPLASH_DETAILS(avatars:Number, props:Number, backdrops:Number, msg:String) :Void
     {
         LoadTracker.setExpected(avatars, props, backdrops);
         this.splashScreen.displayStartupMsg(msg);

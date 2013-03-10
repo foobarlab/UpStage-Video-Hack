@@ -25,6 +25,7 @@
  * getLoadListener() and loadImage() to tell the splach screen how
  * things are going.  
  */
+ 
 import upstage.Client;
 import upstage.util.Construct;
 import flash.external.ExternalInterface;
@@ -102,14 +103,14 @@ class upstage.util.LoadTracker
      */
     static function getLoadListener(): Object
     {
-//        trace('**getting LoadListener. expected is ' + LoadTracker.expected);
+		//trace('**getting LoadListener. expected is ' + LoadTracker.expected);
         return {
             onLoadError: function(mc :Object, error :String):Void {
                 LoadTracker.failed++;
                 LoadTracker.redraw();
                 LoadTracker.modelSplash.fail();    
 
-//                trace('**Didnt load: ' + mc._name + ' because: ' + error);
+				//trace('**Didnt load: ' + mc._name + ' because: ' + error);
                 Construct.deepTrace(LoadTracker);
             },
             onLoadComplete: function(mc :Object, httpStatus:Number):Void {
@@ -118,13 +119,13 @@ class upstage.util.LoadTracker
                 LoadTracker.finished++;
                 ExternalInterface.call("stage_loading("+Math.floor(LoadTracker.finished*100/LoadTracker.expected) +")");
                 LoadTracker.redraw();
-//                trace('**loaded ' + mc._name );
+				//trace('**loaded ' + mc._name );
                 if(LoadTracker.finished == LoadTracker.expected)
                     LoadTracker.modelSplash.complete();
             },
             onLoadStart: function(mc :Object):Void {
                 //trace('Load started...');
-//                trace('**started ' + mc._name );
+				//trace('**started ' + mc._name );
                 LoadTracker.started++;
                 LoadTracker.redraw();
             }
