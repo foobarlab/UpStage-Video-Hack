@@ -355,12 +355,13 @@ def regenerate_voices():
         fn, args = x
         commands = fn(*args)
         if commands is None:
-            print "WARNING: can't find stuff for voice %s" % voice
+            # disabled to keep log silent
+            #print "WARNING: can't find stuff for voice %s" % voice
             continue
         filename = os.path.join(config.VOICE_SCRIPT_DIR, voice + '.sh')
         #just to check against ../.. etc
         if os.path.dirname(filename) != config.VOICE_SCRIPT_DIR:
-            print "something DEVIOUS may be happening:"\
+            print "something DEVIOUS may be happening:" \
                   " a voice is called %s which ends up at %s" % (voice, filename)
             continue
         cmd = ';\n'.join(commands)
