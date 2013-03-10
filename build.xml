@@ -472,7 +472,7 @@ March 2013		Added minify with YUI Compressor
 		<copy todir="${upstage.dir.build}/${upstage.dir.python}">
 			<fileset dir="${upstage.dir.src}/${upstage.dir.python}">
 				<!-- <exclude name="**/EMPTY" /> -->
-    			<include name="**/*" />
+				<include name="**/*" />
 			</fileset>
 		</copy>
 		
@@ -495,10 +495,16 @@ March 2013		Added minify with YUI Compressor
 		<!-- copy scripts -->
 		<copy todir="${upstage.dir.build}">
 			<fileset dir="${upstage.dir.src}">
+				
+				<!-- exclude development scripts -->
+				<exclude name="**/jslint*" />
+				<exclude name="**/pychecker*" />
+				
 				<include name="**/*.py"/>
 				<include name="**/*.sh"/>
 				<include name="**/*.bat"/>
 				<include name="**/*.command"/>
+				
 			</fileset>
 		</copy>
 		
