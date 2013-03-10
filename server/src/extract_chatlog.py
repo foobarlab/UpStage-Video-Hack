@@ -215,7 +215,7 @@ for line in infile:
 						clients[client]=clientname
 						client=clientname
 						
-						print "found new host client: %s: %s, %s, %s" % (ip,clientname,country,city)
+						print "found new client: %s: %s, %s, %s" % (ip,clientname,country,city)
 
 					else:
 						client=clients[client]
