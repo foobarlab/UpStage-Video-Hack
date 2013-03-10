@@ -1,3 +1,5 @@
+# see https://help.github.com/articles/ignoring-files
+
 /server/src/*.log
 /server/src/upstage/*.pyc
 /client/bin/*.swf
@@ -9,3 +11,4 @@
 /red5/client/subscriber/bin/*.swf
 /red5/client/subscriber/html/stream.swf
 /server/src/config/voices/*.sh
+/server/src/html/script/**/*.zip
