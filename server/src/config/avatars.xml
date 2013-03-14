@@ -33,4 +33,14 @@
 -->
 <avatar file="library:kkkkkkkk:VideoOverlay" medium="stream" name="stream_mp3" url="" streamserver="rtmp://localhost/oflaDemo" streamname="song40.mp3" dateTime="" uploader="admin" voice="" thumbnail="library:llllllll:FilmStripIcon">
 </avatar>
+<!-- 
+<avatar file="library:mmmmmmmm:VideoOverlay" medium="stream" name="bunny_720p" url="" streamserver="rtmp://localhost/oflaDemo" streamname="big_buck_bunny_720p_h264.mov" dateTime="" uploader="admin" voice="" thumbnail="library:nnnnnnnn:FilmStripIcon">
+</avatar>
+<avatar file="library:oooooooo:VideoOverlay" medium="stream" name="bunny_1080p" url="" streamserver="rtmp://localhost/oflaDemo" streamname="big_buck_bunny_1080p_h264.mov" dateTime="" uploader="admin" voice="" thumbnail="library:pppppppp:FilmStripIcon">
+</avatar>
+<avatar file="library:qqqqqqqq:VideoOverlay" medium="stream" name="bunny_480p" url="" streamserver="rtmp://localhost/oflaDemo" streamname="big_buck_bunny_480p_h264.mov" dateTime="" uploader="admin" voice="" thumbnail="library:rrrrrrrr:FilmStripIcon">
+</avatar>
+-->
+<avatar file="library:qqqqqqqq:VideoOverlay" medium="stream" name="bunny_480p" url="" streamserver="rtmp://localhost/oflaDemo" streamname="big_buck_bunny_480p_h264.mp4" dateTime="" uploader="admin" voice="" thumbnail="library:rrrrrrrr:FilmStripIcon">
+</avatar>
 </avatars>
