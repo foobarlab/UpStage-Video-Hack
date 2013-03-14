@@ -33,6 +33,14 @@
 -->
 <avatar media="library:kkkkkkkk:VideoOverlay" voice="" name="stream_mp3" showname="show">
 </avatar>
+<!-- 
+<avatar media="library:mmmmmmmm:VideoOverlay" voice="" name="bunny_720p" showname="show">
+</avatar>
+<avatar media="library:oooooooo:VideoOverlay" voice="" name="bunny_1080p" showname="show">
+</avatar>
+-->
+<avatar media="library:qqqqqqqq:VideoOverlay" voice="" name="bunny_480p" showname="show">
+</avatar>
 <access_one>
 </access_one>
 <access_two>
