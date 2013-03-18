@@ -19,7 +19,6 @@
     document.getElementById('stagePopUp').style.opacity = 1;
  }
  
- 
  function stage_loaded()
  {
     setTimeout(setOpacity, 10);
@@ -27,15 +26,25 @@
 
  function stage_error(msg)
  {
-     document.getElementById('loading').innerHTML = msg;
+     document.getElementById('loading').innerHTML = 'Loading failed:<br />' + msg;
      document.getElementById('loadingImg').src = '/style/warning.png';
+     document.getElementById('loadingMessage').style.display = 'none';
+
+     // TODO add reload buttons? maybe also link back to stages list?
+
      hasError = true;
  }
  
  function stage_loading(percentage)
  {
-    if(!hasError)
-        document.getElementById('loading').innerHTML = "Loading... " + percentage + "%";
+    if(!hasError) {
+        if(percentage < 100) {
+        	document.getElementById('loading').innerHTML = percentage + "%";
+        } else {
+        	document.getElementById('loadingImg').style.display = "none";
+        	document.getElementById('loading').innerHTML = "Loading completed.";
+        }
+    }
  }
  
  function setOpacity()

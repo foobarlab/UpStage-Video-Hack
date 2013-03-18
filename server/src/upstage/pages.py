@@ -1674,12 +1674,13 @@ class StagePage(Resource):
         mode = stage.debugMessages
         
         html = get_template("stage.xhtml")
+        
         #Shaun Narayan (02/16/10) - Removed reference to URLEncode to build the URL as it input ampersands without escaping.
-        vars = 'stageID=%s&amp;policyport=%d&amp;mode=%s&amp;swfport=%d' %(stage.ID, config.POLICY_FILE_PORT,  mode, config.SWF_PORT)
+        params = 'stageID=%s&amp;policyport=%d&amp;mode=%s&amp;swfport=%d' %(stage.ID, config.POLICY_FILE_PORT,  mode, config.SWF_PORT)
         
         #Daniel Han (17/09/2012) - Added bgcolor and stage_message for page to display.
         self.html = html % {'stagename': stage.name, 
-            'vars': vars, 
+            'params': params, 
             'bgcolor': stage.pageBgColour.replace('0x','#'),
             'stage_message': stage.splash_message
             }
