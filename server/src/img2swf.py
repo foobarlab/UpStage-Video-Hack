@@ -53,10 +53,29 @@ A thumbnail version will be placed in THUMBNAIL.JPG. (if possible)
 import os, sys, tempfile
 import shutil
 import time
+import subprocess
 
 from upstage.config import IMG2SWF_LOG, LOG_ROTATE_SIZE
 from upstage.util import redirect_to_log
 
+# replaced os.system with subprocess.call
+# see: http://docs.python.org/2/library/os.html
+# see: http://docs.python.org/2/library/subprocess.html#subprocess-replacements
+
+# @brief executes a given command string
+# @param cmd the command to execute
+def execute_command(cmd):
+    retcode = None
+    print "about to execute command: %s" % cmd
+    try:
+        retcode = subprocess.call(cmd, shell=True)
+        if retcode < 0:
+            print >>sys.stderr, "Child was terminated by signal", -retcode
+        else:
+            print >>sys.stderr, "Child returned", retcode
+    except OSError, e:
+        print >>sys.stderr, "Execution failed:", e
+    return [retcode, cmd]
 
 ## @brief Raise an IOError
 # @param tfn ignored
@@ -72,23 +91,20 @@ def do_nothing(tfn, swf):
 # FIXED BY VISHAAL 01/06/09, straight gif2wf converter 
 # instead of gif->png->swf
 def do_gif(tfn, swf):
-    #png = tempfile.mkstemp('.png')[1]
-    #cmd = 'cat %s | gif2png -n -fO > %s ; png2swf -o %s %s' % (tfn, png, swf, png)
+    ##png = tempfile.mkstemp('.png')[1]
+    ##cmd = 'cat %s | gif2png -n -fO > %s ; png2swf -o %s %s' % (tfn, png, swf, png)
     cmd = 'gif2swf -o %s %s' % (swf, tfn)
-    err = os.system(cmd)
-    #os.remove(png)
-    return (err, cmd)
+    ##os.remove(png)
+    return execute_command(cmd)
 
 ## @brief Convert from png to swf
 # @param swf output file name
 # @param tfn input file name
 def do_png(tfn, swf):
     #cmd = 'png2swf -o %s %s' % (swf, tfn)
-    cmd = 'png2swf -o %s %s' % (swf, tfn)
-    err = os.system(cmd)
-    return (err, cmd)
-
-
+    cmd = 'png2swf -v -o %s %s' % (swf, tfn)
+    return execute_command(cmd)
+    
 ## @brief Convert from jpg to swf
 # @param swf output file name
 # @param tfn input file name
@@ -97,18 +113,14 @@ def do_jpg(tfn, swf):
     # Gives better image quality using swftools 0.7.0
     #cmd = 'jpeg2swf -m -o %s %s' % (swf, tfn)
     cmd = 'jpeg2swf -z -q85 -o %s %s' % (swf, tfn)
-    err = os.system(cmd)
-    return (err, cmd)
-
+    return execute_command(cmd)
 
 ## @brief Dummy conversion for swf files.
 # @param swf output file name
 # @param tfn input file name
 def do_swf(tfn, swf):
     cmd = 'cp %s %s' % (tfn, swf)
-    err = os.system(cmd)
-    return (err, cmd)
-
+    return execute_command(cmd)
 
 ## @brief Make a thumbnail from the supplied image
 # @param filetype image/png, image/jpeg, image/gif, application/x-shockwave-flash
@@ -129,11 +141,12 @@ def thumbnailer(filetype, tfn, thumb):
     }
     tempf = tempfile.mkstemp('.jpg')[1]
     cmd = types[filetype] % (tfn, tempf)
-    err = os.system(cmd)
-    print cmd
+    
+    print "thumbnailer command: %s" % cmd
+    result, cmd = execute_command(cmd)
 
-    if err or not os.path.exists(tempf):
-        print "%s %s %s %s" % (tempf, thumb, filetype, err)
+    if result or not os.path.exists(tempf):
+        print "tempfile: %s, thumb: %s, filetype: %s, result: %s" % (tempf, thumb, filetype, result)
         raise RuntimeError("Couldn't make tempfile for thumbnail")
 
     try:
@@ -183,22 +196,26 @@ def convert(files, swf, thumb):
 
     print "Filetype is '%s', convertor is %s\n" %(filetype, convertor)
     filestr = ' '.join(files)
-    err, cmd = convertor(filestr, swf)
-    print "Done SWF, got %s, %s\n" %(err, cmd)
-    if err:
-        raise IOError('Command "%s" apparently failed: returned "%s"' % (cmd, err))
+    result, cmd = convertor(filestr, swf)
+    print "Done SWF: command: %s, result: %s\n" %(cmd,result)
+    
+    if result:
+        raise IOError('Command "%s" apparently failed: returned "%s"' % (cmd, result))
+        
     print "no errors yet!"
 
     if not os.path.exists(swf):
         raise IOError('Command "%s" apparently failed: "%s" does not exist!' % (cmd, swf))
 
+    
     thumbnailer(filetype, files[0], thumb)
 
     # delete temporary files.
     try:
         for f in files:
+            print "removing temp file %s" % f
             os.remove(f)
-            print "removing %s" % f
+            
     except (OSError, IOError ), e:
         print ("Error removing temp file %s: %s" % (f, e))
         raise
@@ -217,6 +234,7 @@ def main():
     redirect_to_log(IMG2SWF_LOG)
     print '-' * 72
     print time.strftime('%Y-%m-%d %H:%M:%S')
+    
     print "arguments are:\n  %s" %'\n  '.join(sys.argv[1:])
 
     swf, thumb = sys.argv[1: 3]
@@ -224,7 +242,8 @@ def main():
     if not files:
         raise RuntimeError("no files to convert (got '%s'" % ' '.join(sys.argv))
 
-    x = convert(files, swf, thumb)
+    result = convert(files, swf, thumb)
+    print "final result: %s" % result
     print "worked, or at least failed to complain."
 
 if __name__ == '__main__':
