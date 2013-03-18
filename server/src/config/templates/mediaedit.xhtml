@@ -26,13 +26,13 @@ Modified by Vibhu Patel / Nessa (17/08/2011): Heavily Modified fields which fixe
 	<div style="float:right;margin-top:-30px;">
 
 	</div>
-	<input type="hidden" name="stages" value="%(list_stages)s"></input>
-	<input type="hidden" name="users" value="%(list_users)s"></input>
+	<input type="hidden" name="stages" value="%(list_stages)s" />
+	<input type="hidden" name="users" value="%(list_users)s" />
 	<br />
 	<span id="filters">
 	</span>
 	<br />
-    	<input type="button" onclick="javascript:addFilter();" value="Add Filter"></input>
+    	<input type="button" onclick="javascript:addFilter();" value="Add Filter" />
 	</form>
 </div>
 <div>
@@ -59,8 +59,8 @@ Modified by Vibhu Patel / Nessa (17/08/2011): Heavily Modified fields which fixe
 </div><!--seperator-->
 
 	<form name="rupert" action="%(req:path)s"><!--sperator_2-->
-		<!--sperator_3--><input type="hidden" name="mediaName" value="%(attr:medianame)s"></input><!--sperator_4-->
-		<!--sperator_5--><input type="hidden" name="mediaType" value="%(attr:mediatype)s"></input><!--sperator_6-->
+		<!--sperator_3--><input type="hidden" name="mediaName" value="%(attr:medianame)s" /><!--sperator_4-->
+		<!--sperator_5--><input type="hidden" name="mediaType" value="%(attr:mediatype)s" /><!--sperator_6-->
 		<hr />	   
         <div id="mediadiv">
 		<!--mediaedit_break_1-->
@@ -88,7 +88,7 @@ Modified by Vibhu Patel / Nessa (17/08/2011): Heavily Modified fields which fixe
 				%(static_info)s
 				</table>
 				<br />
-				<input type="button" onclick="javascript:switchTab();" id="switchButton" value="Display Details"></input>
+				<input type="button" onclick="javascript:switchTab();" id="switchButton" value="Display Details" />
 				</div>
 		</td>
 		</tr>
@@ -98,12 +98,12 @@ Modified by Vibhu Patel / Nessa (17/08/2011): Heavily Modified fields which fixe
 		</div>
 		<hr />
 		<div style="width:100%;clear:both" id="submit"><!--mediaedit_break_3-->
-				<input type="hidden" name="action" value=""></input>
+				<input type="hidden" name="action" value="" />
 				<br />
 				<table>
 					<tr>
-						<td><input type="button" onclick="saveMedia();" value="Save Changes" style="width:100px;"></input></td>
-						<td><input type="button" onclick="warn(7);" value="Delete Media" style="width:100px;"></input></td>
+						<td><input type="button" onclick="saveMedia();" value="Save Changes" style="width:100px;" /></td>
+						<td><input type="button" onclick="warn(7);" value="Delete Media" style="width:100px;" /></td>
 					</tr>
 					<tr>
 						<td><input type="checkbox" name="force" value="force" /><b>Delete even if in use.</b></td>
