@@ -78,17 +78,25 @@ class _MediaFile(object):
         if (self.file[-4:] == '.mp3'):
             self.url = config.AUDIO_URL + self.file
         else:
-            if(self.file[:8] == 'library:'):   # handle library items (included in client.swf)
+            library_prefix_length = len(config.LIBRARY_PREFIX)
+            if(self.file[:library_prefix_length] == config.LIBRARY_PREFIX):   # handle library items (included in client.swf)
                 self.url = self.file
             else:
                 self.url = config.MEDIA_URL + self.file
-        self.thumbnail = ''
-        self.web_thumbnail = config.MISSING_THUMB_URL
-        tn = kwargs.pop('thumbnail', None)  #or self.file.replace('.swf','.jpg')
-        if tn:
-            if not config.CHECK_THUMB_SANITY or _check_thumb_sanity(tn):
-                self.web_thumbnail = tn
-                self.thumbnail = tn
+        
+        # handle thumbnail images
+        self.thumbnail = kwargs.pop('thumbnail',None)
+        if(self.thumbnail is None):
+            self.thumbnail = ''
+            self.web_thumbnail = config.MISSING_THUMB_URL
+            tn = kwargs.pop('thumbnail', None)  #or self.file.replace('.swf','.jpg')
+            if tn:
+                if not config.CHECK_THUMB_SANITY or _check_thumb_sanity(tn):
+                    self.web_thumbnail = tn
+                    self.thumbnail = tn
+        else:
+            self.web_thumbnail = self.thumbnail
+                    
         self.name = kwargs.pop('name', 'nameless')
         self.voice = kwargs.pop('voice', None)
         self._type = kwargs.pop('type', None)
@@ -100,11 +108,11 @@ class _MediaFile(object):
         # AC (29.09.07) - 
         self.uploader = kwargs.pop('uploader', '') # user name of uploader.
         self.dateTime = kwargs.pop('dateTime', '') # Date and time of upload.
-        self.tags = kwargs.pop('tags', '')#Karena, Corey, Heath
+        self.tags = kwargs.pop('tags', '') # Karena, Corey, Heath
         
         # add stream parameters
-        self.streamserver = kwargs.pop('streamserver',None)
-        self.streamname = kwargs.pop('streamname',None)
+        self.streamserver = kwargs.pop('streamserver','')
+        self.streamname = kwargs.pop('streamname','')
         
         if kwargs:
             log.msg('left over arguments in _MediaFile', kwargs)
@@ -185,9 +193,9 @@ class MediaDict(Xml2Dict):
             return os.path.join(config.MEDIA_DIR, f)
 
     def add(self, **kwargs):
-        """Put a new item in, and save it (implicitly, through __setitem__)
-        """
+        """Put a new item in, and save it (implicitly, through __setitem__)"""
         f = kwargs.get('file', None)
+        log.msg("add(): file = %s" % f)
         if f is not None:
             self[f] = _MediaFile(**kwargs)
             return self[f]
@@ -196,6 +204,8 @@ class MediaDict(Xml2Dict):
     def addItem(self, form): 
         self.form = form
         f = form.get('file', None)
+        log.msg("addItem(): file = %s" % f)
+        log.msg("addItem(): form = %s" % form)
         if f is not None:
             self[f] = _MediaFile(form)
             return self[f]
