@@ -33,20 +33,24 @@ allDivs[4]="videoBits";
 */
 function sendPostAction()
 {
-    /*
+	log.debug("sendPostAction()");
+	
+	/*
     if(shallContinue())
     {
         requestPageForm("POST", document.natasha.action, document.natasha, popupAlert);
     }
     return false;
     */
-    
+	
     return shallContinue();
 }
 
 function disableSubmit()
 {
-    document.getElementById("btnSubmit").disabled = 'disabled';
+	log.debug("disableSubmit()");
+	
+	document.getElementById("btnSubmit").disabled = 'disabled';
 }
 
 /*
@@ -55,7 +59,10 @@ function disableSubmit()
 */
 function setAction(activate)
 {
-	var mediatype = getRadioValue();
+	log.debug("setAction(): activate="+activate);
+	
+	//var mediatype = getRadioValue();
+	var mediatype = getSelectedMediaType();
 	var action = '';
 	if(activate)
 	{
@@ -86,6 +93,8 @@ function setAction(activate)
 */
 function createAvatarControls()
 {
+	log.debug("createAvatarControls()");
+	
 	document.getElementById("muLeftContent").style.display = 'inline';
 	document.getElementById("muRightContent").style.display = 'inline'; // style.visibility = 'visible';
 	for(var i=0; i< allDivs.length; i++)
@@ -96,7 +105,7 @@ function createAvatarControls()
 			var avatarDiv = document.getElementById("avatarBits");
 			avatarDiv.style.display = 'inline';
 			avatarDiv.style.display = 'inline';
-			document.getElementById("leftHeading").innerHTML = '<h1>Upload an Avatar:</h1>';
+			document.getElementById("leftHeading").innerHTML = '<h1>Add an Avatar:</h1>';
 			
 			revealStageList('avatar');
 			//checkStageList(); // add media name property later??
@@ -116,6 +125,7 @@ function createAvatarControls()
 */
 function createPropControls()
 {
+	log.debug("createPropControls()");
 
 	document.getElementById("muLeftContent").style.display = 'inline';
 	document.getElementById("muRightContent").style.display = 'inline';
@@ -128,7 +138,7 @@ function createPropControls()
 			var propDiv = document.getElementById("propBits");
 			propDiv.style.display = 'inline';
 			propDiv.style.display = 'inline';
-			document.getElementById("leftHeading").innerHTML = '<h1>Upload a Prop:</h1>';
+			document.getElementById("leftHeading").innerHTML = '<h1>Add a Prop:</h1>';
 			revealStageList('prop');
 			//checkStageList();
 		}
@@ -146,6 +156,8 @@ function createPropControls()
 */
 function createBackdropControls()
 {
+	log.debug("createBackdropControls()");
+	
 	//var bkDiv = document.getElementById("backdropBits");
 	//bkDiv.style.display = 'inline';
 	document.getElementById("muLeftContent").style.display = 'inline';
@@ -159,7 +171,7 @@ function createBackdropControls()
 			var bkdropDiv = document.getElementById("backdropBits");
 			bkdropDiv.style.display = 'inline';
 			bkdropDiv.style.display = 'inline';
-			document.getElementById("leftHeading").innerHTML = '<h1>Upload a Backdrop:</h1>';
+			document.getElementById("leftHeading").innerHTML = '<h1>Add a Backdrop:</h1>';
 			revealStageList('backdrop');
 			//checkStageList();
 		
@@ -178,6 +190,8 @@ function createBackdropControls()
 */
 function createAudioControls()
 {
+	log.debug("createAudioControls()");
+	
 	document.getElementById("muLeftContent").style.display = 'inline';
 	document.getElementById("muRightContent").style.display = 'inline';
 	for(var i=0; i< allDivs.length; i++)
@@ -188,7 +202,7 @@ function createAudioControls()
 			var audioDiv = document.getElementById("audioBits");
 			audioDiv.style.display = 'inline';
 			audioDiv.style.display = 'inline';
-			document.getElementById("leftHeading").innerHTML = '<h1>Upload Audio:</h1>';
+			document.getElementById("leftHeading").innerHTML = '<h1>Add Audio:</h1>';
 			revealStageList('audio');		
 		}
 		else
@@ -205,6 +219,8 @@ function createAudioControls()
  */
 function createVideoControls()
 {
+	log.debug("createVideoControls()");
+	
 	//var audioDiv = document.getElementById("videoBits");
 	//audioDiv.style.display = 'inline';
 	document.getElementById("muLeftContent").style.display = 'inline';
@@ -217,7 +233,7 @@ function createVideoControls()
 			var vidDiv = document.getElementById("videoBits");
 			vidDiv.style.display = 'inline';
 			vidDiv.style.display = 'inline';
-			document.getElementById("leftHeading").innerHTML = '<h1>Upload A Video Stream:</h1>';
+			document.getElementById("leftHeading").innerHTML = '<h1>Add a Video-Avatar:</h1>';
 			revealStageList('video');
 			//checkStageList();
 		
@@ -230,12 +246,24 @@ function createVideoControls()
 	setAction(true);
 }
 
+/**
+ * Hides the bottom control panel
+ */
+function hideControls() {
+	
+	log.debug("hideControls()");
+	
+	document.getElementById("muLeftContent").style.display = 'none';
+	document.getElementById("muRightContent").style.display = 'none';
+}
+
 /*
  * Author: Natasha Pullan
  * Displays the fields of a given media type
  */
 function displayFields(selectbox, prefix)
 {
+	log.debug("displayFields(): selectbox="+selectbox+", prefix="+prefix);
 	
 	var value = document.getElementById(selectbox).value;
 	for(var counter = 0; counter <= 9; counter++)
@@ -266,6 +294,8 @@ function displayFields(selectbox, prefix)
  */
 function revealStageList(media)
 {
+	log.debug("revealStageList(): media="+media);
+	
 	var stageList = document.getElementById("stageList");
 	stageList.style.display = 'inline';
 
@@ -282,6 +312,8 @@ function revealStageList(media)
  */
 function removeSelection(selectbox)
 {
+	log.debug("removeSelection(): selectbox="+selectbox);
+	
 	var i;
 	for(i=selectbox.options.length-1;i>=0;i--)
 	{
@@ -298,6 +330,8 @@ function removeSelection(selectbox)
  */
 function switchSelection(selectbox1, selectbox2)
 {
+	log.debug("switchSelection(): selectbox1="+selectbox1+", selectbox2="+selectbox2);
+	
 	var i;
 	var toAdd;
 	//var length = selectbox1.options.length;
@@ -318,6 +352,8 @@ function switchSelection(selectbox1, selectbox2)
  */
 function addMoreOptions(selectbox, text)
 {
+	log.debug("addMoreOptions(): selectbox="+selectbox+", text="+text);
+	
 	var optn = document.createElement("OPTION");
 	optn.text = text;
 	optn.value = text;
@@ -330,25 +366,48 @@ function addMoreOptions(selectbox, text)
 
 //---------------------------- UPDATING DETAILS ------------------------------//
 
-/*
- * Author: Natasha Pullan
- * Returns the value of the media type selected
+/**
+ * Returns the value of the selected media type
  */
-function getRadioValue()
+function getSelectedMediaType()
 {
-	var radVal;
-	for(var i = 0; i < document.natasha.type.length; i++)
-	{
-		if(document.natasha.type[i].checked)
-		{
-			radVal = document.natasha.type[i].value;
-		}
-		else
-		{
-			
-		}
+	log.debug("getSelectedMediaType()");
+	
+	var element = document.getElementById("mediaTypeSelector");
+	var selectedMediaType = element.options[element.selectedIndex].value;
+	return selectedMediaType;
+}
+
+
+/**
+ * Changes the displayed control panel depending on selected media type
+ */
+function changeMediaTypeControlPanel()
+{
+	log.debug("changeMediaTypeControlPanel()");
+	
+	var selectedMediaType = getSelectedMediaType();
+	switch(selectedMediaType) {
+		case "avatar":
+			createAvatarControls();
+			break;
+		case "prop":
+			createPropControls();
+			break;
+		case "backdrop":
+			createBackdropControls();
+			break;
+		case "audio":
+			createAudioControls();
+			break;
+		case "video":
+			createVideoControls();
+			break;
+		default:
+			//alert("Unsupported Media Type");
+			hideControls();
+			break;
 	}
-	return radVal;
 }
 
 /*
@@ -358,6 +417,8 @@ function getRadioValue()
  */
 function selectAllStages(selectbox)
 {
+	log.debug("selectAllStages(): selectbox="+selectbox);
+	
 	for(var i = 0; i < selectbox.options.length; i++)
 	{
 		selectbox.options[i].selected = true;
@@ -375,11 +436,28 @@ function selectAllStages(selectbox)
  */
 function checkAllFields()
 {
+	log.debug("checkAllFields()");
+	
 	var filled = false;
-	var type = getRadioValue();
-	var name = document.getElementById('name').value;
-    var tag = document.getElementById('tags').value;
+	var type = getSelectedMediaType();
+	var name = _getElementById('name').value;
+    var tags = _getElementById('tags').value;
 	var file;
+	
+	// set hidden fields for streaming and image type
+	setHiddenFields();
+	
+	// aquire streaming parameters
+	var hasStreaming = _getElementById('hasStreaming').value;
+	//var streamType = _getElementById('streamtype').value;
+	var streamServer = _getElementById('streamserver').value;
+	var streamName = _getElementById('streamname').value;
+	
+	// aquire image type (upload or library)
+	var imageType = _getElementById('imagetype').value;
+	
+	// check to have all required fields filled:
+	
 	if(type == null)
 	{
 		filled = false;
@@ -393,11 +471,27 @@ function checkAllFields()
 		alert("You have not entered a name!");
 		setAction(false);
 		setContinue(false);
-	} 
+	}
+	else if(hasStreaming == 'true' && streamServer == '' )
+	{
+		filled = false;
+		alert("You have not entered a stream server!");
+		setAction(false);
+		setContinue(false);
+	}
+	else if(hasStreaming == 'true' && streamName == '' )
+	{
+		filled = false;
+		alert("You have not entered a stream name!");
+		setAction(false);
+		setContinue(false);
+	}
 	else
 	{
 		filled = true;
 	}
+	
+	// replace special chars in 'name' and 'tags':
     
     if(name.match('#') || name.match('&') || name.match(':'))
 	{
@@ -407,22 +501,28 @@ function checkAllFields()
         document.getElementById('name').value = name;  
 	}
     
-    if(tag.match('#') || tag.match('&') || tag.match(':'))
+    if(tags.match('#') || tags.match('&') || tags.match(':'))
 	{
-		tag = tag.replace(/&/g,"");
-        tag = tag.replace(/#/g,""); 
-        tag = tag.replace(/:/g,"");
-        document.getElementById('tags').value = tag;  
+		tags = tags.replace(/&/g,"");
+        tags = tags.replace(/#/g,""); 
+        tags = tags.replace(/:/g,"");
+        document.getElementById('tags').value = tags;  
 	}
 	
 	if(filled)
 	{
-		if(checkExtensions())
-		{
-			selectAllStages(document.getElementById('assigned'));
+		var postcheck = false;
+		
+		// check file extensions for upload images
+		if(imageType == 'upload') {
+			if(checkExtensions()) { postcheck = true; }
+		} else {
+			postcheck = true;
 		}
-		else
-		{
+		
+		if(postcheck) {
+			selectAllStages(document.getElementById('assigned'));
+		} else {
 			setContinue(false);
 			setAction(false);
 		}
@@ -436,6 +536,8 @@ function checkAllFields()
  */
 function setContinue(cont)
 {
+	log.debug("setContinue(): cont="+cont);
+	
 	navigate = cont;
 
 }
@@ -446,6 +548,8 @@ function setContinue(cont)
  */
 function shallContinue()
 {
+	log.debug("shallContinue()");
+	
 	return navigate;
 }
 
@@ -455,10 +559,14 @@ function shallContinue()
  */
 function checkExtensions()
 {
-	var type = getRadioValue();
+	log.debug("checkExtensions()");
+	
+	//var type = getRadioValue();
+	var type = getSelectedMediaType();
 	var filename = '';
 	var fileID = '';
-	var shallcontinue = "";
+	//var shallcontinue = "";
+	var shallcontinue = false;
 	if(type == "avatar")
 	{
 		var frameNo = parseInt(document.getElementById('avframecount').value);
@@ -509,7 +617,7 @@ function checkExtensions()
         {
             shallcontinue = true;
         }
-            
+
     }
 	
 	return shallcontinue;
@@ -521,6 +629,8 @@ function checkExtensions()
  */
 function checkMediaType(filename, type)
 {
+	log.debug("checkMediaType(): filename="+filename+", type="+type);
+	
 	var splitfilename = filename.split(".");
 	//Modified by heath behrens (28/07/2011) - now accesses last element in the array
 	var fileExt = splitfilename[splitfilename.length-1];
@@ -558,22 +668,101 @@ function checkMediaType(filename, type)
 }
 
 //-------------------------------- VOICE TESTING -----------------------------//
+
 function voiceTest()
 {
+	log.debug("voiceTest()");
+	
 	var action = "/admin/test.mp3";
-    actionlocation = action + '?voice='+ document.getElementById("voice").value + '&text=' + document.getElementById("text").value;
-    jwplayer("voicediv").setup({
-			flashplayer: "/player.swf",
-			file: actionlocation,
-            height: 50,
-            screencolor: '#FFFFFF',
-            icons: false
-		});
-    jwplayer("voicediv").play();
+    var voicefile = action + '?voice='+ _getElementById("voice").value + '&text=' + _getElementById("text").value;
+    
+    var voiceDiv = _getElementById("voicediv");
+    var voiceError = _getElementById("voiceerror");
+    
+    voiceDiv.style.height = '30px';
+    voiceDiv.style.width = '80%';
+    voiceDiv.style.display = 'block';
+    voiceDiv.style.margin = '10px';
+    
+    voiceError.style.display = 'block';
+    voiceError.style.margin = '10px';
+    
+    flowplayer("voicediv", "/script/flowplayer/flowplayer-3.2.16.swf", {
+    	
+    	onLoad: function() {
+            this.setVolume(100);
+            voiceError.innerHtml = '';	// clear error display
+        },
+        
+        onFinish: function() {
+        	voiceDiv.style.display = 'none';	// hide player
+        	this.unload();
+        },
+        
+        onError: function(errorCode) {
+        	
+        	/*
+        	 * Error codes
+        	 * see: http://flash.flowplayer.org/documentation/configuration/player.html
+        	 * 
+        	 * 100 Plugin initialization failed
+        	 * 200 Stream not found
+        	 * 201 Unable to load stream or clip file
+        	 * 202 Provider specified in clip is not loaded
+        	 * 300 Player initialization failed
+        	 * 301 Unable to load plugin
+        	 * 302 Error when invoking plugin external method
+        	 * 303 Failed to load resource such as stylesheet or background image
+        	 * 
+        	 */
+        	
+        	var errorMessage = "Unknown error<br />"+voicefile;
+        	
+        	switch(errorCode) {
+        		case 200:
+        			errorMessage = "Stream not found<br />"+voicefile;
+        			break;
+        		case 201:
+        			errorMessage = "Unable to load stream or clip file<br />"+voicefile;
+        			break;
+        	}
+        	
+        	// hide player
+        	voiceDiv.style.display = 'none';
+        	
+        	// show error
+        	voiceError.innerHTML = '<p style="color:red">Error ' + errorCode + ': ' + errorMessage + '</p>';
+        	
+        	this.unload();
+        },
+    	
+    	clip: {
+    		url: voicefile, autoPlay: true
+    	},
+        
+        plugins: {
+        	audio: {
+                url: '/script/flowplayer.audio/flowplayer.audio-3.2.10.swf'
+            },
+        	controls: {
+                url: '/script/flowplayer/flowplayer.controls-3.2.15.swf',
+                fullscreen: false,
+                height: 30,
+                autoHide: false,
+                showErrors: false
+            }
+            
+        }
+    	
+    });
+
 }
 
+/* FIXME unused? */
 function voiceTesting()
 {
+	log.debug("voiceTesting()");
+	
 	var voiceForm = document.createElement("form");
 	var action = "/admin/test.mp3";
 	voiceForm.action = action;
@@ -581,37 +770,51 @@ function voiceTesting()
 	//document.natasha.action = action;
 }
 
-function redirect_submit(form, action){
-
+/* FIXME unused? */
+function redirect_submit(form, action)
+{
+	log.debug("redirectSubmit(): form="+form+", action="+action);
+	
     var a = form.action;
     form.action = action || real_action;
     form.submit();
     form.action = a;
 }
 
+/* FIXME unused? */
 function submitVoice(form, action)//(form, action)
 {
+	log.debug("submitVoice(): form="+form+", action="+action);
+	
 	voiceform = document.createElement("form");
 	voiceform = form;
 	voiceform.action = action;
 	testVoice(voiceform);
 }
 
+/* FIXME unused? */
 function testVoice(form)
 {
+	log.debug("testVoice(): form="+form);
+	
 	window.open(form.submit(),'name','height=100,width=200');
 }
+
 // ------------------------------ AJAX STUFF ---------------------------------//
 
 
 function getMediaDetails()
 {
+	log.debug("getMediaDetails()");
+	
 	var uname = 'admin';
 	requestInfo("GET", '/admin/workshop/mediaupload?name='+uname+'&submit=getmedia', renderUploadedMedia);
 }
 
 function renderUploadedMedia()
 {
+	log.debug("renderUploadedMedia()");
+	
 	var cType;
 	if(xmlhttp.readyState==4)
 	{
@@ -651,6 +854,8 @@ function renderUploadedMedia()
 
 function showForm(name)
 {
+	log.debug("showForm(): name="+name);
+	
 	for(i=0; i<document.FormName.elements.length; i++)
 	{
 		//document.write("The field name is: " + document.FormName.elements[i].name + " and it�s value is: " + document.FormName.elements[i].value + ".<br />");
@@ -675,6 +880,8 @@ function showForm(name)
 }
 function showTable(name)
 {
+	log.debug("showTable(): name="+name);
+	
 	var table = document.getElementById(name);
 	var iTable;
 	var i;
@@ -694,8 +901,11 @@ function showTable(name)
 	//hideTables(name);
 }
 
+// FIXME: this looks like a function therefore it should be starting with a lowercase letter
 function Display()
 {
+	log.debug("Display()");
+	
 	// Get value from drop down
 	document.rupert.framecount.value;
 	
@@ -723,6 +933,8 @@ function Display()
 
 function checkFileSize(fileNo, mediaType, prefix)
 {
+	log.debug("checkFileSize(): fileno="+fileno+", mediaType="+mediaType+", prefix="+prefix);
+	
 	fileNames = [];
 	if (fileNo > 1)
 	{
@@ -741,6 +953,8 @@ function checkFileSize(fileNo, mediaType, prefix)
 
 function createFrameCount(textValue, prefix)
 {
+	log.debug("createFrameCount(): textValue="+textValue+", prefix="+prefix);
+	
 	var fcName = prefix + 'framecount';
 	var message = 'change happened';
 	var html = 
@@ -765,6 +979,8 @@ function createFrameCount(textValue, prefix)
 
 function displayFrameFields(selectbox, prefix) //doesnt work in innerhtml
 {
+	log.debug("displayFrameFields(): selectbox="+selectbox+", prefix="+prefix);
+	
 	var value = selectbox.value;
 	var html;
 	for(var counter = 0; counter <= 9; counter++)
@@ -789,6 +1005,8 @@ function displayFrameFields(selectbox, prefix) //doesnt work in innerhtml
 
 function checkStageList()
 {
+	log.debug("checkStageList()");
+	
 	var options = document.getElementById("unassigned").options;
 	if(options == null)
 	{
@@ -803,32 +1021,37 @@ function checkStageList()
 
 function saveInformation()
 {
+	log.debug("saveInformation()");
+	
 	// check size of files
-		// check user permissions
-		// do not pass information if files are too big
+	// check user permissions
+	// do not pass information if files are too big
 	// get assigned stages
 	// get name of media
 	// get type of media
 	// check for any duplicate names
-		// alert message of any similar named media
+	// alert message of any similar named media
 	//give message to user of successful upload or not
 	//var mediatype = getRadioValue();
 	//var mediaName = document.getElementById("mediaName").value;
+	
 	var file = document.getElementById("avcontents1").value; // change to allow other media types
 	var medianame = document.getElementById("mediaName").value;
 	var voices = document.getElementById("voice").options;
-	var type = getRadioValue();
+	//var type = getRadioValue();
+	var type =  getSelectedMediaType();
 	var medium = ""
 	var description = ""
 	var uploader = document.getElementById("playername").value;
 	var dateTime = document.getElementById("datetime").value;
 	var selectedVoice;
 		
-	if(radValue == null)
+	if(radValue == null)	// TODO radValue should be mediaTypeSelectorValue
 	{
+		// TODO avoid this
 		alert("You have to choose a media type: Avatar, Prop, Backdrop or Audio ");
 	}
-	else if(mediaName == null || mediaName == "" && radValue != null)
+	else if(mediaName == null || mediaName == "" && radValue != null)	// TODO radValue should be mediaTypeSelectorValue
 	{
 		alert("Please enter a name for the new media file");
 	}
@@ -842,4 +1065,303 @@ function saveInformation()
 			}
 		}
 	}
+}
+
+// ------------- new stuff TODO
+
+/* ---- generic functions */
+
+function _getElementById(id) {
+	return document.getElementById(id);
+}
+
+function _resetInputText(element) {
+	element.text = "";
+}
+
+function _resetInputDropDown(element,value=-1) {
+	element.selectedIndex = value;
+}
+
+/* ---- reset functions */
+
+function resetForm() {
+	
+	log.debug("resetForm()");
+	
+	// hide lower page controls
+	document.getElementById("mediaTypeSelector").selectedIndex = -1;
+	hideControls();
+	
+	// reset form data
+	resetAvatarForm();
+	resetPropForm();
+	resetBackdropForm();
+	resetAudioForm();
+	resetVideoAvatarForm();
+}
+
+function resetAvatarForm() {
+	
+	log.debug("resetAvatarForm()");
+	
+	resetForm_BasicSettings();									// name and tags
+	_resetInputDropDown(_getElementById("voice"));				// voice selection dropdown
+	_resetInputText(_getElementById("text"));					// voice test text
+	// TODO voicediv reset
+	_getElementById("checkBoxStreaming").checked = false;		// disable streaming checkbox
+	hideStreamSettings();										
+	_resetInputText(_getElementById("streamserver"));			// streamserver text
+	_resetInputText(_getElementById("streamname"));				// streamname text
+	// TODO streamdiv reset
+	_getElementById("uploadAvatarImage").checked = true;		// select avatar image upload
+	showAvatarImageUpload();
+	_resetInputDropDown(_getElementById("avframecount"),0);		// frame count
+	displayFields('avframecount', 'av');
+	
+	// reset error messages
+	resetAvatarErrorMessages();
+}
+
+function resetPropForm() {
+	log.debug("resetAvatarForm()");
+	resetForm_BasicSettings();
+	_resetInputDropDown(_getElementById("prframecount"),0);		// frame count
+	displayFields('prframecount', 'pr');
+}
+
+function resetBackdropForm() {
+	log.debug("resetAvatarForm()");
+	resetForm_BasicSettings();
+	_resetInputDropDown(_getElementById("bkframecount"),0);		// frame count
+	displayFields('bkframecount', 'bk');
+}
+
+function resetAudioForm() {
+	log.debug("resetAvatarForm()");
+	resetForm_BasicSettings();
+	_getElementById("audio_type").checked = true;				// audio type
+}
+
+function resetVideoAvatarForm() {
+	log.debug("resetAvatarForm()");
+	resetForm_BasicSettings();
+	_resetInputDropDown(_getElementById("vidslist"));			// video list
+}
+
+
+function resetForm_BasicSettings() {
+	_resetInputText(_getElementById("name"));
+	_resetInputText(_getElementById("tags"));
+}
+
+/* --- avatar form functions */
+
+function setHiddenFields() {
+	
+	log.debug("setHiddenFields()");
+	
+	// hidden fields
+	var hiddenHasStreaming = _getElementById("hasStreaming");
+	var hiddenStreamType = _getElementById("streamtype");
+	var hiddenImageType = _getElementById("imagetype");
+	
+	log.debug("setHiddenFields(): value before in hidden field hasstreaming: " + hiddenHasStreaming.value);
+	log.debug("setHiddenFields(): value before in hidden field streamtype: " + hiddenStreamType.value);
+	log.debug("setHiddenFields(): value before in hidden field imagetype: " + hiddenImageType.value);
+	
+	// fields to get values from
+	var checkBoxStreaming = _getElementById("checkBoxStreaming");
+	var streamTypeSelector = _getElementById("streamtypeselector");
+	var uploadAvatarImage = _getElementById("uploadAvatarImage");
+	var libraryAvatarImage = _getElementById("libraryAvatarImage");
+	
+	log.debug("setHiddenFields(): check: checkbox streaming = " + checkBoxStreaming.checked);
+	log.debug("setHiddenFields(): check: stream type selector = " + streamTypeSelector.value);
+	log.debug("setHiddenFields(): check: upload avatar image = " + uploadAvatarImage.checked);
+	log.debug("setHiddenFields(): check: library avatar image = " + libraryAvatarImage.checked);
+	
+	// set hidden fields
+	
+	if(checkBoxStreaming.checked) {
+		hiddenHasStreaming.value = "true";
+	} else {
+		hiddenHasStreaming.value = "false";
+	}
+	
+	hiddenStreamType.value = streamTypeSelector.value;
+	
+	if(uploadAvatarImage.checked) {
+		hiddenImageType.value = 'upload';
+	} else if(libraryAvatarImage.checked) {
+		hiddenImageType.value = 'library';
+	} else {
+		// in case if nothing is selected
+		log.err("setHiddenFields(): Unable to determine if avatar is upload image or library image");
+	}
+	
+	log.debug("setHiddenFields(): value before in hidden field hasstreaming: " + hiddenHasStreaming.value);
+	log.debug("setHiddenFields(): value after in hidden field streamtype: " + hiddenStreamType.value);
+	log.debug("setHiddenFields(): value after in hidden field imagetype: " + hiddenImageType.value);
+	
+}
+
+function checkStreamSettingsVisibility(isEnabled) {
+	if(isEnabled) {
+		showStreamSettings();
+	} else {
+		hideStreamSettings();
+	}
+}
+
+function showStreamSettings() {
+	
+	log.debug("showStreamSettings()");
+	
+	// show settings
+	document.getElementById("streamSettings").style.display = "inherit";
+	
+	var uploadAvatarImage = document.getElementById("uploadAvatarImage");
+	var uploadLibraryImage = document.getElementById("libraryAvatarImage");
+	
+	// allow selection of builtin-images
+	uploadLibraryImage.removeAttribute('disabled');
+	
+	// select builtin-images by default
+	uploadLibraryImage.checked = true;
+	hideAvatarImageUpload();
+}
+
+function hideStreamSettings() {
+
+	log.debug("hideStreamSettings()");
+	
+	// hide settings
+	document.getElementById("streamSettings").style.display = "none";
+	
+	var uploadAvatarImage = document.getElementById("uploadAvatarImage");
+	var uploadLibraryImage = document.getElementById("libraryAvatarImage");
+	
+	// prevent selection of builtin-images
+	uploadLibraryImage.setAttribute('disabled', true);
+	
+	// if builtin-image was selected switch to avatar upload
+	if(uploadLibraryImage.checked) {
+		uploadLibraryImage.checked = false;
+		uploadAvatarImage.checked = true;
+		showAvatarImageUpload();
+	}
+}
+
+function showAvatarImageUpload() {
+	log.debug("showAvatarImageUpload()");
+	document.getElementById("avimageselection").style.display = "inherit";
+}
+
+function hideAvatarImageUpload() {
+	log.debug("hideAvatarImageUpload()");
+	document.getElementById("avimageselection").style.display = "none";
+}
+
+function resetAvatarErrorMessages() {
+	_getElementById("voiceerror").innerHTML = '';
+	// TODO reset stream error message
+}
+
+/* --- test stream functions */
+
+function testStream() {
+	
+	log.debug("testStream()");
+	
+    var streamServer = _getElementById("streamserver").value;
+    var streamName = _getElementById("streamname").value;
+    var streamType = _getElementById("streamtypeselector").value;
+    
+    // try to detect stream type if auto-detect is given
+    // TODO needs further tests, like prefixes 'mp4:' or extensions like '.aac' ...
+    if(streamType == 'auto') {
+    
+    	if(streamName.endsWith('.mp3')) {
+    		streamType = 'audio';
+    	} else if(streamName.endsWith('.flv')) {
+    		streamType = 'video';
+    	} else if(streamName.endsWith('.mp4')) {
+    		streamType = 'video';
+    	} else {
+    		streamType = 'live';
+    	}
+    	
+    	log.debug("testStream(): detected stream type = " + streamType);
+    }
+    
+    var displayWidth = '320px';
+    var displayHeight = '270px';
+    var isLive = false;
+    var ignoreMeta = true;
+    var showScrubber = true;
+    var showFullscreen = true;
+    
+    switch(streamType) {
+    	case 'audio':
+    		displayHeight = '30px';
+    		displayWidth = '80%';
+    		showFullscreen = false;
+    		break;
+    	case 'video':
+    		break;
+    	case 'live':
+    		isLive = true;
+    		showScrubber = false;
+    		break;
+    	default:
+    		break;
+    }
+	
+    var streamDiv = _getElementById("streamdiv");
+    
+    streamDiv.style.height = displayHeight;
+    streamDiv.style.width = displayWidth;
+    streamDiv.style.display = 'block';
+    streamDiv.style.margin = '10px';
+    
+    flowplayer("streamdiv", "/script/flowplayer/flowplayer-3.2.16.swf", {
+    	
+    	onLoad: function() {
+            this.setVolume(100);
+        },
+        
+        onFinish: function() {
+        	streamDiv.style.display = 'none'; // hide player
+        	this.unload();
+        },
+    	
+        plugins: {
+        	controls: {
+                url: '/script/flowplayer/flowplayer.controls-3.2.15.swf',
+                fullscreen: showFullscreen,
+                height: 30,
+                autoHide: false,
+                showErrors: true,
+                scrubber: showScrubber,
+            },
+            rtmp: {
+                url: "/script/flowplayer.rtmp/flowplayer.rtmp-3.2.12.swf",
+                netConnectionUrl: streamServer,
+            }
+        },
+        
+        canvas: {
+            backgroundGradient: 'none'
+        },
+        
+        clip: {
+    		url: streamName,
+    		live: isLive,
+    		scaling: 'fit',
+            provider: 'rtmp',
+            metaData: !ignoreMeta,
+    	},
+    	
+    });
 }

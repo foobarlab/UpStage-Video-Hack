@@ -41,12 +41,11 @@ Modified by: Gavin          5/10/2012   - Imported AdminError class from pages.p
 """Defines the web tree."""
 
 #standard lib
-import os, random, datetime
+import os, random, datetime, tempfile
 from urllib import urlencode
-import tempfile
 
 #upstage
-from upstage import config
+from upstage import config, util
 from upstage.util import save_tempfile, validSizes, getFileSizes
 from upstage.misc import new_filename, no_cache, UpstageError
 from upstage.video import VideoDirectory
@@ -79,7 +78,7 @@ class NoCacheFile(static.File):
         no_cache(request)	
         return static.File.render(self, request)
 
-
+# FIXME rename function to clarify what it actually does
 def website(data):
     
     """Set up and return the web tree"""
@@ -108,7 +107,7 @@ def website(data):
 
 
 
-#XXX update to new guard? (or bespoke?)
+# XXX update to new guard? (or bespoke?)
 class AdminRealm:
     """The authentication part
 	All comes together here.
@@ -137,7 +136,7 @@ class AdminRealm:
 
         if player.can_admin(): 
             tree = Workshop(player, self.data)
-            #Shaun Narayan (02/16/10) - Removed all previous new/edit pages and inserted workshop pages.
+            # Shaun Narayan (02/16/10) - Removed all previous new/edit pages and inserted workshop pages.
             workshop_pages = {'stage' : (StageEditPage, self.data),
 							  'mediaupload' : (MediaUploadPage, self.data),
 							  'mediaedit' : (MediaEditPage, self.data),
@@ -154,8 +153,7 @@ class AdminRealm:
             # password changer.       
             # Assign the new and edit pages to the website tree         
             tree.putChild('workshop', CreateDir(player, workshop_pages))
-                                      
-            tree.putChild('save_thing', SwfConversionWrapper(self.data.mediatypes, player))
+            tree.putChild('save_thing', AvatarThing(self.data.mediatypes, player))
             tree.putChild('save_video', VideoThing(self.data.mediatypes, player))
             # PQ & EB Added 12.10.07
             tree.putChild('save_audio', AudioThing(self.data.mediatypes, player))
@@ -186,7 +184,7 @@ class AdminRealm:
         return (IResource, tree, lambda : None)
 
 
-#XXX remove references to woven.guard. sometime.
+# XXX remove references to woven.guard. sometime.
 def adminWrapper(data):
     """Ties it together"""
     p = Portal(AdminRealm(data))
@@ -215,7 +213,7 @@ class SessionID(Resource):
         @param request: request to render"""
         player = self.player
         no_cache(request)
-        ip = request.getClientIP() #XXX why bother?
+        ip = request.getClientIP() # XXX why bother?
         k = self.clients.add(ip, player)
         log.msg("added player %s, key is %s" %(player, k))
 
@@ -249,18 +247,19 @@ class AudioThing(Resource):
         self.player = player
 
     def render(self, request):
-        #XXX not checking rights.
+        # XXX not checking rights.
         args = request.args
         
+        # FIXME see AvatarThing: prepare form data
         
         # Natasha - get assigned stages
         self.assignedstages = request.args.get('assigned')
         name = args.pop('name',[''])[0]
-        audio = args.pop('aucontents0', [''])[0] #was 'audio' before, aucontents0 is the name of the mp3 file field
+        audio = args.pop('aucontents0', [''])[0] # was 'audio' before, aucontents0 is the name of the mp3 file field
         type = args.pop('audio_type', [''])[0]
         mediatype = args.pop('type',['audio'])[0]
         self.message = 'Audio file uploaded & registered as %s, called %s. ' % (type, name)
-        #Corey, Heath, Karena 24/08/2011 - Added to store tags for this audiothing
+        # Corey, Heath, Karena 24/08/2011 - Added to store tags for this audiothing
         self.tags = args.pop('tags',[''])[0]
         # PQ & EB Added 13.10.07
         # Chooses a thumbnail image depending on type (adds to audios.xml file)
@@ -287,7 +286,7 @@ class AudioThing(Resource):
         if not (fileSizes is None):
             if (validSizes(fileSizes, self.player.can_su()) or self.player.can_unlimited()):
                 now = datetime.datetime.now() # AC () - Unformated datetime value
-                self.media_dict.add(url='%s/%s' % (config.AUDIO_SUBURL, mp3name), #XXX dodgy? (windows safe?)
+                self.media_dict.add(url='%s/%s' % (config.AUDIO_SUBURL, mp3name), # XXX dodgy? (windows safe?)
                                file=mp3name,
                                name=name,
                                voice="",
@@ -296,7 +295,7 @@ class AudioThing(Resource):
                                # AC (14.08.08) - Passed values to be added to media XML files.
                                uploader=self.player.name,
                                dateTime=(now.strftime("%d/%m/%y @ %I:%M %p")),
-                               tags=self.tags)#Corey, Heath, Karena 24/08/2011 - Added for media tagging set the tags to self.tags
+                               tags=self.tags) # Corey, Heath, Karena 24/08/2011 - Added for media tagging set the tags to self.tags
                 
                 if self.assignedstages is not None:
                     for x in self.assignedstages:
@@ -313,7 +312,7 @@ class AudioThing(Resource):
                     request.redirect('/admin/new/%s' %(mediatype))
                     request.finish()
                     """
-                    AdminError.errorMsg = 'File over 1MB' #Change error message to file exceed - Gavin
+                    AdminError.errorMsg = 'File over 1MB' # Change error message to file exceed - Gavin
                     request.write(errorpage(request, 'Media uploads are limited to files of 1MB or less, to help ensure that unnecessarily large files do not cause long loading times for your stage. Please make your file smaller or, if you really need to upload a larger file, contact the administrator of this server to ask for permission.'))
                     request.finish()
                 except OSError, e:
@@ -336,8 +335,11 @@ class VideoThing(Resource):
         self.player = player
 
     def render(self, request):
-        #XXX not checking rights.
+        # XXX not checking rights.
         args = request.args
+        
+        # FIXME see AvatarThing: prepare form data
+        
         # Natasha - Obtain assigned stages list
         self.assignedstages = request.args.get('assigned')
         name = args.pop('name',[''])[0]
@@ -345,19 +347,19 @@ class VideoThing(Resource):
         voice = args.pop('voice',[''])[0]
         mediatype = args.pop('type',['avatar'])[0]
         self.message ='video %s registered as a %s, called %s. ' % (video, mediatype, name)
-        #Corey, Heath, Karena 24/08/2011 - Added to store tags for this video thing
+        # Corey, Heath, Karena 24/08/2011 - Added to store tags for this video thing
         self.tags = args.pop('tags',[''])[0]
-        #Daniel 04/10/2012 - using 'video' instead of mediatype.
+        # Daniel 04/10/2012 - using 'video' instead of mediatype.
         media_dict = self.mediatypes['avatar']
         now = datetime.datetime.now() # AC () - Unformated datetime value
-        media_dict.add(file='%s/%s' % (config.WEBCAM_SUBURL, video), #XXX dodgy? (windows safe?)
+        media_dict.add(file='%s/%s' % (config.WEBCAM_SUBURL, video), # XXX dodgy? (windows safe?)
                        name=name,
                        voice=voice,
                        thumbnail= config.WEBCAM_STILL_URL + video,
                        medium="video",
                        uploader=self.player.name,
                        dateTime=(now.strftime("%d/%m/%y @ %I:%M %p")),
-                       tags=self.tags)#Corey, Heath, Karena 24/08/2011 - Added for media tagging set the tags to self.tags
+                       tags=self.tags) # Corey, Heath, Karena 24/08/2011 - Added for media tagging set the tags to self.tags
        
         # Natasha - Assign video to stages
         if self.assignedstages is not None:
@@ -373,7 +375,7 @@ class VideoThing(Resource):
         request.redirect(url)
         request.finish()
 
-class SwfConversionWrapper(Resource):
+class AvatarThing(Resource):
     """Start a subprocess to convert an image into swf.
     Upon completion of the process, redirect to NewAvatar page.
     Form should contain these elements:
@@ -392,7 +394,7 @@ class SwfConversionWrapper(Resource):
         self.mediatypes = mediatypes
         # Alan (14/09/07) - Gets the player trying to upload
         self.player = player
-        self.assignedstages = '' #natasha
+        self.assignedstages = '' # natasha
         self.mediatype = '' # Natasha trying to make it a global variable
                  
     def render(self, request):
@@ -403,149 +405,329 @@ class SwfConversionWrapper(Resource):
         achieved through redirection.
 
         """
-        #natasha convert
+        # natasha convert
         # turn form into simple dictionary, dropping multiple values.  
         reqargs = request.args
         
         self.assignedstages = reqargs.get('assigned')
         form = dict([(k, v[0]) for k,v in request.args.iteritems()])
-        # natasha: added prefix value
-        prefix = ''
-        try:
-            self.mediatype = form.pop('type', None)
-            if not self.mediatype in self.mediatypes:
-                raise UpstageError('Not a real kind of thing: %s' % self.mediatype)
-            self.media_dict = self.mediatypes[self.mediatype] #self.media_dict = self.collections
-            #change to starswith 'avcontents'
-            if self.mediatype == 'avatar':
-                prefix = 'av'
-                # self.media_dict = self.collection.avatars
-            elif self.mediatype == 'prop':
-                prefix = 'pr'
-            elif self.mediatype == 'backdrop':
-                prefix = 'bk'
-            elif self.mediatype == 'audio': #remem audio not included as things
-                prefix = 'au'
-            #imgs = [ (k, v) for k, v in form.iteritems() if k.startswith('contents') and v ]
-            contentname = prefix + 'contents'
-            imgs = [ (k, v) for k, v in form.iteritems() if k.startswith(prefix + 'contents') and v ]
-            imgs.sort()
- 
-            # save input files in /tmp, also save file names
-            tfns = [ save_tempfile(x[1]) for x in imgs ]
-
-            # Alan (12/09/07) ==> Gets the size of image files using the previously created temp filenames.
-            #natasha getfilesize
-            fileSizes = getFileSizes(tfns)
-            
-            # imported from misc.py
-            swf = new_filename(suffix='.swf')
-            thumbnail = swf.replace('.swf', '.jpg')
-            swf_full = os.path.join(config.MEDIA_DIR, swf)
-            thumbnail_full = os.path.join(config.THUMBNAILS_DIR, thumbnail)
-
-        except UpstageError, e:            
-            return errorpage(request, e, 500)
-
-        """ Alan (13/09/07) ==> Check the file sizes of avatar frame """
-        #natasha continue conversion
-        if not (fileSizes is None):
-            if (validSizes(fileSizes, self.player.can_su()) or self.player.can_unlimited()):
-                # call the process with swf filename and temp image filenames 
-                d = getProcessValue(config.IMG2SWF_SCRIPT, args=[swf_full, thumbnail_full] + tfns)
-                args = (swf, thumbnail, form, request)
-                d.addCallbacks(self.success, self.failure, args, {}, args, {})
-                d.addBoth(self.clean_up, tfns)
-                d.setTimeout(config.MEDIA_TIMEOUT, timeoutFunc=d.errback)
+        
+        # DEBUG: print form sent by request
+        for key in form.iterkeys():
+            if 'contents' in key:
+                value = "[ binary data: %s Bytes ]" % len(form[key])
             else:
-                ''' Send new avatar page back containing error message '''
-                self.player.set_setError(True)
-                self.clean_up(None, tfns)
-                request.redirect('/admin/new/%s' %(self.mediatype))
-                request.finish()
+                value = form[key]
+                if(len(value)>256):
+                    value = value[:256] + " ... " # limit length to 256 chars
+                value = "'" + value + "'"
+            log.msg("AvatarThing: render(): form: '%s' = %s" % (key, value))
+        
+        # handle kind of images: upload or library:
+        imagetype = form.get('imagetype','unknown')
+        
+        # handle upload imagetype
+        if imagetype == 'upload':
+            
+            log.msg('AvatarThing: render(): imagetype UPLOAD')
+            
+            # natasha: added prefix value
+            prefix = ''
+            try:
+                self.mediatype = form.pop('type', None)
+                if not self.mediatype in self.mediatypes:
+                    raise UpstageError('Not a real kind of thing: %s' % self.mediatype)
+                self.media_dict = self.mediatypes[self.mediatype] #self.media_dict = self.collections
+                # change to starswith 'avcontents'
+                if self.mediatype == 'avatar':
+                    prefix = 'av'
+                    # self.media_dict = self.collection.avatars
+                elif self.mediatype == 'prop':
+                    prefix = 'pr'
+                elif self.mediatype == 'backdrop':
+                    prefix = 'bk'
+                elif self.mediatype == 'audio': # remem audio not included as things
+                    prefix = 'au'
+                
+                # imgs = [ (k, v) for k, v in form.iteritems() if k.startswith('contents') and v ]
+                contentname = prefix + 'contents'
+                imgs = [ (k, v) for k, v in form.iteritems() if k.startswith(contentname) and v ]
+                imgs.sort()
+                
+                # DEBUG:
+                #log.msg("AvatarThing: imgs = %s" % imgs);
+     
+                # save input files in /tmp, also save file names
+                tfns = [ save_tempfile(x[1]) for x in imgs ]
+    
+                # Alan (12/09/07) ==> Gets the size of image files using the previously created temp filenames.
+                # natasha getfilesize
+                fileSizes = getFileSizes(tfns)
+                
+                # imported from misc.py
+                swf = new_filename(suffix='.swf')
+                thumbnail = swf.replace('.swf', '.jpg')
+                swf_full = os.path.join(config.MEDIA_DIR, swf)
+                thumbnail_full = os.path.join(config.THUMBNAILS_DIR, thumbnail)
+    
+            except UpstageError, e:            
+                return errorpage(request, e, 500)
+    
+            """ Alan (13/09/07) ==> Check the file sizes of avatar frame """
+            # natasha continue conversion
+            if not (fileSizes is None):
+                if (validSizes(fileSizes, self.player.can_su()) or self.player.can_unlimited()):
+                    # call the process with swf filename and temp image filenames 
+                    d = getProcessValue(config.IMG2SWF_SCRIPT, args=[swf_full, thumbnail_full] + tfns)
+                    args = (swf, thumbnail, form, request)
+                    d.addCallbacks(self.success_upload, self.failure_upload, args, {}, args, {})
+                    d.addBoth(self.cleanup_upload, tfns)
+                    d.setTimeout(config.MEDIA_TIMEOUT, timeoutFunc=d.errback)
+                    d.addErrback(log.err)   # Make sure errors get logged - TODO is this working?
+                else:
+                    ''' Send new avatar page back containing error message '''
+                    self.player.set_setError(True)
+                    self.cleanup_upload(None, tfns)
+                    request.redirect('/admin/new/%s' %(self.mediatype))
+                    request.finish()
+            #return server.NOT_DONE_YET
+        
+        # handle library imagetype
+        elif imagetype == 'library':
+            
+            log.msg('AvatarThing: render(): imagetype LIBRARY')
+            
+            name = form.get('name', '')
+            while self.name_is_used(name):
+                name += random.choice('1234567890')
+            
+            tags = form.get('tags','')
+            
+            has_streaming = form.get('hasstreaming','false')
+            streamtype = form.get('streamtype','auto')
+            streamserver = form.get('streamserver','')
+            streamname = form.get('streamname','')
+            
+            medium = ''
+            if (has_streaming.lower() == 'true'):
+                medium = 'stream'
+            
+            now = datetime.datetime.now()
+            voice = form.get('voice','')
+            
+            # create random strings for library items
+            random_swf_id = util.random_string(config.LIBRARY_ID_LENGTH)
+            random_thumbnail_id = util.random_string(config.LIBRARY_ID_LENGTH)
+            
+            # FIXME test if generated strings already exist, so choose another
+            
+            # TODO set thumbnail according to streamtype
+            thumbnail_image = 'FilmStripIcon'   # default
+            if streamtype == 'auto':
+                thumbnail_image = 'FilmStripIcon'
+            elif streamtype == 'audio':
+                thumbnail_image = 'FilmStripIcon'
+            elif streamtype == 'video':
+                thumbnail_image = 'FilmStripIcon'
+            elif streamtype == 'live':
+                thumbnail_image = 'FilmStripIcon'
+            
+            thumbnail = config.LIBRARY_PREFIX + random_thumbnail_id + ":" + thumbnail_image
+            
+            swf_image = 'VideoOverlay' 
+            swf = config.LIBRARY_PREFIX + random_swf_id + ":" + swf_image
+            
+            log.msg("render(): has streaming? %s" % has_streaming)
+            log.msg("render(): streamtype: %s" % streamtype)
+            log.msg("render(): streamserver: %s" % streamserver)
+            log.msg("render(): streamname: %s" % streamname)    
+            log.msg("render(): swf (file): %s" % swf)
+            log.msg("render(): name: %s" % name)
+            log.msg("render(): voice: %s" % voice)
+            log.msg("render(): now: %s" % now)
+            log.msg("render(): tags: %s" % tags)
+            log.msg("render(): medium: %s" % medium)
+            log.msg("render(): thumbnail: %s" % thumbnail)
+            log.msg("render(): swf: %s" % swf)
+            
+            try:
+                self.mediatype = form.pop('type', None)
+                if not self.mediatype in self.mediatypes:
+                    raise UpstageError('Not a real kind of thing: %s' % self.mediatype)
+                self.media_dict = self.mediatypes[self.mediatype]
+                
+                # add avatar
+                self.media_dict.add(file=swf,
+                                    name=name,
+                                    voice=voice,
+                                    uploader=self.player.name,
+                                    dateTime=(now.strftime("%d/%m/%y @ %I:%M %p")),
+                                    tags=tags,
+                                    streamserver=streamserver,
+                                    streamname=streamname,
+                                    medium=medium,
+                                    thumbnail=thumbnail
+                                    )
+                
+                # assign to stage?
+                if self.assignedstages is not None:
+                    log.msg("render(): assigning to stages: %s" % self.assignedstages)
+                    self.assign_media_to_stages(self.assignedstages, swf, self.mediatype)
+                    
+            except UpstageError, e:            
+                return errorpage(request, e, 500)
+            
+            log.msg("render(): got past media_dict.add, YES")
+            
+            request.write(successpage(request, 'Your Avatar "' + name + '" has been added successfully'))
+            request.finish()
+        
+        # handle unknown imagetypes
+        else:
+            # output error, because we do not have a valid imagetype
+            log.err('AvatarThing: render(): Unsupported imagetype: %s' % imagetype)
+            request.write(errorpage(request, "Unsupported image type '%s'." % imagetype))
+            request.finish() 
+        
         return server.NOT_DONE_YET
-
+    
     """
      Modified by: Corey, Heath, Karena 24/08/2011 - Added media tagging to self.media_dict.add
     """
 
-    def success(self, exitcode, swf, thumbnail, form, request):
+    def success_upload(self, result, swf, thumbnail, form, request):
         """Catch results of the process.  If it seems to have worked,
         register the new thing."""
-        if exitcode:
-            #request.write(exitcode)
-            return self.failure(exitcode, swf, thumbnail, form, request)
+        if result:
+            #request.write(result)
+            return self.failure(result, swf, thumbnail, form, request)
 
         # if the name is in use, mangle it until it is not.
-        #XXX this is not perfect, but
-        # a) it is kinder than making the person resubmit, without actually
-        #    telling them what a valid name would be.
-        # b) it doens't actually matter what the name is.
-        #natasha check name
+        # XXX this is not perfect, but
+        #  a) it is kinder than making the person resubmit, without actually
+        #     telling them what a valid name would be.
+        #  b) it doens't actually matter what the name is.
+        # natasha check name
         name = form.get('name', '')
         while self.name_is_used(name):
             name += random.choice('1234567890')
-        #Added by Heath, Karena, Corey 26/08/2011 - added to store tags from the form    
+        # Added by Heath, Karena, Corey 26/08/2011 - added to store tags from the form    
         tags = form.get('tags','')
         # if the thumbnail is not working (usually due to an swf file
         # being uploaded, which the img2swf script doesn't know how to
         # thumbnail), detect it now and delete it.
     
-        #natasha add to dictionary
+        has_streaming = form.get('hasstreaming','false')
+        streamtype = form.get('streamtype','auto')
+        streamserver = form.get('streamserver','')
+        streamname = form.get('streamname','')
+        
+        log.msg("success_upload(): has streaming? %s" % has_streaming)
+        log.msg("success_upload(): streamtype: %s" % streamtype)
+        log.msg("success_upload(): streamserver: %s" % streamserver)
+        log.msg("success_upload(): streamname: %s" % streamname)
+        
+        medium = ''
+        if (has_streaming.lower() == 'true'):
+            medium = 'stream'
+            
+        log.msg("success_upload(): medium: %s" % medium)
+        
+        # FIXME why determine mimetype of thumbnail only?
+    
+        # natasha add to dictionary
         thumbnail_full = os.path.join(config.THUMBNAILS_DIR, thumbnail)
-        _pin, pipe = os.popen4(('file', '-ib', thumbnail_full))
-        mimetype = pipe.read()
+        #_pin, pipe = os.popen4(('file', '-ib', thumbnail_full))
+        _pin, pipe = os.popen4(('file', '--brief', '--mime-type', thumbnail_full))
+        mimetype = str(pipe.read()).strip()
         pipe.close()
         now = datetime.datetime.now() # AC () - Unformated datetime value
-        if not mimetype.startswith('image/'):
+        
+        # FIXME insecure mimetype detection!
+        log.msg("success_upload(): mimetype (thumbnail) = %s" % mimetype)
+        
+        swf_mimetypes = ["application/x-shockwave-flash"]
+        image_mimetypes = ["image/jpeg","image/gif","image/png"]
+        
+        log.msg("success_upload(): image mimetypes: %s" % image_mimetypes)
+        log.msg("success_upload(): swf mimetypes: %s" % swf_mimetypes)
+        
+        is_image = mimetype in image_mimetypes
+        is_swf = mimetype in swf_mimetypes
+        
+        log.msg("success_upload(): mimetype: is_image = %s" % is_image)
+        log.msg("success_upload(): mimetype: is_swf = %s" % is_swf)
+        
+        voice = form.get('voice','')
+        
+        log.msg("success_upload(): swf = %s" % swf)
+        log.msg("success_upload(): form: name = %s" % name)
+        log.msg("success_upload(): form: tags = %s" % tags)
+        log.msg("success_upload(): thumbnail_full = %s" % thumbnail_full)
+        log.msg("success_upload(): now = %s" % now)
+        log.msg("success_upload(): voice = %s" % voice)
+        
+        #if not mimetype.startswith('image/'):
+        if not is_image:
             self.media_dict.add(file=swf,
                                 name=name,
-                                voice=form.get('voice', ''),
+                                voice=voice,
                                 # AC (10.04.08) - This section needs uploader and dateTime also.
                                 uploader=self.player.name,
                                 dateTime=(now.strftime("%d/%m/%y @ %I:%M %p")),
-                                tags=tags#Corey, Heath, Karena 24/08/2011 - Added for tagging media
+                                tags=tags, # Corey, Heath, Karena 24/08/2011 - Added for tagging media
+                                streamserver=streamserver,
+                                streamname=streamname,
+                                medium=medium,
                                 )
 
         else:
-            #Corey, Heath, Karena 24/08/2011
+            # Corey, Heath, Karena 24/08/2011
             self.media_dict.add(file=swf,
                                 name=name,
-                                voice=form.get('voice', ''),
+                                voice=voice,
                                 thumbnail=config.THUMBNAILS_URL + thumbnail,
                                 # AC (29.09.07) - Passed values to be added to media XML files.
                                 uploader=self.player.name,
                                 dateTime=(now.strftime("%d/%m/%y @ %I:%M %p")),
-                                tags=tags#Corey, Heath, Karena 24/08/2011 - Added for tagging media
+                                tags=tags, # Corey, Heath, Karena 24/08/2011 - Added for tagging media
+                                streamserver=streamserver,
+                                streamname=streamname,
+                                medium=medium,
                                 )
-        log.msg("got past media_dict.add, YES")
-        form['media'] = swf
+        
+        log.msg("success_upload(): got past media_dict.add, YES")
+        
+        #form['media'] = swf
         
         # NB: doing external redirect, but really there's no need!
         # could just call the other pages render method
-        #assign_media_to_stages()
-        def _value(x):
-            return form.get(x, [None])
+        # assign_media_to_stages()
         
+        #def _value(x):
+        #    return form.get(x, [None])
+        
+        # assign to stage?
         self.media_dict = self.mediatypes[self.mediatype]
         if self.assignedstages is not None:
+            log.msg("success_upload(): assigning to stages: %s" % self.assignedstages)
             self.assign_media_to_stages(self.assignedstages, swf, self.mediatype)
         
         #self.refresh(request, swf)
 
-        request.write(successpage(request, 'Your Media "' + name + '" has uploaded successfully'))
+        request.write(successpage(request, 'Your Avatar "' + name + '" has been added successfully'))
         request.finish()
         
 
     def assign_media_to_stages(self, assignedstages, medianame, mediatype):
         for x in assignedstages:
-            self.media_dict.set_media_stage(x, medianame) #collection not defined here. MAYBE IMPORT ADD METHOD IN STAGE DICT??
+            self.media_dict.set_media_stage(x, medianame) # collection not defined here. MAYBE IMPORT ADD METHOD IN STAGE DICT??
             # make request
             
     def name_is_used(self, name):
         """checking whether a name exists in any media collection"""
-        #XXX should perhaps reindex by name.
-        log.msg('checking whether "%s" is a used name' %name)
+        # XXX should perhaps reindex by name.
+        log.msg('name_is_used(): checking whether "%s" is a used avatar name' % name)
         for _k, d in self.mediatypes.items():
             for x in d.values():
                 if name == x.name:
@@ -560,18 +742,24 @@ class SwfConversionWrapper(Resource):
     def redirect(self, request, swf):
         """Redirect a request to the edit thing page.
         # @param swf swf filename"""
-        #XXX url path should be consolidated somewhere.
+        # XXX url path should be consolidated somewhere.
         url = '/admin/edit/%s/%s' % (self.mediatype, swf)
         request.redirect(url)
         request.finish()
 
-    def failure(self, exitcode, swf, thumbnail, form, request):
+    def failure_upload(self, result, swf, thumbnail, form, request):
         """Nothing much to do but spread the word"""
-        AdminError.errorMsg = 'Something went wrong' #Change error message back to default - Gavin
-        request.write(errorpage(request, 'SWF creation failed - maybe the image was bad. See img2swf.log for details'))
+        
+        # TODO untested yet:
+        if result:
+            log.err('failure_upload(): result: %s' % result)
+            log.err('failure_upload(): swf: %s, thumbnail: %s' % (swf, thumbnail));
+ 
+        AdminError.errorMsg = 'Something went wrong' # Change error message back to default - Gavin
+        request.write(errorpage(request, 'Avatar upload failed - maybe the image was bad. See img2swf.log for details'))
         request.finish() 
         
-    def clean_up(self, nothing, tfns):
+    def cleanup_upload(self, nothing, tfns):
         """Be rid of temp files"""
         try:
             nothing.printTraceback()
@@ -581,7 +769,7 @@ class SwfConversionWrapper(Resource):
             try:
                 os.remove(tfn)
             except OSError, e:
-                log.err("Error removing temp file %s (already gone?):\n %s" % (tfn, e))
+                log.err("cleanup_upload(): Error removing temp file %s (already gone?): %s" % (tfn, e))
 
 #------------------------------------------------------------------------
 

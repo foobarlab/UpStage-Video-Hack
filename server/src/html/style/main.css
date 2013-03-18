@@ -49,7 +49,9 @@ body
 {
 	/* Mohammed Al-Timimi (08/06/11) - Changed BG image */
 	background-image:url('main-bg.jpg');
-/*	min-width:1200px;	(29/10/2010 PR - Was causing view fault when not maximized */ 
+/*	min-width:1200px;	(29/10/2010 PR - Was causing view fault when not maximized */
+	margin:0;
+	padding:0;
 }
 
 a
@@ -65,7 +67,7 @@ h1
 	font-weight: bold; 
 	font-size: 14px; 
 	line-height: 14px;
-	margin-top:0;
+	margin:0 0 20px 0;
 }
 
 h3
@@ -171,17 +173,24 @@ p.error
 	margin: 0px; 
 	padding: 0px; 
 }
-/*Shaun Narayan (01/30/10) - Folowing rules apply to master page for consistency.*/
-/* Mohammed Al-Timimi (9/06/2011) - Added bottom/top margins to allign the page correctly */
+/* Shaun Narayan (01/30/10) - Following rules apply to master page for consistency. */
+/* Mohammed Al-Timimi (9/06/2011) - Added bottom/top margins to align the page correctly */
 #masterpage
 {
+	/*
 	margin-left:10%;
 	margin-right:10%;
-	height:100%;
-	border: 2px #669900 solid;
-	background-color : #FFFFFF;
 	margin-top: 40px;
 	margin-bottom: 40px;
+	*/
+	margin: 40px auto;
+	/*height:100%;*/
+	border: 2px #669900 solid;
+	background-color : #FFFFFF;
+	min-width:960px;
+	max-width:1120px;
+	width:auto;
+	/*overflow:auto;*/
 }
 #header
 {
@@ -254,7 +263,8 @@ p.error
 }
 #edit
 {
-	height:550px;
+	height:auto;
+	overflow:hidden;
 }
 
 /*Mohammed Al-Timimi (08/06/11) - Syntax was completely wrong for the following */
@@ -361,70 +371,100 @@ p.error
 	background-color:#999999;
 }
 
-/*Classes for the Upload Media Layout*/
+/* Upload Media */
+
+#bottomSettingsContainer {
+	width:100%;
+	display:inline-block;
+}
+
+label {
+	padding-right:5px;
+}
+
+input, select, button {
+	margin-right:10px;
+	display:inline-block;
+	padding:2px;
+}
+
+.fileupload {
+	width:100%;
+	float:left;
+}
 
 #muLeftContent {
-/*margin:10px 0 10px 10px;*/
-/*float: left;*/
-position: relative;
-float: left;
-width: 35%;
-height: 280px;
-padding: 5%; /* 10px*/
-margin: 10px;
-overflow: auto;
-/*padding-bottom: 50px;
-margin: 10px 10px 100px 10px;
-*/
-border: 2px solid #669900;
+	position: relative;
+	float: left;
+	width: 60%;
+	height: auto;
+	padding: 10px;
+	margin: 10px;
+	overflow: auto;
+	border: 2px solid #669900;
 }
 
 #muRightContent {
-position: relative;
-float: left;
-width: 35%;
-height: 280px;
-padding: 5%; /* 10px*/
-margin: 10px;
-/*overflow: auto;*/
-/*padding: 50px;
-/*margin: 10px 10px 100px 10px;
- oldmargin: 120px 0 10px 10px;*/
-border: 2px solid #669900;
+	position: relative;
+	float: left;
+	width: 30%;
+	height: 280px;
+	padding:10px;
+	margin: 10px;
+	border: 2px solid #669900;
 }
 
 #muLeftContent-audio {
-float: left;
-width: 40%;
-height: 300px;
-padding: 5%; /* 10px*/
-margin: 10px;
-overflow: auto;
-border: 3px solid green;
+	float: left;
+	width: 40%;
+	height: 300px;
+	padding: 5%; /* 10px*/
+	margin: 10px;
+	overflow: auto;
+	border: 3px solid green;
 	
 }
 
 #muLeftContent-video {
-float: left;
-width: 40%;
-height: 300px;
-padding: 5%; /* 10px*/
-margin: 10px;
-overflow: auto;
-/*padding-bottom: 50px;
-margin: 10px 10px 100px 10px;
-*/
-border: 3px solid green;
-	
+	float: left;
+	width: 40%;
+	height: 300px;
+	padding: 5%; /* 10px*/
+	margin: 10px;
+	overflow: auto;
+	/*padding-bottom: 50px;
+	margin: 10px 10px 100px 10px;
+	*/
+	border: 3px solid green;
 }
 
 #mediaPreview {
-float: top;
-width: 20%;
-height: 20%;
-padding: 5%;
-margin: 10px;
-border: 3px solid blue;
+	float: top;
+	width: 20%;
+	height: 20%;
+	padding: 5%;
+	margin: 10px;
+	border: 3px solid blue;
+}
+
+/*
+fieldset {
+	border:none;
+	margin:10px 0;
+	padding:5px 0 10px 0;
+}
+
+legend {
+	font-weight:bold;
+	font-style: italic;
+	color:#669900;
+}
+*/
+
+.fieldrow {
+	width:100%;
+	margin:5px 0 15px 0;
+	display:block;
 }
 
 table.media_details td
@@ -598,6 +638,7 @@ a.IconButton
 	border-bottom: #690 1px dashed;
 	padding-top: 10px;
 	padding-bottom: 10px;
+	overflow:auto;
 }
 
 #editStageAccess
@@ -609,7 +650,7 @@ a.IconButton
 
 #splash_message
 { 
-	width:100%;
+	width:99%;
 	height:8em;
 }
 
@@ -914,17 +955,28 @@ a.IconButton
 .loadingBox
 {
     position: fixed;
-    margin-left: 50%;
-    left: -150px;
+    top: 50%;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: -125px;
     background-color: #fff;
     color: #000;
     border-radius: 20px;
     border: #eee 2px solid;
-    width: 300px;
+    width: 320px;
+    height: 250px;
     text-align: center;
-    top: 40%;
-    padding: 20px;
+    padding: 10px;
     box-shadow: #333 1px 1px 10px;
+}
+
+#loadingMessage {
+	display:block;
+	overflow:hidden;
+	width:300px;
+	height:130px;
+	margin:0 10px 15px 10px;
+	word-wrap: break-word;
 }
 
 .swfstage
@@ -941,5 +993,6 @@ a.IconButton
 {
     text-align: center;
     font-size: 150%;
+    margin:20px 0;
 }
 
