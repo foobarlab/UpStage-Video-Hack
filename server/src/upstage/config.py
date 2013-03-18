@@ -174,6 +174,7 @@ SUPER_ADMIN_SIZE_LIMIT = 2000000
 
 # @brief prefix for built-in library images
 LIBRARY_PREFIX = 'library:'
+LIBRARY_ID_LENGTH = 8
 
 # FIXME all settings below should go to voices.py
 
