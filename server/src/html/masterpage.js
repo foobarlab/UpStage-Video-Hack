@@ -719,7 +719,7 @@ function showMessageDiv(div)
     else
     {
         divMessage.style.display = 'block';
-        divMessage.innerHTML += "<input type='button' onclick=\"hideDiv('"+div+"'); hideDiv('divShade');\" value='Close'></input>";
+        divMessage.innerHTML += "<input type='button' onclick=\"hideDiv('"+div+"'); hideDiv('divShade');\" value='Close' />";
         document.getElementById("divShade").style.display = 'block';
     }
 }
@@ -748,6 +748,13 @@ function GetXmlHttpObject()
  */
 function buildRequest(formNum)
 {
+	// FIXME WTF!?!!!1!! this looks like some ugly tight coupling - are you serious?
+	// FIXME selection of values by their element id or name seems rather insecure, any change on the element names will break things!
+	// FIXME better break down to separate functions: reading values and creating the request string? 
+	// FIXME values are not checked for validity ('undefined') - results are vague and can not be determined ...
+	
+	log.debug("buildRequest() start: formNum=" + formNum);
+	
 	var search = ['input','select','textarea'];
 	var str = '?';
 	for(i in search)
@@ -757,6 +764,8 @@ function buildRequest(formNum)
 		{
 			if(elements[e].name == 'assigned' || elements[e].name == 'unassigned')
 			{
+				log.debug("A: Element name is 'assigned' or 'unassigned'");
+				
 				str += elements[e].name + '=';
 				var ele = elements[e].getElementsByTagName("option");
 				for(j in ele)
@@ -764,22 +773,35 @@ function buildRequest(formNum)
 					if(ele[j].value != null)
 					{
 						str += ele[j].value + ',';
+						
+						log.debug("A: Added value to request: " + ele[j].value);
 					}
 				}
 				str += '&';
 			}
 			else
 			{
+				// FIXME better choose url path or unique identification for page, otherwise a change of the document.title will break things!
 				if(document.title == 'Workshop - Media')
 				{
+					log.debug("B: Document title is 'Workshop - Media'");
+					
 					if(elements[e].name == "tags")
 					{
+						log.debug("B1: Element name is 'tags'");
+						
 						str += elements[e].name + '=';
 						if(elements[e].value != null)
 						{
 							str += elements[e].value + ',';
+							
+							log.debug("B1: Adding value to request: " + elements[e].value);
+							
 						}
 						var ele = document.getElementById("tagDiv").getElementsByTagName("a");
+						
+						log.debug("B2: Element #tagDiv <a> is " + ele);
+						
 						for(var k in ele)
 						{
 							if(ele[k].innerHTML != null)
@@ -787,6 +809,8 @@ function buildRequest(formNum)
 								if(trim(ele[k].title).length > 0 && ele[k].innerHTML.length > 0)
 								{
 									str += ele[k].title + ',';
+								
+									log.debug("B2: Adding to value to request: " + ele[k].title);
 								}
 							}
 						}
@@ -794,33 +818,50 @@ function buildRequest(formNum)
 					}
 					else
 					{
+						log.debug("B3: Element name is not 'tags'");
+						log.debug("B3: Adding key value pair: " + elements[e].name + '=' + elements[e].value);
+						
 						str += elements[e].name + '=' + elements[e].value + '&';
+						
 					}
 				}
 				else
 				{
+					log.debug("C: Document title is not 'Workshop - Media'");
+					
 					/*
 					Modified by Daniel 27/06/2012
 						- To handle multiples of Selects
 					*/
 					if(search[i] == "select")
 					{
+						log.debug("C1: Found: <select>");
 
                         for(num = 0; num < elements[e].length; num++)
                         {
-                            if(elements[e][num] != null && elements[e][num].selected)
-                                str += elements[e].name + '=' + elements[e][num].value + '&';
+                            if(elements[e][num] != null && elements[e][num].selected) {
+                              
+                            	log.debug("C1: Adding key value pair: " + elements[e].name + '=' + elements[e][num].value);
+                            	
+                            	str += elements[e].name + '=' + elements[e][num].value + '&';
+                            }
                         }
 
 					}
 					else
 					{
+						log.debug("C2: Not found: <select>");
+						log.debug("C2: Adding key value pair: " + elements[e].name + '=' + elements[e].value);
+						
 						str += elements[e].name + '=' + elements[e].value + '&';
 					}
 				}
 			}
 		}
 	}
+	
+	log.debug("buildRequest(): created string: " + str);
+	
 	return str;
 }
 /**
@@ -869,6 +910,10 @@ function embedsMessage()
 //==========================================================================
 //Old Methods
 //==========================================================================
+
+// FIXME if these functions are old, why not remove them? or are they still in use?
+// FIXME obviously this function is still in use: see master_a.inc
+
 /**
  * PQ: 14/09/07 - Edit Macromedia links etc to Adobe.
  * javascript code to detect a flash plugin.
