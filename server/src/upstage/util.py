@@ -24,9 +24,7 @@ Notes:
 
 from upstage import config
 
-from random import choice, random
-import tempfile
-import os, sys
+import os, sys, string, tempfile, random
 from time import strftime
 
 def id_generator(start=1, wrap=2000000000, prefix='', suffix='', pattern ='%s%s%s'):
@@ -43,9 +41,12 @@ def new_filename(length=8, suffix='.swf', prefix=''):
     """Make up a short uniquish file name"""
     letters = 'abcdefghijklmnopqrstuvwxyz0123456789_ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     return  "%s%s%s" %(prefix, 
-                       ''.join([choice(letters) for _x in range(length)]), 
+                       ''.join([random.choice(letters) for _x in range(length)]), 
                        suffix)
 
+def random_string(length, pool=(string.letters+string.digits)):
+    """Create a random string of given length"""
+    return ''.join(random.choice(pool) for _x in xrange(length))
 
 #XXX unused
 def log_rotate(filename):
