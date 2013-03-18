@@ -10,15 +10,39 @@
 <link rel="stylesheet" type="text/css" href="/style/main.css" />
 <link rel="shortcut icon" href="/style/favicon.ico" />
 
-<script language="javascript" type="text/javascript" src="/masterpage.js"></script>
-<script language="javascript" type="text/javascript" src="/client.js"></script>
-<script language="javascript" type="text/javascript" src="/stageedit.js"></script>
-<script language="javascript" type="text/javascript" src="/mediaupload.js"></script>
-<script language="javascript" type="text/javascript" src="/mediaedit.js"></script>
-<script language="javascript" type="text/javascript" src="/user.js"></script>
-<script language="javascript" type="text/javascript" src="/md5.js" ></script>
-<script language="javascript" type="text/javascript" src="/image-slideshow.js"></script>
-<script language="javascript" type="text/javascript" src="/jwplayer.js"></script>
+<!-- FIXME to increase page performance scripts should be loaded in an async way or put at the bottom -->
+<!-- FIXME put scripts into scripts directory -->
+
+<!-- 3rd party scripts -->
+<script type="text/javascript" src="/script/jshash/md5.js"></script>
+<script type="text/javascript" src="/script/custom-context-menu/rightClick.js"></script>
+<script type="text/javascript" src="/script/flowplayer/flowplayer-3.2.12.min.js"></script>
+
+<!-- upstage scripts -->
+<script type="text/javascript" src="/masterpage.js"></script>
+<script type="text/javascript" src="/stageedit.js"></script>
+<script type="text/javascript" src="/mediaupload.js"></script>
+<script type="text/javascript" src="/mediaedit.js"></script>
+<script type="text/javascript" src="/user.js"></script>
+<script type="text/javascript" src="/image-slideshow.js"></script>
+
+<!-- logging -->
+<script type="text/javascript" src="/script/log4javascript/log4javascript.js"></script>
+<script type="text/javascript">
+
+	var log = log4javascript.getLogger();
+
+	// log to browser console by default
+	var myAppender = new log4javascript.BrowserConsoleAppender();
+	log.addAppender(myAppender);
+	
+	// log to popup window
+	var popUpAppender = new log4javascript.PopUpAppender();
+	log.addAppender(popUpAppender);
+	
+	log4javascript.setEnabled(true); // set to false to disable logging
+</script>
+<!-- /logging -->
 
 </head>
 
@@ -27,33 +51,34 @@
     </div>
     <div id="divPopup">
     </div>
-	<script type="text/javascript">test_flash()</script>
+	<script type="text/javascript">test_flash()</script><!-- TODO what does this script do? does it test if flash is installed? -->
 	<div id="masterpage">
 		<div id="header">
 			<div id="logo">
 				<!-- Daniel Han (26/06/2012) - Fixed logo link to upstage.org.nz -->
 				<a href="http://www.upstage.org.nz"><img border="0" src="/style/upstagelogo.jpg" alt="Upstage" /></a>
 			</div>
+			<!-- FIXME empty action prevents browsers from saving passwords -->
+			<!-- FIXME relying on JavaScript for a login form seems like a bad behaviour -->
 			<form name="hidden_form" action="">
-			<input name="user_name" type ="hidden" value="%(username)s"></input>
-			<input name="can_signup" type="hidden" value="%(allow_signup)s"></input>
-			<input name="server_details" type="hidden" value="%(server_details)s"></input>
+			<input name="user_name" type ="hidden" value="%(username)s" />
+			<input name="can_signup" type="hidden" value="%(allow_signup)s" />
+			<input name="server_details" type="hidden" value="%(server_details)s" />
 			</form>
 				<div id="signup">
+					<!-- FIXME naming a form 'rupert' seems inappropriate - what actually does this form? -->
 					<form name="rupert" action="/perspective-init"> 
 					  Login: <input name="username" size="13" />
 					  Password: <input type="password" name="password" size="13" /><br />
-					  Remember me? <input type="checkbox" name="remember" />
+					  Remember me? <input type="checkbox" name="remember" /><!-- FIXME the 'remember me' functionality seems broken? -->
 					  <button onclick="javascript:setPassword(username.value, password.value); return false;">Login</button><br />
 					  Audience members dont need to log in to view peformances!<br />
 					</form>
 				</div>
 			<div id="nav">
 	   			<a href="javascript:navHome()">HOME</a>
-		    	<a href="javascript:navWorkshop()">WORKSHOP</a>
+		    	<a href="javascript:navWorkshop()">WORKSHOP</a><!-- TODO why not hide this nav when it is not available to non-logged-in users? -->
 		    	<a href="javascript:navStages()">STAGES</a>
-				
-
 			</div>
 		</div>
 		<script type="text/javascript">clearLogin();</script>
