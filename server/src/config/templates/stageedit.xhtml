@@ -21,19 +21,18 @@ window.onresize = resizePage;
 </script>
 <div id="stageselection">
 	<h1>Make a new stage, or select one to edit</h1>
+	<!-- FIXME why is this form named 'shaun'? Better name it like what the purpose of this form is ... -->
 	<form name ="shaun" action="%(req:path)s">
-		<select name="shortName" id="listName">
-			%(list_stages)s
-		</select>
-		<input type="button" onclick="stageChooseSubmit();" value="Select"></input>
+		<label>Short name:</label>
+		<select name="shortName" id="listName">%(list_stages)s</select>
+		<input type="button" onclick="stageChooseSubmit();" value="Select" />
 	</form>
 </div>
 
-<div id="successMsg">
-    %(attr:message)s
-</div>
+<div id="successMsg">%(attr:message)s</div>
 
 <div id="divForm">
+<!-- FIXME why is this form named 'rupert'? Better rename it for what it actually does ... -->
 <form name="rupert" action="">
 	<div id="stagename">
 		<h1>Stage name</h1>
@@ -51,9 +50,9 @@ window.onresize = resizePage;
             </tr>
 		</table>
 	</div>
-	<!-- -->
+	
 	<div id="edit">
-		<input type="hidden" name="displayaccess" value="%(display_access)s"></input>
+		<input type="hidden" name="displayaccess" value="%(display_access)s" />
 
 		<div id="editStageColor">
             <h1>Debug message</h1>
@@ -91,13 +90,16 @@ window.onresize = resizePage;
 				<h1>Splash message</h1>
 				<textarea name="splash_message" class="splash" id="splash_message">%(splash)s</textarea>
 			</div>
+			
+			<!-- TODO: editStageAccess is currently not functional, so commented out -->
+			<!-- 
 			<div id="editStageAccess">
 				<h1>Users who can access and edit this stage</h1> 
-			<div id="wrapAccess">
-				<p>
-					Sorry, This section is still under development, and not implemented to the stage.
-				</p>
-			</div>
+				<div id="wrapAccess">
+					<p>
+						Sorry, This section is still under development, and not implemented to the stage.
+					</p>
+				</div>
 				<table>
 					<tr>
 						<td>
@@ -135,27 +137,34 @@ window.onresize = resizePage;
 					</tr>
 					<tr>
 						<td>
+						  <!-- FIXME these hidden input fields have been moved to div below --> 
+						  <!--
 						  <input type="hidden" name="debugTextMsg" id="debugTextMsg" class="debugMsg" value="%(debugMessages)s" />
-						  <input type="hidden" name="colors" id="colorvals" value="%(colours)s"></input>
+						  <input type="hidden" name="colors" id="colorvals" value="%(colours)s" />
+						  --><!-- 
 						</td>
 					</tr>
 				</table>
-			</div>							
+			</div>
+			-->
+									
 		</div>
 
 		<!-- -->
 		<div id="submit">
-			<input type="hidden" name="action" value=""></input>
+			<input type="hidden" name="action" value="" />
+			<input type="hidden" name="debugTextMsg" id="debugTextMsg" class="debugMsg" value="%(debugMessages)s" />
+			<input type="hidden" name="colors" id="colorvals" value="%(colours)s" />
 			<table>
 				<tr>
-					<td style="width:0%;"><input type="button" onclick="embedsMessage();" value="Save stage "></input></td>
-					<td style="width:0%;"><input type="button" onclick="saveStage(0);" value="Save and reload stage"></input></td>
+					<td style="width:0%;"><input type="button" onclick="embedsMessage();" value="Save stage" /></td>
+					<td style="width:0%;"><input type="button" onclick="saveStage(0);" value="Save and reload stage" /></td>
 			  		<td colspan="3" style="width:50%;"><span id="warning">Warning: This will cause the stage to reload for everyone currently on it, and you will lose the chat log.</span></td>
 				</tr>
 				<tr>	
-					<td style="width:0%;"><input type="button" onclick="warn(5);" value="Delete"></input></td>
-					<td style="width:0%;" ><input type="button" onclick="warn(1);" value="Revert changes  "></input></td>					
-					<td style="width:0%;"><input type="button" onclick="warn(3);" value="Clear stage"></input></td>
+					<td style="width:0%;"><input type="button" onclick="warn(5);" value="Delete" /></td>
+					<td style="width:0%;"><input type="button" onclick="warn(1);" value="Revert changes" /></td>					
+					<td style="width:0%;"><input type="button" onclick="warn(3);" value="Clear stage" /></td>
 					<td style="width:50%;">Clears the text chat and drawing layers.</td>
 				</tr>	
 				<tr>
