@@ -29,8 +29,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 class upstage.Client
 {
-	// AC (27.05.08) - Port for receiving policy files.
-	public static var POLICY_PORT  	 :Number = 3000;
     public static var SCREEN_WIDTH   :Number = 320;
     public static var SCREEN_HEIGHT  :Number = 200;
 

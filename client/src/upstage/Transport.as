@@ -74,11 +74,12 @@ class upstage.Transport extends XMLSocket
      */
     function Transport(stage :MovieClip)
     {
+    	super();  // Call XMLSocket constructor
+    	
         trace('Transport constructor...');
 
         this.stage = stage;
-        super();  // Call XMLSocket constructor
-
+        
         this.connectionTried = 0;
 
         this.parseUrlVars();
@@ -208,10 +209,9 @@ class upstage.Transport extends XMLSocket
 
         while (! connected && (connectionTried < Client.MAX_CONNECTION_ATTEMPTS))
             {
-				// TODO get policy file via http first? 
-				
-            	// AC - Get required policy file
-       			System.security.loadPolicyFile('xmlsocket://' + domain + ':' + Client.POLICY_PORT.toString());
+				var policyfile : String = 'xmlsocket://' + domain + ':' + this.policyport.toString();
+				trace('aquire policyfile ' + policyfile );
+       			System.security.loadPolicyFile(policyfile);
             	
                 trace('attemptConnect() - trying to connect to ' + this.swfport);
                 connected = this.connect(null, this.swfport);
