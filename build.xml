@@ -821,9 +821,9 @@ March 2013		Added minify with YUI Compressor
 			userid="${upstage.deploy.ftp.username}"
 			password="${upstage.deploy.ftp.password}">
 			<fileset>
-				<!-- <include name="**/*.py"/> -->
-				<include name="**/*.sh"/>
-				<include name="**/*.command"/>
+				<include name="**/*.py" />
+				<include name="**/*.sh" />
+				<include name="**/*.command" />
 			 </fileset>
 		</ftp>
 		
