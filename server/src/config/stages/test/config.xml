@@ -1,6 +1,12 @@
 <stage active="active" created="2013-02-15 05:25:59.203976" name="full name in config.xml" id="test">
 <splash>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut.</splash>
 <showdebugscreen>DEBUG</showdebugscreen>
+<avatar media="library:a39Udxdf:VideoOverlay" voice="" name="live" showname="show">
+</avatar>
+<avatar media="library:SFWuHKCb:VideoOverlay" voice="" name="mp3" showname="show">
+</avatar>
+<avatar media="library:CrdDf6jn:VideoOverlay" voice="" name="flv" showname="show">
+</avatar>
 <access_one>
 </access_one>
 <access_two>

@@ -1,2 +1,8 @@
 <avatars>
+<avatar medium="stream" name="mp3" tags="" url="library:SFWuHKCb:VideoOverlay" streamname="song40.mp3" dateTime="" file="library:SFWuHKCb:VideoOverlay" voice="" uploader="admin" thumbnail="library:BkKNrbUp:FilmStripIcon" streamserver="rtmp://localhost/oflaDemo">
+</avatar>
+<avatar medium="stream" name="flv" tags="" url="library:CrdDf6jn:VideoOverlay" streamname="big_buck_bunny_480p_flv1.flv" dateTime="" file="library:CrdDf6jn:VideoOverlay" voice="" uploader="admin" thumbnail="library:tMKv4nCe:FilmStripIcon" streamserver="rtmp://localhost/oflaDemo">
+</avatar>
+<avatar medium="stream" name="live" tags="" url="library:a39Udxdf:VideoOverlay" streamname="helloworld" dateTime="" file="library:a39Udxdf:VideoOverlay" voice="" uploader="admin" thumbnail="library:iiG9abcf:FilmStripIcon" streamserver="rtmp://localhost/oflaDemo">
+</avatar>
 </avatars>
