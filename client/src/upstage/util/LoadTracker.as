@@ -143,7 +143,7 @@ class upstage.util.LoadTracker
         var img : MovieClip;
         var layerName : String = "layer" + layer;
         
-        var isLibraryItem :Boolean = (url.substr(0,8) == 'library:');
+        var isLibraryItem :Boolean = (url.substr(0,Client.LIBRARY_PREFIX.length) == Client.LIBRARY_PREFIX);
         
         if(isLibraryItem) {
     		

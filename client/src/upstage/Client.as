@@ -627,5 +627,8 @@ class upstage.Client
     public static var CHAT_HISTORY_LENGTH  :Number = 50;
 
     // id 0 means no thing in communication (ie, drop the prop/ backdrop/av) 
-    public static var NULL_THING_ID        :Number = 0; 
+    public static var NULL_THING_ID        :Number = 0;
+    
+    // prefix for built-in library images
+    public static var LIBRARY_PREFIX		:String = 'library:';
 };
