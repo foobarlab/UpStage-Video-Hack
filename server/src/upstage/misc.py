@@ -47,7 +47,6 @@ from upstage.util import id_generator, new_filename
 from twisted.web import microdom
 from twisted.python import log
 
-
 def no_cache(request):
     """Fix html request for no caching. """
     #XXX a bit dodgy.  It might be best to step out and hope HTTP does the right thing.
@@ -55,18 +54,18 @@ def no_cache(request):
     request.setHeader('Pragma','no-cache')
     request.setHeader('Expires',"Thu, 01 Jan 1970 00:00:00 GMT") 
 
-
-
-
 def save_xml(node, xmlfile, pretty=True):
     """Save a node to xml, prettifying. microdom prettifier is
     broken, so str.replace is used
     @param node the node to save
     @param xmlfile the filename to save
     @param pretty attempts to prettify code"""
+    log.msg("save_xml(): xmlfile = %s" % xmlfile);
+    log.msg("save_xml(): node = %s" % node);
     xml = node.toxml(indent=' ', addindent=' ', newl='\n', strip=0)
+    log.msg("save_xml(): xml = %s" % xml);
     if pretty:
-        xml = xml.replace('><','>\n<') #fake prettyprint
+        xml = xml.replace('><','>\n<') # fake prettyprint
     try:
         f = file(xmlfile,'w')
         f.write(xml)
@@ -110,7 +109,7 @@ class Xml2Dict(dict):
         tree = microdom.parse(xmlfile)
         nodes = tree.getElementsByTagName(element)
         for node in nodes:
-            self.parse_element(node)            
+            self.parse_element(node)
         del tree
         
     def save(self, xmlfile=None):
@@ -120,12 +119,12 @@ class Xml2Dict(dict):
         root = microdom.lmx(self.root)               
         for k,v in self.items(): 
             # if v is None: v=''
+            log.msg("save(): write element: key = %s, value = %s" % (k,v));
             self.write_element(root, k, v)
         save_xml(root.node, xmlfile)
         
     def __setitem__(self, key, value):
-        """Setting an item in the dictionary will be automatically reflected in XML
-        """
+        """Setting an item in the dictionary will be automatically reflected in XML"""
         r = dict.__setitem__(self, key, value)
         self.save()
         return r
