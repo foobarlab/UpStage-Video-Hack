@@ -43,6 +43,7 @@ POLICY_FILE = "<?xml version=\"1.0\"?> \
 POLICY_FILE_PORT = 3000
 SWF_PORT = 7230
 WEB_PORT = 8081
+
 LOG_FILE = 'upstage.log'
 PID_FILE = 'upstage.pid'
 BASE_DIR = '.'
@@ -171,6 +172,11 @@ ADMIN_SIZE_LIMIT = 1000000
 SUPER_ADMIN_SIZE_LIMIT = 2000000
 
 
+# @brief prefix for built-in library images
+LIBRARY_PREFIX = 'library:'
+
+# FIXME all settings below should go to voices.py
+
 """Added by: Henry, Vibhu and Heath AUT Team 2011"""
 
 ## @brief Voice definitions, used by speech engine (stage.py) and avatar editing (pages.py)
@@ -181,7 +187,6 @@ _fest_lame = "| timeout 15 lame -S -x -m s -r -s %s --resample 22.05 --preset ph
 _rsynth_lame = "| timeout 15 lame -S -x -m m -r -s 11.025 --preset phone - "
 _fest = " - -o -  2>>%s " % SPEECH_LOG + _fest_lame % 16
 _fest11 = " - -o -  2>>%s " % SPEECH_LOG + _fest_lame % 11.025
-
 
 ## @brief VOICES a list of the available voices
 VOICES = {
