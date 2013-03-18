@@ -631,4 +631,5 @@ class upstage.Client
     
     // prefix for built-in library images
     public static var LIBRARY_PREFIX		:String = 'library:';
+    public static var LIBRARY_ID_LENGTH		:Number = 8;			// 8 digits
 };

@@ -147,12 +147,12 @@ class upstage.util.LoadTracker
         
         if(isLibraryItem) {
     		
-    		var libraryItemId   :String = url.substr(8,8);	// NOTE: id is _not_ used for MovieClip creation
-    		var libraryItemName :String = url.slice(17);
+    		var libraryItemId   :String = url.substr(Client.LIBRARY_PREFIX.length,Client.LIBRARY_ID_LENGTH);	// NOTE: id is _not_ used for MovieClip creation
+    		var libraryItemName :String = url.slice(Client.LIBRARY_PREFIX.length+Client.LIBRARY_ID_LENGTH+1);
     		
     		trace("get library item '" + libraryItemName +"' with given ID " + libraryItemId);
  
- 			// TODO check if valid url parameter was given ('library:XXXXXXXX:YYY...') [XXXXXXXX = ID, YYY... = library item name] 
+ 			// TODO check if valid url parameter was given (e.g. 'library:XXXXXXXX:YYY...') [XXXXXXXX = ID, YYY... = library item name] 
     		
     		// callback: we have started (simulates event normally initiated by MovieClipLoader)
 		    listener.onLoadStart();
