@@ -1,46 +1,6 @@
 <stage active="active" created="2013-02-15 05:25:59.203976" name="full name in config.xml" id="test">
 <splash>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut.</splash>
 <showdebugscreen>DEBUG</showdebugscreen>
-<avatar media="YIhIQrqE.swf" voice="default" name="av" showname="show">
-</avatar>
-<!-- 
-<avatar media="video/video.jpg" voice="default" name="video_av" showname="show">
-</avatar>
--->
-<!-- 
-<avatar media="stream.swf" voice="default" name="stream_av" showname="show">
-</avatar>
--->
-<!-- 
-<avatar media="JbrX5b7b.swf" voice="" name="megaphone" showname="show">
-</avatar>
--->
-<!-- 
-<avatar media="transparent_320x240.png" voice="" name="stream_av" showname="show">
-</avatar>
--->
-<avatar media="library:aaaaaaaa:VideoOverlay" voice="" name="stream1" showname="show">
-</avatar>
-<avatar media="library:bbbbbbbb:VideoOverlay" voice="" name="stream2" showname="show">
-</avatar>
-<avatar media="library:cccccccc:VideoOverlay" voice="" name="stream3" showname="show">
-</avatar>
-<avatar media="library:gggggggg:VideoOverlay" voice="" name="stream_flv" showname="show">
-</avatar>
-<!-- 
-<avatar media="library:iiiiiiii:VideoOverlay" voice="" name="stream_mp3" showname="show">
-</avatar>
--->
-<avatar media="library:kkkkkkkk:VideoOverlay" voice="" name="stream_mp3" showname="show">
-</avatar>
-<!-- 
-<avatar media="library:mmmmmmmm:VideoOverlay" voice="" name="bunny_720p" showname="show">
-</avatar>
-<avatar media="library:oooooooo:VideoOverlay" voice="" name="bunny_1080p" showname="show">
-</avatar>
--->
-<avatar media="library:qqqqqqqq:VideoOverlay" voice="" name="bunny_480p" showname="show">
-</avatar>
 <access_one>
 </access_one>
 <access_two>
