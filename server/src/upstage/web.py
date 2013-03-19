@@ -522,16 +522,12 @@ class AvatarThing(Resource):
             
             # FIXME test if generated strings already exist, so choose another
             
-            # TODO set thumbnail according to streamtype
-            thumbnail_image = 'FilmStripIcon'   # default
-            if streamtype == 'auto':
-                thumbnail_image = 'FilmStripIcon'
-            elif streamtype == 'audio':
-                thumbnail_image = 'FilmStripIcon'
+            # set thumbnail according to streamtype
+            thumbnail_image = 'IconLiveStream'   # default
+            if streamtype == 'audio':
+                thumbnail_image = 'IconAudioStream'
             elif streamtype == 'video':
-                thumbnail_image = 'FilmStripIcon'
-            elif streamtype == 'live':
-                thumbnail_image = 'FilmStripIcon'
+                thumbnail_image = 'IconVideoStream'
             
             thumbnail = config.LIBRARY_PREFIX + random_thumbnail_id + ":" + thumbnail_image
             
