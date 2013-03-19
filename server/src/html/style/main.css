@@ -48,7 +48,7 @@ body, td, p
 body
 {
 	/* Mohammed Al-Timimi (08/06/11) - Changed BG image */
-	background-image:url('main-bg.jpg');
+	background-image:url('../image/main-bg.jpg');
 /*	min-width:1200px;	(29/10/2010 PR - Was causing view fault when not maximized */
 	margin:0;
 	padding:0;
@@ -945,7 +945,7 @@ a.IconButton
     height: 100%;
     width: 100%;
     background-color: #fff;
-    background-image:url('main-bg.jpg');
+    background-image:url('../image/main-bg.jpg');
     top: 0px;
     left: 0px;
     z-index: 9998;
