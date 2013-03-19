@@ -39,7 +39,7 @@
 	var popUpAppender = new log4javascript.PopUpAppender();
 	log.addAppender(popUpAppender);
 	
-	log4javascript.setEnabled(true); // set to false to disable logging
+	log4javascript.setEnabled(false); // set to false to disable logging
 </script>
 <!-- /logging -->
 
