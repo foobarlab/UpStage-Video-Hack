@@ -323,8 +323,8 @@ class upstage.Client
                                                       
 	// PQ: Added
 	// Path to the music note and sfx icon that display in the audio widget
-	public static var MUSIC_ICON_IMAGE_URL	:String = '/media/thumb/music.jpg';
-	public static var SFX_ICON_IMAGE_URL	:String = '/media/thumb/sfx.jpg';
+	public static var MUSIC_ICON_IMAGE_URL	:String = '/image/icon/icon-music.png';
+	public static var SFX_ICON_IMAGE_URL	:String = '/image/icon/icon-bullhorn.png';
 	
 	// Icon displayed for stream avatars
 	//public static var STREAM_ICON_IMAGE_URL	:String = '/media/thumb/stream.jpg';	// TODO not needed?

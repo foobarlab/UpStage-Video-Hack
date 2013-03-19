@@ -67,7 +67,7 @@ SPEECH_URL =         '/speech/'
 AUDIO_URL =          MEDIA_URL + AUDIO_PATH
 WEBCAM_URL =         '/media/video/'
 WEBCAM_STILL_URL =   '/media/video-still/'
-MISSING_THUMB_URL =  '/image/missing.png'
+MISSING_THUMB_URL =  '/image/icon/icon-question-sign.png'
 WEBCAM_SUBURL =      'video'
 WEBCAM_STILL_SUBURL ='video-still'
 
@@ -79,8 +79,8 @@ AUDIO_SUBURL     = AUDIO_URL.strip('/') #PQ & EB: Added 17.9.07
 
 # PQ & EB Added 13.10.07
 # Paths to music and sfx thumbnail images for the workshop to display
-MUSIC_ICON_IMAGE_URL    = '/media/thumb/music.jpg'
-SFX_ICON_IMAGE_URL      = '/media/thumb/sfx.jpg'
+MUSIC_ICON_IMAGE_URL    = '/image/icon/icon-music.png'
+SFX_ICON_IMAGE_URL      = '/image/icon/icon-bullhorn.png'
 
 # file system paths
 # these relate to the above url paths
