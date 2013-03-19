@@ -1,2 +1,6 @@
 <audios>
+<audio medium="sfx" name="sfx" tags="" url="/media/test/sfx.mp3" streamname="" dateTime="" file="sfx.mp3" voice="" uploader="admin" thumbnail="/image/icon/icon-bullhorn.png" streamserver="">
+</audio>
+<audio medium="music" name="music" tags="" url="/media/test/music.mp3" streamname="" dateTime="" file="music.mp3" voice="" uploader="admin" thumbnail="/image/icon/icon-music.png" streamserver="">
+</audio>
 </audios>
