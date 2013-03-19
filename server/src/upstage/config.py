@@ -67,7 +67,7 @@ SPEECH_URL =         '/speech/'
 AUDIO_URL =          MEDIA_URL + AUDIO_PATH
 WEBCAM_URL =         '/media/video/'
 WEBCAM_STILL_URL =   '/media/video-still/'
-MISSING_THUMB_URL =  '/missing.png'
+MISSING_THUMB_URL =  '/image/missing.png'
 WEBCAM_SUBURL =      'video'
 WEBCAM_STILL_SUBURL ='video-still'
 
