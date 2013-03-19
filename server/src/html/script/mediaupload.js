@@ -49,8 +49,12 @@ function sendPostAction()
 function disableSubmit()
 {
 	log.debug("disableSubmit()");
-	
-	document.getElementById("btnSubmit").disabled = 'disabled';
+	_getElementById("btnSubmit").disabled = 'disabled';
+}
+
+function enableSubmit() {
+	log.debug("enableSubmit()");
+	_getElementById("btnSubmit").disabled = '';
 }
 
 /*
@@ -669,6 +673,27 @@ function checkMediaType(filename, type)
 
 //-------------------------------- VOICE TESTING -----------------------------//
 
+function checkVoiceTest() {
+	log.debug("checkVoiceTest()");
+	var selection = _getElementById('voice').selectedIndex;
+	log.debug("checkVoiceTest(): selectedIndex = " + selection);
+	if(selection == 0) {
+		hideVoiceTest();	// hide voice test if 'none' is selected
+	} else {
+		showVoiceTest();
+	}
+}
+
+function showVoiceTest() {
+	log.debug("showVoiceTest()");
+	_getElementById('voiceTestPanel').style.display = 'inline';
+}
+
+function hideVoiceTest() {
+	log.debug("hideVoiceTest()");
+	_getElementById('voiceTestPanel').style.display = 'none';
+}
+
 function voiceTest()
 {
 	log.debug("voiceTest()");
@@ -1121,6 +1146,13 @@ function resetAvatarForm() {
 	
 	// reset error messages
 	resetAvatarErrorMessages();
+	
+	// set voice selection to 'none'
+	_getElementById('voice').selectedIndex = 0;
+	hideVoiceTest();
+	
+	// enable submit button
+	enableSubmit();
 }
 
 function resetPropForm() {
@@ -1128,6 +1160,7 @@ function resetPropForm() {
 	resetForm_BasicSettings();
 	_resetInputDropDown(_getElementById("prframecount"),0);		// frame count
 	displayFields('prframecount', 'pr');
+	enableSubmit();	// enable submit button
 }
 
 function resetBackdropForm() {
@@ -1135,24 +1168,28 @@ function resetBackdropForm() {
 	resetForm_BasicSettings();
 	_resetInputDropDown(_getElementById("bkframecount"),0);		// frame count
 	displayFields('bkframecount', 'bk');
+	enableSubmit();	// enable submit button
 }
 
 function resetAudioForm() {
 	log.debug("resetAvatarForm()");
 	resetForm_BasicSettings();
 	_getElementById("audio_type").checked = true;				// audio type
+	enableSubmit();	// enable submit button
 }
 
 function resetVideoAvatarForm() {
 	log.debug("resetAvatarForm()");
 	resetForm_BasicSettings();
 	_resetInputDropDown(_getElementById("vidslist"));			// video list
+	enableSubmit();	// enable submit button
 }
 
 
 function resetForm_BasicSettings() {
 	_resetInputText(_getElementById("name"));
 	_resetInputText(_getElementById("tags"));
+	enableSubmit();	// enable submit button
 }
 
 /* --- avatar form functions */

@@ -1267,7 +1267,9 @@ class MediaUploadPage(Workshop):
     
     def text_voice_list(self, request):
         """dropdown list of available voices"""
-        table = []
+        #table = []
+        # allow empty voice by providing an empty element
+        table = ['<option value=""> -- none -- </option>']
         vk = VOICES.keys()
         vk.sort()
         for v in vk:
