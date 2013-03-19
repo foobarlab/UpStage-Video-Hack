@@ -42,9 +42,17 @@
   <clip import="temp/classes.swf" />
   
   <!-- imported images -->
+  
   <clip id="TransparentImage" import="temp/transparent_320x240.png" />
   <clip id="TransparentImageWithMarker" import="temp/transparent_marker_320x240.png" />
+  
+  <!-- 
   <clip id="FilmStripIconImage" import="temp/filmstrip_icon.png" />
+  -->
+  
+  <clip id="ImageIconPlayCircle" import="temp/icon-play-circle.png" />
+  <clip id="ImageIconFilm" import="temp/icon-film.png" />
+  <clip id="ImageIconVolumeUp" import="temp/icon-volume-up.png" />
   
   <frame>
     
@@ -68,9 +76,29 @@
     		</frame>
     	</clip>
     	
+    	<!-- 
     	<clip id="FilmStripIcon">
     		<frame>
     			<place id="FilmStripIconImage" />
+    		</frame>
+    	</clip>
+    	-->
+    	
+    	<clip id="IconLiveStream">
+    		<frame>
+    			<place id="ImageIconPlayCircle" />
+    		</frame>
+    	</clip>
+    	
+    	<clip id="IconAudioStream">
+    		<frame>
+    			<place id="ImageIconVolumeUp" />
+    		</frame>
+    	</clip>
+    	
+    	<clip id="IconVideoStream">
+    		<frame>
+    			<place id="ImageIconFilm" />
     		</frame>
     	</clip>
     	
