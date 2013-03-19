@@ -600,7 +600,7 @@ class AvatarThing(Resource):
         register the new thing."""
         if result:
             #request.write(result)
-            return self.failure(result, swf, thumbnail, form, request)
+            return self.failure_upload(result, swf, thumbnail, form, request)
 
         # if the name is in use, mangle it until it is not.
         # XXX this is not perfect, but
