@@ -5,4 +5,8 @@
 </avatar>
 <avatar medium="stream" name="stream_live" tags="" url="library:a39Udxdf:VideoOverlay" streamname="helloworld" dateTime="" file="library:a39Udxdf:VideoOverlay" voice="" uploader="admin" thumbnail="library:iiG9abcf:IconLiveStream" streamserver="rtmp://localhost/oflaDemo">
 </avatar>
+<avatar medium="video" name="video" tags="" url="/media/video/video.jpg" streamname="" dateTime="" file="video/video.jpg" voice="" uploader="admin" thumbnail="/media/video-still/video.jpg" streamserver="">
+</avatar>
+<avatar medium="" name="avatar" tags="" url="/media/helen_av.swf" streamname="" dateTime="" file="helen_av.swf" voice="e_en-n" uploader="admin" thumbnail="/media/thumb/helen_av.jpg" streamserver="">
+</avatar>
 </avatars>

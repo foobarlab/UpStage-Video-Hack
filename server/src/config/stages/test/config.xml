@@ -7,6 +7,18 @@
 </avatar>
 <avatar media="library:CrdDf6jn:VideoOverlay" voice="" name="flv" showname="show">
 </avatar>
+<avatar media="video/video.jpg" voice="" name="video" showname="show">
+</avatar>
+<avatar media="helen_av.swf" voice="e_en-n" name="avatar" showname="show">
+</avatar>
+<prop media="megaphone.swf" name="prop">
+</prop>
+<backdrop media="background.swf" name="backdrop">
+</backdrop>
+<audio media="music.mp3" type="music" name="audio_music">
+</audio>
+<audio media="sfx.mp3" type="sfx" name="audio_sfx">
+</audio>
 <access_one>
 </access_one>
 <access_two>
