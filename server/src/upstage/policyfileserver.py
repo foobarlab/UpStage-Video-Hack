@@ -30,7 +30,7 @@ class policy_server(object):
         if 'cross-domain-policy' not in policy:
             raise exceptions.RuntimeError('Not a valid policy file')
 
-        log.msg('Listening on port %d\n' % port)
+        log.msg('Listening on port %d' % port)
         
         #try:
         #    self.sock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
