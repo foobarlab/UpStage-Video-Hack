@@ -362,6 +362,7 @@ class VideoThing(Resource):
                        tags=self.tags) # Corey, Heath, Karena 24/08/2011 - Added for media tagging set the tags to self.tags
        
         # Natasha - Assign video to stages
+        # FIXME throws exception when trying to add a video avatar
         if self.assignedstages is not None:
             for x in self.assignedstages:
                 self.media_dict.set_media_stage(x, name)
