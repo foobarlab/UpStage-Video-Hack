@@ -1267,8 +1267,6 @@ class MediaUploadPage(Workshop):
     
     def text_voice_list(self, request):
         """dropdown list of available voices"""
-        #table = []
-        # allow empty voice by providing an empty element
         table = ['<option value=""> -- none -- </option>']
         vk = VOICES.keys()
         vk.sort()
@@ -1282,7 +1280,7 @@ class MediaUploadPage(Workshop):
         else:
             files = []
         if files:
-            out = ['<option value=""> -- Select -- </option>']
+            out = ['<option value=""> -- select -- </option>']
             for f in files:
                 out.append('<option>%s</option>' %f)                
         else:

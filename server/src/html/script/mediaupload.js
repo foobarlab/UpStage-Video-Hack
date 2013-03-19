@@ -254,9 +254,7 @@ function createVideoControls()
  * Hides the bottom control panel
  */
 function hideControls() {
-	
 	log.debug("hideControls()");
-	
 	document.getElementById("muLeftContent").style.display = 'none';
 	document.getElementById("muRightContent").style.display = 'none';
 }
@@ -265,30 +263,31 @@ function hideControls() {
  * Author: Natasha Pullan
  * Displays the fields of a given media type
  */
-function displayFields(selectbox, prefix)
-{
-	log.debug("displayFields(): selectbox="+selectbox+", prefix="+prefix);
+function displayFields(selectbox, prefix, numInputs)
+{	
+	numInputs = typeof numInputs !== 'undefined' ? numInputs : 10;	// set to default '10' if no parameter given
 	
-	var value = document.getElementById(selectbox).value;
-	for(var counter = 0; counter <= 9; counter++)
+	log.debug("displayFields(): selectbox="+selectbox+", prefix="+prefix + ", numInputs="+numInputs);
+	
+	var index = document.getElementById(selectbox).selectedIndex;
+	
+	for(var counter = 0; counter < numInputs; counter++)
 	{
-		var fileId = prefix + "contents" + counter;
-		var lblId = prefix + "lbl" + counter;
+		var fileId = prefix + "contents" + counter;	// file input
+		var lblId = prefix + "lbl" + counter;		// div containing controls
 
-	if (counter < value)
+		if (counter <= index)
 		{
+			log.debug("displayFields(): show '" + lblId + "' and enable '" + fileId + "'");
 			document.getElementById(lblId).style.display = 'inline';
 			document.getElementById(fileId).disabled = '';
-			document.getElementById(fileId).style.display = 'inline';
 		}
 		else
 		{
-			
+			log.debug("displayFields(): hide '" + lblId + "' and disable '" + fileId + "'");
 			document.getElementById(lblId).style.display = 'none';
 			document.getElementById(fileId).disabled = 'disabled';
-			document.getElementById(fileId).style.display = 'none';
 		}
-	
 	}
 }
 
@@ -709,18 +708,29 @@ function voiceTest()
     voiceDiv.style.display = 'block';
     voiceDiv.style.margin = '10px';
     
-    voiceError.style.display = 'block';
+    voiceError.style.display = 'none';
     voiceError.style.margin = '10px';
+    
+    var cancelVoiceTest = _getElementById("cancelVoiceTest");
     
     flowplayer("voicediv", "/script/flowplayer/flowplayer-3.2.16.swf", {
     	
+    	/*
+    	debug: true,
+    	log: {
+    		level: 'info'
+    	},
+    	*/
+    	
     	onLoad: function() {
             this.setVolume(100);
-            voiceError.innerHtml = '';	// clear error display
+            voiceError.innerHTML = ''; // clear error display
+            cancelVoiceTest.style.display = 'inline';	// show cancel button
         },
         
         onFinish: function() {
         	voiceDiv.style.display = 'none';	// hide player
+        	cancelVoiceTest.style.display = 'none';	// hide cancel button
         	this.unload();
         },
         
@@ -756,15 +766,25 @@ function voiceTest()
         	voiceDiv.style.display = 'none';
         	
         	// show error
+        	voiceError.style.display = 'block';
         	voiceError.innerHTML = '<p style="color:red">Error ' + errorCode + ': ' + errorMessage + '</p>';
+        	
+        	cancelVoiceTest.style.display = 'none';	// hide cancel button
         	
         	this.unload();
         },
     	
     	clip: {
-    		url: voicefile, autoPlay: true
+    		url: voicefile,
+    		autoPlay: true,
+    		autoBuffering: true,
+    		/*
+    		onMetaData: function(data) {
+    			console.log(data);
+    		}
+    		*/
     	},
-        
+    	
         plugins: {
         	audio: {
                 url: '/script/flowplayer.audio/flowplayer.audio-3.2.10.swf'
@@ -782,6 +802,37 @@ function voiceTest()
     });
 
 }
+
+function resetVoiceTest() {
+	
+	log.debug("resetVoiceTest()");
+	
+	// hide cancel button
+	var cancelVoiceTest = _getElementById("cancelVoiceTest");
+	cancelVoiceTest.style.display = 'none';	
+	
+	var voiceDiv = _getElementById("voicediv");
+	var voiceError = _getElementById("voiceerror");
+	
+	// reset flowplayer
+	var player = flowplayer(voiceDiv);
+	if(player != null) {
+		if (player.isLoaded()) {
+			player.stop();
+			player.close();
+			player.unload();
+		}
+	}
+	
+	// remove player
+	voiceDiv.innerHTML = '';
+	voiceDiv.style.display = 'none';
+	
+	// reset error display
+	voiceError.innerHTML = '';
+	voiceError.style.display = 'none';
+}
+
 
 /* FIXME unused? */
 function voiceTesting()
@@ -1070,7 +1121,9 @@ function saveInformation()
 	var uploader = document.getElementById("playername").value;
 	var dateTime = document.getElementById("datetime").value;
 	var selectedVoice;
-		
+	
+	// FIXME
+	
 	if(radValue == null)	// TODO radValue should be mediaTypeSelectorValue
 	{
 		// TODO avoid this
@@ -1082,6 +1135,7 @@ function saveInformation()
 	}
 	else
 	{
+	
 		for(var i = 0; i < voices.length; i++)
 		{
 			if(voices.options[i].selected)
@@ -1104,7 +1158,8 @@ function _resetInputText(element) {
 	element.text = "";
 }
 
-function _resetInputDropDown(element,value=-1) {
+function _resetInputDropDown(element,value) {
+	value = typeof value !== 'undefined' ? value : -1;	// set to default '-1' if no parameter given
 	element.selectedIndex = value;
 }
 
@@ -1115,7 +1170,7 @@ function resetForm() {
 	log.debug("resetForm()");
 	
 	// hide lower page controls
-	document.getElementById("mediaTypeSelector").selectedIndex = -1;
+	document.getElementById("mediaTypeSelector").selectedIndex = 0;
 	hideControls();
 	
 	// reset form data
@@ -1133,12 +1188,10 @@ function resetAvatarForm() {
 	resetForm_BasicSettings();									// name and tags
 	_resetInputDropDown(_getElementById("voice"));				// voice selection dropdown
 	_resetInputText(_getElementById("text"));					// voice test text
-	// TODO voicediv reset
 	_getElementById("checkBoxStreaming").checked = false;		// disable streaming checkbox
 	hideStreamSettings();										
 	_resetInputText(_getElementById("streamserver"));			// streamserver text
 	_resetInputText(_getElementById("streamname"));				// streamname text
-	// TODO streamdiv reset
 	_getElementById("uploadAvatarImage").checked = true;		// select avatar image upload
 	showAvatarImageUpload();
 	_resetInputDropDown(_getElementById("avframecount"),0);		// frame count
@@ -1151,6 +1204,12 @@ function resetAvatarForm() {
 	_getElementById('voice').selectedIndex = 0;
 	hideVoiceTest();
 	
+	// voicediv reset
+	resetVoiceTest();
+	
+	// streamdiv reset
+	resetTestStream();
+	
 	// enable submit button
 	enableSubmit();
 }
@@ -1159,7 +1218,7 @@ function resetPropForm() {
 	log.debug("resetAvatarForm()");
 	resetForm_BasicSettings();
 	_resetInputDropDown(_getElementById("prframecount"),0);		// frame count
-	displayFields('prframecount', 'pr');
+	displayFields('prframecount', 'pr', 1);
 	enableSubmit();	// enable submit button
 }
 
@@ -1302,7 +1361,6 @@ function hideAvatarImageUpload() {
 
 function resetAvatarErrorMessages() {
 	_getElementById("voiceerror").innerHTML = '';
-	// TODO reset stream error message
 }
 
 /* --- test stream functions */
@@ -1326,7 +1384,7 @@ function testStream() {
     	} else if(streamName.endsWith('.mp4')) {
     		streamType = 'video';
     	} else {
-    		streamType = 'live';
+    		streamType = 'live';	// default
     	}
     	
     	log.debug("testStream(): detected stream type = " + streamType);
@@ -1342,7 +1400,7 @@ function testStream() {
     switch(streamType) {
     	case 'audio':
     		displayHeight = '30px';
-    		displayWidth = '80%';
+    		displayWidth = '60%';
     		showFullscreen = false;
     		break;
     	case 'video':
@@ -1362,14 +1420,32 @@ function testStream() {
     streamDiv.style.display = 'block';
     streamDiv.style.margin = '10px';
     
+    var cancelTestStream = _getElementById("cancelStreamTest");
+    
     flowplayer("streamdiv", "/script/flowplayer/flowplayer-3.2.16.swf", {
+    	
+    	/*
+    	debug: true,
+    	log: {
+    		level: 'info'
+    	},
+    	*/
+    	
+    	play: {
+    	    opacity: 0.0,
+    	    label: null, // label text; by default there is no text
+    	    replayLabel: null, // label text at end of video clip
+    	},
     	
     	onLoad: function() {
             this.setVolume(100);
+            cancelTestStream.style.display = 'inline';	// show cancel button
         },
         
         onFinish: function() {
+        	if (this.isFullscreen()) { this.toggleFullscreen();}	// exit fullscreen mode
         	streamDiv.style.display = 'none'; // hide player
+        	cancelTestStream.style.display = 'none';	// hide cancel button
         	this.unload();
         },
     	
@@ -1380,7 +1456,7 @@ function testStream() {
                 height: 30,
                 autoHide: false,
                 showErrors: true,
-                scrubber: showScrubber,
+                scrubber: showScrubber,            
             },
             rtmp: {
                 url: "/script/flowplayer.rtmp/flowplayer.rtmp-3.2.12.swf",
@@ -1398,7 +1474,40 @@ function testStream() {
     		scaling: 'fit',
             provider: 'rtmp',
             metaData: !ignoreMeta,
+            autoPlay: true,
+            autoBuffering: true,
+            /*
+    		onMetaData: function(data) {
+    			log.info(data);
+    		}
+    		*/
     	},
     	
     });
+}
+
+function resetTestStream() {
+	
+	log.debug("resetTestStream()");
+	
+	// hide cancel button
+	var cancelTestStream = _getElementById("cancelStreamTest");
+	cancelTestStream.style.display = 'none';	
+	
+	var streamDiv = _getElementById("streamdiv");
+	
+	// reset flowplayer
+	var player = flowplayer(streamDiv);
+	if(player != null) {
+		if (player.isLoaded()) {
+			player.stop();
+			player.close();
+			player.unload();
+		}
+	}
+	
+	// remove player
+	streamDiv.innerHTML = '';
+	streamDiv.style.display = 'none';
+
 }

@@ -18,7 +18,7 @@ Changelog: Vibhu Patel - Aut UpStage 2011
 <!-- FIXME naming a form 'natasha' seems not appropriate - better name it for what it actually does, probably something like 'form_mediaupload' ... -->
 <form name="natasha" method="post" enctype="multipart/form-data" action="" onsubmit="disableSubmit()"> <!-- action=req:path so you can decide what to do with it??  method="post" enctype="multipart/form-data"  action="/admin/save_thing" action="%(req:path)s" -->
 	
-	<!-- meta data for uploaded content -->
+	<!-- meta data for form submit content -->
 	<input type="hidden" name="uploader" size="16" value="%(user)s" />
 	<input type="hidden" name="is_su" size="16" value="%(can_su)s" />
 	<input type="hidden" name="dateTime" size="16" value="%(datetime)s" />
@@ -27,7 +27,7 @@ Changelog: Vibhu Patel - Aut UpStage 2011
 	<div id="basicSettings">
 		<label for="mediaTypeSelector">Choose media type:</label>
 		<select name="type" id="mediaTypeSelector" onchange="changeMediaTypeControlPanel()">
-			<option value=""></option>
+			<option value=""> -- select -- </option>
 			<option value="avatar">Avatar</option>
 			<option value="prop">Prop</option>
 			<option value="backdrop">Backdrop</option>
@@ -76,11 +76,13 @@ Changelog: Vibhu Patel - Aut UpStage 2011
 				
 				<div id="voiceselection" class="fieldrow">
 				
-					<label for="voice">Voice:</label><select name="voice" size="1" id="voice" onchange="javascript:resetAvatarErrorMessages();checkVoiceTest();">%(voice_list)s</select>
+					<label for="voice">Voice:</label>
+					<select name="voice" size="1" id="voice" style="width:100px" onchange="javascript:resetAvatarErrorMessages();checkVoiceTest();">%(voice_list)s</select>
 					
 					<div id="voiceTestPanel" style="display:none">
 						<input type="text" name="text" id="text" maxlength="128" value="The quick brown fox jumps over the lazy dog" style="width:45%"/>
-					 	<input type="button" onclick="voiceTest(); return false;" value="Test voice" />
+					 	<input type="button" onclick="voiceTest(); return false;" value="Test voice"  id="buttonTestVoice" />
+					 	<input type="button" onclick="javascript:resetVoiceTest();return false;" value="Cancel" style="display:none" id="cancelVoiceTest" />
 						<div id="voicetest"> 
 					        <div id="voicediv"></div>
 					        <div id="voiceerror"></div>
@@ -119,13 +121,14 @@ Changelog: Vibhu Patel - Aut UpStage 2011
 								<option value="audio">Audio</option>
 								<option value="video">Video</option>
 							</select>
-							<input type="button" onclick="testStream(); return false;" value="Test stream" />
+							<input type="button" onclick="javascript:testStream();return false;" value="Test stream" id="buttonStreamTest" />
+							<input type="button" onclick="javascript:resetTestStream();return false;" value="Cancel" style="display:none" id="cancelStreamTest" />
 						</div>
 						
 					</div>
 					
 					<div id="streamtest" class="fieldrow"> 
-				        	<div id="streamdiv"></div>
+						<div id="streamdiv"></div>
 					</div>
 					
 				</div>
@@ -148,7 +151,7 @@ Changelog: Vibhu Patel - Aut UpStage 2011
 				<div id="avimageselection" style="display:inherit">
 					
 					<div class="fieldrow">
-						<label id="numframe">Number of frames: </label>
+						<label id="numframe">Number of frames:</label>
 						<select name="avframecount" size="1" id="avframecount" onchange="displayFields('avframecount', 'av');">
 							<option value="1">1</option>
 							<option value="2">2</option>
@@ -179,70 +182,61 @@ Changelog: Vibhu Patel - Aut UpStage 2011
 			</div>
 			
 			<div id="propBits" style="display: none;">
-				<p>
-				<label id="numframe">Number of frames: </label>
-				<select name="prframecount" size="1" id="prframecount" onchange="displayFields('prframecount', 'pr');">
-				<option value="1">1</option>
-				</select><br />
-				</p>
+				
+				<div class="fieldrow">
+					<label id="numframe">Number of frames:</label>
+					<select name="prframecount" size="1" id="prframecount" onchange="displayFields('prframecount', 'pr', 1);">
+						<option value="1">1</option>
+					</select>
+				</div>
 			
-				<label id="prlbl0">Filename 1: </label><input type="file" name="prcontents0" id="prcontents0" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<label id="prlbl1" style="display: none">Filename 2: </label><input type="file" style="display: none" name="prcontents1" id="prcontents1" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<label id="prlbl2" style="display: none">Filename 3: </label><input type="file" style="display: none" name="prcontents2" id="prcontents2" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<label id="prlbl3" style="display: none">Filename 4: </label><input type="file" style="display: none"name="prcontents3" id="prcontents3" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<label id="prlbl4" style="display: none">Filename 5: </label><input type="file" style="display: none" name="prcontents4" id="prcontents4" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<label id="prlbl5" style="display: none">Filename 6: </label><input type="file" style="display: none" name="prcontents5" id="prcontents5" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<label id="prlbl6" style="display: none">Filename 7: </label><input type="file" style="display: none" name="prcontents6" id="prcontents6" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<label id="prlbl7" style="display: none">Filename 8: </label><input type="file" style="display: none" name="prcontents7" id="prcontents7" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<label id="prlbl8" style="display: none">Filename 9: </label><input type="file" style="display: none" name="prcontents8" id="prcontents8" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<label id="prlbl9" style="display: none">Filename 10:</label><input type="file" style="display: none" name="prcontents9" id="prcontents9" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<br/>
-					
+				<div id="prlbl0" class="fileupload"><label for="prcontents0">Filename 1:</label><input type="file" size="50" name="prcontents0" id="prcontents0" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png" /></div>
+				
 			</div>
 			
 			<div id="backdropBits" style="display: none;">
-				<p>
-				<label id="numframe">Number of frames: </label>
-				<select name="bkframecount" size="1" id="bkframecount" onchange="displayFields('bkframecount', 'bk');">
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-				<option value="6">6</option>
-				<option value="7">7</option>
-				<option value="8">8</option>
-				<option value="9">9</option>
-				<option value="10">10</option>
-				</select><br />
-				</p>
+				
+				<div class="fieldrow">
+					<label id="numframe">Number of frames:</label>
+					<select name="bkframecount" size="1" id="bkframecount" onchange="displayFields('bkframecount', 'bk');">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+					</select>
+				</div>
 			
-				<label id="bklbl0">Filename 1: </label><input type="file" name="bkcontents0" id="bkcontents0" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<label id="bklbl1" style="display: none">Filename 2: </label><input type="file" style="display: none" name="bkcontents1" id="bkcontents1" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<label id="bklbl2" style="display: none">Filename 3: </label><input type="file" style="display: none" name="bkcontents2" id="bkcontents2" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<label id="bklbl3" style="display: none">Filename 4: </label><input type="file" style="display: none"name="bkcontents3" id="bkcontents3" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<label id="bklbl4" style="display: none">Filename 5: </label><input type="file" style="display: none" name="bkcontents4" id="bkcontents4" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<label id="bklbl5" style="display: none">Filename 6: </label><input type="file" style="display: none" name="bkcontents5" id="bkcontents5" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<label id="bklbl6" style="display: none">Filename 7: </label><input type="file" style="display: none" name="bkcontents6" id="bkcontents6" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<label id="bklbl7" style="display: none">Filename 8: </label><input type="file" style="display: none" name="bkcontents7" id="bkcontents7" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<label id="bklbl8" style="display: none">Filename 9: </label><input type="file" style="display: none" name="bkcontents8" id="bkcontents8" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<label id="bklbl9" style="display: none">Filename 10:</label><input type="file" style="display: none" name="bkcontents9" id="bkcontents9" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png"/><br />
-				<br/>
+				<div id="bklbl0" class="fileupload"><label for="bkcontents0">Filename 1:</label><input type="file" size="50" name="bkcontents0" id="bkcontents0" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png" /></div>
+				<div id="bklbl1" class="fileupload" style="display: none"><label for="bkcontents1">Filename 2:</label><input type="file" size="50" name="bkcontents1" id="bkcontents1" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png" /></div>
+				<div id="bklbl2" class="fileupload" style="display: none"><label for="bkcontents2">Filename 3:</label><input type="file" size="50" name="bkcontents2" id="bkcontents2" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png" /></div>
+				<div id="bklbl3" class="fileupload" style="display: none"><label for="bkcontents3">Filename 4:</label><input type="file" size="50" name="bkcontents3" id="bkcontents3" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png" /></div>
+				<div id="bklbl4" class="fileupload" style="display: none"><label for="bkcontents4">Filename 5:</label><input type="file" size="50" name="bkcontents4" id="bkcontents4" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png" /></div>
+				<div id="bklbl5" class="fileupload" style="display: none"><label for="bkcontents5">Filename 6:</label><input type="file" size="50" name="bkcontents5" id="bkcontents5" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png" /></div>
+				<div id="bklbl6" class="fileupload" style="display: none"><label for="bkcontents6">Filename 7:</label><input type="file" size="50" name="bkcontents6" id="bkcontents6" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png" /></div>
+				<div id="bklbl7" class="fileupload" style="display: none"><label for="bkcontents7">Filename 8:</label><input type="file" size="50" name="bkcontents7" id="bkcontents7" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png" /></div>
+				<div id="bklbl8" class="fileupload" style="display: none"><label for="bkcontents8">Filename 9:</label><input type="file" size="50" name="bkcontents8" id="bkcontents8" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png" /></div>
+				<div id="bklbl9" class="fileupload" style="display: none"><label for="bkcontents9">Filename 10:</label><input type="file" size="50" name="bkcontents9" id="bkcontents9" accept="application/x-shockwave-flash, image/gif, image/jpeg, image/png" /></div>
 			
 			</div>
 			
 			<div id="audioBits" style="display: none">
-				<p>
-					<input type="radio" name="audio_type" id="audio_type" value="sfx" checked="checked" /> Sound Effect <br />
-					<input type="radio" name="audio_type" id="music_type" value="music" /> Music <br />
-				</p>
-				<label id="aulbl0">Filename 1:</label><input type="file" name="aucontents0" id="aucontents0" /><br />
+				<div class="fieldrow">
+					<input type="radio" name="audio_type" id="audio_type" value="sfx" checked="checked" /><label for="audio_type">Sound Effect</label><br />
+					<input type="radio" name="audio_type" id="music_type" value="music" /><label for="music_type">Music</label>
+				</div>
+				<div id="aulbl0" class="fileupload"><label for="aucontents0">Filename:</label><input type="file" size="50" name="aucontents0" id="aucontents0" /></div>
 			</div>
 			
 			
 			<div id="videoBits" style="display: none;">
 				<p>Choose from existing files in the <a href="/media/video">/media/video</a> directory.</p>
-				<select name="video" id="vidslist">%(videoList)s</select>
+				<select name="video" id="vidslist" style="min-width:33%">%(videoList)s</select>
 			</div>
 			
 			<div id="mediaPreview" style="display: none;">
