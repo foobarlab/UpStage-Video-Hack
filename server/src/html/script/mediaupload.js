@@ -1159,7 +1159,7 @@ function _resetInputText(element) {
 }
 
 function _resetInputDropDown(element,value) {
-	value = typeof value !== 'undefined' ? value : -1;	// set to default '-1' if no parameter given
+	value = typeof value !== 'undefined' ? value : 0;	// set to '0' (first) if no parameter given
 	element.selectedIndex = value;
 }
 
