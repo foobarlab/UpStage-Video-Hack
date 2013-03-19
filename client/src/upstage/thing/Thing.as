@@ -152,6 +152,8 @@ class upstage.thing.Thing extends MovieClip
 		
 		// prepare streaming
 		
+		// TODO distinguish between live stream, vod stream (flv), mp3 stream, etc ... and set thumbnail icon overlay (using font awesome) according to type
+		
 		// attach videodisplay from library (height is calculated for aspect ratio of 4:3)
 		this.videodisplay = this.attachMovie("VideoDisplay", "videodisplay", this.baseLayer, {_x:0, _y:0, _width:Client.AVATAR_MAX_WIDTH, _height:(((Client.AVATAR_MAX_WIDTH)/4)*3)});
 	}
