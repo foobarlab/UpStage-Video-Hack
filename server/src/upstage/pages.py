@@ -1104,7 +1104,7 @@ class MediaEditPage(Workshop):
                 for t in self.tags:
                     t = t.strip('') # strip whitespace
                     if len(t) > 0:
-                        tag_info += '<a id="%s" href="javascript:removeTag(%s)" title="%s" class="disableLink"><img alt="" src="/style/remove_symbol.png" width="10px" height="10px" style="border:0px solid #000000;">%s</a>&nbsp;' % (count, count, t, t)
+                        tag_info += '<a id="%s" href="javascript:removeTag(%s)" title="%s" class="disableLink"><img alt="" src="/image/remove_symbol.png" width="10px" height="10px" style="border:0px solid #000000;">%s</a>&nbsp;' % (count, count, t, t)
                         count += 1
             tag_info += '</div>'
             

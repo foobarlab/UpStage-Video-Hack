@@ -27,7 +27,7 @@
  function stage_error(msg)
  {
      document.getElementById('loading').innerHTML = 'Loading failed:<br />' + msg;
-     document.getElementById('loadingImg').src = '/style/warning.png';
+     document.getElementById('loadingImg').src = '/image/warning.png';
      document.getElementById('loadingMessage').style.display = 'none';
 
      // TODO add reload buttons? maybe also link back to stages list?

@@ -158,31 +158,31 @@ function selectColoring(select)
 	// 09/08/2011 Vibhu Patel - Changed from radio buttons to images.
 	if(select == "Prop")
 	{
-		document.getElementById("propIm").src = "/style/radioselect.jpg";
-		document.getElementById("chatIm").src = "/style/radioNonSelect.jpg";
-		document.getElementById("toolsIm").src = "/style/radioNonSelect.jpg";
-		document.getElementById("pageIm").src = "/style/radioNonSelect.jpg";
+		document.getElementById("propIm").src = "/image/radioselect.jpg";
+		document.getElementById("chatIm").src = "/image/radioNonSelect.jpg";
+		document.getElementById("toolsIm").src = "/image/radioNonSelect.jpg";
+		document.getElementById("pageIm").src = "/image/radioNonSelect.jpg";
 	}
 	if(select == "Chat")
 	{
-		document.getElementById("propIm").src = "/style/radioNonSelect.jpg";
-		document.getElementById("chatIm").src = "/style/radioselect.jpg";
-		document.getElementById("toolsIm").src = "/style/radioNonSelect.jpg";
-		document.getElementById("pageIm").src = "/style/radioNonSelect.jpg";
+		document.getElementById("propIm").src = "/image/radioNonSelect.jpg";
+		document.getElementById("chatIm").src = "/image/radioselect.jpg";
+		document.getElementById("toolsIm").src = "/image/radioNonSelect.jpg";
+		document.getElementById("pageIm").src = "/image/radioNonSelect.jpg";
 	}
 	if(select == "Tools")
 	{
-		document.getElementById("propIm").src = "/style/radioNonSelect.jpg";
-		document.getElementById("chatIm").src = "/style/radioNonSelect.jpg";
-		document.getElementById("toolsIm").src = "/style/radioselect.jpg";
-		document.getElementById("pageIm").src = "/style/radioNonSelect.jpg";
+		document.getElementById("propIm").src = "/image/radioNonSelect.jpg";
+		document.getElementById("chatIm").src = "/image/radioNonSelect.jpg";
+		document.getElementById("toolsIm").src = "/image/radioselect.jpg";
+		document.getElementById("pageIm").src = "/image/radioNonSelect.jpg";
 	}
 	if(select == "Page")
 	{
-		document.getElementById("propIm").src = "/style/radioNonSelect.jpg";
-		document.getElementById("chatIm").src = "/style/radioNonSelect.jpg";
-		document.getElementById("toolsIm").src = "/style/radioNonSelect.jpg";
-		document.getElementById("pageIm").src = "/style/radioselect.jpg";
+		document.getElementById("propIm").src = "/image/radioNonSelect.jpg";
+		document.getElementById("chatIm").src = "/image/radioNonSelect.jpg";
+		document.getElementById("toolsIm").src = "/image/radioNonSelect.jpg";
+		document.getElementById("pageIm").src = "/image/radioselect.jpg";
 	}
 	selector = select;
 	clearAllColors();

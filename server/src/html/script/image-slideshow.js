@@ -19,7 +19,7 @@ Vibhu Patel - 17/08/2011
 	{
 		if(document.all)e = event;
 		var id = this.id;
-		this.getElementsByTagName('img')[0].src = '/style/' + this.id + '_over.gif';
+		this.getElementsByTagName('img')[0].src = '/image/' + this.id + '_over.gif';
 		if(this.id=='arrow_right'){
 			slideSpeedMultiply = Math.floor((e.clientX - this.offsetLeft) / 5);
 			slideSpeed = -1*slideSpeedMultiply;
@@ -35,7 +35,7 @@ Vibhu Patel - 17/08/2011
 	function releaseSlide()
 	{
 		var id = this.id;
-		this.getElementsByTagName('img')[0].src = '/style/' + this.id + '.gif';
+		this.getElementsByTagName('img')[0].src = '/image/' + this.id + '.gif';
 		slideSpeed=0;
 	}
 

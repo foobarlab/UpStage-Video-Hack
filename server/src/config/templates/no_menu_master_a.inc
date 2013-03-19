@@ -5,16 +5,17 @@
 <title>UpStage</title>
 
 <link rel="stylesheet" type="text/css" href="/style/main.css" />
-<link rel="shortcut icon" href="/style/favicon.ico" />
+<link rel="shortcut icon" href="/favicon.ico" />
 
-<script language="javascript" type="text/javascript" src="/masterpage.js"></script>
-<script language="javascript" type="text/javascript" src="/client.js"></script>
-<script language="javascript" type="text/javascript" src="/stageedit.js"></script>
-<script language="javascript" type="text/javascript" src="/mediaupload.js"></script>
-<script language="javascript" type="text/javascript" src="/mediaedit.js"></script>
-<script language="javascript" type="text/javascript" src="/user.js"></script>
-<script language="javascript" type="text/javascript" src="/md5.js" ></script>
-<script language="javascript" type="text/javascript" src="/image-slideshow.js"></script>
+<script language="javascript" type="text/javascript" src="/script/jshash/md5.js" ></script>
+<script language="javascript" type="text/javascript" src="/script/custom-context-menu/rightClick.js"></script>
+
+<script language="javascript" type="text/javascript" src="/script/masterpage.js"></script>
+<script language="javascript" type="text/javascript" src="/script/stageedit.js"></script>
+<script language="javascript" type="text/javascript" src="/script/mediaupload.js"></script>
+<script language="javascript" type="text/javascript" src="/script/mediaedit.js"></script>
+<script language="javascript" type="text/javascript" src="/script/user.js"></script>
+<script language="javascript" type="text/javascript" src="/script/image-slideshow.js"></script>
 
 </head>
 
@@ -24,7 +25,7 @@
 		<div id="header">
 			<div id="logo">
 				<!-- Daniel Han (26/06/2012) - Fixed logo link to upstage.org.nz -->
-				<a href="www.upstage.org.nz"><img border="0" src="/style/upstagelogo.jpg" alt="Upstage" /></a>
+				<a href="www.upstage.org.nz"><img border="0" src="/image/upstagelogo.jpg" alt="Upstage" /></a>
 			</div>
 			<form name="hidden_form" action="">
 			<input name="user_name" type ="hidden" value="%(username)s" />

@@ -3,9 +3,9 @@
 <head>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 
-<script language="javascript" type="text/javascript" src="/masterpage.js"></script>
+<script language="javascript" type="text/javascript" src="/script/masterpage.js"></script>
 <link rel="stylesheet" type="text/css" href="/style/main.css" />
-<link rel="shortcut icon" href="/style/favicon.ico" />
+<link rel="shortcut icon" href="/favicon.ico" />
 
 <title>UpStage Edit</title>
 

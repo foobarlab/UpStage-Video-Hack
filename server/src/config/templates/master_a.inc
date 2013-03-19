@@ -8,10 +8,9 @@
 <title>UpStage</title>
 
 <link rel="stylesheet" type="text/css" href="/style/main.css" />
-<link rel="shortcut icon" href="/style/favicon.ico" />
+<link rel="shortcut icon" href="/favicon.ico" />
 
 <!-- FIXME to increase page performance scripts should be loaded in an async way or put at the bottom -->
-<!-- FIXME put scripts into scripts directory -->
 
 <!-- 3rd party scripts -->
 <script type="text/javascript" src="/script/jshash/md5.js"></script>
@@ -19,12 +18,12 @@
 <script type="text/javascript" src="/script/flowplayer/flowplayer-3.2.12.min.js"></script>
 
 <!-- upstage scripts -->
-<script type="text/javascript" src="/masterpage.js"></script>
-<script type="text/javascript" src="/stageedit.js"></script>
-<script type="text/javascript" src="/mediaupload.js"></script>
-<script type="text/javascript" src="/mediaedit.js"></script>
-<script type="text/javascript" src="/user.js"></script>
-<script type="text/javascript" src="/image-slideshow.js"></script>
+<script type="text/javascript" src="/script/masterpage.js"></script>
+<script type="text/javascript" src="/script/stageedit.js"></script>
+<script type="text/javascript" src="/script/mediaupload.js"></script>
+<script type="text/javascript" src="/script/mediaedit.js"></script>
+<script type="text/javascript" src="/script/user.js"></script>
+<script type="text/javascript" src="/script/image-slideshow.js"></script>
 
 <!-- logging -->
 <script type="text/javascript" src="/script/log4javascript/log4javascript.js"></script>
@@ -56,7 +55,7 @@
 		<div id="header">
 			<div id="logo">
 				<!-- Daniel Han (26/06/2012) - Fixed logo link to upstage.org.nz -->
-				<a href="http://www.upstage.org.nz"><img border="0" src="/style/upstagelogo.jpg" alt="Upstage" /></a>
+				<a href="http://www.upstage.org.nz"><img border="0" src="/image/upstagelogo.jpg" alt="Upstage" /></a>
 			</div>
 			<!-- FIXME empty action prevents browsers from saving passwords -->
 			<!-- FIXME relying on JavaScript for a login form seems like a bad behaviour -->
