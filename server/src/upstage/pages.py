@@ -79,9 +79,15 @@ Modified by: Scott/Craig/Gavin          10/10/2012  - Added stage_saved variable
 """
 
 #standard lib
-import os, re, datetime, json, time
+import os, re, datetime, time
 from urllib import urlencode
 import tempfile # natasha
+
+# json
+try:
+    import json
+except ImportError:
+    import simplejson as json 
 
 #upstage
 from upstage import config
@@ -892,7 +898,7 @@ class MediaEditPage2(Workshop):
         AdminBase.__init__(self, player, collection)
         self.player = player
         self.collection = collection
-        self.setDefaults()
+        self.set_defaults()
         
     def set_defaults(self):
         self.filterUser = ''
@@ -941,7 +947,7 @@ class MediaEditPage2(Workshop):
                 log.msg("MediaEditPage2: render_POST(): callback=%s" % request.jsonpcallback)
             
             # reset default values
-            self.setDefaults()
+            self.set_defaults()
             
             # get POST variables
             if 'user' in args:
