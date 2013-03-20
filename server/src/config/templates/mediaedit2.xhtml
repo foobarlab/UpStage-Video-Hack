@@ -8,14 +8,76 @@
 <script type="text/javascript" src="/script/slickgrid/slick.core.js"></script>
 <script type="text/javascript" src="/script/slickgrid/slick.grid.js"></script>
 
-<!-- TODO -->
+<h1>Edit and View Media</h1>
+
+<div id="filterdiv">
+		
+	<label for="selectUser">User:</label>
+	<select id="selectUser" name="selectUser" style="width:100px">
+		<option value=""></option>
+		%(list_users_as_html_option_tag)s
+	</select>
+	
+	<label for="selectStage">Stage:</label>
+	<select id="selectStage" name="selecStage" style="width:100px">
+		<option value=""></option>
+		%(list_stages_as_html_option_tag)s
+	</select>
+	
+	<label for="searchTagsField">Tags:</label>
+	<input type="text" size="50" id="searchTagsField" name="searchTagsField" />
+	
+    <input id="buttonUpdateView" type="button" style="width:100px" value="Update view" />
+    <input id="buttonResetView" type="button" style="width:100px" value="Reset view" />
+    
+</div>
 
 %(attr:message)s
 
 <hr />
 
-<div id="dataGrid"></div>
+<div class="panelRow">
 
-<script type="text/javascript">setupDataGrid();</script>
+	<div id="dataPanel">
+		<div id="dataGrid"></div>
+	</div>
+	
+	<div id="detailsPanel">
+		<h1>Media Details</h1>
+		<table>
+			<tr>
+				<td>Name:</td>
+				<td>XXXXXXXXXX</td>
+			</tr>
+			<tr>
+				<td>Name:</td>
+				<td>XXXXXXXXXX</td>
+			</tr>
+			
+		</table>
+	</div>
+
+</div>
+
+<hr />
+
+<div class="panelRow">
+	
+	<div id="editPanel">
+	
+	</div>
+	
+	<div id="assignToStagePanel">
+	
+	
+	</div>
+	
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	setupMediaEdit2("%(req:path)s");
+})
+</script>
 
 <!include master_b.inc>

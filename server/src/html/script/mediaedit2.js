@@ -1,9 +1,46 @@
-/* media edit2 page */
+/* media edit2 page -- uses jquery */
+
+function setupMediaEdit2(url_path) {
+	
+	// register button handlers
+	
+	$("#buttonUpdateView").click(function(e){
+		$.ajax({type: "POST",
+			url: url_path+"?ajax=update",
+    		data: {
+            	'user': $("#selectUser").val(),
+            	'stage': $("#selectStage").val(),
+            	'tags': $("#searchTagsField").val(),
+            },
+            success: function(response) {
+            	alert("result:" + response);             
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown){
+                // TODO handle errors
+            },
+		});
+	});
+
+	$("#buttonResetView").click(function(e){
+	    // TODO
+	});
+	
+	
+	// setup data grid
+	
+	setupDataGrid();
+	
+}
+
+function testCallback(params) {
+	alert("testCallback: params=" + params);
+}
 
 function setupDataGrid() {
 	
-	var grid;
+	log.debug("setupDataGrid()");
 	
+	var grid;
 	var columns = [
 	       {id: "name", name: "Name", field: "name"},
 	       {id: "uploader", name: "Uploader", field: "uploader"},
@@ -21,6 +58,8 @@ function setupDataGrid() {
 			enableColumnReorder: false
 	};
 
+	// gather data
+	
 	$(function () {
 		var data = [];
 		
@@ -40,5 +79,11 @@ function setupDataGrid() {
 		
 		grid = new Slick.Grid("#dataGrid", data, columns, options);
 	});
+	
+}
+
+function updateDataGrid() {
+	
+	log.debug("updateDataGrid()");
 	
 }

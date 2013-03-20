@@ -79,14 +79,14 @@ Modified by: Scott/Craig/Gavin          10/10/2012  - Added stage_saved variable
 """
 
 #standard lib
-import os, re, datetime
+import os, re, datetime, json, time
 from urllib import urlencode
 import tempfile # natasha
 
 #upstage
 from upstage import config
 from upstage.misc import new_filename, no_cache, UpstageError  
-from upstage.util import save_tempfile, get_template, new_filename, validSizes, getFileSizes
+from upstage.util import save_tempfile, get_template, new_filename, validSizes, getFileSizes, createHTMLOptionTags
 from upstage.voices import VOICES
 from upstage.globalmedia import MediaDict
 from upstage.player import PlayerDict
@@ -130,6 +130,9 @@ class Template(Resource):
     filename = None
     
     def render_GET(self, request):
+        
+        log.msg("Template: render_GET()");
+        
         s = get_template(self.filename)
         #read in includes before expanding magic bits.
         for m in re.finditer('<!include ([\w\.-]+)>', s):
@@ -151,10 +154,13 @@ class Template(Resource):
             else:
                 out.append(getattr(self, 'text_' + x)(request))
             out.append(rest)
-        str = ''.join(out)
-        return str
+        get_str = ''.join(out)
+        return get_str
 
     def render_POST(self, request):
+        
+        log.msg("Template: render_POST()");
+        
         s = get_template(self.filename)
         #read in includes before expanding magic bits.
         for m in re.finditer('<!include ([\w\.-]+)>', s):
@@ -176,8 +182,8 @@ class Template(Resource):
             else:
                 out.append(getattr(self, 'text_' + x)(request))
             out.append(rest)
-        str = ''.join(out)
-        return str
+        post_str = ''.join(out)
+        return post_str
         
 class AdminBase(Template):
     
@@ -886,8 +892,111 @@ class MediaEditPage2(Workshop):
         AdminBase.__init__(self, player, collection)
         self.player = player
         self.collection = collection
+        self.setDefaults()
+        
+    def set_defaults(self):
+        self.filterUser = ''
+        self.filterStage = ''
+        self.filterTags = ''
+        self.status = None
+        
+    def text_list_stages_as_html_option_tag(self, request):
+        keys = self.collection.stages.getKeys()
+        data_list = [] 
+        for k in keys:
+            stage = self.collection.stages.get(k)
+            if self.player.can_su() or stage.contains_al_one(self.player.name) or stage.contains_al_two(self.player.name):
+                data_list.append(k)
+        return createHTMLOptionTags(data_list)
     
+    def text_list_users_as_html_option_tag(self, request):
+        keys = self.collection.stages.getKeys()
+        data_list = [] 
+        for k in keys:
+            stage = self.collection.stages.get(k)
+            if (self.player.name is not None):
+                if self.player.can_su() or stage.contains_al_one(self.player.name) or stage.contains_al_two(self.player.name):
+                    for i in stage.get_uploader_list():
+                        if i+',' not in data_list:
+                            data_list.append(i)
+        return createHTMLOptionTags(data_list)
+        
+    # we want to be able to respond to ajax calls on POST requests:        
+    def render_POST(self,request):
+        
+        args = request.args
+        
+        log.msg("MediaEditPage2: render_POST(): args=%s" % args)
+        
+        # handle ajax calls
+        if 'ajax' in args:
+            log.msg("MediaEditPage2: render_POST(): routed as ajax call")
+            
+            # set the request content type
+            request.setHeader('Content-Type', 'application/json')
+            
+            # set jsonp callback if argument given
+            if 'callback' in args:
+                request.jsonpcallback = args['callback'][0]
+                log.msg("MediaEditPage2: render_POST(): callback=%s" % request.jsonpcallback)
+            
+            # reset default values
+            self.setDefaults()
+            
+            # get POST variables
+            if 'user' in args:
+                self.filterUser = args['user'][0]
+            if 'stage' in args:
+                self.filterStage = args['stage'][0]
+            if 'tags' in args:
+                self.filterTags = args['tags'][0]
+            
+            # get type of call
+            ajax_call = args['ajax'][0]
+            
+            # prepare response data
+            data = {}
+            
+            if ajax_call == 'update':
+                log.msg("MediaEditPage2: render_POST(): ajax call for '%s'!" % ajax_call)
+                self.status = 200
+                
+                # TODO continue here
+                
+                # DEBUG:
+                data = {'result':'success!'}
+                
+                
+            else:
+                log.msg("MediaEditPage2: render_POST(): ajax call for '%s' not understood." % ajax_call)
+                self.status = 500
+            
+            # return the data
+            if len(data) > 0:
+                return self.__format_ajax_response(request, self.status, data)
+           
+            # tell the client we're not done yet
+            return server.NOT_DONE_YET
+        
+        # handle form POST
+        else:
+            log.msg("MediaEditPage2: render_POST(): form post not supported!")
+            return server.NOT_DONE_YET
 
+    def __format_ajax_response(self, request, status, data):
+        """ Format responses """
+        
+        # Set the response in a json format
+        response = json.dumps({'status':status,'timestamp': int(time.time()), 'data':data})
+       
+        log.msg("MediaEditPage2: __format_ajax_response: response=%s" % response)
+       
+        # Format with callback format if this was a jsonp request
+        if hasattr(request, 'jsonpcallback'):
+            return request.jsonpcallback+'('+response+')'
+        else:
+            return response
+        
 """ Shaun Narayan (02/16/10) - Handles medrequest.argsia editing.
     Should probably move media list HTML into a template."""
 class MediaEditPage(Workshop):

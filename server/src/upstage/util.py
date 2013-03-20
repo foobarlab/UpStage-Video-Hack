@@ -107,3 +107,11 @@ def validSizes(sizes, super_admin):
         if (item > limit):
             valid = False
     return valid
+
+def createHTMLOptionTags(data_list):
+    if (not isinstance(data_list, list)):
+        raise TypeError('Can not create HTML options from type other than list.')
+    string = ''
+    for data_list_item in data_list:
+        string += "<option value=""%s"">%s</option>\n" % (data_list_item, data_list_item)
+    return string

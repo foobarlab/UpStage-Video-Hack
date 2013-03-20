@@ -996,3 +996,36 @@ a.IconButton
     margin:20px 0;
 }
 
+
+/* mediaedit2 styles */
+
+.panelRow {
+	clear:both;
+	display:block;
+	overflow:hidden;
+}
+
+#dataPanel {
+	float:left;
+	width:600px;
+}
+
+#detailsPanel {
+	width:300px;
+	float:left;
+	margin-left:10px;
+	background-color:yellow;
+}
+
+#editPanel {
+	float:left;
+	width:600px;
+	background-color:red;
+}
+
+#assignToStagePanel {
+	width:300px;
+	float:left;
+	margin-left:10px;
+	background-color:yellow;
+}
