@@ -52,6 +52,8 @@ var types = ['avatar', 'prop', 'backdrop', 'audio'];//Lower case due to how its 
  */
 function setupFilters()
 {
+	log.debug("setupFilters()");
+	
 	selectedOptions = new Array();
 	numFilters = 0;
 	stages = new Array();
@@ -73,6 +75,8 @@ function setupFilters()
  */
 function mainMenu(sel, num)
 {
+	log.debug("mainMenu(): sel="+sel+", num="+num);
+	
 	var html = '<select id="filter' + num + '0" onchange="javascript:setFilter('+num+'); genHTML();"><option value="">--Category--</option>';
 	var selected = '';	
 	for(var i in mainList)
@@ -99,6 +103,8 @@ function mainMenu(sel, num)
  */
 function subMenu(sel, num)
 {
+	log.debug("subMenu(): sel="+sel+", num="+num);
+	
 	var html = '<select id="filter' + num + '1" onchange="javascript:setFilter('+num+'); applyFilters();"><option value="">--Sub Category--</option>';
 	var list;
 	var str = ('filter' +num + '0');
@@ -145,6 +151,8 @@ function subMenu(sel, num)
  */
 function genHTML()
 {
+	log.debug("genHTML()");
+	
 	var html = '';
 	for(var i = 0;i<= numFilters; i++)
 	{
@@ -173,6 +181,8 @@ function genHTML()
  */
 function setFilter(filter)
 {
+	log.debug("setFilter(): filter="+filter);
+	
 	var str = ('filter' +filter + '0');
 	var sel = document.getElementById(str).value;
 	str = ('filter' +filter + '1');
@@ -200,6 +210,8 @@ function setFilter(filter)
  */
 function removeFilter(filter)
 {
+	log.debug("removeFilter(): filter="+filter);
+	
 	//selectedOptions.splice(filter);
 	var arr = new Array();
 	var k = 0;
@@ -222,6 +234,8 @@ function removeFilter(filter)
  */
 function addFilter()
 {
+	log.debug("addFilter()");
+	
 	if(numFilters+1 < MAX_FILTERS)
 	{
 		numFilters++;
@@ -239,6 +253,8 @@ function addFilter()
  */
 function applyFilters()
 {
+	log.debug("applyFilters()");
+	
 	applyTypeOneFilters();
 }
 
@@ -251,6 +267,8 @@ function applyFilters()
 
  function applyTypeOneFilters()
  {
+	 log.debug("applyTypeOneFilters()");
+	 
  	var elements = document.getElementById("backupdiv").getElementsByTagName("table");
  	var html = "";
  	if(selectedOptions.length == 0)
@@ -420,6 +438,8 @@ function applyFilters()
  
 function applyTypeTwoFilters()
 {
+	log.debug("applyTypeTwoFilters()");
+	
 	var elements = document.getElementById("backupdiv").getElementsByTagName("table");
 	var html = "";
 	if(selectedOptions.length == 0)
@@ -508,33 +528,6 @@ function applyTypeTwoFilters()
 	document.getElementById("submit").innerHTML = '';
 }
 
-/*
- * Vibhu (17/08/2011) Methods to trim the strings for comparison.
- *
- */
-
-// Removes leading whitespaces
-function LTrim( value ) {
-	
-	var re = /\s*((\S+\s*)*)/;
-	return value.replace(re, "$1");
-	
-}
-
-// Removes ending whitespaces
-function RTrim( value ) {
-	
-	var re = /((\s*\S+)*)\s*/;
-	return value.replace(re, "$1");
-	
-}
-
-// Removes leading and ending whitespaces
-function trim( value ) {
-	
-	return LTrim(RTrim(value));
-	
-}
 
 /**
  * Do all initial formatting, related to page (as opposed to filters).
@@ -543,6 +536,8 @@ function trim( value ) {
  */
 function setup()
 {
+	log.debug("setup()");
+	
 	browser = navigator.appName;
 	if(!mediaSelected)
 	{
@@ -574,6 +569,8 @@ function setup()
  */
 function getMedia(name, type, mainType)
 {
+	log.debug("getMedia(): name="+name+", type="+type+", mainType="+mainType);
+	
 	mediaSelected = true;
 	var audiotype = '';
 	if(mainType == 'music')
@@ -591,7 +588,11 @@ function getMedia(name, type, mainType)
  * Vibhu and Heath (31/08/2011)
  * Set the correct audio type in drop down combo box.
  */
+// FIXME: this function name seems not appropriate
 function pumpkin(){
+	
+	log.debug("pumpkin()");
+	
 	try{
 		if(document.getElementById('audio_type').value == 'music'){
 			document.getElementById('audioTypeSelect').getElementsByTagName('option')[0].selected = 'music';
@@ -611,12 +612,18 @@ function pumpkin(){
  */
 function redirect_submit(action)
 {
+	log.debug("redirect_submit(): action="+action);
+	
 	var actionlocation = action + '?voice='+ document.getElementById("voice").value + '&text=' + document.rupert.text.value;
 	playmp3(actionlocation, "speech");
 }
 
 function playmp3(action, player)
 {
+	log.debug("playmp3(): action="+action+", player="+player);
+	
+	// TODO replace with flowplayer
+	
     jwplayer(player).setup({
 			flashplayer: "/player.swf",
 			file: action,
@@ -637,6 +644,8 @@ function playmp3(action, player)
  */
  function switchTab()
  {
+	 log.debug("switchTab()");
+	 
 	 var t1 = document.getElementById("editable_info");
 	 var t2 = document.getElementById("static_info");
 	 var but = document.getElementById("switchButton");
@@ -667,6 +676,8 @@ function playmp3(action, player)
   */
  function removeSelection(selectbox)
  {
+	 log.debug("removeSelection(): selectbox="+selectbox);
+	 
  	var i;
  	for(i=selectbox.options.length-1;i>=0;i--)
  	{
@@ -683,6 +694,8 @@ function playmp3(action, player)
   */
  function switchSelection(selectbox1, selectbox2)
  {
+	 log.debug("switchSelection(): selectbox1="+selectbox+", selectbox2="+selectbox2);
+	 
  	var i;
  	var toAdd;
  	//var length = selectbox1.options.length;
@@ -703,6 +716,8 @@ function playmp3(action, player)
   */
  function addMoreOptions(selectbox, text)
  {
+	 log.debug("addMoreOptions(): selectbox="+selectbox+", text="+text);
+	 
  	var optn = document.createElement("OPTION");
  	optn.text = text;
  	optn.value = text;
@@ -715,6 +730,8 @@ function playmp3(action, player)
  */
  function removeTag(id)
  {
+	 log.debug("removeTag(): id="+id);
+	 
  	document.getElementById(id).innerHTML = "";
  }
 
@@ -723,6 +740,8 @@ function playmp3(action, player)
  */
  function changeAudioType()
  {
+	 log.debug("changeAudioType()");
+	 
  	var val = document.getElementById("audioTypeSelect").value;
  	if(val == "music")
  	{
@@ -739,6 +758,9 @@ function playmp3(action, player)
  					- Call back to search through media by tags.
  */
  function searchTags(){
+	 
+	 log.debug("searchTags()");
+	 
  	var searchText = document.getElementById('serachText').value;
  	if(searchText == null || searchText.length == 0){
  		alert("Please enter search string.");
@@ -754,6 +776,8 @@ function playmp3(action, player)
  */
  function searchTagsEnterKey(opEvent)
  {
+	 log.debug("searchTagsEnterKey(): opEvent="+opEvent);
+	 
 	if (window.event)
 	{
 			opEvent = window.event;
@@ -780,6 +804,9 @@ function playmp3(action, player)
 
  */
  function applySearch(){
+	 
+	 log.debug("applySearch()");
+	 
  	var searchText = document.getElementById('serachText').value;
  	if(searchText.length > 0){
  		var elements = document.getElementById("theImages").getElementsByTagName("table");
@@ -814,6 +841,8 @@ function playmp3(action, player)
  */
  function saveMedia()
  {
+	 log.debug("saveMedia()");
+	 
     var mediaName ="";
     var tagName = "";
     
