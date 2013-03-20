@@ -96,31 +96,16 @@ function countPlayerAndAudience()
 		}
 		catch(ex){}
 	}
-	if(document.hidden_form.user_name.value != '_NO_PLAYER_')
+	if(document.hidden_form.user_name.value != '_NO_PLAYER_') {
 		document.getElementById('signup').innerHTML = 'Welcome back, ' +document.hidden_form.user_name.value +'!<br/><a href="javascript:logout();">logout</a><br /><br />Server info: Players - ' + playerCount +' | Audience - ' + audCount;
-}
-
-// Removes leading whitespaces
-function LTrim( value ) {
-	
-	var re = /\s*((\S+\s*)*)/;
-	return value.replace(re, "$1");
-	
-}
-
-// Removes ending whitespaces
-function RTrim( value ) {
-	
-	var re = /((\s*\S+)*)\s*/;
-	return value.replace(re, "$1");
-	
+	}
 }
 
 // Removes leading and ending whitespaces
-function trim( value ) {
-	
-	return LTrim(RTrim(value));
-	
+// see: http://blog.stevenlevithan.com/archives/faster-trim-javascript
+function trim(value) {
+	//return value.replace(/^\s+|\s+$/g, '');
+	return value.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
 }
 
 //--------------------------------------
