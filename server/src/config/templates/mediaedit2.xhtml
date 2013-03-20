@@ -3,29 +3,40 @@
 <script type="text/javascript">document.title='Workshop - Media'; </script>
 
 <!-- include slickgrid -->
-<script type="text/javascript" src="/script/slickgrid/lib/jquery-1.7.min.js"></script>
-<script type="text/javascript" src="/script/slickgrid/lib/jquery.event.drag-2.0.min.js"></script>
-<script type="text/javascript" src="/script/slickgrid/slick.core.js"></script>
-<script type="text/javascript" src="/script/slickgrid/slick.grid.js"></script>
+<script src="/script/slickgrid/lib/jquery-1.7.min.js"></script>
+<script src="/script/slickgrid/lib/jquery.event.drag-2.0.min.js"></script>
+<script src="/script/slickgrid/slick.core.js"></script>
+<script src="/script/slickgrid/slick.grid.js"></script>
+<script src="/script/slickgrid/plugins/slick.rowselectionmodel.js"></script>
 
-<h1>Edit and View Media</h1>
+<h1 style="margin:20px 0 0 0">Edit/View Media</h1>
 
 <div id="filterdiv">
 		
-	<label for="selectUser">User:</label>
-	<select id="selectUser" name="selectUser" style="width:100px">
+	<label for="filterUser">User:</label>
+	<select id="filterUser" name="filterUser" style="width:100px">
 		<option value=""></option>
 		%(list_users_as_html_option_tag)s
 	</select>
 	
-	<label for="selectStage">Stage:</label>
-	<select id="selectStage" name="selecStage" style="width:100px">
+	<label for="filterStage">Stage:</label>
+	<select id="filterStage" name="filterStage" style="width:100px">
 		<option value=""></option>
 		%(list_stages_as_html_option_tag)s
 	</select>
 	
-	<label for="searchTagsField">Tags:</label>
-	<input type="text" size="50" id="searchTagsField" name="searchTagsField" />
+	<label for="filterType">Type:</label>
+	<select id="filterType" name="filterType" style="width:100px">
+		<option value=""></option>
+		<option value="avatar">Avatar</option>
+		<option value="prop">Prop</option>
+		<option value="backdrop">Backdrop</option>
+		<option value="audio">Audio</option>
+		<option value="video">Video-Avatar</option>
+	</select>
+	
+	<label for="filterTags">Tags:</label>
+	<input type="text" size="50" id="filterTags" name="filterTags" />
 	
     <input id="buttonUpdateView" type="button" style="width:100px" value="Update view" />
     <input id="buttonResetView" type="button" style="width:100px" value="Reset view" />
@@ -50,7 +61,7 @@
 				<td>XXXXXXXXXX</td>
 			</tr>
 			<tr>
-				<td>Name:</td>
+				<td>More:</td>
 				<td>XXXXXXXXXX</td>
 			</tr>
 			
@@ -64,12 +75,11 @@
 <div class="panelRow">
 	
 	<div id="editPanel">
-	
+		<p>TODO</p>
 	</div>
 	
 	<div id="assignToStagePanel">
-	
-	
+		<p>TODO</p>
 	</div>
 	
 </div>

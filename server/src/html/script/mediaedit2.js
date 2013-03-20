@@ -1,6 +1,13 @@
 /* media edit2 page -- uses jquery */
 
+var datagrid;
+var data = [];
+
 function setupMediaEdit2(url_path) {
+	
+	// setup data grid
+	
+	setupDataGrid();
 	
 	// register button handlers
 	
@@ -8,12 +15,19 @@ function setupMediaEdit2(url_path) {
 		$.ajax({type: "POST",
 			url: url_path+"?ajax=update",
     		data: {
-            	'user': $("#selectUser").val(),
-            	'stage': $("#selectStage").val(),
-            	'tags': $("#searchTagsField").val(),
+            	'filter_user': $("#filterUser").val(),
+            	'filter_stage': $("#filterStage").val(),
+            	'filter_type': $("#filterType").val(),
+            	'filter_tags': $("#filterTags").val(),
             },
             success: function(response) {
-            	alert("result:" + response);             
+            	if(response.status == 200) {
+            		updateData(response.data);
+            	} else {
+            		// TODO handle error
+            		alert("Error while retrieving data: status="+response.status+", timestamp="+ response.timestamp +", data="+response.data);
+            	}
+            	
             },
             error: function(XMLHttpRequest, textStatus, errorThrown){
                 // TODO handle errors
@@ -25,26 +39,22 @@ function setupMediaEdit2(url_path) {
 	    // TODO
 	});
 	
-	
-	// setup data grid
-	
-	setupDataGrid();
-	
 }
 
 function testCallback(params) {
-	alert("testCallback: params=" + params);
+	alert("testCallback: params=" + params.toSource());
 }
 
 function setupDataGrid() {
 	
 	log.debug("setupDataGrid()");
 	
-	var grid;
+	// TODO get data via ajax call
+	
 	var columns = [
 	       {id: "name", name: "Name", field: "name"},
 	       {id: "uploader", name: "Uploader", field: "uploader"},
-	       {id: "typename", name: "Typename", field: "typename"},
+	       {id: "type", name: "Type", field: "type"},
 	       {id: "tags", name: "Tags", field: "tags"},
 	       {id: "voice", name: "Voice", field: "voice"},
 	       {id: "stages", name: "Stages", field: "stages"},
@@ -55,35 +65,46 @@ function setupDataGrid() {
 
 	var options = {
 			enableCellNavigation: true,
-			enableColumnReorder: false
+			enableColumnReorder: false,
+			editable: false,
+		    asyncEditorLoading: false,
+		    multiSelect: false,
+		    forceFitColumns: true,
 	};
 
-	// gather data
-	
 	$(function () {
-		var data = [];
 		
-		for (var i = 0; i < 50000; i++) {
-			data[i] = {
-					name: "dummy " + i,
-					uploader: "admin",
-					typename: "avatar",
-					tags: "",
-					voice: "default",
-					stages: "test",
-					medium: "stream",
-					thumb: "/media/thumb/megaphone.jpg",
-					media: "megaphone.swf",
-			};
-		}
+		datagrid = new Slick.Grid("#dataGrid", data, columns, options);
+		datagrid.setSelectionModel(new Slick.RowSelectionModel());
 		
-		grid = new Slick.Grid("#dataGrid", data, columns, options);
+		// add click event listener
+		datagrid.onClick.subscribe(function(e,args) {
+			var cell = datagrid.getCellFromEvent(e);
+	        if(!cell) { return; }
+			log.debug("click: cell.row="+cell.row);
+	        parent.showDetails(data[cell.row]);
+		});
+		
 	});
 	
 }
 
-function updateDataGrid() {
+function updateData(update_data) {
 	
-	log.debug("updateDataGrid()");
+	log.debug("updateData(): update_data="+update_data.toSource());
+	
+	//if (update_data != null) {
+		data = update_data;
+		datagrid.setData(update_data,true);
+		datagrid.invalidate();
+	//}
+	
+}
+
+function showDetails(single_data) {
+	
+	log.debug("showDetails(): single_data="+single_data.toSource());
+	
+	alert("Showing details: single_data="+single_data.toSource());
 	
 }

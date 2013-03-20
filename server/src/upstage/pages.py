@@ -889,7 +889,7 @@ class StageEditPage(Workshop):
             #self.message+=stage_link
         return AdminBase.render(self, request)
 
-""" Rewrite of MediaEditPage """
+""" Rewrite of MediaEditPage using Ajax POST calls """
 class MediaEditPage2(Workshop):
 
     filename="mediaedit2.xhtml"
@@ -903,8 +903,9 @@ class MediaEditPage2(Workshop):
     def set_defaults(self):
         self.filterUser = ''
         self.filterStage = ''
+        self.filterType = ''
         self.filterTags = ''
-        self.status = None
+        self.status = 500   # using HTTP error codes for status
         
     def text_list_stages_as_html_option_tag(self, request):
         keys = self.collection.stages.getKeys()
@@ -950,12 +951,14 @@ class MediaEditPage2(Workshop):
             self.set_defaults()
             
             # get POST variables
-            if 'user' in args:
-                self.filterUser = args['user'][0]
-            if 'stage' in args:
-                self.filterStage = args['stage'][0]
-            if 'tags' in args:
-                self.filterTags = args['tags'][0]
+            if 'filter_user' in args:
+                self.filterUser = args['filter_user'][0]
+            if 'filter_stage' in args:
+                self.filterStage = args['filter_stage'][0]
+            if 'filter_type' in args:
+                self.filterType = args['filter_type'][0]
+            if 'filter_tags' in args:
+                self.filterTags = args['filter_tags'][0]
             
             # get type of call
             ajax_call = args['ajax'][0]
@@ -963,22 +966,20 @@ class MediaEditPage2(Workshop):
             # prepare response data
             data = {}
             
+            log.msg("MediaEditPage2: render_POST(): ajax call for '%s'!" % ajax_call)
+            
             if ajax_call == 'update':
-                log.msg("MediaEditPage2: render_POST(): ajax call for '%s'!" % ajax_call)
-                self.status = 200
+                data = self._collect_data()
                 
-                # TODO continue here
-                
-                # DEBUG:
-                data = {'result':'success!'}
-                
-                
+            #elif ajax_call == 'detail':
+            #    data = self._detail()
+            
             else:
                 log.msg("MediaEditPage2: render_POST(): ajax call for '%s' not understood." % ajax_call)
-                self.status = 500
             
             # return the data
             if len(data) > 0:
+                self.status = 200
                 return self.__format_ajax_response(request, self.status, data)
            
             # tell the client we're not done yet
@@ -1002,6 +1003,39 @@ class MediaEditPage2(Workshop):
             return request.jsonpcallback+'('+response+')'
         else:
             return response
+    
+    def _collect_data(self):
+        """ collect data while applying filters """ 
+        
+        result = []
+        
+        # collect data
+        media = self.collection.avatars.get_media_list()
+        media.extend(self.collection.props.get_media_list())
+        media.extend(self.collection.backdrops.get_media_list())
+        media.extend(self.collection.audios.get_media_list())
+        
+        for key, value in media:
+            log.msg("MediaEditPage: _update(): key=%s, value=%s" % (key,value))
+            dataset = dict(id=key,
+                           tags=value['tags'],
+                           user=value['uploader'],
+                           thumbnail=value['thumb'],
+                           stages=value['stages'],
+                           file=value['media'],
+                           name=value['name'],
+                           date=value['dateTime'],
+                           type=value['typename'],
+                           voice=value['voice'],
+                           medium=value['type']
+                           )
+            log.msg("MediaEditPage: _update(): dataset=%s" % dataset);
+            
+            # TODO add to result if filter matches
+            
+            result.append(dataset) 
+        
+        return result
         
 """ Shaun Narayan (02/16/10) - Handles medrequest.argsia editing.
     Should probably move media list HTML into a template."""

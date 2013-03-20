@@ -111,7 +111,14 @@ li {
 }
 
 .slick-row.selected .cell-move-handle {
-  background: #D5DC8D;
+	background: #D5DC8D;
+}
+
+
+/* do not highlight selected cells: */
+.slick-cell.active {
+	border-style: solid dotted solid solid;
+	border-color: transparent silver silver transparent;
 }
 
 .slick-row .cell-actions {
