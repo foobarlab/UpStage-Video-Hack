@@ -15,49 +15,59 @@ Modified by Vibhu Patel / Nessa (17/08/2011): Heavily Modified fields which fixe
 <script type="text/javascript">document.title='Workshop - Media'; </script>
 
 <img id="black" src="/image/black.png" alt="" width="1px" height="1px" style="z-index:1;" />
-<div id="zoomimg" style="position:fixed;z-index:4">
-</div>
-<div id="filterdiv">
-	<form name ="shaun" action="%(req:path)s">
-	<h1>Filter your displayed media</h1>
-	<div style="float:left;">
-		<b>Display:</b>
-	</div>
-	<div style="float:right;margin-top:-30px;">
 
-	</div>
-	<input type="hidden" name="stages" value="%(list_stages)s" />
-	<input type="hidden" name="users" value="%(list_users)s" />
-	<br />
-	<span id="filters">
-	</span>
-	<br />
-    	<input type="button" onclick="javascript:addFilter();" value="Add Filter" />
+<div id="zoomimg" style="position:fixed;z-index:4"></div>
+
+<div id="filterdiv">
+	<!-- FIXME 'shaun' as name of the form is not appropriate, better name if for what it actually does -->
+	<form name ="shaun" action="%(req:path)s">
+		<h1>Filter your displayed media</h1>
+		<div style="float:left;"><b>Display:</b></div>
+		<div style="float:right;margin-top:-30px;"></div>
+		<input type="hidden" name="stages" value="%(list_stages)s" />
+		<input type="hidden" name="users" value="%(list_users)s" />
+		<br />
+		<span id="filters"></span>
+		<br />
+	    <input type="button" onclick="javascript:addFilter();" value="Add Filter" />
 	</form>
 </div>
+
 <div>
-		<button type="button" id="resetSearchButton" onclick="window.location.reload();"><b>Reset Search</b></button>
-		<button type="button" id="searchButton" onclick="javascript:searchTags();return false;"><b>Search by TAGS</b></button>
-		<input type="text" id="serachText" style="width:20%;" onkeyup="searchTagsEnterKey(event);"/>	
+	<button type="button" id="resetSearchButton" onclick="window.location.reload();"><b>Reset Search</b></button>
+	<button type="button" id="searchButton" onclick="javascript:searchTags();return false;"><b>Search by TAGS</b></button>
+	<input type="text" id="serachText" style="width:20%;" onkeyup="searchTagsEnterKey(event);" />	
 </div>
+
 %(attr:message)s
+
 <hr />
+
 <div id="dhtmlgoodies_slideshow">
+
 	<div id="galleryContainer">
+	
 		<div id="arrow_left"><br /><img src="/image/arrow_left.gif"></div>
+	
 		<div id="arrow_right"><br /><img src="/image/arrow_right.gif"></div>
+	
 		<!-- Vibhu Patel (31/08/2011) added tags used to get the updated media list -->
 		<div id="theImages"><!--imagesDIVStart-->
 			%(list_media)s
 		<!--imagesDIVEnd--></div>
+		
 		<div id="slideEnd"></div>
 	</div>
+	
 	<div id="backupdiv" style="display:none;">
 		%(list_media)s
 	</div><!-- Added by Vibhu Patel / Nessa (17/08/2011)-->
+	
 	<script type="text/javascript">initSlideShow();</script>
+	
 </div><!--seperator-->
 
+	<!-- FIXME 'rupert' as name of the form is not appropriate, better name if for what it actually does -->
 	<form name="rupert" action="%(req:path)s"><!--sperator_2-->
 		<!--sperator_3--><input type="hidden" name="mediaName" value="%(attr:medianame)s" /><!--sperator_4-->
 		<!--sperator_5--><input type="hidden" name="mediaType" value="%(attr:mediatype)s" /><!--sperator_6-->
