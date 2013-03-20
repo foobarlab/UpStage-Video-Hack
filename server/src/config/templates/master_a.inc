@@ -7,12 +7,17 @@
 
 <title>UpStage</title>
 
-<link rel="stylesheet" type="text/css" href="/style/main.css" />
 <link rel="shortcut icon" href="/favicon.ico" />
 
-<!-- FIXME to increase page performance scripts should be loaded in an async way or put at the bottom -->
+<link rel="stylesheet" type="text/css" href="/script/slickgrid/slick.grid.css" />
+<link rel="stylesheet" type="text/css" href="/script/slickgrid/css/smoothness/jquery-ui-1.8.16.custom.css" />
 
-<!-- 3rd party scripts -->
+<link rel="stylesheet" type="text/css" href="/style/main.css" />
+<link rel="stylesheet" type="text/css" href="/style/slickgrid.css" />
+
+<!-- FIXME to increase page performance some scripts should be loaded in an async way or put at the bottom -->
+
+<!-- include various 3rd party scripts -->
 <script type="text/javascript" src="/script/jshash/md5.js"></script>
 <script type="text/javascript" src="/script/custom-context-menu/rightClick.js"></script>
 <script type="text/javascript" src="/script/flowplayer/flowplayer-3.2.12.min.js"></script>
@@ -22,6 +27,7 @@
 <script type="text/javascript" src="/script/stageedit.js"></script>
 <script type="text/javascript" src="/script/mediaupload.js"></script>
 <script type="text/javascript" src="/script/mediaedit.js"></script>
+<script type="text/javascript" src="/script/mediaedit2.js"></script>
 <script type="text/javascript" src="/script/user.js"></script>
 <script type="text/javascript" src="/script/image-slideshow.js"></script>
 
@@ -39,7 +45,7 @@
 	var popUpAppender = new log4javascript.PopUpAppender();
 	log.addAppender(popUpAppender);
 	
-	log4javascript.setEnabled(false); // set to false to disable logging
+	log4javascript.setEnabled(true); // set to false to disable logging
 </script>
 <!-- /logging -->
 

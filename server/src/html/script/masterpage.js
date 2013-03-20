@@ -313,6 +313,11 @@ function navMediaEditWorkshop()
 	window.location = '/admin/workshop/mediaedit';
 }
 
+function navMediaEdit2Workshop()
+{
+	window.location = '/admin/workshop/mediaedit2';
+}
+
 function navUserPage()
 {
 	window.location = '/admin/workshop/user';

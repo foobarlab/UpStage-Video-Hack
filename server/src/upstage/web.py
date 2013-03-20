@@ -50,7 +50,7 @@ from upstage.util import save_tempfile, validSizes, getFileSizes
 from upstage.misc import new_filename, no_cache, UpstageError
 from upstage.video import VideoDirectory
 from upstage.pages import  AdminLoginPage, AdminBase, errorpage, Workshop, HomePage, SignUpPage, Workshop, StageEditPage,\
-                           MediaUploadPage, MediaEditPage, CreateDir, \
+                           MediaUploadPage, MediaEditPage, MediaEditPage2, CreateDir, \
                            NewPlayer, EditPlayer, NewAvatar, NewProp, NewBackdrop, NewAudio,     \
                            ThingsList, StagePage, UserPage, NonAdminPage, PageEditPage, HomeEditPage, WorkshopEditPage, SessionCheckPage, successpage,\
                            NonAdminEditPage, StagesEditPage, AdminError #VideoThing, AudioThing, 
@@ -140,6 +140,7 @@ class AdminRealm:
             workshop_pages = {'stage' : (StageEditPage, self.data),
 							  'mediaupload' : (MediaUploadPage, self.data),
 							  'mediaedit' : (MediaEditPage, self.data),
+                              'mediaedit2' : (MediaEditPage2, self.data),
 							  'user' : (UserPage, self.data.players),
 							  'newplayer' : (NewPlayer, self.data.players),
 							  'editplayers' : (EditPlayer, self.data.players)

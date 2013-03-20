@@ -877,6 +877,17 @@ class StageEditPage(Workshop):
             #self.message+=stage_link
         return AdminBase.render(self, request)
 
+""" Rewrite of MediaEditPage """
+class MediaEditPage2(Workshop):
+
+    filename="mediaedit2.xhtml"
+    
+    def __init__(self, player, collection):
+        AdminBase.__init__(self, player, collection)
+        self.player = player
+        self.collection = collection
+    
+
 """ Shaun Narayan (02/16/10) - Handles medrequest.argsia editing.
     Should probably move media list HTML into a template."""
 class MediaEditPage(Workshop):
