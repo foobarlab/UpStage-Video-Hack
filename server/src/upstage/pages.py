@@ -910,6 +910,9 @@ class MediaEditPage(Workshop):
         msg = ''
         tag = ''
         for _k,v in media:
+            
+            log.msg("MediaEditPage: text_list_media(): key=%s, value=%s" % (_k,v))
+            
             if(v['thumb'] == config.MISSING_THUMB_URL):
                 tag = '<object width="70" height="80" scale="showAll" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" ><param name="allowScriptAccess" value="sameDomain"/><param name="movie" value="/media/%s?playSound=var_stop"/><param name="quality" value="high"/><param name="bgcolor" value="#ffffff"/><embed src="/media/%s?playSound=var_stop" width="70" height="80" scale="showAll" type="application/x-shockwave-flash"/></object>' %(v['media'], v['media'])
             else:   
@@ -920,6 +923,8 @@ class MediaEditPage(Workshop):
             add = '<table id="%s_%s_%s_%s"><tr><td width="20px"></td><td><a href="javascript:getMedia(\'%s\',\'%s\',\'%s\')">' %(v['media'], v['typename'], v['uploader'], v['stages'], v['media'], v['typename'], v['type'])+tag+'</a></td><td width="20px"></td></tr><tr><td width="20px"></td><td class="disableLink"><a href="javascript:getMedia(\'%s\',\'%s\',\'%s\')"><b>Name:&nbsp;</b>%s</a></td><td width="20px"></td></tr><tr><td width="20px"></td><td class="disableLink"><a href="javascript:getMedia(\'%s\',\'%s\',\'%s\')"><b>Uploader:&nbsp;</b>%s</a></td><td width="20px"></td></tr></tr><tr><td width="20px"></td><td class="disableLink"><a href="javascript:getMedia(\'%s\',\'%s\',\'%s\')"><b>Type:&nbsp;</b>%s</a></td><td width="20px"><input name="hidden%s" type="hidden" value="%s" /></td></tr></table>' % (v['media'], v['typename'], v['type'], v['name'], v['media'], v['typename'], v['type'], v['uploader'], v['media'], v['typename'], v['type'], v['typename'], v['media'], v['tags'])
             msg += add
             num += 1
+        
+        log.msg("MediaEditPage: text_list_media(): msg=%s" % msg);
         return msg
     
     def text_list_stages(self, request):
