@@ -1031,7 +1031,21 @@ a.IconButton
 	width:200px;
 	float:left;
 	margin-left:10px;
-	background-color:yellow;
+	/*background-color:yellow;*/
+}
+
+#thumbnailPreview {
+	display:block;
+	width:300px;
+	height:200px;
+	text-align:center;
+}
+
+#thumbnailPreview img {
+	max-width:290px;
+	max-height:190px;
+	margin:5px;
+	border:1px solid black;
 }
 
 table#detailTable {

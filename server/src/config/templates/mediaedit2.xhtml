@@ -3,11 +3,14 @@
 <script type="text/javascript">document.title='Workshop - Media'; </script>
 
 <!-- include slickgrid -->
-<script src="/script/slickgrid/lib/jquery-1.7.min.js"></script>
-<script src="/script/slickgrid/lib/jquery.event.drag-2.0.min.js"></script>
-<script src="/script/slickgrid/slick.core.js"></script>
-<script src="/script/slickgrid/slick.grid.js"></script>
-<script src="/script/slickgrid/plugins/slick.rowselectionmodel.js"></script>
+<script type="text/javascript" src="/script/slickgrid/lib/jquery-1.7.min.js"></script>
+<script type="text/javascript" src="/script/slickgrid/lib/jquery.event.drag-2.0.min.js"></script>
+<script type="text/javascript" src="/script/slickgrid/slick.core.js"></script>
+<script type="text/javascript" src="/script/slickgrid/slick.grid.js"></script>
+<script type="text/javascript" src="/script/slickgrid/plugins/slick.rowselectionmodel.js"></script>
+
+<!-- include SWFObject -->
+<script type="text/javascript" src="/script/swfobject/swfobject.js"></script>
 
 <h1 style="margin:20px 0">Edit/View Media</h1>
 
@@ -81,10 +84,13 @@
 	
 	<div id="detailsPanel">
 		<h1>Media Details</h1>
+		
+		<div id="thumbnailPreview"></div>
+		
 		<table id="tableDetails">
 			<tr>
-				<td>ID:</td>
-				<td><div id="detailID" class="detail"></div></td>
+				<td>Key:</td>
+				<td><div id="detailKey" class="detail"></div></td>
 			</tr>
 			<tr>
 				<td>File:</td>

@@ -54,6 +54,7 @@ from twisted.python import log
 
 DELETE_PREFIX='delete_'
 
+# FIXME what actually does this function?
 def _check_thumb_sanity(tn):
     # not _really_ sane at all
     p = config.HTDOCS + tn

@@ -5,6 +5,7 @@ var data = [];
 var url;
 var clickHandlerEditMedia = null;
 var clickHandlerDeleteMedia  = null;
+var previewImageType = null;
 
 function setupMediaEdit2(url_path) {
 	
@@ -193,7 +194,7 @@ function showDetails(single_data) {
 	
 	log.debug("showDetails(): single_data="+single_data);
 	
-	var id = "";
+	var key = "";
 	var file = "";
 	var name = "";
 	var user = "";
@@ -208,7 +209,10 @@ function showDetails(single_data) {
 	
 	// extract data
 	if(single_data != null) {
-		id = single_data['id'];
+		
+		// collect values
+		
+		key = single_data['key'];
 		id = single_data['file'];
 		name = single_data['name'];
 		user = single_data['user'];
@@ -220,9 +224,17 @@ function showDetails(single_data) {
 		thumbnail = single_data['thumbnail'];
 		file = single_data['file'];
 		date = single_data['date'];
+		
+		// TODO show details
+		
+	} else {
+		
+		// TODO hide details
 	}
 	
-	$('#detailID').html(id);
+	// set text
+	
+	$('#detailKey').html(key);
 	$('#detailFile').html(file);
 	$('#detailName').html(name);
 	$('#detailUser').html(user);
@@ -235,4 +247,56 @@ function showDetails(single_data) {
 	$('#detailFile').html(file);
 	$('#detailDate').html(date);
 	
+	// remove swf?
+	
+	if(previewImageType = 'swf') {
+		swfobject.removeSWF("flash_container");
+	}
+	
+	// set preview image
+	
+	var thumbnail_html = '';
+	var inject_html = true;
+	
+	if(single_data != null) {
+		
+		var thumbnail_extension = getFileExtension(thumbnail);
+		switch(thumbnail_extension) {
+		
+			// handle images
+			
+			case 'jpg':
+			case 'jpeg':
+			case 'gif':
+			case 'png':
+				thumbnail_html = '<img src="'+thumbnail+'" alt="'+ name +'" />';
+				previewImageType = 'img';
+				break;
+		
+			// handle shockwave flash
+			
+			case 'swf':
+				$('#thumbnailPreview').html('<div id="flash_container"></div>');
+				inject_html = false;
+				swfobject.embedSWF(thumbnail, "flash_container", "290", "190", "9.0.0", "/script/swfobject/expressInstall.swf");
+				previewImageType = 'swf';
+				// TODO add alternative content (download flash player)
+				break;
+		
+			// default: missing icon
+				
+			default:
+				thumbnail_html = '<img src="/image/icon/icon-question-sign.png" alt="preview not available" />';
+				previewImageType = 'img';
+		}
+	} else {
+		previewImageType = null;
+	}
+	
+	if(inject_html) $('#thumbnailPreview').html(thumbnail_html);
+}
+
+function getFileExtension(filename) {
+  var ext = /^.+\.([^.]+)$/.exec(filename);
+  return ext == null ? "" : ext[1];
 }

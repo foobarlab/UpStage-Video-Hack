@@ -92,7 +92,7 @@ except ImportError:
 #upstage
 from upstage import config
 from upstage.misc import new_filename, no_cache, UpstageError  
-from upstage.util import save_tempfile, get_template, new_filename, validSizes, getFileSizes, createHTMLOptionTags
+from upstage.util import save_tempfile, get_template, new_filename, validSizes, getFileSizes, createHTMLOptionTags, convertLibraryItemToImageFilePath
 from upstage.voices import VOICES
 from upstage.globalmedia import MediaDict
 from upstage.player import PlayerDict
@@ -1042,20 +1042,38 @@ class MediaEditPage2(Workshop):
             
             log.msg("MediaEditPage: _update_data(): key=%s, value=%s" % (key,value))
             
+            # prepare data (like resolve thumbnail and file paths, etc.)
+            
+            typename=value['typename']
+            file_path = value['media']
+            if config.LIBRARY_PREFIX in file_path:
+                file_path = convertLibraryItemToImageFilePath(file_path)
+            elif (len(file_path) > 0):
+                if typename == 'audio':
+                    file_path = config.AUDIO_URL+file_path
+                else:
+                    file_path = config.MEDIA_URL+file_path
+            
+            thumbnail = value['thumb']
+            if config.LIBRARY_PREFIX in thumbnail:
+                thumbnail = convertLibraryItemToImageFilePath(thumbnail)
+            elif thumbnail == '':
+                thumbnail = file_path
+            
+            # create dataset as dictionary
+            
             dataset = dict(key=key,
                            tags=value['tags'],
                            user=value['uploader'],
-                           thumbnail=value['thumb'],
+                           thumbnail=thumbnail,
                            stages=value['stages'],
-                           file=value['media'],
+                           file=file_path,
                            name=value['name'],
                            date=value['dateTime'],
-                           type=value['typename'],
+                           type=typename,
                            voice=value['voice'],
                            medium=value['type']
                            )
-            
-            # TODO prepare data (like resolve thumbnail and file paths)
             
             # apply filtering
             add_dataset = False
