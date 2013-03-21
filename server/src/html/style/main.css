@@ -999,6 +999,19 @@ a.IconButton
 
 /* mediaedit2 styles */
 
+#filterDiv {
+	display:inline-block;
+	margin-bottom:10px;
+}
+
+.filterRow {
+	width:100%;
+	display:block;
+	clear:both;
+	float:left;
+	margin-bottom:5px;
+}
+
 .panelRow {
 	clear:both;
 	display:block;
@@ -1007,14 +1020,32 @@ a.IconButton
 
 #dataPanel {
 	float:left;
-	width:600px;
+	width:700px;
+}
+
+.detail {
+	white-space: nowrap;
 }
 
 #detailsPanel {
-	width:300px;
+	width:200px;
 	float:left;
 	margin-left:10px;
 	background-color:yellow;
+}
+
+table#detailTable {
+	width:100%;
+	background-color:green;
+}
+
+table#detailTable td {
+	padding:5px;
+}
+
+table#detailTable td:first {
+	text-align: center;
+	font-weight: bold;
 }
 
 #editPanel {

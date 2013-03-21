@@ -9,45 +9,71 @@
 <script src="/script/slickgrid/slick.grid.js"></script>
 <script src="/script/slickgrid/plugins/slick.rowselectionmodel.js"></script>
 
-<h1 style="margin:20px 0 0 0">Edit/View Media</h1>
+<h1 style="margin:20px 0">Edit/View Media</h1>
 
-<div id="filterdiv">
+<div id="filterDiv">
+
+	<h4>Apply Filter:</h4>
+
+	<!-- TODO not implemented yet, do with slickgrid filter function? -->
+	<!-- 
+	<div class="filterRow">
+	
+		<label for="filterName">Name:</label>
+		<input type="text" size="20" id="filterName" name="filterName" />
 		
-	<label for="filterUser">User:</label>
-	<select id="filterUser" name="filterUser" style="width:100px">
-		<option value=""></option>
-		%(list_users_as_html_option_tag)s
-	</select>
+		<label for="filterTags">Tags:</label>
+		<input type="text" size="50" id="filterTags" name="filterTags" />
+	 
+	</div>
+	-->
 	
-	<label for="filterStage">Stage:</label>
-	<select id="filterStage" name="filterStage" style="width:100px">
-		<option value=""></option>
-		%(list_stages_as_html_option_tag)s
-	</select>
+	<div class="filterRow">
+		
+		<label for="filterUser">User:</label>
+		<select id="filterUser" name="filterUser" style="width:150px">
+			<option value=""></option>
+			%(list_users_as_html_option_tag)s
+		</select>
+		
+		<label for="filterStage">Stage:</label>
+		<select id="filterStage" name="filterStage" style="width:200px">
+			<option value=""></option>
+			<option value="^"> -- not assigned to any stage -- </option><!-- dummy char '^' used for unassigned stages, see pages.py -->
+			%(list_stages_as_html_option_tag)s
+		</select>
+		
+		<label for="filterType">Type:</label>
+		<select id="filterType" name="filterType" style="width:100px">
+			<option value=""></option>
+			<option value="avatar">Avatar</option>
+			<option value="prop">Prop</option>
+			<option value="backdrop">Backdrop</option>
+			<option value="audio">Audio</option>
+		</select>
+		
+		<label for="filterMedium">Medium:</label>
+		<select id="filterMedium" name="filterMedium" style="width:100px">
+			<option value=""></option>
+			<option value="stream">Stream</option>
+			<option value="video">Video</option>
+			<option value="music">Music</option>
+			<option value="sfx">Sound-Effect</option>
+		</select>
 	
-	<label for="filterType">Type:</label>
-	<select id="filterType" name="filterType" style="width:100px">
-		<option value=""></option>
-		<option value="avatar">Avatar</option>
-		<option value="prop">Prop</option>
-		<option value="backdrop">Backdrop</option>
-		<option value="audio">Audio</option>
-		<option value="video">Video-Avatar</option>
-	</select>
-	
-	<label for="filterTags">Tags:</label>
-	<input type="text" size="50" id="filterTags" name="filterTags" />
-	
-    <input id="buttonUpdateView" type="button" style="width:100px" value="Update view" />
-    <input id="buttonResetView" type="button" style="width:100px" value="Reset view" />
+	    <input id="buttonUpdateView" type="button" style="width:100px" value="Update view" />
+	    <input id="buttonResetView" type="button" style="width:100px" value="Reset view" />
+	 
+	</div>
     
 </div>
+
 
 %(attr:message)s
 
 <hr />
 
-<div class="panelRow">
+<div id="viewPanel" class="panelRow">
 
 	<div id="dataPanel">
 		<div id="dataGrid"></div>
@@ -55,14 +81,58 @@
 	
 	<div id="detailsPanel">
 		<h1>Media Details</h1>
-		<table>
+		<table id="tableDetails">
 			<tr>
-				<td>Name:</td>
-				<td>XXXXXXXXXX</td>
+				<td>ID:</td>
+				<td><div id="detailID" class="detail"></div></td>
 			</tr>
 			<tr>
-				<td>More:</td>
-				<td>XXXXXXXXXX</td>
+				<td>File:</td>
+				<td><div id="detailFile" class="detail"></div></td>
+			</tr>
+			<tr>
+				<td>Name:</td>
+				<td><div id="detailName" class="detail"></div></td>
+			</tr>
+			<tr>
+				<td>User:</td>
+				<td><div id="detailUser" class="detail"></div></td>
+			</tr>
+			<tr>
+				<td>Type:</td>
+				<td><div id="detailType" class="detail"></div></td>
+			</tr>
+			<tr>
+				<td>Tags:</td>
+				<td><div id="detailTags" class="detail"></div></td>
+			</tr>
+			<tr>
+				<td>Voice:</td>
+				<td><div id="detailVoice" class="detail"></div></td>
+			</tr>
+			<tr>
+				<td>Stages:</td>
+				<td><div id="detailStages" class="detail"></div></td>
+			</tr>
+			<tr>
+				<td>Medium:</td>
+				<td><div id="detailMedium" class="detail"></div></td>
+			</tr>
+			<tr>
+				<td>Thumbnail:</td>
+				<td><div id="detailThumbnail" class="detail"></div></td>
+			</tr>
+			<tr>
+				<td>Date:</td>
+				<td><div id="detailDate" class="detail"></div></td>
+			</tr>
+			<tr>
+				<td>
+					<input id="buttonEditMedia" type="button" style="width:100px" value="Edit Media" />
+				</td>
+				<td>
+					<input id="buttonDeleteMedia" type="button" style="width:100px" value="Delete Media" />
+				</td>
 			</tr>
 			
 		</table>
@@ -70,9 +140,7 @@
 
 </div>
 
-<hr />
-
-<div class="panelRow">
+<div id="editPanel" class="panelRow">
 	
 	<div id="editPanel">
 		<p>TODO</p>

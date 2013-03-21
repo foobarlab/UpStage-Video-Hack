@@ -901,31 +901,37 @@ class MediaEditPage2(Workshop):
         self.set_defaults()
         
     def set_defaults(self):
-        self.filterUser = ''
-        self.filterStage = ''
-        self.filterType = ''
-        self.filterTags = ''
-        self.status = 500   # using HTTP error codes for status
+        self.filter_user = ''
+        self.filter_stage = ''
+        self.filter_type = ''
+        self.filter_medium = ''
+        self.apply_filter = False
+        self.status = 500   # default error code, using HTTP error codes for status
+        self.error_msg = 'Unknonw error'    # default message
         
     def text_list_stages_as_html_option_tag(self, request):
         keys = self.collection.stages.getKeys()
         data_list = [] 
         for k in keys:
             stage = self.collection.stages.get(k)
+            # FIXME authorization should not belong here!
             if self.player.can_su() or stage.contains_al_one(self.player.name) or stage.contains_al_two(self.player.name):
                 data_list.append(k)
         return createHTMLOptionTags(data_list)
     
+    # FIXME: better get a full list of players from PlayerDict instead of traversing stages and looking for players! (we may want to know in the frontend if a user has no media, do we?)
     def text_list_users_as_html_option_tag(self, request):
         keys = self.collection.stages.getKeys()
         data_list = [] 
         for k in keys:
             stage = self.collection.stages.get(k)
+            # FIXME authorization should not belong here!
             if (self.player.name is not None):
                 if self.player.can_su() or stage.contains_al_one(self.player.name) or stage.contains_al_two(self.player.name):
-                    for i in stage.get_uploader_list():
-                        if i+',' not in data_list:
-                            data_list.append(i)
+                    for user in stage.get_uploader_list():
+                        if user not in data_list:
+                            data_list.append(user)
+                    
         return createHTMLOptionTags(data_list)
         
     # we want to be able to respond to ajax calls on POST requests:        
@@ -951,14 +957,22 @@ class MediaEditPage2(Workshop):
             self.set_defaults()
             
             # get POST variables
+            
+            # get filters
             if 'filter_user' in args:
-                self.filterUser = args['filter_user'][0]
+                self.filter_user = args['filter_user'][0]
             if 'filter_stage' in args:
-                self.filterStage = args['filter_stage'][0]
+                self.filter_stage = args['filter_stage'][0]
             if 'filter_type' in args:
-                self.filterType = args['filter_type'][0]
-            if 'filter_tags' in args:
-                self.filterTags = args['filter_tags'][0]
+                self.filter_type = args['filter_type'][0]
+            if 'filter_medium' in args:
+                self.filter_medium = args['filter_medium'][0]
+            
+            # are filters set?
+            if ((self.filter_user == '') & (self.filter_type == '') & (self.filter_stage == '') & (self.filter_medium == '')):
+                self.apply_filter = False
+            else:
+                self.apply_filter = True
             
             # get type of call
             ajax_call = args['ajax'][0]
@@ -968,19 +982,28 @@ class MediaEditPage2(Workshop):
             
             log.msg("MediaEditPage2: render_POST(): ajax call for '%s'!" % ajax_call)
             
-            if ajax_call == 'update':
-                data = self._collect_data()
+            if ajax_call == 'update_data':
+                self.status = 200
+                data = self._update_data()
                 
-            #elif ajax_call == 'detail':
-            #    data = self._detail()
+            elif ajax_call == 'get_detail':
+                self.status = 200
+                # TODO hand over key for which details should be returned
+                data = self._get_detail()
+            
+            elif ajax_call == 'delete_media':
+                self.status = 200
+                # TODO hand over key for which media should be deleted
+                data = self._delete_media()
             
             else:
                 log.msg("MediaEditPage2: render_POST(): ajax call for '%s' not understood." % ajax_call)
             
             # return the data
-            if len(data) > 0:
-                self.status = 200
+            if self.status == 200:
                 return self.__format_ajax_response(request, self.status, data)
+            else:
+                return self.__format_ajax_response(request, self.status, self.error_msg)
            
             # tell the client we're not done yet
             return server.NOT_DONE_YET
@@ -1004,7 +1027,7 @@ class MediaEditPage2(Workshop):
         else:
             return response
     
-    def _collect_data(self):
+    def _update_data(self):
         """ collect data while applying filters """ 
         
         result = []
@@ -1016,8 +1039,10 @@ class MediaEditPage2(Workshop):
         media.extend(self.collection.audios.get_media_list())
         
         for key, value in media:
-            log.msg("MediaEditPage: _update(): key=%s, value=%s" % (key,value))
-            dataset = dict(id=key,
+            
+            log.msg("MediaEditPage: _update_data(): key=%s, value=%s" % (key,value))
+            
+            dataset = dict(key=key,
                            tags=value['tags'],
                            user=value['uploader'],
                            thumbnail=value['thumb'],
@@ -1029,14 +1054,105 @@ class MediaEditPage2(Workshop):
                            voice=value['voice'],
                            medium=value['type']
                            )
-            log.msg("MediaEditPage: _update(): dataset=%s" % dataset);
             
-            # TODO add to result if filter matches
+            # TODO prepare data (like resolve thumbnail and file paths)
             
-            result.append(dataset) 
+            # apply filtering
+            add_dataset = False
+            if self.apply_filter:
+                
+                log.msg("MediaEditPage: _update_data(): apply filtering ...");
+                
+                match_user = False
+                match_stage = False
+                match_type = False
+                match_medium = False
+                
+                # check if user matches
+                if self.filter_user != '':
+                    if dataset['user'] == self.filter_user:
+                        match_user = True
+                else:
+                    match_user = True
+                
+                log.msg("MediaEditPage: _update_data(): filter_user matched: %s" % match_user);
+                
+                # check if type matches    
+                if self.filter_type != '':
+                    if dataset['type'] == self.filter_type:
+                        match_type = True
+                else:
+                    match_type = True
+                
+                log.msg("MediaEditPage: _update_data(): filter_type matched: %s" % match_type);
+                    
+                # check if stage matches
+                if self.filter_stage != '':
+                    
+                    # split stages string into list
+                    stages = dataset['stages'].split(',')
+                    # remove empty stage if any
+                    try:
+                        stages.remove('')
+                    except ValueError:
+                        pass
+                    
+                    # match special case: unassigned stage:
+                    if self.filter_stage == '^':    # dummy char for 'unassigned stages'
+                        if len(stages) == 0:
+                            match_stage = True 
+                    # stages exist, so media has stages assigned
+                    else:
+                        # is the stage in the list?
+                        log.msg("MediaEditPage: _update_data(): looking for stage '%s', stages found: %s" % (self.filter_stage, stages))
+                        
+                        # we want exact string matches so using regex
+                        for stage in stages:
+                            matching = re.findall('\\b'+self.filter_stage+'\\b', stage)
+                            if matching:
+                                log.msg("MediaEditPage: _update_data(): matched stage %s" % stage)
+                                match_stage = True
+                else:
+                    match_stage = True
+                    
+                log.msg("MediaEditPage: _update_data(): filter_stage matched: %s" % match_stage);
+                    
+                # check if medium matches
+                if self.filter_medium != '':
+                    if dataset['medium'] == self.filter_medium:
+                        match_medium = True
+                else:
+                    match_medium = True
+                    
+                log.msg("MediaEditPage: _update_data(): filter_medium matched: %s" % match_medium);
+                    
+                # add record if all matches
+                add_dataset = match_user & match_type & match_stage & match_medium
+                
+            else:
+                add_dataset = True
+                
+            if add_dataset:
+                log.msg("MediaEditPage: _update_data(): adding dataset=%s" % dataset);
+                result.append(dataset)
+            else:
+                log.msg("MediaEditPage: _update_data(): skipping dataset=%s" % dataset);
         
+        log.msg("MediaEditPage: _update_data(): result=%s" % result);
         return result
+   
+    def _get_detail(self):
         
+        # TODO get detail of given media
+        
+        pass
+    
+    def _delete_media(self):
+        
+        # TODO delete given media
+        
+        pass
+    
 """ Shaun Narayan (02/16/10) - Handles medrequest.argsia editing.
     Should probably move media list HTML into a template."""
 class MediaEditPage(Workshop):
