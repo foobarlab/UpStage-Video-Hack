@@ -3,8 +3,14 @@
 var datagrid;
 var data = [];
 var url;
+
 var clickHandlerEditMedia = null;
 var clickHandlerDeleteMedia  = null;
+
+var clickHandlerTestVoice = null;
+var clickHandlerTestStream = null;
+var clickHandlerTestSound = null;
+
 var previewImageType = null;
 
 function setupMediaEdit2(url_path) {
@@ -94,17 +100,17 @@ function setupDataGrid() {
 	log.debug("setupDataGrid()");
 	
 	var columns = [
-	       {id: "key", name: "Key", field: "key", width:200},
 	       {id: "name", name: "Name", field: "name", width:200},
 	       {id: "user", name: "User", field: "user", width:100},
-	       {id: "type", name: "Type", field: "type", width:100},
-	       {id: "tags", name: "Tags", field: "tags", width:200},
-	       {id: "voice", name: "Voice", field: "voice", width:100},
 	       {id: "stages", name: "Stages", field: "stages", width:200},
-	       {id: "medium", name: "Medium", field: "medium", width:100},
-	       {id: "thumbnail", name: "Thumbnail", field: "thumbnail", width:200},
+	       {id: "voice", name: "Voice", field: "voice", width:100},
+	       {id: "tags", name: "Tags", field: "tags", width:200},
 	       {id: "file", name: "File", field: "file", width:200},
 	       {id: "date", name: "Date", field: "date", width:200},
+	       {id: "type", name: "Type", field: "type", width:100},
+	       {id: "medium", name: "Medium", field: "medium", width:100},
+	       {id: "thumbnail", name: "Thumbnail", field: "thumbnail", width:200},
+	       {id: "key", name: "Key", field: "key", width:200},
        ];
 
 	var options = {
@@ -234,17 +240,16 @@ function showDetails(single_data) {
 	
 	// set text
 	
-	$('#detailKey').html(key);
+	//$('#detailKey').html(key);
 	$('#detailFile').html(file);
 	$('#detailName').html(name);
 	$('#detailUser').html(user);
-	$('#detailType').html(type);
+	//$('#detailType').html(type);
 	$('#detailTags').html(tags);
 	$('#detailVoice').html(voice);
 	$('#detailStages').html(stages);
-	$('#detailMedium').html(medium);
-	$('#detailThumbnail').html(thumbnail);
-	$('#detailFile').html(file);
+	//$('#detailMedium').html(medium);
+	//$('#detailThumbnail').html(thumbnail);
 	$('#detailDate').html(date);
 	
 	// remove swf?
@@ -294,9 +299,65 @@ function showDetails(single_data) {
 	}
 	
 	if(inject_html) $('#thumbnailPreview').html(thumbnail_html);
+	
+	// setup test buttons
+	
+	// unbind event handlers
+	$("#buttonTestVoice").unbind('click',clickHandlerTestVoice);
+	$("#buttonTestStream").unbind('click',clickHandlerTestStream);
+	$("#buttonTestSound").unbind('click',clickHandlerTestSound);
+	
+	// hide buttons
+	$('#buttonTestVoice').hide();
+	$('#buttonTestStream').hide();
+	$('#buttonTestSound').hide();
+	
+	if(single_data != null) {
+		
+		// show buttons depending on type
+		switch(type) {
+		
+			case 'avatar':
+				$('#buttonTestVoice').show();
+				// TODO create click handler
+				break;
+			
+			case 'audio':
+				$('#buttonTestSound').show();
+				// TODO create click handler
+				break;
+		
+		}
+		
+		// show buttons depending on medium
+		switch(medium) {
+			
+			case 'stream':
+				$('#buttonTestStream').show();
+				// TODO create click handler
+				break;
+				
+		}
+		
+	}
+	
+	// display type in headline
+	
+	var headline = '';
+	if(single_data != null) {
+		headline = type;
+		if (medium != '') {
+			headline += ' ('+medium+')';
+		}
+	} 
+	
+	$('#displayType').text(headline);
+	
 }
 
+/* helper functions */
+
 function getFileExtension(filename) {
-  var ext = /^.+\.([^.]+)$/.exec(filename);
-  return ext == null ? "" : ext[1];
+	var ext = /^.+\.([^.]+)$/.exec(filename);
+	return ext == null ? "" : ext[1];
 }

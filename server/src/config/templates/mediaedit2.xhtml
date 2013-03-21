@@ -71,9 +71,6 @@
     
 </div>
 
-
-%(attr:message)s
-
 <hr />
 
 <div id="viewPanel" class="panelRow">
@@ -83,42 +80,63 @@
 	</div>
 	
 	<div id="detailsPanel">
-		<h1>Media Details</h1>
+		
+		<h4 id="displayType"></h4>
 		
 		<div id="thumbnailPreview"></div>
 		
+		<div class="buttonRow">
+			<input id="buttonEditMedia" type="button" style="width:100px" value="Edit Media" />
+			<input id="buttonDeleteMedia" type="button" style="width:100px" value="Delete Media" />
+		</div>
+		
+		<div class="buttonRow">
+			<input id="buttonTestVoice" type="button" style="width:100px" value="Test Voice" />
+			<input id="buttonTestStream" type="button" style="width:100px" value="Test Stream" />
+			<input id="buttonTestSound" type="button" style="width:100px" value="Test Sound" />
+		</div>
+		
 		<table id="tableDetails">
+		
+			<tr>
+				<td class="head">Name:</td>
+				<td><div id="detailName" class="detail"></div></td>
+			</tr>
+			<tr class="alterning">
+				<td class="head">File:</td>
+				<td><div id="detailFile" class="detail"></div></td>
+			</tr>
+			<tr>
+				<td class="head">Date:</td>
+				<td><div id="detailDate" class="detail"></div></td>
+			</tr>
+			<tr class="alterning">
+				<td class="head">User:</td>
+				<td><div id="detailUser" class="detail"></div></td>
+			</tr>
+			<tr>
+				<td class="head">Voice:</td>
+				<td><div id="detailVoice" class="detail"></div></td>
+			</tr>
+			<tr class="alterning">
+				<td class="head">Tags:</td>
+				<td><div id="detailTags" class="detail"></div></td>
+			</tr>
+			<tr>
+				<td class="head">Stages:</td>
+				<td><div id="detailStages" class="detail"></div></td>
+			</tr>
+		
+		
+			<!-- 
 			<tr>
 				<td>Key:</td>
 				<td><div id="detailKey" class="detail"></div></td>
 			</tr>
-			<tr>
-				<td>File:</td>
-				<td><div id="detailFile" class="detail"></div></td>
-			</tr>
-			<tr>
-				<td>Name:</td>
-				<td><div id="detailName" class="detail"></div></td>
-			</tr>
-			<tr>
-				<td>User:</td>
-				<td><div id="detailUser" class="detail"></div></td>
-			</tr>
+			
 			<tr>
 				<td>Type:</td>
 				<td><div id="detailType" class="detail"></div></td>
-			</tr>
-			<tr>
-				<td>Tags:</td>
-				<td><div id="detailTags" class="detail"></div></td>
-			</tr>
-			<tr>
-				<td>Voice:</td>
-				<td><div id="detailVoice" class="detail"></div></td>
-			</tr>
-			<tr>
-				<td>Stages:</td>
-				<td><div id="detailStages" class="detail"></div></td>
 			</tr>
 			<tr>
 				<td>Medium:</td>
@@ -128,34 +146,11 @@
 				<td>Thumbnail:</td>
 				<td><div id="detailThumbnail" class="detail"></div></td>
 			</tr>
-			<tr>
-				<td>Date:</td>
-				<td><div id="detailDate" class="detail"></div></td>
-			</tr>
-			<tr>
-				<td>
-					<input id="buttonEditMedia" type="button" style="width:100px" value="Edit Media" />
-				</td>
-				<td>
-					<input id="buttonDeleteMedia" type="button" style="width:100px" value="Delete Media" />
-				</td>
-			</tr>
+			-->
 			
 		</table>
 	</div>
 
-</div>
-
-<div id="editPanel" class="panelRow">
-	
-	<div id="editPanel">
-		<p>TODO</p>
-	</div>
-	
-	<div id="assignToStagePanel">
-		<p>TODO</p>
-	</div>
-	
 </div>
 
 <script type="text/javascript">

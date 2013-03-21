@@ -1031,7 +1031,20 @@ a.IconButton
 	width:200px;
 	float:left;
 	margin-left:10px;
-	/*background-color:yellow;*/
+}
+
+#displayType {
+	text-transform:capitalize;
+	text-align:center;
+	width:280px;
+}
+
+.buttonRow {
+	width:300px;
+	display:block;
+	text-align:center;
+	margin:5px 0;
+	height:30px;
 }
 
 #thumbnailPreview {
@@ -1048,29 +1061,22 @@ a.IconButton
 	border:1px solid black;
 }
 
-table#detailTable {
-	width:100%;
-	background-color:green;
-}
-
-table#detailTable td {
-	padding:5px;
-}
-
-table#detailTable td:first {
-	text-align: center;
-	font-weight: bold;
-}
-
-#editPanel {
-	float:left;
-	width:600px;
-	background-color:red;
-}
-
-#assignToStagePanel {
+table#tableDetails {
 	width:300px;
-	float:left;
-	margin-left:10px;
-	background-color:yellow;
+	text-align:center;
+}
+
+table#tableDetails tr.alterning {
+	background-color:#efefef;
+}
+
+table#tableDetails td {
+	padding:3px;
+	text-align:left;
+}
+
+table#tableDetails td.head {
+	font-weight:bold;
+	text-align:right;
+	width:60px;
 }
