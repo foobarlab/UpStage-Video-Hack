@@ -1,21 +1,15 @@
-<stage active="active" created="" name="full name in config.xml" id="test">
+<stage active="active" created="" name="full name2 in config.xml" id="test2">
 <splash>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut.</splash>
 <showdebugscreen>DEBUG</showdebugscreen>
-<avatar media="library:a39Udxdf:VideoOverlay" voice="" name="live" showname="show">
+<avatar media="video/video.jpg" voice="" name="name_video" showname="show">
 </avatar>
-<avatar media="library:SFWuHKCb:VideoOverlay" voice="" name="mp3" showname="show">
+<avatar media="helen_av.swf" voice="e_en-n" name="name_avatar" showname="show">
 </avatar>
-<avatar media="library:CrdDf6jn:VideoOverlay" voice="" name="flv" showname="show">
-</avatar>
-<avatar media="video/video.jpg" voice="" name="video" showname="show">
-</avatar>
-<avatar media="helen_av.swf" voice="e_en-n" name="avatar" showname="show">
-</avatar>
-<prop media="megaphone.swf" name="prop">
+<prop media="megaphone.swf" name="name_prop">
 </prop>
-<backdrop media="background.swf" name="backdrop">
+<backdrop media="background.swf" name="name_backdrop">
 </backdrop>
-<audio media="sfx.mp3" type="sfx" name="audio_sfx">
+<audio media="music.mp3" type="music" name="audio_music">
 </audio>
 <access_one>
 </access_one>

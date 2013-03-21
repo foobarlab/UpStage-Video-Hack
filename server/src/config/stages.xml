@@ -1,4 +1,5 @@
 <stages>
-	<!-- a default "test" stage -->
+	<!-- default test stages -->
 	<stage active="active" id="test" name="full name in stages.xml" />
+	<stage active="active" id="test2" name="full name2 in stages.xml" />
 </stages>
