@@ -919,7 +919,8 @@ class MediaEditPage2(Workshop):
                 data_list.append(k)
         return createHTMLOptionTags(data_list)
     
-    # FIXME: better get a full list of players from PlayerDict instead of traversing stages and looking for players! (we may want to know in the frontend if a user has no media, do we?)
+    # FIXME: better get a full list of players from PlayerDict instead of traversing stages and looking for players?
+    # (we may want to know in the frontend if a user also has no media, do we?)
     def text_list_users_as_html_option_tag(self, request):
         keys = self.collection.stages.getKeys()
         data_list = [] 
