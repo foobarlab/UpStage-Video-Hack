@@ -319,12 +319,40 @@ function showDetails(single_data) {
 		
 			case 'avatar':
 				$('#buttonTestVoice').show();
-				// TODO create click handler
+				
+				// create click handler
+				clickHandlerTestVoice = function(e) {
+					log.debug("clickHandlerTestVoice: click: #buttonTestVoice, selectedRow="+selectedRow);
+					var key = data[selectedRow]['key'];
+					log.debug("clickHandlerTestVoice: about to do a voice test for key="+key);
+					
+					// TODO run test
+					
+					alert("TestVoice");
+				}
+				
+				// bind button to click event
+				$("#buttonTestVoice").bind('click', clickHandlerTestVoice);
+			
 				break;
 			
 			case 'audio':
 				$('#buttonTestSound').show();
-				// TODO create click handler
+				
+				// create click handler
+				clickHandlerTestSound = function(e) {
+					log.debug("clickHandlerTestSound: click: #buttonTestSound, selectedRow="+selectedRow);
+					var key = data[selectedRow]['key'];
+					log.debug("clickHandlerTestSound: about to do a sound test for key="+key);
+					
+					// TODO run test
+					
+					alert("TestSound");
+				}
+				
+				// bind button to click event
+				$("#buttonTestSound").bind('click', clickHandlerTestSound);
+				
 				break;
 		
 		}
@@ -334,7 +362,21 @@ function showDetails(single_data) {
 			
 			case 'stream':
 				$('#buttonTestStream').show();
-				// TODO create click handler
+				
+				// create click handler
+				clickHandlerTestStream = function(e) {
+					log.debug("clickHandlerTestStream: click: #buttonTestStream, selectedRow="+selectedRow);
+					var key = data[selectedRow]['key'];
+					log.debug("clickHandlerTestStream: about to do a stream test for key="+key);
+					
+					// TODO run test
+					
+					alert("TestStream");
+				}
+				
+				// bind button to click event
+				$("#buttonTestStream").bind('click', clickHandlerTestStream);
+				
 				break;
 				
 		}
@@ -352,6 +394,25 @@ function showDetails(single_data) {
 	} 
 	
 	$('#displayType').text(headline);
+	
+	// show or hide panels
+	
+	if(single_data != null) {
+		
+		// narrow datagrid
+		$('#dataPanel').css('width','700px');
+		
+		// show details panel
+		$('#detailsPanel').show();
+		
+	} else {
+		
+		// extend datagrid (revert to default defined in css)
+		$('#dataPanel').css('width','');
+		
+		// hide details panel
+		$('#detailsPanel').hide();
+	}
 	
 }
 

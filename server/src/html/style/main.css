@@ -1020,7 +1020,7 @@ a.IconButton
 
 #dataPanel {
 	float:left;
-	width:700px;
+	width:100%;
 }
 
 .detail {
@@ -1058,7 +1058,7 @@ a.IconButton
 	max-width:290px;
 	max-height:190px;
 	margin:5px;
-	border:1px solid black;
+	/*border:1px solid black;*/
 }
 
 table#tableDetails {
