@@ -9,8 +9,10 @@
 <script type="text/javascript" src="/script/slickgrid/slick.grid.js"></script>
 <script type="text/javascript" src="/script/slickgrid/plugins/slick.rowselectionmodel.js"></script>
 
-<!-- include SWFObject -->
+<!-- inlucde various third party libs -->
 <script type="text/javascript" src="/script/swfobject/swfobject.js"></script>
+<script type="text/javascript" src="/script/spin.js/spin.js"></script>
+<script type="text/javascript" src="/script/jquery.spin.js/jquery.spin.js"></script>
 
 <h1 style="margin:20px 0">Edit/View Media</h1>
 
@@ -73,10 +75,16 @@
 
 <hr />
 
-<div id="viewPanel" class="panelRow">
+<div id="viewPanel">
 
 	<div id="dataPanel">
 		<div id="dataGrid"></div>
+		<div id="dataLoadingPanel">
+			<div id="dataLoadingPanelInnerDiv">
+				<div id="spinner"></div>
+				<p>Loading data ...</p>
+			</div>
+		</div>
 	</div>
 	
 	<div id="detailsPanel">

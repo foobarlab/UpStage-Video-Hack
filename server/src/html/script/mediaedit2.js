@@ -18,6 +18,9 @@ function setupMediaEdit2(url_path) {
 	// set url of this page
 	url = url_path;
 	
+	// enable spinner
+	$('#spinner').spin("huge");
+	
 	// setup data grid
 	setupDataGrid();
 	
@@ -49,6 +52,8 @@ function callAjaxUpdateData() {
 	
 	log.debug("callAjaxUpdateData()");
 	
+	$('#dataLoadingPanel').show();	
+	
 	$.ajax({type: "POST",
 		url: url+"?ajax=update_data",
 		data: {
@@ -61,14 +66,17 @@ function callAjaxUpdateData() {
         	//alert("Response Success: response="+response);
         	if(response.status == 200) {
         		updateData(response.data);
+        		$('#dataLoadingPanel').hide();
         	} else {
         		// TODO handle known errors
         		alert("Error while retrieving data: status="+response.status+", timestamp="+ response.timestamp +", data="+response.data);
+        		$('#dataLoadingPanel').hide();
         	}
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             // TODO handle unknown errors (may be 'no connection')
         	alert("An error occured: textStatus="+textStatus+", errorThrown="+errorThrown);
+        	$('#dataLoadingPanel').hide();
         },
 	});
 	
