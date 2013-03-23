@@ -11,4 +11,4 @@
 /red5/client/subscriber/bin/*.swf
 /red5/client/subscriber/html/stream.swf
 /server/src/config/voices/*.sh
-/server/src/html/script/**/*.zip
+/server/src/html/**/*.zip
