@@ -983,14 +983,15 @@ class MediaEditPage2(Workshop):
                 self.status = 200
                 data = self._update_data()
                 
-            elif ajax_call == 'get_detail':
-                self.status = 200
-                # TODO hand over key for which details should be returned
-                data = self._get_detail()
+#            elif ajax_call == 'get_detail':
+#                self.status = 200
+#                # TODO hand over key for which details should be returned
+#                data = self._get_detail()
             
             elif ajax_call == 'delete_media':
                 self.status = 200
                 # TODO hand over key for which media should be deleted
+                # TODO evaluate flag 'delete_even_if_in_use'
                 data = self._delete_media()
             
             else:
@@ -1156,11 +1157,11 @@ class MediaEditPage2(Workshop):
         log.msg("MediaEditPage: _update_data(): result=%s" % result);
         return result
    
-    def _get_detail(self):
-        
-        # TODO get detail of given media
-        
-        pass
+#    def _get_detail(self):
+#        
+#        # TODO get detail of given media
+#        
+#        pass
     
     def _delete_media(self):
         

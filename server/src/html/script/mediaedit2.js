@@ -293,6 +293,8 @@ function showDetails(single_data) {
 	
 	log.debug("showDetails(): single_data="+single_data);
 	
+	// reset data
+	
 	var key = "";
 	var file = "";
 	var name = "";
@@ -306,11 +308,9 @@ function showDetails(single_data) {
 	var file = "";
 	var date = "";
 	
-	// extract data
+	// extract given data
+	
 	if(single_data != null) {
-		
-		// collect values
-		
 		key = single_data['key'];
 		id = single_data['file'];
 		name = single_data['name'];
@@ -323,35 +323,26 @@ function showDetails(single_data) {
 		thumbnail = single_data['thumbnail'];
 		file = single_data['file'];
 		date = single_data['date'];
-		
-		// TODO show details
-		
-	} else {
-		
-		// TODO hide details
 	}
 	
 	// set text
 	
-	//$('#detailKey').html(key);
+	
 	$('#detailFile').html(file);
 	$('#detailName').html(name);
 	$('#detailUser').html(user);
-	//$('#detailType').html(type);
 	$('#detailTags').html(tags);
 	$('#detailVoice').html(voice);
 	$('#detailStages').html(stages);
-	//$('#detailMedium').html(medium);
-	//$('#detailThumbnail').html(thumbnail);
 	$('#detailDate').html(date);
 	
-	// remove swf?
+	// remove existing swf?
 	
 	if(previewImageType = 'swf') {
 		swfobject.removeSWF("flash_container");
 	}
 	
-	// set preview image
+	// set new preview image
 	
 	var thumbnail_html = '';
 	var inject_html = true;
@@ -367,6 +358,9 @@ function showDetails(single_data) {
 			case 'jpeg':
 			case 'gif':
 			case 'png':
+				
+				// TODO create preview
+				
 				if (file != '') {
 					thumbnail_html = '<a href="'+file+'" class="colorbox"><img src="'+thumbnail+'" alt="'+ name +'" /></a>';
 				} else {
@@ -379,6 +373,9 @@ function showDetails(single_data) {
 			// handle shockwave flash
 			
 			case 'swf':
+				
+				// TODO create preview
+				
 				$('#thumbnailPreview').html('<a class="inline" href="#inline_content"><div style="z-index:5;background-color:yellow;display:block"><div id="flash_container" style="z-index:1"></div></div></a>');
 				inject_html = false;
 				
@@ -401,6 +398,9 @@ function showDetails(single_data) {
 				previewImageType = 'img';
 		}
 	} else {
+		
+		// TODO reset all preview handlers
+		
 		previewImageType = null;
 	}
 	
