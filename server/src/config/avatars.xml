@@ -11,4 +11,6 @@
 </avatar>
 <avatar medium="stream" name="name_unassigned" tags="" url="library:4FciETtF:VideoOverlay" streamname="test" dateTime="" file="library:4FciETtF:VideoOverlay" voice="" uploader="admin" thumbnail="library:u9xYHuEj:IconLiveStream" streamserver="rtmp://localhost/oflaDemo">
 </avatar>
+<avatar medium="stream" name="name_unassigned2" tags="" url="library:5FciETtF:VideoOverlay" streamname="test2" dateTime="" file="library:5FciETtF:VideoOverlay" voice="" uploader="user" thumbnail="library:u0xYHuEj:IconLiveStream" streamserver="rtmp://localhost/oflaDemo">
+</avatar>
 </avatars>
