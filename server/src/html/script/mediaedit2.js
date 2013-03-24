@@ -496,6 +496,7 @@ function showDetails(single_data) {
 				initialHeight: 190,
 				inline:true,
 				animation: false,
+				returnFocus: false,
 				width: previewWindowWidth,
 				height: previewWindowHeight,
 				// hide loading indicator:
