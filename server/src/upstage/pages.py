@@ -908,32 +908,28 @@ class MediaEditPage2(Workshop):
         self.apply_filter = False
         self.status = 500   # default error code, using HTTP error codes for status
         self.error_msg = 'Unknonw error'    # default message
-        
+    
+    def text_user(self, request):
+        if (self.player):
+            return self.player.name
+    
     def text_list_stages_as_html_option_tag(self, request):
         keys = self.collection.stages.getKeys()
-        data_list = [] 
-        for k in keys:
-            stage = self.collection.stages.get(k)
-            # FIXME authorization should not belong here!
-            if self.player.can_su() or stage.contains_al_one(self.player.name) or stage.contains_al_two(self.player.name):
-                data_list.append(k)
-        return createHTMLOptionTags(data_list)
+        data_list = []
+        for key in keys:
+            data_list.append(key)
+        return createHTMLOptionTags(set(data_list))
     
-    # FIXME: better get a full list of players from PlayerDict instead of traversing stages and looking for players?
-    # (we may want to know in the frontend if a user also has no media, do we?)
     def text_list_users_as_html_option_tag(self, request):
         keys = self.collection.stages.getKeys()
-        data_list = [] 
-        for k in keys:
-            stage = self.collection.stages.get(k)
-            # FIXME authorization should not belong here!
+        data_list = []
+        for key in keys:
+            stage = self.collection.stages.get(key)
             if (self.player.name is not None):
-                if self.player.can_su() or stage.contains_al_one(self.player.name) or stage.contains_al_two(self.player.name):
-                    for user in stage.get_uploader_list():
-                        if user not in data_list:
-                            data_list.append(user)
-                    
-        return createHTMLOptionTags(data_list)
+                for user in stage.get_uploader_list():
+                    data_list.append(user)
+                   
+        return createHTMLOptionTags(set(data_list))
         
     # we want to be able to respond to ajax calls on POST requests:        
     def render_POST(self,request):
