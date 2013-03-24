@@ -1013,7 +1013,6 @@ a.IconButton
 }
 
 #viewPanel {
-	/*margin-bottom:-500px;*/
 	overflow:hidden;
 	display:block;
 }
@@ -1079,18 +1078,30 @@ a.IconButton
 	height:30px;
 }
 
+a#previewLink {
+	z-index:5;
+	display:inline-block;
+	cursor:pointer;
+	cursor:-moz-zoom-in;
+	cursor:-webkit-zoom-in;
+}
+
+a#previewLink:hover {
+	background-color:#efefef;
+}
+
 #thumbnailPreview {
 	display:block;
 	width:300px;
 	height:200px;
 	text-align:center;
+	z-index:1;
 }
 
 #thumbnailPreview img {
 	max-width:290px;
 	max-height:190px;
 	margin:5px;
-	/*border:1px solid black;*/
 }
 
 table#tableDetails {
@@ -1112,6 +1123,12 @@ table#tableDetails td.head {
 	font-weight:bold;
 	text-align:right;
 	width:60px;
+}
+
+.colorboxPanel {
+	height:100%;
+	padding:30px;
+	background:#eee;
 }
 
 .dialogContent {

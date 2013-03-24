@@ -13,7 +13,10 @@
 <script type="text/javascript" src="/script/slickgrid/plugins/slick.rowselectionmodel.js"></script>
 
 <!-- include various third party libs -->
+<!-- 
 <script type="text/javascript" src="/script/swfobject/swfobject.js"></script>
+-->
+<script type="text/javascript" src="/script/jquery.swfobject/jquery.swfobject.1-1-1.js"></script>
 <script type="text/javascript" src="/script/spin.js/spin.js"></script>
 <script type="text/javascript" src="/script/jquery.spin.js/jquery.spin.js"></script>
 <script type="text/javascript" src="/script/jquery.colorbox/jquery.colorbox-min.js"></script>
@@ -100,7 +103,7 @@
 		
 		<h4 id="displayType"></h4>
 		
-		<div id="thumbnailPreview"></div>
+		<a class="inline" id="previewLink" href="#previewPanel"><div id="thumbnailPreview"></div></a>
 		
 		<div class="buttonRow">
 			<input id="buttonEditMedia" type="button" style="width:100px" value="Edit" />
@@ -157,7 +160,23 @@
 
 <div style="display:none">
 
-	<div id="deleteMediaPanel" style="padding:30px; background:#fff;">
+	<div id="previewPanel" class="colorboxPanel">
+		
+		<div id="previewPanelImage">
+			<p>IMAGE PREVIEW</p>
+		</div>
+		
+		<div id="previewPanelFlash">
+			<p>FLASH PREVIEW</p>
+		</div>
+		
+		<div id="previewPanelAudio">
+			<p>AUDIO PREVIEW</p>
+		</div>
+		
+	</div>
+
+	<div id="deleteMediaPanel" class="colorboxPanel">
 	
 		<div class="dialogContent">
 			<h1>Are you sure you want to delete &quot;<span id="deleteMediaName"></span>&quot;?</h1>
@@ -176,7 +195,7 @@
 		</script>
 		
 	</div>
-
+	
 	<!-- 
 	<div id="inline_content" style="padding:10px; background:#fff;">
 	

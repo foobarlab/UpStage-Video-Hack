@@ -1,6 +1,11 @@
 /* media edit2 page -- uses jquery */
 
-// global variables
+const MEDIA_TYPE_IMAGE = 'image';
+const MEDIA_TYPE_FLASH = 'flash';
+const MEDIA_TYPE_AUDIO = 'audio';
+//const MEDIA_TYPE_STREAM = 'stream';
+
+//global variables
 
 var url;	// current url for the page
 var user;	// current user
@@ -19,14 +24,15 @@ var clickHandlerTestVoice = null;
 var clickHandlerTestStream = null;
 var clickHandlerTestSound = null;
 
-var previewImageType = null;
+var previewType = null;
+var previewThumbnailType = null;
 
 function setupMediaEdit2(url_path,current_user) {
 	
 	// set global variables
 	url = url_path;
 	user = current_user;
-	
+
 	// setup data grid
 	setupDataGrid();
 	
@@ -294,7 +300,6 @@ function showDetails(single_data) {
 	log.debug("showDetails(): single_data="+single_data);
 	
 	// reset data
-	
 	var key = "";
 	var file = "";
 	var name = "";
@@ -309,7 +314,6 @@ function showDetails(single_data) {
 	var date = "";
 	
 	// extract given data
-	
 	if(single_data != null) {
 		key = single_data['key'];
 		id = single_data['file'];
@@ -326,8 +330,6 @@ function showDetails(single_data) {
 	}
 	
 	// set text
-	
-	
 	$('#detailFile').html(file);
 	$('#detailName').html(name);
 	$('#detailUser').html(user);
@@ -336,75 +338,183 @@ function showDetails(single_data) {
 	$('#detailStages').html(stages);
 	$('#detailDate').html(date);
 	
-	// remove existing swf?
+
+	// TODO remove previous active previews
+
+	// hide all preview type
+	$("#previewPanelImage").hide();
+	$("#previewPanelFlash").hide();
+	$("#previewPanelAudio").hide();
 	
-	if(previewImageType = 'swf') {
-		swfobject.removeSWF("flash_container");
+	// set preview type
+	if(single_data != null) {
+		
+		// check file type
+		var file_extension = getFileExtension(file);
+		switch(file_extension) {
+		
+			// image types
+			case 'jpg':
+			case 'jpeg':
+			case 'gif':
+			case 'png':
+				previewType = self.MEDIA_TYPE_IMAGE;
+				$("#previewPanelImage").show();
+				break;
+				
+			// swf type
+			case 'swf':
+				previewType = self.MEDIA_TYPE_FLASH;
+				$("#previewPanelFlash").show();
+				break;
+				
+			// audio types
+			case 'mp3':
+				previewType = self.MEDIA_TYPE_AUDIO;
+				$("#previewPanelAudio").show();
+				break;
+				
+			// default: no preview available
+			default:
+				previewType = null;
+		}
+		
+	} else {
+		
+		previewType = null;	// reset preview type
+	
 	}
 	
-	// set new preview image
 	
+	
+	// remove thumbnail preview colorbox handler
+	$("#previewLink.inline").removeClass('inline cboxElement');
+	
+	// remove existing swf?
+	if(previewThumbnailType == self.MEDIA_TYPE_FLASH) {
+		$('#thumbnailPreview').flash().remove();
+	}
+	
+	// set new thumbnail preview image
 	var thumbnail_html = '';
-	var inject_html = true;
-	
 	if(single_data != null) {
 		
 		var thumbnail_extension = getFileExtension(thumbnail);
 		switch(thumbnail_extension) {
 		
 			// handle images
-			
 			case 'jpg':
 			case 'jpeg':
 			case 'gif':
 			case 'png':
-				
-				// TODO create preview
-				
-				if (file != '') {
-					thumbnail_html = '<a href="'+file+'" class="colorbox"><img src="'+thumbnail+'" alt="'+ name +'" /></a>';
-				} else {
-					thumbnail_html = '<img src="'+thumbnail+'" alt="'+ name +'" />';
-				}
-				
-				previewImageType = 'img';
+				thumbnail_html = '<img src="'+thumbnail+'" alt="'+ name +'" />';
+				previewThumbnailType = self.MEDIA_TYPE_IMAGE;
 				break;
 		
 			// handle shockwave flash
-			
 			case 'swf':
+				thumbnail_html = $.flash.create({
+					swf: thumbnail,
+					height: 190,
+					width: 290,
+					allowFullScreen: true,
+					wmode: "transparent",
+					menu: false,
+					play: true,
+					encodeParams: true,
+					flashvars: {},
+					hasVersion: 6, // requires minimum Flash 6
+					expressInstaller: '/script/swfobject/expressInstall.swf',
+					hasVersionFail: function (options) {
+						log.debug(options);
+						//return false; // returning false means the expressInstaller document will not be used
+						return true; // would have let the expressInstaller document be used
+					}
+				});
 				
-				// TODO create preview
+				previewThumbnailType = self.MEDIA_TYPE_FLASH;
 				
-				$('#thumbnailPreview').html('<a class="inline" href="#inline_content"><div style="z-index:5;background-color:yellow;display:block"><div id="flash_container" style="z-index:1"></div></div></a>');
-				inject_html = false;
-				
-				var flashvars = {};
-				var params = {
-								wmode: "transparent",
-								menu: "false",
-							};
-				var attributes = {};
-				
-				swfobject.embedSWF(thumbnail, "flash_container", "290", "190", "9.0.0", "/script/swfobject/expressInstall.swf", flashvars, params, attributes);
-				previewImageType = 'swf';
 				// TODO add alternative content (download flash player)
+				
 				break;
 		
 			// default: missing icon
-				
 			default:
 				thumbnail_html = '<img src="/image/icon/icon-question-sign.png" alt="preview not available" />';
-				previewImageType = 'img';
+				previewThumbnailType = null;
 		}
+		
+		$('#thumbnailPreview').html(thumbnail_html);
+		
+		/*
+		// register thumbnail preview window handler for images and swf
+		if(previewThumbnailType != null) {
+			$("#previewLink").addClass('inline');
+			$("#previewLink.inline").colorbox({
+				transition: 'fade',
+				scrolling: false,
+				opacity: 0.5,
+				open: false,
+				initialWidth: 290,
+				initialHeight: 190,
+				inline:true,
+				//animation: false,
+				width: 750,
+				height: 550,
+				// hide loading indicator:
+				onOpen: function(){ $("#colorbox").css("opacity", 0); },
+		        onComplete: function(){ $("#colorbox").css("opacity", 1); }
+			});
+		}
+		*/
+		
+		// set preview window parameters depending on media
+		var previewWindowWidth = 750;
+		var previewWindowHeight = 550;
+		
+		switch(previewType) {
+			case self.MEDIA_TYPE_IMAGE:
+				// use defaults
+				break;
+			case self.MEDIA_TYPE_FLASH:
+				// use defaults
+				break;
+			case self.MEDIA_TYPE_AUDIO:
+				previewWindowWidth = 400;
+				previewWindowHeight = 250;
+				break;
+		}
+		
+		if(previewThumbnailType != null) {
+			$("#previewLink").addClass('inline');
+			$("#previewLink.inline").colorbox({
+				transition: 'fade',
+				scrolling: false,
+				opacity: 0.5,
+				open: false,
+				initialWidth: 290,
+				initialHeight: 190,
+				inline:true,
+				animation: false,
+				width: previewWindowWidth,
+				height: previewWindowHeight,
+				// hide loading indicator:
+				onOpen: function(){ $("#colorbox").css("opacity", 0); },
+		        onComplete: function(){ $("#colorbox").css("opacity", 1); }
+			
+				// TODO add onClose handler to remove all preview data
+				// TODO add onComplete handler to add all preview data
+			
+			});
+		}
+		
 	} else {
+
+		previewThumbnailType = null;	// reset thumbnail preview type
 		
-		// TODO reset all preview handlers
-		
-		previewImageType = null;
 	}
 	
-	if(inject_html) $('#thumbnailPreview').html(thumbnail_html);
+	
 	
 	
 	// TODO: test buttons will be on preview window
@@ -494,10 +604,6 @@ function showDetails(single_data) {
 	}
 	
 	*/
-	
-	// TODO register colorboxes ?
-	//$("a.colorbox").colorbox({ opacity:0.7 , rel:'images-group' });
-	//$(".inline").colorbox({inline:true, width:"50%", animation: false});
 	
 	// display type in headline
 	

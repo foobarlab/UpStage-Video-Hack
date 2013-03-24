@@ -25,7 +25,7 @@
     #cboxContent{margin-top:0;background:#000;}
         .cboxIframe{background:#fff;}
         #cboxError{padding:50px; border:1px solid #ccc;}
-        #cboxLoadedContent{border:5px solid #000; background:#fff;}
+        #cboxLoadedContent{border:5px solid #444; background:#fff;}
         #cboxTitle{position:absolute; top:-20px; left:0; color:#ccc;}
         #cboxCurrent{position:absolute; top:-20px; right:0px; color:#ccc;}
         #cboxLoadingGraphic{background:url(images/colorbox/loading.gif) no-repeat center center;}
@@ -41,5 +41,5 @@
         #cboxPrevious:hover{background-position:bottom left;}
         #cboxNext{position:absolute; top:50%; right:5px; margin-top:-32px; background:url(images/colorbox/controls.png) no-repeat top right; width:28px; height:65px; text-indent:-9999px;}
         #cboxNext:hover{background-position:bottom right;}
-        #cboxClose{position:absolute; top:8px; right:5px; display:block; background:url(images/colorbox/controls.png) no-repeat top center; width:38px; height:19px; text-indent:-9999px;}
-        #cboxClose:hover{top:14px;background-position:bottom center;}
+        #cboxClose{position:absolute; top:12px; right:5px; display:block; background:url(images/colorbox/controls.png) no-repeat top center; width:38px; height:19px; text-indent:-9999px;}
+        #cboxClose:hover{top:18px;background-position:bottom center;}
