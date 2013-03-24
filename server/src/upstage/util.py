@@ -109,11 +109,11 @@ def validSizes(sizes, super_admin):
             valid = False
     return valid
 
-def createHTMLOptionTags(data_list):
-    if (not isinstance(data_list, list)):
-        raise TypeError('Can not create HTML options from type other than list.')
+def createHTMLOptionTags(data_list_or_set):
+    if (not(isinstance(data_list_or_set, list) or (isinstance(data_list_or_set, set)))):
+        raise TypeError('Can not create HTML options from type other than list or set.')
     string = ''
-    for data_list_item in data_list:
+    for data_list_item in data_list_or_set:
         string += "<option value=""%s"">%s</option>\n" % (data_list_item, data_list_item)
     return string
 
