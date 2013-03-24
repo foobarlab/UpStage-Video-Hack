@@ -14,6 +14,18 @@
 
 <link rel="stylesheet" type="text/css" href="/style/main.css" />
 <link rel="stylesheet" type="text/css" href="/style/slickgrid.css" />
+<link rel="stylesheet" type="text/css" href="/style/colorbox.css" />
+
+<!-- include html5shiv -->
+<!--[if lt IE 9]>
+<script src="/script/html5shiv/html5shiv.js"></script>
+<![endif]-->
+
+<!-- include font "Font Awesome" -->
+<link rel="stylesheet" href="/font/font-awesome/css/font-awesome.css">
+<!--[if IE 7]>
+<link rel="stylesheet" href="/font/font-awesome/css/font-awesome-ie7.min.css">
+<![endif]-->
 
 <!-- FIXME to increase page performance some scripts should be loaded in an async way or put at the bottom -->
 
@@ -45,7 +57,7 @@
 	var popUpAppender = new log4javascript.PopUpAppender();
 	log.addAppender(popUpAppender);
 	
-	log4javascript.setEnabled(true); // set to false to disable logging
+	log4javascript.setEnabled(true); // set to false to disable logging output
 </script>
 <!-- /logging -->
 

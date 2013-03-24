@@ -1012,14 +1012,6 @@ a.IconButton
 	margin-bottom:5px;
 }
 
-/*
-.panelRow {
-	clear:both;
-	display:block;
-	overflow:hidden;
-}
-*/
-
 #viewPanel {
 	/*margin-bottom:-500px;*/
 	overflow:hidden;
@@ -1041,7 +1033,7 @@ a.IconButton
 	height:500px;
 	text-align:center;
 	background-color:white;
-	opacity: 0.9;
+	opacity: 0.7;
 	z-index:9999;
 	display:inline-block;
 }
@@ -1104,6 +1096,7 @@ a.IconButton
 table#tableDetails {
 	width:300px;
 	text-align:center;
+	margin-top:15px;
 }
 
 table#tableDetails tr.alterning {
@@ -1119,4 +1112,17 @@ table#tableDetails td.head {
 	font-weight:bold;
 	text-align:right;
 	width:60px;
+}
+
+.dialogContent {
+	display:block;
+	width:100%;
+	margin-bottom:10px;
+}
+
+.dialogButtonRow {
+	display:block;
+	clear:both;
+	float:right;
+	margin:10px 0 20px 0;
 }

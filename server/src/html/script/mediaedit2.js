@@ -1,11 +1,19 @@
 /* media edit2 page -- uses jquery */
 
+// global variables
+
+var url;	// current url for the page
+var user;	// current user
+
+var selectedMediaData = null;	// currently selected media dataset
+
 var datagrid;
 var data = [];
-var url;
 
 var clickHandlerEditMedia = null;
 var clickHandlerDeleteMedia  = null;
+
+var clickHandlerConfirmDelete = null;
 
 var clickHandlerTestVoice = null;
 var clickHandlerTestStream = null;
@@ -13,13 +21,11 @@ var clickHandlerTestSound = null;
 
 var previewImageType = null;
 
-function setupMediaEdit2(url_path) {
+function setupMediaEdit2(url_path,current_user) {
 	
-	// set url of this page
+	// set global variables
 	url = url_path;
-	
-	// enable spinner
-	$('#spinner').spin("huge");
+	user = current_user;
 	
 	// setup data grid
 	setupDataGrid();
@@ -39,12 +45,35 @@ function setupMediaEdit2(url_path) {
 		$("#filterMedium").val("");
 		$("#filterName").val("");
 		$("#filterTags").val("");
+		
+		setCurrentUserInFilter();	// set default user
 		callAjaxUpdateData();
 	});
 	
-	// initial update data
-	callAjaxUpdateData();
+	setCurrentUserInFilter();	// set default user
+	callAjaxUpdateData();		// set initial data
 	
+}
+
+function setCurrentUserInFilter() {
+	
+	log.debug("setCurrentUserInFilter(): user="+user);
+	
+	// check if user is available as value in dropdown menu
+	var found = false;
+	$('#filterUser option').each(function(){
+	    if (this.value == user) {
+	        found = true;
+	        return false;
+	    }
+	});
+	
+	if(found) {
+		log.debug("setCurrentUserInFilter(): user was found in dropdown, preselect as default");
+		$("#filterUser").val(user);
+	} else {
+		log.debug("setCurrentUserInFilter(): user was not found in dropdown, not preselected");
+	}
 }
 
 /* do ajax 'updata_data' call */
@@ -52,7 +81,12 @@ function callAjaxUpdateData() {
 	
 	log.debug("callAjaxUpdateData()");
 	
+	// hide details
+	showDetails(null);
+	
+	// show loading panel
 	$('#dataLoadingPanel').show();	
+	$('#spinner').spin("huge");
 	
 	$.ajax({type: "POST",
 		url: url+"?ajax=update_data",
@@ -66,38 +100,46 @@ function callAjaxUpdateData() {
         	//alert("Response Success: response="+response);
         	if(response.status == 200) {
         		updateData(response.data);
+        		
+        		// hide loading panel
+        		$('#spinner').stop();
         		$('#dataLoadingPanel').hide();
+        		
         	} else {
         		// TODO handle known errors
         		alert("Error while retrieving data: status="+response.status+", timestamp="+ response.timestamp +", data="+response.data);
+        		updateData(null);
+        		
+        		// hide loading panel
+        		$('#spinner').stop();
         		$('#dataLoadingPanel').hide();
         	}
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             // TODO handle unknown errors (may be 'no connection')
         	alert("An error occured: textStatus="+textStatus+", errorThrown="+errorThrown);
+        	updateData(null);
+        	
+        	// hide loading panel
+        	$('#spinner').stop();
         	$('#dataLoadingPanel').hide();
         },
 	});
 	
 }
 
-function callAjaxDeleteMedia(key) {
-	
-	log.debug("callAjaxDeleteMedia(): key="+key);
-	
+function callAjaxDeleteMedia(key,deleteIfInUse) {
+	log.debug("callAjaxDeleteMedia(): key="+key+", deleteIfInUse="+deleteIfInUse);
 	// TODO
-	
-	alert("delete " + key);
+	alert("delete key: " + key + ", deleteIfInUse: " + deleteIfInUse);
 }
 
+/*
 function callAjaxGetDetails(key) {
-	
 	log.debug("callAjaxGetDetails(): key="+key);
-	
 	// TODO
-	
 }
+*/
 
 function testCallback(params) {
 	alert("testCallback: params=" + params);
@@ -150,20 +192,60 @@ function setupDataGrid() {
 				selectedRow = rows[0];
 				showDetails(data[selectedRow]);
 				
+				// set current selected media data
+				
+				selectedMediaData = data[selectedRow];
+				
 				// create click handlers
 				
 				clickHandlerEditMedia = function(e) {
-					log.debug("clickHandlerEditMedia: click: #buttonEditMedia, selectedRow="+selectedRow);
+					log.debug("clickHandlerEditMedia: click: #buttonEditMedia, key="+selectedMediaData['key']);
 					// TODO
 					alert("edit");
 				}
 				
 				clickHandlerDeleteMedia = function(e) {
-					log.debug("clickHandlerDeleteMedia: click: #buttonDeleteMedia, selectedRow="+selectedRow);
-					var key = data[selectedRow]['key'];
-					log.debug("clickHandlerDeleteMedia: about to delete key="+key);
-					// TODO add confirmation dialog (jqueryui?)
-					callAjaxDeleteMedia(key);
+					log.debug("clickHandlerDeleteMedia: click: #buttonDeleteMedia, key="+selectedMediaData['key']);
+					
+					// unbind confirm button first
+					$("#buttonConfirmDelete").unbind('click',clickHandlerConfirmDelete);
+					
+					// set click handler for confirmation dialog
+					clickHandlerConfirmDelete = function(e) {
+						log.debug("clickHandlerConfirmDelete: click: #buttonConfirmDelete, key="+selectedMediaData['key']);
+						// get if we want to delete even if in use
+						var deleteIfInUse = $("#deleteEvenIfInUse").prop('checked');
+						// actually delete the media
+						callAjaxDeleteMedia(selectedMediaData['key'],deleteIfInUse);
+						
+						// TODO close confirmation dialog?
+					}
+					
+					// bind click handler for final deletion
+					$("#buttonConfirmDelete").bind('click',clickHandlerConfirmDelete);
+					
+					// set media name in confirmation dialog
+					$("#deleteMediaName").html(selectedMediaData['name']);
+					
+					// reset checkbox (delete even if in use)
+					$("#deleteEvenIfInUse").attr('checked', false);
+					
+					// open confirmation dialog
+					$.colorbox({
+						transition: 'fade',
+						scrolling: false,
+						opacity: 0.5,
+						open: true,
+						initialWidth: 0,
+						initialHeight: 0,
+						inline: true,
+						href: "#deleteMediaPanel",
+						
+						// hide loading indicator:
+						onOpen: function(){ $("#colorbox").css("opacity", 0); },
+				        onComplete: function(){ $("#colorbox").css("opacity", 1); }
+					});
+					
 				}
 				
 				// bind buttons to click event
@@ -178,6 +260,9 @@ function setupDataGrid() {
 				showDetails(null);
 				datagrid.getSelectionModel().setSelectedRanges([]);	// deselect any selections
 				datagrid.invalidate();
+				
+				// TODO allow deletion of multiple selected media?
+				
 			} else {
 				
 				// no row selected
@@ -282,16 +367,29 @@ function showDetails(single_data) {
 			case 'jpeg':
 			case 'gif':
 			case 'png':
-				thumbnail_html = '<img src="'+thumbnail+'" alt="'+ name +'" />';
+				if (file != '') {
+					thumbnail_html = '<a href="'+file+'" class="colorbox"><img src="'+thumbnail+'" alt="'+ name +'" /></a>';
+				} else {
+					thumbnail_html = '<img src="'+thumbnail+'" alt="'+ name +'" />';
+				}
+				
 				previewImageType = 'img';
 				break;
 		
 			// handle shockwave flash
 			
 			case 'swf':
-				$('#thumbnailPreview').html('<div id="flash_container"></div>');
+				$('#thumbnailPreview').html('<a class="inline" href="#inline_content"><div style="z-index:5;background-color:yellow;display:block"><div id="flash_container" style="z-index:1"></div></div></a>');
 				inject_html = false;
-				swfobject.embedSWF(thumbnail, "flash_container", "290", "190", "9.0.0", "/script/swfobject/expressInstall.swf");
+				
+				var flashvars = {};
+				var params = {
+								wmode: "transparent",
+								menu: "false",
+							};
+				var attributes = {};
+				
+				swfobject.embedSWF(thumbnail, "flash_container", "290", "190", "9.0.0", "/script/swfobject/expressInstall.swf", flashvars, params, attributes);
 				previewImageType = 'swf';
 				// TODO add alternative content (download flash player)
 				break;
@@ -308,11 +406,16 @@ function showDetails(single_data) {
 	
 	if(inject_html) $('#thumbnailPreview').html(thumbnail_html);
 	
+	
+	// TODO: test buttons will be on preview window
+	
+	/*
+	
 	// setup test buttons
 	
 	// unbind event handlers
 	$("#buttonTestVoice").unbind('click',clickHandlerTestVoice);
-	$("#buttonTestStream").unbind('click',clickHandlerTestStream);
+	/$("#buttonTestStream").unbind('click',clickHandlerTestStream);
 	$("#buttonTestSound").unbind('click',clickHandlerTestSound);
 	
 	// hide buttons
@@ -386,10 +489,15 @@ function showDetails(single_data) {
 				$("#buttonTestStream").bind('click', clickHandlerTestStream);
 				
 				break;
-				
 		}
 		
 	}
+	
+	*/
+	
+	// TODO register colorboxes ?
+	//$("a.colorbox").colorbox({ opacity:0.7 , rel:'images-group' });
+	//$(".inline").colorbox({inline:true, width:"50%", animation: false});
 	
 	// display type in headline
 	
@@ -421,7 +529,7 @@ function showDetails(single_data) {
 		// hide details panel
 		$('#detailsPanel').hide();
 	}
-	
+
 }
 
 /* helper functions */

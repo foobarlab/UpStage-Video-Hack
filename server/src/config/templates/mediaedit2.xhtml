@@ -1,5 +1,8 @@
 <!include master_a.inc>
 <!include workshop_nav.inc>
+
+<!-- TODO instead of using master_a.inc (containing all scripts and styles) setup own head for this page? -->
+
 <script type="text/javascript">document.title='Workshop - Media'; </script>
 
 <!-- include slickgrid -->
@@ -9,10 +12,11 @@
 <script type="text/javascript" src="/script/slickgrid/slick.grid.js"></script>
 <script type="text/javascript" src="/script/slickgrid/plugins/slick.rowselectionmodel.js"></script>
 
-<!-- inlucde various third party libs -->
+<!-- include various third party libs -->
 <script type="text/javascript" src="/script/swfobject/swfobject.js"></script>
 <script type="text/javascript" src="/script/spin.js/spin.js"></script>
 <script type="text/javascript" src="/script/jquery.spin.js/jquery.spin.js"></script>
+<script type="text/javascript" src="/script/jquery.colorbox/jquery.colorbox-min.js"></script>
 
 <h1 style="margin:20px 0">Edit/View Media</h1>
 
@@ -42,9 +46,9 @@
 		</select>
 		
 		<label for="filterStage">Stage:</label>
-		<select id="filterStage" name="filterStage" style="width:200px">
+		<select id="filterStage" name="filterStage" style="width:150px">
 			<option value=""></option>
-			<option value="^"> -- not assigned to any stage -- </option><!-- dummy char '^' used for unassigned stages, see pages.py -->
+			<option value="^"> -- not assigned -- </option><!-- dummy char '^' used for unassigned stages, see pages.py -->
 			%(list_stages_as_html_option_tag)s
 		</select>
 		
@@ -82,12 +86,17 @@
 		<div id="dataLoadingPanel">
 			<div id="dataLoadingPanelInnerDiv">
 				<div id="spinner"></div>
-				<p>Loading data ...</p>
+				<p style="font-weight:bold">Loading data ...</p>
 			</div>
 		</div>
 	</div>
 	
 	<div id="detailsPanel">
+	
+		<!-- TODO testing colorbox inline HTML -->
+		<!-- 
+		<p><a class='inline' href="#inline_content">Inline HTML</a></p>
+		-->
 		
 		<h4 id="displayType"></h4>
 		
@@ -98,11 +107,14 @@
 			<input id="buttonDeleteMedia" type="button" style="width:100px" value="Delete" />
 		</div>
 		
+		<!-- TODO do this in the preview window? -->
+		<!-- 
 		<div class="buttonRow">
 			<input id="buttonTestVoice" type="button" style="width:100px" value="Test Voice" />
 			<input id="buttonTestStream" type="button" style="width:100px" value="Test Stream" />
 			<input id="buttonTestSound" type="button" style="width:100px" value="Test Sound" />
 		</div>
+		-->
 		
 		<table id="tableDetails">
 		
@@ -134,36 +146,56 @@
 				<td class="head">Stages:</td>
 				<td><div id="detailStages" class="detail"></div></td>
 			</tr>
-		
-		
-			<!-- 
-			<tr>
-				<td>Key:</td>
-				<td><div id="detailKey" class="detail"></div></td>
-			</tr>
-			
-			<tr>
-				<td>Type:</td>
-				<td><div id="detailType" class="detail"></div></td>
-			</tr>
-			<tr>
-				<td>Medium:</td>
-				<td><div id="detailMedium" class="detail"></div></td>
-			</tr>
-			<tr>
-				<td>Thumbnail:</td>
-				<td><div id="detailThumbnail" class="detail"></div></td>
-			</tr>
-			-->
 			
 		</table>
+		
 	</div>
 
 </div>
 
+<!-- TODO colorbox inline divs -->
+
+<div style="display:none">
+
+	<div id="deleteMediaPanel" style="padding:30px; background:#fff;">
+	
+		<div class="dialogContent">
+			<h1>Are you sure you want to delete &quot;<span id="deleteMediaName"></span>&quot;?</h1>
+			<input type="checkbox" name="deleteEvenIfInUse" id="deleteEvenIfInUse" />
+			<label for="deleteEvenIfInUse">Delete even if in use</label>
+		</div>
+		
+		<div class="dialogButtonRow">
+			<input type="button" style="width:100px" id="buttonConfirmDelete" value="Delete" />
+			<input type="button" style="width:100px" id="buttonCancelDelete" value="Cancel" />
+		</div>
+		
+		<script type="text/javascript">
+			// default close function for cancel button
+			$("#buttonCancelDelete").click(function(){ $.fn.colorbox.close(); return false; });
+		</script>
+		
+	</div>
+
+	<!-- 
+	<div id="inline_content" style="padding:10px; background:#fff;">
+	
+		<p><strong>This content comes from a hidden element on this page.</strong></p>
+		<p>The inline option preserves bound JavaScript events and changes, and it puts the content back where it came from when it is closed.</p>
+		<p><a id="click" href="#" style="padding:5px; background:#ccc;">Click me, it will be preserved!</a></p>
+		
+		<p><strong>If you try to open a new ColorBox while it is already open, it will update itself with the new content.</strong></p>
+		<p>Updating Content Example:<br />
+		<a class="ajax" href="../content/ajax.html">Click here to load new content</a></p>
+	
+	</div>
+	-->
+	
+</div>
+
 <script type="text/javascript">
 $(document).ready(function(){
-	setupMediaEdit2("%(req:path)s");
+	setupMediaEdit2("%(req:path)s","%(user)s");
 })
 </script>
 
