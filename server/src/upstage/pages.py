@@ -92,7 +92,7 @@ except ImportError:
 #upstage
 from upstage import config
 from upstage.misc import new_filename, no_cache, UpstageError  
-from upstage.util import save_tempfile, get_template, new_filename, validSizes, getFileSizes, createHTMLOptionTags, convertLibraryItemToImageFilePath
+from upstage.util import save_tempfile, get_template, new_filename, validSizes, getFileSizes, createHTMLOptionTags, convertLibraryItemToImageFilePath, convertLibraryItemToImageName
 from upstage.voices import VOICES
 from upstage.globalmedia import MediaDict
 from upstage.player import PlayerDict
@@ -1052,8 +1052,10 @@ class MediaEditPage2(Workshop):
                 else:
                     file_path = config.MEDIA_URL+file_path
             
+            thumbnail_icon = ''
             thumbnail = value['thumb']
             if config.LIBRARY_PREFIX in thumbnail:
+                thumbnail_icon = convertLibraryItemToImageName(thumbnail)
                 thumbnail = convertLibraryItemToImageFilePath(thumbnail)
             elif thumbnail == '':
                 thumbnail = file_path
@@ -1063,8 +1065,11 @@ class MediaEditPage2(Workshop):
             dataset = dict(key=key,
                            tags=value['tags'],
                            user=value['uploader'],
+                           thumbnail_original=value['thumb'],
                            thumbnail=thumbnail,
+                           thumbnail_icon=thumbnail_icon,
                            stages=value['stages'],
+                           file_original=value['media'],
                            file=file_path,
                            name=value['name'],
                            date=value['dateTime'],

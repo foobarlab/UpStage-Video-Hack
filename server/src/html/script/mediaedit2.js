@@ -3,7 +3,7 @@
 const MEDIA_TYPE_IMAGE = 'image';
 const MEDIA_TYPE_FLASH = 'flash';
 const MEDIA_TYPE_AUDIO = 'audio';
-//const MEDIA_TYPE_STREAM = 'stream';
+const MEDIA_TYPE_STREAM = 'stream';
 
 //global variables
 
@@ -162,10 +162,13 @@ function setupDataGrid() {
 	       {id: "voice", name: "Voice", field: "voice", width:100},
 	       {id: "tags", name: "Tags", field: "tags", width:200},
 	       {id: "file", name: "File", field: "file", width:200},
+	       {id: "file_original", name: "File (Original)", field: "file_original", width:200},
 	       {id: "date", name: "Date", field: "date", width:200},
 	       {id: "type", name: "Type", field: "type", width:100},
 	       {id: "medium", name: "Medium", field: "medium", width:100},
 	       {id: "thumbnail", name: "Thumbnail", field: "thumbnail", width:200},
+	       {id: "thumbnail_original", name: "Thumbnail (Original)", field: "thumbnail_original", width:200},
+	       {id: "thumbnail_icon", name: "Thumbnail (Icon)", field: "thumbnail_icon", width:200},
 	       {id: "key", name: "Key", field: "key", width:200},
        ];
 
@@ -302,6 +305,7 @@ function showDetails(single_data) {
 	// reset data
 	var key = "";
 	var file = "";
+	var file_original = "";
 	var name = "";
 	var user = "";
 	var type = "";
@@ -310,6 +314,8 @@ function showDetails(single_data) {
 	var stages = "";
 	var medium = "";
 	var thumbnail = "";
+	var thumbnail_original = "";
+	var thumbnail_icon = "";
 	var file = "";
 	var date = "";
 	
@@ -325,7 +331,10 @@ function showDetails(single_data) {
 		stages = single_data['stages'];
 		medium = single_data['medium'];
 		thumbnail = single_data['thumbnail'];
+		thumbnail_original = single_data['thumbnail_original'];
+		thumbnail_icon = single_data['thumbnail_icon'];
 		file = single_data['file'];
+		file_original = single_data['file_original'];
 		date = single_data['date'];
 	}
 	
@@ -345,6 +354,7 @@ function showDetails(single_data) {
 	$("#previewPanelImage").hide();
 	$("#previewPanelFlash").hide();
 	$("#previewPanelAudio").hide();
+	$("#previewPanelStream").hide();
 	
 	// set preview type
 	if(single_data != null) {
@@ -365,7 +375,13 @@ function showDetails(single_data) {
 			// swf type
 			case 'swf':
 				previewType = self.MEDIA_TYPE_FLASH;
+				
 				$("#previewPanelFlash").show();
+				
+				// additional stream available?
+				if(medium == 'stream') {
+					$("#previewPanelStream").show();
+				}
 				break;
 				
 			// audio types
@@ -374,9 +390,16 @@ function showDetails(single_data) {
 				$("#previewPanelAudio").show();
 				break;
 				
-			// default: no preview available
+			// no file existant
 			default:
-				previewType = null;
+				if(medium == 'stream') {
+					// stream only
+					previewType = self.MEDIA_TYPE_STREAM;
+					$("#previewPanelStream").show();
+				} else {
+					//no preview available
+					previewType = null;
+				}
 		}
 		
 	} else {
@@ -485,7 +508,7 @@ function showDetails(single_data) {
 				break;
 		}
 		
-		if(previewThumbnailType != null) {
+		if(previewType != null) {
 			$("#previewLink").addClass('inline');
 			$("#previewLink.inline").colorbox({
 				transition: 'fade',

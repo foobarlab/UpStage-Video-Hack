@@ -138,4 +138,25 @@ def convertLibraryItemToImageFilePath(library_item):
         image_path = '' # we do not want anything here
     
     return image_path
+
+def convertLibraryItemToImageName(library_item):
+    if (not isinstance(library_item, str)):
+        raise TypeError('Can not convert library item to image path for type other than string.')
+    image_name = ''
     
+    # FIXME unsecure method
+    extracted_library_item = library_item.split(':')[2] # get third element of list
+    
+    log.msg("convertLibraryItemToImageName(): library_item=%s, extracted_library_item=%s" % (library_item, extracted_library_item))
+    
+    # FIXME hardcoded for now, should be defined with mapping in config 
+    if extracted_library_item == 'IconVideoStream':
+        image_name = 'icon-film'
+    elif extracted_library_item == 'IconLiveStream':
+        image_name = 'icon-play-circle'
+    elif extracted_library_item == 'IconAudioStream':
+        image_name = 'icon-volume-up'
+    elif extracted_library_item == 'VideoOverlay':
+        image_name = '' # we do not want anything here
+    
+    return image_name
