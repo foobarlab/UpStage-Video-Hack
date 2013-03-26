@@ -1,0 +1,167 @@
+Streaming Notes and How-To
+==========================
+
+SERVER:
+-------
+
+* Download and Installation
+
+  The streaming used for the Video Hack is tested with the Red5 Media Server 1.0.1
+  (see http://www.red5.org/, download from http://www.red5.org/downloads/red5/1_0_1/).
+
+  Currently the Video Hack makes use of the "oflaDemo" application provided with Red5.
+  In case it is not installed with your download you will have to install it using the
+  "Installer" application of Red5.
+
+
+
+* Stream parameters for the Video Hack
+
+  The Video Hack uses the RTMP protocol for which Adobe Flash can do streaming.
+
+  A stream has always the following parameters:
+  - Stream server address consisting of a hostname with an optionally application path
+    or port number (e.g. "rtmp://localhost:1935/oflaDemo")
+  - The stream name (e.g. "mystream")
+  - Alternative way of writing a stream url is rtmp://<host>:<port>/<appname>/<streamname>
+
+
+
+* Supported codecs
+
+  Adobe Flash supports at least the following combinations of video and audio codecs:
+  - VP6 for video mp3 for audio
+  - h.264 for video and mp4a or mp3 for audio
+
+  You find further in-depth information about supported codecs here:
+  http://red5.googlecode.com/files/1827OS_04_1stDraft.pdf
+
+
+
+* Bitrates and networking
+
+  The most important thing to take care of is the network bandwidth both your clients and
+  your server have to ensure continuous streaming in constant quality.
+
+  You can predict how many streams your server will be able to handle for broadcasting to
+  clients and you also can predict how many streams you can send to your streaming server.  
+
+  In theory you can always use the following formula:
+
+                                       total bandwidth
+  number of possible streams =  ----------------------------
+                                 bitrate of a single stream
+
+  Each stream you put on stage in UpStage will occupy a connection to your server for
+  each client.
+
+  For example:
+
+  You have a 100 MBit/s internet up- and downstream connection on your server, each
+  stream you are broadcasting has 500 kBit/s. You have 20 users (players and audience) and
+  you want to show 2 streams in parallel. The location where you are streaming from has
+  a asynchronous internet connection (e.g. DSL) and provides 6 MBit/s for Downstream and
+  1 MBit/s for upstream.
+
+  With the formula above you can now predict how many streams you will be able to handle
+  on the server side and on the client side.
+
+  - Maximum number of streams you can broadcast (server):
+
+       100 MBit/s          100 MBit/s
+    ---------------  =  --------------- = 200 streams broadcasted in parallel
+       500 kBit/s          0.5 MBit/s
+
+  - Current number of streams you currently broadcast (server):
+
+    20 watching users * 2 simultaneous streams = 40 streams send in parallel
+  
+  - Current bandwidth used for broadcasting (server):
+
+    40 streams * 500 kBit/s =  20 MBit/s used bandwidth 
+
+  - Current number of streams used for broadcasting (client):
+
+       1 Mbit/s
+    -------------- = 2 streams broadcasted in parallel (equals 1 MBit/s upstream bandwidth)
+      0.5 MBit/s
+
+   - Maximum number of stream you are able to receive (client):
+
+       6 MBit/s
+     ------------- = 12 streams received in parallel
+      0.5 MBit/s
+
+  In practice you should take care not to exceed those limits as the stream will get lagged
+  and interrupted. At least you should take care to have a little buffer in your network
+  bandwidths to be able to cope with peak loads during streaming. And for sure you should
+  be aware that all users at a location who share the internet line also share the bandwidth.
+
+
+
+
+
+
+CLIENTS:
+--------
+
+There are several possibilities to stream from your computer to Red5.
+
+
+
+* Red5 Publisher
+
+For now the easiest is to make use of the provided web interface of the Red5 Media
+Server called Publisher. You find it in the demos of your Red5 installation
+(e.g. http://localhost:5080/demos/publisher.html).
+The current downside of this web interface is that it provides very poor stream quality.
+So if you want to have best possible quality and bitrates you should choose one of the
+following alternatives below.
+
+
+
+* Flash Media Live Encoder (FMLE)
+
+If you are using Windows or MacOSX the easiest is to use the Flash Media Live Encoder.
+You can download it for free from the Adobe site:
+https://www.adobe.com/products/flash-media-encoder.html
+
+
+
+* VideoLan Client (VLC)
+
+On Linux (but also on Windows or MacOSX) you can use the open-source video solution
+VideoLan media player (https://videolan.org/vlc/). In order to stream you should use
+the commandline client (cvlc) with some parameters.
+
+Here is a little example how to stream with the VP6 video-codec (FLV1) @ 320x240, 25 fps
+and mp3 audio-codec @ 22050 kHz, stereo, 64 kBit/s with a total bandwidth of 300 kBit/s:
+
+cvlc v4l2:// :v4l-vdev="/dev/video0" :v4l-adev="/dev/pcm" :v4l-norm=3 :v4l-frequency=-1 :input-slave=alsa://hw:1,0 :v4l-caching=100 :v4l-chroma="" :v4l-fps=-1.000000 :v4l-samplerate=44100 :v4l-audio=-1 :v4l-stereo :v4l-width=320 :v4l-height=240 :v4l-brightness=-1 :v4l-colour=-1 :v4l-hue=-1 :v4l-contrast=-1 :no-v4l-mjpeg :v4l-decimation=1 :v4l-quality=100 --sout="#transcode{vcodec=FLV1,vb=300,fps=25,width=320,height=240,scale=1,acodec=mp3,ab=64,channels=2,samplerate=22050}:standard{access=rtmp,mux=ffmpeg{mux=flv},dst=rtmp://localhost:1935/oflaDemo/mystream}"
+
+Here is an example for streaming with the h.264 video-codec @ 320x240, 25 fps, using the
+Baseline 1.2 profile and mp4 audio @ 22050 kHz, stereo, 64 kBit/s with a total bandwidth
+of 300 kBit/s:
+
+cvlc v4l2:// :v4l-vdev="/dev/video0" :v4l-adev="/dev/pcm" :v4l-norm=3 :v4l-frequency=-1 :input-slave=alsa://hw:1,0 :v4l-caching=100 :v4l-chroma="" :v4l-fps=-1.000000 :v4l-samplerate=44100 :v4l-audio=-1 :v4l-stereo :v4l-width=320 :v4l-height=240 :v4l-brightness=-1 :v4l-colour=-1 :v4l-hue=-1 :v4l-contrast=-1 :no-v4l-mjpeg :v4l-decimation=1 :v4l-quality=100 --sout="#transcode{vcodec=h264,venc=x264{profile=baseline,level=1.2},vb=300,fps=25,width=320,height=240,scale=1,acodec=mp4a,ab=64,channels=2,samplerate=22050}:standard{access=rtmp,mux=ffmpeg{mux=flv},dst=rtmp://localhost:1935/oflaDemo/mystream}"
+
+Both examples stream to "rtmp://localhost:1935/oflaDemo" and the stream name is "mystream".
+The capture device is "/dev/video0" for video and "hw:1,0" for audio. 
+
+
+In case you need more information about VLC parameters and usage you will find further
+documentation under the following links:
+- http://www.jpsaman.org/vlc/rtmp
+- https://www.videolan.org/doc/streaming-howto/en/ch03.html
+- http://wiki.videolan.org/Documentation:Modules/v4l2
+
+
+
+* FFMPEG
+
+Streaming using FFMPEG has not been tested yet.
+
+Here are some links where you may find useful information:
+- http://ffmpeg.org/trac/ffmpeg/wiki/StreamingGuide
+- http://wiki.xuggle.com/Live_Encoding_Tutorial
+
