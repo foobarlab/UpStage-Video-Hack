@@ -72,18 +72,18 @@ SERVER:
     ---------------  =  --------------- = 200 streams broadcasted in parallel
        500 kBit/s          0.5 MBit/s
 
-  - Current number of streams you currently broadcast (server):
+  - Actual number of streams you currently broadcast (server):
 
     20 watching users * 2 simultaneous streams = 40 streams send in parallel
   
-  - Current bandwidth used for broadcasting (server):
+  - Actual bandwidth used for broadcasting (server):
 
-    40 streams * 500 kBit/s =  20 MBit/s used bandwidth 
+    40 streams * 500 kBit/s =  20 MBit/s used bandwidth for streaming 
 
-  - Current number of streams used for broadcasting (client):
+  - Current maximum streams you can send (client):
 
        1 Mbit/s
-    -------------- = 2 streams broadcasted in parallel (equals 1 MBit/s upstream bandwidth)
+    -------------- = maximum 2 streams broadcasted simultaneously
       0.5 MBit/s
 
    - Maximum number of stream you are able to receive (client):
@@ -94,8 +94,15 @@ SERVER:
 
   In practice you should take care not to exceed those limits as the stream will get lagged
   and interrupted. At least you should take care to have a little buffer in your network
-  bandwidths to be able to cope with peak loads during streaming. And for sure you should
-  be aware that all users at a location who share the internet line also share the bandwidth.
+  bandwidths to be able to cope with peak loads during streaming (e.g. use only up to 80%
+  of your theoretical available bandwidth).
+  
+  And for sure you should be aware that all users at a location who share the internet line
+  also share the bandwidth.
+
+  You can find out what your current bandwidth actually is by using a various webservices,
+  e.g. http://speedtest.net/. You should let run such a test at least two or three times to
+  get to know the avarage bandwidth rate. 
 
 
 
