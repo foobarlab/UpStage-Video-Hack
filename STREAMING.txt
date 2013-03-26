@@ -74,7 +74,7 @@ SERVER:
 
   - Actual number of streams you currently broadcast (server):
 
-    20 watching users * 2 simultaneous streams = 40 streams send in parallel
+    20 watching users * 2 simultaneous streams = 40 streams sent in parallel
   
   - Actual bandwidth used for broadcasting (server):
 
