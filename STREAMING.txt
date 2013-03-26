@@ -135,13 +135,14 @@ VideoLan media player (https://videolan.org/vlc/). In order to stream you should
 the commandline client (cvlc) with some parameters.
 
 Here is a little example how to stream with the VP6 video-codec (FLV1) @ 320x240, 25 fps
-and mp3 audio-codec @ 22050 kHz, stereo, 64 kBit/s with a total bandwidth of 300 kBit/s:
+and mp3 audio-codec @ 22050 kHz, stereo, 64 kBit/s with a total stream bandwidth of
+300 kBit/s:
 
 cvlc v4l2:// :v4l-vdev="/dev/video0" :v4l-adev="/dev/pcm" :v4l-norm=3 :v4l-frequency=-1 :input-slave=alsa://hw:1,0 :v4l-caching=100 :v4l-chroma="" :v4l-fps=-1.000000 :v4l-samplerate=44100 :v4l-audio=-1 :v4l-stereo :v4l-width=320 :v4l-height=240 :v4l-brightness=-1 :v4l-colour=-1 :v4l-hue=-1 :v4l-contrast=-1 :no-v4l-mjpeg :v4l-decimation=1 :v4l-quality=100 --sout="#transcode{vcodec=FLV1,vb=300,fps=25,width=320,height=240,scale=1,acodec=mp3,ab=64,channels=2,samplerate=22050}:standard{access=rtmp,mux=ffmpeg{mux=flv},dst=rtmp://localhost:1935/oflaDemo/mystream}"
 
 Here is an example for streaming with the h.264 video-codec @ 320x240, 25 fps, using the
-Baseline 1.2 profile and mp4 audio @ 22050 kHz, stereo, 64 kBit/s with a total bandwidth
-of 300 kBit/s:
+Baseline 1.2 profile and mp4 audio @ 22050 kHz, stereo, 64 kBit/s with a total stream
+bandwidth of 300 kBit/s:
 
 cvlc v4l2:// :v4l-vdev="/dev/video0" :v4l-adev="/dev/pcm" :v4l-norm=3 :v4l-frequency=-1 :input-slave=alsa://hw:1,0 :v4l-caching=100 :v4l-chroma="" :v4l-fps=-1.000000 :v4l-samplerate=44100 :v4l-audio=-1 :v4l-stereo :v4l-width=320 :v4l-height=240 :v4l-brightness=-1 :v4l-colour=-1 :v4l-hue=-1 :v4l-contrast=-1 :no-v4l-mjpeg :v4l-decimation=1 :v4l-quality=100 --sout="#transcode{vcodec=h264,venc=x264{profile=baseline,level=1.2},vb=300,fps=25,width=320,height=240,scale=1,acodec=mp4a,ab=64,channels=2,samplerate=22050}:standard{access=rtmp,mux=ffmpeg{mux=flv},dst=rtmp://localhost:1935/oflaDemo/mystream}"
 
