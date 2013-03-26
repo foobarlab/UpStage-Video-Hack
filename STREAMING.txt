@@ -89,7 +89,7 @@ SERVER:
    - Maximum number of stream you are able to receive (client):
 
        6 MBit/s
-     ------------- = 12 streams received in parallel
+     ------------- = 12 streams received in parallel (equals 6 users with each 2 streams)
       0.5 MBit/s
 
   In practice you should take care not to exceed those limits as the stream will get lagged
