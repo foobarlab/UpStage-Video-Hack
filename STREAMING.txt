@@ -33,7 +33,7 @@ SERVER:
   - VP6 for video mp3 for audio
   - h.264 for video and mp4a or mp3 for audio
 
-  You find further in-depth information about supported codecs here:
+  You find further in-depth information about supported codecs here (starting at page 12):
   http://red5.googlecode.com/files/1827OS_04_1stDraft.pdf
 
 
