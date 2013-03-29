@@ -300,7 +300,7 @@ March 2013		Added minify with YUI Compressor
 				srcdir="${upstage.dir.as2src}"
 				swf="${upstage.mtasc.swf}"
 				classpath="${upstage.dir.as2src}"
-				header="320:200:30"
+				header="320:200:31"
 				version="8"
 				wimp="true"
 				strict="true"
