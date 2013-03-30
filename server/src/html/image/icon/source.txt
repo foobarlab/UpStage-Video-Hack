@@ -8,5 +8,6 @@ icon-play-circle (used for "live stream")
 icon-film (used for "video stream")
 icon-volume-up (used for "audio stream")
 
-icon-question-sign (used for "missing image")
+icon-warning-sign (used for "missing image")
+
 
