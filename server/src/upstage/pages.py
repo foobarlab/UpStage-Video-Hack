@@ -1060,6 +1060,12 @@ class MediaEditPage2(Workshop):
             elif thumbnail == '':
                 thumbnail = file_path
             
+            # hardcode thumbnail_icon for audio (music, sfx)
+            if thumbnail == config.MUSIC_ICON_IMAGE_URL:
+                thumbnail_icon = config.MUSIC_ICON
+            elif thumbnail == config.SFX_ICON_IMAGE_URL:
+                thumbnail_icon = config.SFX_ICON
+            
             # create dataset as dictionary
             
             dataset = dict(key=key,

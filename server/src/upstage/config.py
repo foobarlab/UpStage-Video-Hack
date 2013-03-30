@@ -82,6 +82,10 @@ AUDIO_SUBURL     = AUDIO_URL.strip('/') #PQ & EB: Added 17.9.07
 MUSIC_ICON_IMAGE_URL    = '/image/icon/icon-music.png'
 SFX_ICON_IMAGE_URL      = '/image/icon/icon-bullhorn.png'
 
+# icon styles for music and sfx thumbnails
+MUSIC_ICON	= 'icon-music'
+SFX_ICON	= 'icon-bullhorn'
+
 # file system paths
 # these relate to the above url paths
 MEDIA_DIR        =  _join(HTDOCS, MEDIA_SUBURL)
@@ -170,7 +174,6 @@ REGENERATE_VOICE_SCRIPTS=True
 """ Alan (13/09/07) ==> Constants used for upload size limits """
 ADMIN_SIZE_LIMIT = 1000000
 SUPER_ADMIN_SIZE_LIMIT = 2000000
-
 
 # @brief prefix for built-in library images
 LIBRARY_PREFIX = 'library:'

@@ -430,7 +430,13 @@ function showDetails(single_data) {
 			case 'jpeg':
 			case 'gif':
 			case 'png':
-				thumbnail_html = '<img src="'+thumbnail+'" alt="'+ name +'" />';
+				// do we have a thumbnail icon provided? if yes, use it in favor of image thumbnail
+				var thumbnail_icon = single_data['thumbnail_icon'];
+				if(thumbnail_icon != '') {
+					thumbnail_html = '<i class="'+thumbnail_icon+'"></i>';
+				} else {
+					thumbnail_html = '<img src="'+thumbnail+'" alt="'+ name +'" />';
+				}
 				previewThumbnailType = self.MEDIA_TYPE_IMAGE;
 				break;
 		

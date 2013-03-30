@@ -1104,6 +1104,12 @@ a#previewLink:hover {
 	margin:5px;
 }
 
+#thumbnailPreview i {
+	font-size:140px;
+	line-height:200px;
+	color:#333;
+}
+
 #controlButtons {
 	height:55px;
 	display:block;
