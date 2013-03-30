@@ -361,8 +361,11 @@ function showDetails(single_data) {
 		date = single_data['date'];
 	}
 	
+	// create link to file
+	var file_url = '<a href="'+file+'" target="_blank">'+file+'</a>';
+	
 	// set text in details table
-	$('#detailFile').html(file);
+	$('#detailFile').html(file_url);
 	$('#detailName').html(name);
 	$('#detailUser').html(user);
 	$('#detailTags').html(tags);
@@ -575,7 +578,9 @@ function showDetails(single_data) {
 		if (medium != '') {
 			headline += ' ('+medium+')';
 		}
-	} 
+	}
+	
+	// TODO also add to preview panel
 	
 	$('#displayType').text(headline);
 	
