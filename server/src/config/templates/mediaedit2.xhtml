@@ -25,56 +25,53 @@
 
 <div id="filterDiv">
 
-	<h4>Apply Filter:</h4>
-
-	<!-- TODO not implemented yet, do with slickgrid filter function? -->
-	<!-- 
 	<div class="filterRow">
 	
-		<label for="filterName">Name:</label>
-		<input type="text" size="20" id="filterName" name="filterName" />
+		<p class="filterTitle">Apply Filter:</p>
 		
-		<label for="filterTags">Tags:</label>
-		<input type="text" size="50" id="filterTags" name="filterTags" />
-	 
-	</div>
-	-->
+		<div class="filterBlock">
+			<label for="filterUser">User:</label>
+			<select id="filterUser" name="filterUser" style="width:150px">
+				<option value=""></option>
+				%(list_users_as_html_option_tag)s
+			</select>
+		</div>
+		
+		<div class="filterBlock">
+			<label for="filterStage">Stage:</label>
+			<select id="filterStage" name="filterStage" style="width:150px">
+				<option value=""></option>
+				<option value="^"> -- not assigned -- </option><!-- dummy char '^' used for unassigned stages, see pages.py -->
+				%(list_stages_as_html_option_tag)s
+			</select>
+		</div>
+		
+		<div class="filterBlock">
+			<label for="filterType">Type:</label>
+			<select id="filterType" name="filterType" style="width:100px">
+				<option value=""></option>
+				<option value="avatar">Avatar</option>
+				<option value="prop">Prop</option>
+				<option value="backdrop">Backdrop</option>
+				<option value="audio">Audio</option>
+			</select>
+		</div>
+			
+		<div class="filterBlock">
+			<label for="filterMedium">Medium:</label>
+			<select id="filterMedium" name="filterMedium" style="width:100px">
+				<option value=""></option>
+				<option value="stream">Stream</option>
+				<option value="video">Video</option>
+				<option value="music">Music</option>
+				<option value="sfx">Sound-Effect</option>
+			</select>
+		</div>
 	
-	<div class="filterRow">
-		
-		<label for="filterUser">User:</label>
-		<select id="filterUser" name="filterUser" style="width:150px">
-			<option value=""></option>
-			%(list_users_as_html_option_tag)s
-		</select>
-		
-		<label for="filterStage">Stage:</label>
-		<select id="filterStage" name="filterStage" style="width:150px">
-			<option value=""></option>
-			<option value="^"> -- not assigned -- </option><!-- dummy char '^' used for unassigned stages, see pages.py -->
-			%(list_stages_as_html_option_tag)s
-		</select>
-		
-		<label for="filterType">Type:</label>
-		<select id="filterType" name="filterType" style="width:100px">
-			<option value=""></option>
-			<option value="avatar">Avatar</option>
-			<option value="prop">Prop</option>
-			<option value="backdrop">Backdrop</option>
-			<option value="audio">Audio</option>
-		</select>
-		
-		<label for="filterMedium">Medium:</label>
-		<select id="filterMedium" name="filterMedium" style="width:100px">
-			<option value=""></option>
-			<option value="stream">Stream</option>
-			<option value="video">Video</option>
-			<option value="music">Music</option>
-			<option value="sfx">Sound-Effect</option>
-		</select>
-	
-	    <input id="buttonUpdateView" type="button" style="width:100px" value="Update view" />
-	    <input id="buttonResetView" type="button" style="width:100px" value="Reset view" />
+		<div class="filterBlock">
+		    <input id="buttonUpdateView" type="button" style="width:70px" value="Apply" />
+	    	<input id="buttonResetView" type="button" style="width:70px" value="Clear" />
+	 	</div>
 	 
 	</div>
     
@@ -85,6 +82,25 @@
 <div id="viewPanel">
 
 	<div id="dataPanel">
+	
+		<!-- TODO SlickGrid Live Update -->
+		
+		<div class="filterRow">
+	
+			<p class="filterTitle">Quick Search:</p>
+	
+			<div class="filterBlock">
+				<label for="filterName">Name:</label>
+				<input type="text" size="20" id="filterName" name="filterName" />
+			</div>
+			
+			<div class="filterBlock">
+				<label for="filterTags">Tags:</label>
+				<input type="text" size="30" id="filterTags" name="filterTags" />
+	 		</div>
+	 
+		</div>
+	
 		<div id="dataGrid"></div>
 		<div id="dataLoadingPanel">
 			<div id="dataLoadingPanelInnerDiv">
@@ -100,21 +116,22 @@
 			<button id="buttonPreviewMedia" type="button" title="Preview" class="controlButton"><i class="icon-eye-open icon-2x"></i></button>
 			<button id="buttonEditMedia" type="button" title="Edit" class="controlButton"><i class="icon-pencil icon-2x"></i></button>
 			<button id="buttonAssignMedia" type="button" title="Assign" class="controlButton"><i class="icon-link icon-2x"></i></button>
+			<button id="buttonTagMedia" type="button" title="Tag" class="controlButton"><i class="icon-tag icon-2x"></i></button>
 			<button id="buttonDownloadMedia" type="button" title="Download" class="controlButton"><i class="icon-download-alt icon-2x"></i></button>
 			<button id="buttonDeleteMedia" type="button" title="Delete" class="controlButton"><i class="icon-trash icon-2x"></i></button>
 		</div>
 		
-		<h4 id="displayType"></h4>
+		<h4 id="displayName"></h4>
 		
 		<a class="inline" id="previewLink" href="#previewMediaPanel"><div id="thumbnailPreview"></div></a>
 		
 		<table id="tableDetails">
 		
 			<tr>
-				<td class="head">Name:</td>
-				<td><div id="detailName" class="detail"></div></td>
+				<td class="head">Type:</td>
+				<td><div id="detailType" class="detail"></div></td>
 			</tr>
-			<tr class="alterning">
+			<tr>
 				<td class="head">File:</td>
 				<td><div id="detailFile" class="detail"></div></td>
 			</tr>
@@ -122,7 +139,7 @@
 				<td class="head">Date:</td>
 				<td><div id="detailDate" class="detail"></div></td>
 			</tr>
-			<tr class="alterning">
+			<tr>
 				<td class="head">User:</td>
 				<td><div id="detailUser" class="detail"></div></td>
 			</tr>
@@ -130,13 +147,21 @@
 				<td class="head">Voice:</td>
 				<td><div id="detailVoice" class="detail"></div></td>
 			</tr>
-			<tr class="alterning">
+			<tr>
 				<td class="head">Tags:</td>
 				<td><div id="detailTags" class="detail"></div></td>
 			</tr>
 			<tr>
 				<td class="head">Stages:</td>
 				<td><div id="detailStages" class="detail"></div></td>
+			</tr>
+			<tr>
+				<td class="head">Streamserver:</td>
+				<td><div id="detailStreamserver" class="detail"></div></td>
+			</tr>
+			<tr>
+				<td class="head">Streamname:</td>
+				<td><div id="detailStreamname" class="detail"></div></td>
 			</tr>
 			
 		</table>
@@ -171,6 +196,54 @@
 	
 	<div id="assignMediaPanel" class="colorboxPanel">
 		<p>ASSIGN MEDIA TO STAGE</p>
+	</div>
+	
+	<div id="tagMediaPanel" class="colorboxPanel">
+		<p>TAG MEDIA</p>
+	</div>
+
+	<div id="editMediaPanel" class="colorboxPanel">
+			
+		<div id="editPanelAvatar">
+			<p>EDIT AVATAR</p>
+			<ul>
+				<li>Name</li>
+				<li>Voice</li>
+				<li>Streamserver (if medium = stream)</li>
+				<li>Streamname (if medium = stream)</li>
+				<li>Image (if medium = video)</li>
+			</ul>
+		</div>
+		
+		<div id="editPanelProp">
+			<p>EDIT PROP</p>
+			<ul>
+				<li>Name</li>
+			</ul>
+		</div>
+		
+		<div id="editPanelBackdrop">
+			<p>EDIT BACKDROP</p>
+			<ul>
+				<li>Name</li>
+			</ul>
+		</div>
+		
+		<div id="editPanelAudio">
+			<p>EDIT AUDIO</p>
+			<ul>
+				<li>Name</li>
+				<li>Audio Type</li>
+			</ul>
+		</div>
+		
+		<div id="editPanelVideo">
+			<p>EDIT VIDEO AVATAR</p>
+			<ul>
+				<li>Name</li>
+			</ul>
+		</div>
+		
 	</div>
 
 	<div id="deleteMediaPanel" class="colorboxPanel">

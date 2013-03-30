@@ -20,6 +20,7 @@ var clickHandlerDeleteMedia  = null;
 var clickHandlerPreviewMedia = null;
 var clickHandlerAssignMedia = null;
 var clickHandlerDownloadMedia = null;
+var clickHandlerTagMedia = null;
 
 var clickHandlerConfirmDelete = null;
 
@@ -191,9 +192,10 @@ function setupDataGrid() {
 			
 			// unbind button controls
 			$("#buttonEditMedia").unbind('click',clickHandlerEditMedia);
-			$("#buttonAssigneMedia").unbind('click',clickHandlerAssignMedia);
+			$("#buttonAssignMedia").unbind('click',clickHandlerAssignMedia);
 			$("#buttonDeleteMedia").unbind('click',clickHandlerDeleteMedia);
 			$("#buttonDownloadMedia").unbind('click',clickHandlerDownloadMedia);
+			$("#buttonTagMedia").unbind('click',clickHandlerTagMedia);
 			
 			if (rows.length == 1){
 	
@@ -210,8 +212,60 @@ function setupDataGrid() {
 				
 				clickHandlerEditMedia = function(e) {
 					log.debug("clickHandlerEditMedia: click: #buttonEditMedia, key="+selectedMediaData['key']);
-					// TODO
-					alert("edit");
+					
+					// hide all edit panels
+					
+					$('#editPanelAvatar').hide();
+					$('#editPanelProp').hide();
+					$('#editPanelBackdrop').hide();
+					$('#editPanelAudio').hide();
+					$('#editPanelVideo').hide();
+					
+					// show edit panel depending on type of media
+					
+					var type = selectedMediaData['type'];
+					var medium = selectedMediaData['medium'];
+					
+					switch(type) {
+						case 'avatar':
+							if (medium == 'video') {
+								$('#editPanelVideo').show();
+							} else {
+								$('#editPanelAvatar').show();
+							}
+							break;
+						case 'prop':
+							$('#editPanelProp').show();
+							break;
+						case 'backdrop':
+							$('#editPanelBackdrop').show();
+							break;
+						case 'audio':
+							$('#editPanelAudio').show();
+							break;
+					}
+					
+					// show edit panel
+					
+					$.colorbox({
+						animation:false,
+						returnFocus: false,
+						transition: 'fade',
+						scrolling: false,
+						opacity: 0.5,
+						open: true,
+						initialWidth: 700,
+						initialHeight: 450,
+						width: 700,
+						height: 450,
+						inline: true,
+						href: "#editMediaPanel",
+						
+						// hide loading indicator:
+						onOpen: function(){ $("#colorbox").css("opacity", 0); },
+				        onComplete: function(){ $("#colorbox").css("opacity", 1); }
+					});
+					
 				};
 				
 				clickHandlerDeleteMedia = function(e) {
@@ -261,24 +315,53 @@ function setupDataGrid() {
 				};
 				
 				clickHandlerAssignMedia = function(e) {
+					
 					log.debug("clickHandlerAssignMedia: click: #buttonAssignMedia, key="+selectedMediaData['key']);
 					
 					// TODO
 					
-					// show assign dialog
+					// show assign panel
 					$.colorbox({
 						animation: false,
 						returnFocus: false,
 						transition: 'fade',
 						scrolling: false,
 						opacity: 0.5,
-						open: false,
+						open: true,
 						initialWidth: 500,
 						initialHeight: 550,
 						width: 500,
 						height: 550,
 						inline: true,
 						href: "#assignMediaPanel",
+						
+						// hide loading indicator:
+						onOpen: function(){ $("#colorbox").css("opacity", 0); },
+				        onComplete: function(){ $("#colorbox").css("opacity", 1); }
+					});
+					
+				};
+				
+				clickHandlerTagMedia = function(e) {
+					
+					log.debug("clickHandlerTagMedia: click: #buttonTagMedia, key="+selectedMediaData['key']);
+					
+					// TODO
+					
+					// show tag panel
+					$.colorbox({
+						animation: false,
+						returnFocus: false,
+						transition: 'fade',
+						scrolling: false,
+						opacity: 0.5,
+						open: true,
+						initialWidth: 500,
+						initialHeight: 350,
+						width: 500,
+						height: 350,
+						inline: true,
+						href: "#tagMediaPanel",
 						
 						// hide loading indicator:
 						onOpen: function(){ $("#colorbox").css("opacity", 0); },
@@ -302,6 +385,7 @@ function setupDataGrid() {
 				$("#buttonEditMedia").bind('click', clickHandlerEditMedia);
 				$("#buttonAssignMedia").bind('click', clickHandlerAssignMedia);
 				$("#buttonDeleteMedia").bind('click', clickHandlerDeleteMedia);
+				$("#buttonTagMedia").bind('click', clickHandlerTagMedia);
 				
 				// enable/disable download button
 				var downloadFile = selectedMediaData['file'];
@@ -400,12 +484,9 @@ function showDetails(single_data) {
 		date = single_data['date'];
 	}
 	
-	// create link to file
-	var file_url = '<a href="'+file+'" target="_blank">'+file+'</a>';
-	
 	// set text in details table
-	$('#detailFile').html(file_url);
-	$('#detailName').html(name);
+	$('#detailFile').html('<a href="'+file+'" target="_blank">'+file+'</a>');
+	$('#detailType').html((medium != '' ? type+' ('+medium+')' : type));
 	$('#detailUser').html(user);
 	$('#detailTags').html(tags);
 	$('#detailVoice').html(voice);
@@ -607,19 +688,9 @@ function showDetails(single_data) {
 		
 	}
 	
-	// display type in headline
+	// display name in headline
 	
-	var headline = '';
-	if(single_data != null) {
-		headline = type;
-		if (medium != '') {
-			headline += ' ('+medium+')';
-		}
-	}
-	
-	// TODO also add to preview panel
-	
-	$('#displayType').text(headline);
+	$('#displayName').text(name);
 	
 	// show or hide panels
 	

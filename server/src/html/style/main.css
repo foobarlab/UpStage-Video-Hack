@@ -1012,6 +1012,16 @@ a.IconButton
 	margin-bottom:5px;
 }
 
+.filterTitle {
+	float:left;
+	font-weight:bold;
+}
+
+.filterBlock {
+	float:left;
+	margin: 7px 0 7px 10px;
+}
+
 #viewPanel {
 	overflow:hidden;
 	display:block;
@@ -1025,11 +1035,11 @@ a.IconButton
 
 #dataLoadingPanel {
 	position:relative;
-	top:-475px;
-	margin-bottom:-530px;
+	top:-550px;
+	margin-bottom:-580px;
 	left:-2px;
 	width:100%;
-	height:500px;
+	height:555px;
 	text-align:center;
 	background-color:white;
 	opacity: 0.7;
@@ -1060,18 +1070,13 @@ a.IconButton
 
 #detailsPanel {
 	float:left;
-	margin-left:5%;
+	margin-left:3%;
 	text-align:center;
 }
 
-#displayType {
-	text-transform:capitalize;
-}
-
 .buttonRow {
-	width:300px;
+	width:350px;
 	display:block;
-	/*text-align:center;*/
 	margin:5px 0;
 	height:30px;
 }
@@ -1117,7 +1122,7 @@ a#previewLink:hover {
 
 .controlButton {
 	display:inline-block;
-	margin:0 5px;
+	margin:0 2px;
 	padding:5px;
 	background-color:#eee;
 	color:#999;
@@ -1146,16 +1151,20 @@ table#tableDetails {
 	margin-top:15px;
 }
 
-table#tableDetails tr.alterning {
+#tableDetails tr:nth-child(even) {
+	background-color:#fff;
+}
+
+#tableDetails tr:nth-child(odd) {
 	background-color:#efefef;
 }
 
-table#tableDetails td {
+#tableDetails td {
 	padding:3px;
 	text-align:left;
 }
 
-table#tableDetails td.head {
+#tableDetails td.head {
 	font-weight:bold;
 	text-align:right;
 	width:60px;
