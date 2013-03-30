@@ -272,8 +272,7 @@ class AdminBase(Template):
                 stage = self.collection.stages.get(k)
                 num_players += stage.num_players()
                 num_audience += stage.num_audience()
-            str = '%d#%d' %(num_players,num_audience)
-            return str
+            return '%d#%d' %(num_players,num_audience)
         except:
             return ''
 
