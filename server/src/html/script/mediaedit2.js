@@ -18,6 +18,7 @@ var data = [];
 var clickHandlerEditMedia = null;
 var clickHandlerDeleteMedia  = null;
 var clickHandlerPreviewMedia = null;
+var clickHandlerAssignMedia = null;
 
 var clickHandlerConfirmDelete = null;
 
@@ -189,6 +190,7 @@ function setupDataGrid() {
 			
 			// unbind button controls
 			$("#buttonEditMedia").unbind('click',clickHandlerEditMedia);
+			$("#buttonAssigneMedia").unbind('click',clickHandlerAssignMedia);
 			$("#buttonDeleteMedia").unbind('click',clickHandlerDeleteMedia);
 			
 			if (rows.length == 1){
@@ -254,9 +256,33 @@ function setupDataGrid() {
 					
 				}
 				
+				clickHandlerAssignMedia = function(e) {
+					log.debug("clickHandlerAssignMedia: click: #buttonAssignMedia, key="+selectedMediaData['key']);
+					
+					// TODO
+					
+					// show assign dialog
+					$.colorbox({
+						transition: 'fade',
+						scrolling: false,
+						opacity: 0.5,
+						open: true,
+						initialWidth: 0,
+						initialHeight: 0,
+						inline: true,
+						href: "#assignMediaPanel",
+						
+						// hide loading indicator:
+						onOpen: function(){ $("#colorbox").css("opacity", 0); },
+				        onComplete: function(){ $("#colorbox").css("opacity", 1); }
+					});
+					
+				}
+				
 				// bind button controls to click event
 				
 				$("#buttonEditMedia").bind('click', clickHandlerEditMedia);
+				$("#buttonAssignMedia").bind('click', clickHandlerAssignMedia);
 				$("#buttonDeleteMedia").bind('click', clickHandlerDeleteMedia);
 				
 			} else if (rows.length >1) {
@@ -506,7 +532,7 @@ function showDetails(single_data) {
 					initialWidth: 290,
 					initialHeight: 190,
 					inline:true,
-					href: "#previewPanel",
+					href: "#previewMediaPanel",
 					animation: false,
 					returnFocus: false,
 					width: previewWindowWidth,
