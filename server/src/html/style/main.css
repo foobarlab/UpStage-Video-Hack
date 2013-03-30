@@ -1059,21 +1059,19 @@ a.IconButton
 }
 
 #detailsPanel {
-	width:200px;
 	float:left;
-	margin-left:10px;
+	margin-left:5%;
+	text-align:center;
 }
 
 #displayType {
 	text-transform:capitalize;
-	text-align:center;
-	width:280px;
 }
 
 .buttonRow {
 	width:300px;
 	display:block;
-	text-align:center;
+	/*text-align:center;*/
 	margin:5px 0;
 	height:30px;
 }
@@ -1094,8 +1092,10 @@ a#previewLink:hover {
 	display:block;
 	width:300px;
 	height:200px;
-	text-align:center;
 	z-index:1;
+	padding:5px;
+	border:2px solid #999;
+	border-radius:5px;
 }
 
 #thumbnailPreview img {
@@ -1104,9 +1104,28 @@ a#previewLink:hover {
 	margin:5px;
 }
 
+#controlButtons {
+	height:55px;
+	display:block;
+}
+
+.controlButton {
+	display:inline-block;
+	margin:0 5px;
+	padding:5px;
+	background-color:#eee;
+	color:#999;
+	border:2px solid #999;
+	border-radius:5px;
+}
+
+.controlButton:hover {
+	color:#333;
+	border:2px solid #333;
+}
+
 table#tableDetails {
-	width:300px;
-	text-align:center;
+	width:100%;
 	margin-top:15px;
 }
 
@@ -1134,7 +1153,7 @@ table#tableDetails td.head {
 .dialogContent {
 	display:block;
 	width:100%;
-	margin-bottom:10px;
+	margin:10px 0 15px 0;
 }
 
 .dialogButtonRow {

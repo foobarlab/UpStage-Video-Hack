@@ -190,7 +190,7 @@ function setupDataGrid() {
 			log.debug("selected: rows="+rows);
 			if(typeof rows === 'undefined') return;
 			
-			// unbind buttons
+			// unbind button controls
 			$("#buttonEditMedia").unbind('click',clickHandlerEditMedia);
 			$("#buttonDeleteMedia").unbind('click',clickHandlerDeleteMedia);
 			
@@ -257,7 +257,7 @@ function setupDataGrid() {
 					
 				}
 				
-				// bind buttons to click event
+				// bind button controls to click event
 				
 				$("#buttonEditMedia").bind('click', clickHandlerEditMedia);
 				$("#buttonDeleteMedia").bind('click', clickHandlerDeleteMedia);
@@ -530,6 +530,8 @@ function showDetails(single_data) {
 				// TODO add onComplete handler to add all preview data
 			
 			});
+		
+			// TODO: add button control click handler for preview button?
 		}
 		
 	} else {
@@ -646,7 +648,7 @@ function showDetails(single_data) {
 	if(single_data != null) {
 		
 		// narrow datagrid
-		$('#dataPanel').css('width','700px');
+		$('#dataPanel').css('width','60%');
 		
 		// show details panel
 		$('#detailsPanel').show();

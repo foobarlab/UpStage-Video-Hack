@@ -95,29 +95,18 @@
 	</div>
 	
 	<div id="detailsPanel">
-	
-		<!-- TODO testing colorbox inline HTML -->
-		<!-- 
-		<p><a class='inline' href="#inline_content">Inline HTML</a></p>
-		-->
+		
+		<div id="controlButtons" class="buttonRow">
+			<button id="buttonPreviewMedia" type="button" title="Preview" class="controlButton"><i class="icon-eye-open icon-2x"></i></button>
+			<button id="buttonEditMedia" type="button" title="Edit" class="controlButton"><i class="icon-pencil icon-2x"></i></button>
+			<button id="buttonAssignMedia" type="button" title="Assign" class="controlButton"><i class="icon-link icon-2x"></i></button>
+			<button id="buttonDownloadMedia" type="button" title="Download" class="controlButton"><i class="icon-download-alt icon-2x"></i></button>
+			<button id="buttonDeleteMedia" type="button" title="Delete" class="controlButton"><i class="icon-trash icon-2x"></i></button>
+		</div>
 		
 		<h4 id="displayType"></h4>
 		
 		<a class="inline" id="previewLink" href="#previewPanel"><div id="thumbnailPreview"></div></a>
-		
-		<div class="buttonRow">
-			<input id="buttonEditMedia" type="button" style="width:100px" value="Edit" />
-			<input id="buttonDeleteMedia" type="button" style="width:100px" value="Delete" />
-		</div>
-		
-		<!-- TODO do this in the preview window? -->
-		<!-- 
-		<div class="buttonRow">
-			<input id="buttonTestVoice" type="button" style="width:100px" value="Test Voice" />
-			<input id="buttonTestStream" type="button" style="width:100px" value="Test Stream" />
-			<input id="buttonTestSound" type="button" style="width:100px" value="Test Sound" />
-		</div>
-		-->
 		
 		<table id="tableDetails">
 		
@@ -156,7 +145,7 @@
 
 </div>
 
-<!-- TODO colorbox inline divs -->
+<!-- colorbox inline divs, hidden by default -->
 
 <div style="display:none">
 
@@ -199,20 +188,6 @@
 		</script>
 		
 	</div>
-	
-	<!-- 
-	<div id="inline_content" style="padding:10px; background:#fff;">
-	
-		<p><strong>This content comes from a hidden element on this page.</strong></p>
-		<p>The inline option preserves bound JavaScript events and changes, and it puts the content back where it came from when it is closed.</p>
-		<p><a id="click" href="#" style="padding:5px; background:#ccc;">Click me, it will be preserved!</a></p>
-		
-		<p><strong>If you try to open a new ColorBox while it is already open, it will update itself with the new content.</strong></p>
-		<p>Updating Content Example:<br />
-		<a class="ajax" href="../content/ajax.html">Click here to load new content</a></p>
-	
-	</div>
-	-->
 	
 </div>
 
