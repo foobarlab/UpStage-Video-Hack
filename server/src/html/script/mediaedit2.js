@@ -17,12 +17,14 @@ var data = [];
 
 var clickHandlerEditMedia = null;
 var clickHandlerDeleteMedia  = null;
+var clickHandlerPreviewMedia = null;
 
 var clickHandlerConfirmDelete = null;
 
-var clickHandlerTestVoice = null;
-var clickHandlerTestStream = null;
-var clickHandlerTestSound = null;
+// TODO remove
+//var clickHandlerTestVoice = null;
+//var clickHandlerTestStream = null;
+//var clickHandlerTestSound = null;
 
 var previewType = null;
 var previewThumbnailType = null;
@@ -338,7 +340,7 @@ function showDetails(single_data) {
 		date = single_data['date'];
 	}
 	
-	// set text
+	// set text in details table
 	$('#detailFile').html(file);
 	$('#detailName').html(name);
 	$('#detailUser').html(user);
@@ -470,32 +472,13 @@ function showDetails(single_data) {
 			// default: missing icon
 			default:
 				thumbnail_html = '<img src="/image/icon/icon-question-sign.png" alt="preview not available" />';
+				
+				// FIXME replace with icon image
+				
 				previewThumbnailType = null;
 		}
 		
 		$('#thumbnailPreview').html(thumbnail_html);
-		
-		/*
-		// register thumbnail preview window handler for images and swf
-		if(previewThumbnailType != null) {
-			$("#previewLink").addClass('inline');
-			$("#previewLink.inline").colorbox({
-				transition: 'fade',
-				scrolling: false,
-				opacity: 0.5,
-				open: false,
-				initialWidth: 290,
-				initialHeight: 190,
-				inline:true,
-				//animation: false,
-				width: 750,
-				height: 550,
-				// hide loading indicator:
-				onOpen: function(){ $("#colorbox").css("opacity", 0); },
-		        onComplete: function(){ $("#colorbox").css("opacity", 1); }
-			});
-		}
-		*/
 		
 		// set preview window parameters depending on media
 		var previewWindowWidth = 750;
@@ -514,30 +497,47 @@ function showDetails(single_data) {
 				break;
 		}
 		
-		if(previewType != null) {
-			$("#previewLink").addClass('inline');
-			$("#previewLink.inline").colorbox({
-				transition: 'fade',
-				scrolling: false,
-				opacity: 0.5,
-				open: false,
-				initialWidth: 290,
-				initialHeight: 190,
-				inline:true,
-				animation: false,
-				returnFocus: false,
-				width: previewWindowWidth,
-				height: previewWindowHeight,
-				// hide loading indicator:
-				onOpen: function(){ $("#colorbox").css("opacity", 0); },
-		        onComplete: function(){ $("#colorbox").css("opacity", 1); }
-			
-				// TODO add onClose handler to remove all preview data
-				// TODO add onComplete handler to add all preview data
-			
-			});
+		// remove click handlers for preview
+		$("#buttonPreviewMedia").unbind('click',clickHandlerPreviewMedia);
 		
-			// TODO: add button control click handler for preview button?
+		if(previewType != null) {
+			
+			// define colorbox
+			var previewColorbox = {
+					transition: 'fade',
+					scrolling: false,
+					opacity: 0.5,
+					open: false,
+					initialWidth: 290,
+					initialHeight: 190,
+					inline:true,
+					href: "#previewPanel",
+					animation: false,
+					returnFocus: false,
+					width: previewWindowWidth,
+					height: previewWindowHeight,
+					// hide loading indicator:
+					onOpen: function(){ $("#colorbox").css("opacity", 0); },
+			        onComplete: function(){ $("#colorbox").css("opacity", 1); }
+				
+					// TODO add onClose handler to remove all preview data
+					// TODO add onComplete handler to add all preview data
+			};
+			
+			// set handler for clicking on thumbnail
+			$("#previewLink").addClass('inline');
+			$("#previewLink.inline").colorbox(previewColorbox);
+			
+			// set handler for clicking on preview (button)
+			clickHandlerPreviewMedia = function(e) {
+				log.debug("clickHandlerPreviewMedia: click: #buttonPreviewMedia, key="+selectedMediaData['key']);
+				
+				// open confirmation dialog
+				$.colorbox(previewColorbox);
+			}
+		
+			// bind click handler to preview button
+			$("#buttonPreviewMedia").bind('click',clickHandlerPreviewMedia);
 		}
 		
 	} else {
