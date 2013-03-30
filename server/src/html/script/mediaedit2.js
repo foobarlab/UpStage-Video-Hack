@@ -21,11 +21,6 @@ var clickHandlerPreviewMedia = null;
 
 var clickHandlerConfirmDelete = null;
 
-// TODO remove
-//var clickHandlerTestVoice = null;
-//var clickHandlerTestStream = null;
-//var clickHandlerTestSound = null;
-
 var previewType = null;
 var previewThumbnailType = null;
 
@@ -545,97 +540,6 @@ function showDetails(single_data) {
 		previewThumbnailType = null;	// reset thumbnail preview type
 		
 	}
-	
-	
-	
-	
-	// TODO: test buttons will be on preview window
-	
-	/*
-	
-	// setup test buttons
-	
-	// unbind event handlers
-	$("#buttonTestVoice").unbind('click',clickHandlerTestVoice);
-	/$("#buttonTestStream").unbind('click',clickHandlerTestStream);
-	$("#buttonTestSound").unbind('click',clickHandlerTestSound);
-	
-	// hide buttons
-	$('#buttonTestVoice').hide();
-	$('#buttonTestStream').hide();
-	$('#buttonTestSound').hide();
-	
-	if(single_data != null) {
-		
-		// show buttons depending on type
-		switch(type) {
-		
-			case 'avatar':
-				$('#buttonTestVoice').show();
-				
-				// create click handler
-				clickHandlerTestVoice = function(e) {
-					log.debug("clickHandlerTestVoice: click: #buttonTestVoice, selectedRow="+selectedRow);
-					var key = data[selectedRow]['key'];
-					log.debug("clickHandlerTestVoice: about to do a voice test for key="+key);
-					
-					// TODO run test
-					
-					alert("TestVoice");
-				}
-				
-				// bind button to click event
-				$("#buttonTestVoice").bind('click', clickHandlerTestVoice);
-			
-				break;
-			
-			case 'audio':
-				$('#buttonTestSound').show();
-				
-				// create click handler
-				clickHandlerTestSound = function(e) {
-					log.debug("clickHandlerTestSound: click: #buttonTestSound, selectedRow="+selectedRow);
-					var key = data[selectedRow]['key'];
-					log.debug("clickHandlerTestSound: about to do a sound test for key="+key);
-					
-					// TODO run test
-					
-					alert("TestSound");
-				}
-				
-				// bind button to click event
-				$("#buttonTestSound").bind('click', clickHandlerTestSound);
-				
-				break;
-		
-		}
-		
-		// show buttons depending on medium
-		switch(medium) {
-			
-			case 'stream':
-				$('#buttonTestStream').show();
-				
-				// create click handler
-				clickHandlerTestStream = function(e) {
-					log.debug("clickHandlerTestStream: click: #buttonTestStream, selectedRow="+selectedRow);
-					var key = data[selectedRow]['key'];
-					log.debug("clickHandlerTestStream: about to do a stream test for key="+key);
-					
-					// TODO run test
-					
-					alert("TestStream");
-				}
-				
-				// bind button to click event
-				$("#buttonTestStream").bind('click', clickHandlerTestStream);
-				
-				break;
-		}
-		
-	}
-	
-	*/
 	
 	// display type in headline
 	
