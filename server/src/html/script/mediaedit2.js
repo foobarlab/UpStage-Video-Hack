@@ -19,6 +19,7 @@ var clickHandlerEditMedia = null;
 var clickHandlerDeleteMedia  = null;
 var clickHandlerPreviewMedia = null;
 var clickHandlerAssignMedia = null;
+var clickHandlerDownloadMedia = null;
 
 var clickHandlerConfirmDelete = null;
 
@@ -192,6 +193,7 @@ function setupDataGrid() {
 			$("#buttonEditMedia").unbind('click',clickHandlerEditMedia);
 			$("#buttonAssigneMedia").unbind('click',clickHandlerAssignMedia);
 			$("#buttonDeleteMedia").unbind('click',clickHandlerDeleteMedia);
+			$("#buttonDownloadMedia").unbind('click',clickHandlerDownloadMedia);
 			
 			if (rows.length == 1){
 	
@@ -210,7 +212,7 @@ function setupDataGrid() {
 					log.debug("clickHandlerEditMedia: click: #buttonEditMedia, key="+selectedMediaData['key']);
 					// TODO
 					alert("edit");
-				}
+				};
 				
 				clickHandlerDeleteMedia = function(e) {
 					log.debug("clickHandlerDeleteMedia: click: #buttonDeleteMedia, key="+selectedMediaData['key']);
@@ -240,6 +242,8 @@ function setupDataGrid() {
 					
 					// open confirmation dialog
 					$.colorbox({
+						animation:false,
+						returnFocus: false,
 						transition: 'fade',
 						scrolling: false,
 						opacity: 0.5,
@@ -254,7 +258,7 @@ function setupDataGrid() {
 				        onComplete: function(){ $("#colorbox").css("opacity", 1); }
 					});
 					
-				}
+				};
 				
 				clickHandlerAssignMedia = function(e) {
 					log.debug("clickHandlerAssignMedia: click: #buttonAssignMedia, key="+selectedMediaData['key']);
@@ -263,12 +267,16 @@ function setupDataGrid() {
 					
 					// show assign dialog
 					$.colorbox({
+						animation: false,
+						returnFocus: false,
 						transition: 'fade',
 						scrolling: false,
 						opacity: 0.5,
-						open: true,
-						initialWidth: 0,
-						initialHeight: 0,
+						open: false,
+						initialWidth: 500,
+						initialHeight: 550,
+						width: 500,
+						height: 550,
 						inline: true,
 						href: "#assignMediaPanel",
 						
@@ -277,13 +285,44 @@ function setupDataGrid() {
 				        onComplete: function(){ $("#colorbox").css("opacity", 1); }
 					});
 					
-				}
+				};
+				
+				clickHandlerDownloadMedia = function(e) {
+					log.debug("clickHandlerDownloadMedia: click: #buttonDownloadMedia, key="+selectedMediaData['key']);
+					
+					var downloadFile = selectedMediaData['file'];
+					if(downloadFile != '') {
+						var downloadUrl = downloadFile+"?download=true";
+						$("#downloadIFrame").attr("src",downloadUrl);
+					}
+				};
 				
 				// bind button controls to click event
 				
 				$("#buttonEditMedia").bind('click', clickHandlerEditMedia);
 				$("#buttonAssignMedia").bind('click', clickHandlerAssignMedia);
 				$("#buttonDeleteMedia").bind('click', clickHandlerDeleteMedia);
+				
+				// enable/disable download button
+				var downloadFile = selectedMediaData['file'];
+				
+				// HACK: images do not work therefore disable download too
+				var extension = getFileExtension(downloadFile);
+				switch(extension) {
+					case 'jpg':
+					case 'jpeg':
+					case 'gif':
+					case 'png':
+						downloadFile = '';
+				}
+				
+				if(downloadFile != '') {
+					$("#buttonDownloadMedia").bind('click', clickHandlerDownloadMedia);
+					$("#buttonDownloadMedia").removeAttr("disabled");
+				} else {
+					clickHandlerDownloadMedia = null;
+					$("#buttonDownloadMedia").attr("disabled", "disabled");
+				}
 				
 			} else if (rows.length >1) {
 				
@@ -495,10 +534,8 @@ function showDetails(single_data) {
 		
 			// default: missing icon
 			default:
-				thumbnail_html = '<img src="/image/icon/icon-question-sign.png" alt="preview not available" />';
-				
-				// FIXME replace with icon image
-				
+				//thumbnail_html = '<img src="/image/icon/icon-warning-sign.png" alt="preview not available" />';
+				thumbnail_html = '<i class="icon-warning-sign"></i>';
 				previewThumbnailType = null;
 		}
 		
