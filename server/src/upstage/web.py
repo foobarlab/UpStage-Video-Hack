@@ -14,6 +14,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
+
 """
 Author: 
 Modified by: Phillip Quinlan, Endre Bernhardt, Alan Crow
@@ -44,6 +45,12 @@ Modified by: Gavin          5/10/2012   - Imported AdminError class from pages.p
 import os, random, datetime, tempfile
 from urllib import urlencode
 
+# TODO for compressing
+#from gzip import GzipFile
+
+# for http headers
+from time import time, strftime, mktime
+
 #upstage
 from upstage import config, util
 from upstage.util import save_tempfile, validSizes, getFileSizes
@@ -70,27 +77,133 @@ from twisted.cred.portal import IRealm, Portal
 from twisted.cred.credentials import IAnonymous, IUsernamePassword
 from twisted.cred.checkers import AllowAnonymousAccess
 
+# TODO needed for gzip compression
+# parseAcceptEncoding() method taken from: http://bazaar.launchpad.net/~divmod-dev/divmod.org/trunk/view/head:/Nevow/nevow/compression.py 
+#def parseAcceptEncoding(value):
+#    """
+#    Parse the value of an Accept-Encoding: request header.
+#
+#    A value of 0 indicates that the content coding is unacceptable; any
+#    non-zero value indicates the coding is acceptable, but the acceptable
+#    coding with the highest value is preferred.
+#    """
+#    encodings = {}
+#    if value.strip():
+#        for pair in value.split(','):
+#            pair = pair.strip()
+#            if ';' in pair:
+#                params = pair.split(';')
+#                encoding = params[0]
+#                params = dict(param.split('=') for param in params[1:])
+#                priority = float(params.get('q', 1.0))
+#            else:
+#                encoding = pair
+#                priority = 1.0
+#            encodings[encoding] = priority
+#
+#    if 'identity' not in encodings and '*' not in encodings:
+#        encodings['identity'] = 0.0001
+#
+#    return encodings
+
+
 
 class NoCacheFile(static.File):
     """A file that tries not to be cached."""
     def render(self, request):
-        """Set anti-cache headers before returning contents.""" 
-        no_cache(request)	
+        """Set anti-cache headers before returning contents."""
+        no_cache(request)
         return static.File.render(self, request)
 
-# FIXME rename function to clarify what it actually does
-def website(data):
+# handle cached static.File: http://twistedmatrix.com/documents/8.1.0/api/twisted.web.static.File.html 
+class CachedFile(static.File):
+    """Handling of static files: add caching headers, process additional url parameters."""
     
+    def openForReading(self, *args, **kwargs):
+        return static.File.openForReading(self, *args, **kwargs)
+    
+    def render(self,request):
+        log.msg("CachedFile: Handling static file request %s" % request)
+        
+        if not self.isdir():
+            download = request.args.get('download', [None])[0]
+            if(download):
+                filename = os.path.basename(self.path)  
+                request.setHeader('Content-Disposition', ('attachment; filename=%s' % filename))
+                request.setHeader('Content-Transfer-Encoding','binary')
+                request.setHeader('Content-Type','application/octet-stream')
+                
+                # disable caching
+                request.setHeader('Expires','0')
+                request.setHeader('Cache-Control','no-cache, no-store, no-cache, must-revalidate, max-age=0')
+                request.setHeader('Cache-Control','post-check=0, pre-check=0')
+                request.setHeader('Cache-Control','private');
+                request.setHeader('Pragma','private')
+                request.setLastModified(time())   # set Last-Modified to current time
+                
+                log.msg("CachedFile: sending file '%s' as download attachment" % filename)
+            else:
+                cache_duration = 60 * 60 * 24 * 7    # cache for at least one week
+                expire_time = datetime.timedelta(seconds=cache_duration)
+                request.setHeader('Pragma','cache')
+                request.setHeader('Cache-Control','public, max-age=%s' % cache_duration)
+                request.setHeader('Expires',(datetime.datetime.now() + expire_time).strftime("%a, %d %b %Y %H:%M:%S GMT"))  # TODO instead of now() it should be the time when the request was made
+                last_modified = self.getModificationTime()
+                log.msg("CachedFile: file was last modified @ %s" % last_modified)
+                request.setLastModified(last_modified)
+            
+            # TODO not working yet
+#            # send gzip compressed if client sends gzip Accept-Encoding header
+#            value = request.getHeader('accept-encoding')
+#            if value is not None:
+#                encodings = parseAcceptEncoding(value)
+#                if(encodings.get('gzip', 0.0) > 0.0):
+#                    log.msg("CachedFile: client does accept GZIP compression")
+#                    if request.method == 'HEAD':
+#                        return ''
+#                    #if self.path.exists():
+#                    if self.path:
+#                        log.msg("CachedFile: path to file exists: %s" % self.path)
+#                        compressedFile = tempfile.NamedTemporaryFile(mode='wb', bufsize=-1, suffix='.gz', prefix='cachefile_', dir=None, delete=False)
+#                        log.msg("CachedFile: created temporary file %s" % compressedFile.name)
+#                        uncompressedFile = self.open(mode='rb')
+#                        gzipFile = GzipFile(fileobj=compressedFile, mode='wb', compresslevel=6)
+#                        gzipFile.writelines(uncompressedFile)
+#                        gzipFile.close()
+#                        uncompressedFile.close()
+#                        compressedFile.close()
+#                        log.msg("CachedFile: uncompressed file = %s" % uncompressedFile.name)
+#                        log.msg("CachedFile: compressed file = %s" % compressedFile.name)
+#                        ##request.setHeader('content-length', os.path.getsize(compressedFile.name))
+#                        request.setHeader('content-encoding', 'gzip')
+#                        log.msg("CachedFile: uncompressed file size is %s bytes" % os.path.getsize(uncompressedFile.name))
+#                        log.msg("CachedFile: compressed file size is %s bytes" % os.path.getsize(compressedFile.name))
+#                        self.path = compressedFile.name
+#                    
+#                else:
+#                    log.msg("CachedFile: client does NOT accept GZIP compression")
+#            else:
+#                log.msg("CachedFile: client does NOT accept compression")
+        
+        return static.File.render(self,request)
+
+def _getWebsiteTree(data):
     """Set up and return the web tree"""
-    video = VideoDirectory(config.WEBCAM_DIR)
-    media = static.File(config.MEDIA_DIR)
-    stills = static.File(config.WEBCAM_DIR)
+    
+    #media = static.File(config.MEDIA_DIR)
+    media = CachedFile(config.MEDIA_DIR)           # cached
+    
+    stills = static.File(config.WEBCAM_DIR)        # not cached
+    video = VideoDirectory(config.WEBCAM_DIR)      # not cached
     media.putChild(config.WEBCAM_SUBURL, video)
     media.putChild(config.WEBCAM_STILL_SUBURL, stills)
-    docroot = static.File(config.HTDOCS)
-
+    
+    #docroot = static.File(config.HTDOCS)
+    docroot = CachedFile(config.HTDOCS)             # cached
+    #docroot.putChild(config.MEDIA_SUBURL, media)
     docroot.putChild(config.MEDIA_SUBURL, media)
-    docroot.putChild(config.SWF_SUBURL, NoCacheFile(config.SWF_DIR))    
+    #docroot.putChild(config.SWF_SUBURL, NoCacheFile(config.SWF_DIR))
+    docroot.putChild(config.SWF_SUBURL, CachedFile(config.SWF_DIR))     # cached  
     docroot.putChild('stages', ThingsList(data.players.audience, childClass=StagePage, collection=data.stages))
     docroot.putChild('admin', adminWrapper(data))
     # Shaun Narayan (02/01/10) - Added home and signup pages to docroot.

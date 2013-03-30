@@ -22,7 +22,10 @@ when it is done, the speech is presented over the web"""
 # if that file is named, say, md5(<voice> + salt? + <words>)
 # then later uses of the phrase can save cpu/network.
 
-import os
+import os, datetime
+
+# for http headers
+from time import strftime, mktime
 
 from upstage import config
 from upstage.misc import id_generator
@@ -124,7 +127,7 @@ class SpeechDirectory(Resource):
         
         reactor.callLater(config.MEDIA_DESTRUCT_TIME,
                           self.infanticide, speechID)
-
+        
         return config.SPEECH_URL + speechID
 
 
@@ -143,7 +146,7 @@ class SpeechDirectory(Resource):
         """
         log.msg('asking for speech file %s' % path)
         try:
-            the_path = self.children[path]
+            #the_path = self.children[path]
             log.msg('self.children[path] = %s' %(self.children[path]))
             return self.children[path]
         except KeyError:
@@ -204,6 +207,19 @@ class _SpeechFile(Resource):
 
         request.setHeader('Content-length', len(self.content))
         request.setHeader('Content-type', self.content_type)
+        
+        # set caching headers START
+        # TODO needs testing
+        cache_duration = 60 * 60 * 24 * 7    # cache for at least one week
+        expire_time = datetime.timedelta(seconds=cache_duration)
+        request.setHeader('Pragma','cache')
+        request.setHeader('Cache-Control','public, max-age=%s' % cache_duration)
+        request.setHeader('Expires',(datetime.datetime.now() + expire_time).strftime("%a, %d %b %Y %H:%M:%S GMT"))  # TODO instead of now() it should be the time when the request was made
+        last_modified = f.getModificationTime()
+        log.msg("speech file was last modified @ %s" % last_modified)
+        request.setLastModified(last_modified)
+        # set caching headers END
+        
         request.write(self.content)
         request.finish()
         return result #for next in line

@@ -35,7 +35,7 @@ from random import choice
 import config
 import re
 import os, sys
-from time import time, strftime
+from time import time, strftime, gmtime
 
 import optparse
 import socket
@@ -45,14 +45,17 @@ import exceptions
 from upstage.util import id_generator, new_filename
 
 from twisted.web import microdom
-from twisted.python import log
+from twisted.python import log 
 
 def no_cache(request):
     """Fix html request for no caching. """
-    #XXX a bit dodgy.  It might be best to step out and hope HTTP does the right thing.
-    request.setHeader('Cache-Control','no-cache')
-    request.setHeader('Pragma','no-cache')
-    request.setHeader('Expires',"Thu, 01 Jan 1970 00:00:00 GMT") 
+    request.setHeader('Expires','0')
+    request.setHeader('Cache-Control','no-cache, no-store, no-cache, must-revalidate, max-age=0')
+    request.setHeader('Cache-Control','post-check=0, pre-check=0')
+    request.setHeader('Cache-Control','private');
+    request.setHeader('Pragma','private')
+    request.setLastModified(time())   # set Last-Modified to current time
+    log.msg("set not cache headers: %s" % request)
 
 def save_xml(node, xmlfile, pretty=True):
     """Save a node to xml, prettifying. microdom prettifier is

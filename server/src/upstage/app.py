@@ -29,7 +29,7 @@ import os, sys
 from upstage import config
 
 from upstage.server import SocketFactory
-from upstage.web import website
+from upstage.web import _getWebsiteTree
 from upstage.player import ClientDict, PlayerDict
 from upstage.stage import StageDict
 from upstage.globalmedia import MediaDict
@@ -67,7 +67,7 @@ class UpstageData:
 def do_it():
 
     # set up web server.
-    docroot = website(UpstageData)
+    docroot = _getWebsiteTree(UpstageData)
     # set up flash socket server.
     factory = SocketFactory(UpstageData)
     
