@@ -1127,7 +1127,18 @@ a#previewLink:hover {
 
 .controlButton:hover {
 	color:#333;
-	border:2px solid #333;
+	border-color:#333;
+}
+
+.controlButton[disabled] {
+	color:#eee;
+	background-color:#fff;
+	border-color:#eee;	
+}
+
+.controlButton[disabled]:hover {
+	color:#eee;
+	border-color:#eee;
 }
 
 table#tableDetails {
