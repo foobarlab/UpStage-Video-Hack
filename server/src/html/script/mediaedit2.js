@@ -1,9 +1,11 @@
 /* media edit2 page -- uses jquery */
 
-const MEDIA_TYPE_IMAGE = 'image';
-const MEDIA_TYPE_FLASH = 'flash';
-const MEDIA_TYPE_AUDIO = 'audio';
-const MEDIA_TYPE_STREAM = 'stream';
+// constants
+
+var MEDIA_TYPE_IMAGE = 'image';
+var MEDIA_TYPE_FLASH = 'flash';
+var MEDIA_TYPE_AUDIO = 'audio';
+var MEDIA_TYPE_STREAM = 'stream';
 
 //global variables
 
@@ -12,8 +14,9 @@ var user;	// current user
 
 var selectedMediaData = null;	// currently selected media dataset
 
-var datagrid;
 var data = [];
+var dataGrid;
+var dataView;
 
 var clickHandlerEditMedia = null;
 var clickHandlerDeleteMedia  = null;
@@ -181,12 +184,16 @@ function setupDataGrid() {
 
 	$(function () {
 		
-		datagrid = new Slick.Grid("#dataGrid", data, columns, options);
-		datagrid.setSelectionModel(new Slick.RowSelectionModel());
+		// TODO
+		//dataView = new Slick.Data.DataView({ inlineFilters: true });
+		//dataGrid = new Slick.Grid("#dataGrid", dataView, columns, options);
+		
+		dataGrid = new Slick.Grid("#dataGrid", data, columns, options);
+		dataGrid.setSelectionModel(new Slick.RowSelectionModel());
 				
 		// add selection event listener
-		datagrid.onSelectedRowsChanged.subscribe(function(e,args) {
-			var rows = datagrid.getSelectedRows();
+		dataGrid.onSelectedRowsChanged.subscribe(function(e,args) {
+			var rows = dataGrid.getSelectedRows();
 			log.debug("selected: rows="+rows);
 			if(typeof rows === 'undefined') return;
 			
@@ -413,20 +420,24 @@ function setupDataGrid() {
 				// multiple rows selected
 				
 				showDetails(null);
-				datagrid.getSelectionModel().setSelectedRanges([]);	// deselect any selections
-				datagrid.invalidate();
+				dataGrid.getSelectionModel().setSelectedRanges([]);	// deselect any selections
+				dataGrid.invalidate();
+				
+				e.preventDefault();
 				
 				// TODO allow deletion of multiple selected media?
 				
 			} else {
 				
 				// no row selected
-				
 				showDetails(null);
 			}
 		});
 		
 	});
+	
+	// TODO let the dataGrid be resizeable
+	//$("#gridContainer").resizable();
 	
 }
 
@@ -439,9 +450,9 @@ function updateData(update_data) {
 	} else {
 		data = [];
 	}
-	datagrid.setData(data,true);
-	datagrid.getSelectionModel().setSelectedRanges([]);	// deselect any selections
-	datagrid.invalidate();
+	dataGrid.setData(data,true);
+	dataGrid.getSelectionModel().setSelectedRanges([]);	// deselect any selections
+	dataGrid.invalidate();
 }
 
 function showDetails(single_data) {
