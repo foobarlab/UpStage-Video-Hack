@@ -215,9 +215,12 @@ class _SpeechFile(Resource):
         request.setHeader('Pragma','cache')
         request.setHeader('Cache-Control','public, max-age=%s' % cache_duration)
         request.setHeader('Expires',(datetime.datetime.now() + expire_time).strftime("%a, %d %b %Y %H:%M:%S GMT"))  # TODO instead of now() it should be the time when the request was made
-        last_modified = f.getModificationTime()
-        log.msg("speech file was last modified @ %s" % last_modified)
-        request.setLastModified(last_modified)
+        
+        # do net set last modified header:
+        #last_modified = f.getModificationTime()
+        #log.msg("speech file was last modified @ %s" % last_modified)
+        #request.setLastModified(last_modified)
+        
         # set caching headers END
         
         request.write(self.content)
