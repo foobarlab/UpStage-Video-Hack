@@ -575,6 +575,8 @@ function showDetails(single_data) {
 		$('#thumbnailPreview').flash().remove();
 	}
 	
+	// TODO: local thumbnail preview image via ajax / display loading circle
+	
 	// set new thumbnail preview image
 	var thumbnail_html = '';
 	if(single_data != null) {

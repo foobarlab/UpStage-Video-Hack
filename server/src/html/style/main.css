@@ -1101,18 +1101,25 @@ a#previewLink:hover {
 	padding:5px;
 	border:2px solid #999;
 	border-radius:5px;
+	/*background: white url(../image/ajax-loader.gif) no-repeat center center;*/
 }
 
 #thumbnailPreview img {
 	max-width:290px;
 	max-height:190px;
 	margin:5px;
+	/*background: white;*/
 }
 
 #thumbnailPreview i {
 	font-size:140px;
 	line-height:200px;
 	color:#333;
+	/*background: white;*/
+}
+
+#thumbnailPreview object {
+	/*background: white;*/
 }
 
 #controlButtons {
