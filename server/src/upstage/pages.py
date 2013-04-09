@@ -1551,7 +1551,7 @@ class MediaUploadPage(Workshop):
         table = [] 
         if keys:
             for k in keys:
-                stage = self.collection.stages.get(k)
+                stage = self.collection.stages.get(k)   # FIXME this is unused?
                 table.extend('<option value="%s">%s</option>' % (k, k))
                 #return ''.join(table)
         else:
