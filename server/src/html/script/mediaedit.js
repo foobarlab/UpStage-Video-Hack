@@ -688,24 +688,27 @@ function playmp3(action, player)
  	}
  }
 
+ 
  /*
   * Author: Natasha Pullan
   * Removes selection from one selectbox and adds to the other
   */
- function switchSelection(selectbox1, selectbox2)
+
+ // FIXME duplicate code in mediaedit.js and mediaupload.js
+ function switchSelection(selectboxOne, selectboxTwo)
  {
-	 log.debug("switchSelection(): selectbox1="+selectbox+", selectbox2="+selectbox2);
+	 log.debug("switchSelection(): selectboxOne="+selectboxOne+", selectboxTwo="+selectboxTwo);
 	 
  	var i;
  	var toAdd;
  	//var length = selectbox1.options.length;
- 	for(i=selectbox1.options.length-1;i>=0;i--)
+ 	for(i=selectboxOne.options.length-1;i>=0;i--)
  	{
- 		if(selectbox1.options[i].selected)
+ 		if(selectboxOne.options[i].selected)
  		{
- 			text = selectbox1.options[i].text;
- 			selectbox1.remove(i);
- 			addMoreOptions(selectbox2, text);
+ 			text = selectboxOne.options[i].text;
+ 			selectboxOne.remove(i);
+ 			addMoreOptions(selectboxTwo, text);
  		}
  	}
  }
@@ -714,6 +717,7 @@ function playmp3(action, player)
   * Author: Natasha Pullan
   * Adds the selection to the given selectbox
   */
+ // FIXME duplicate code in mediaedit.js and mediaupload.js
  function addMoreOptions(selectbox, text)
  {
 	 log.debug("addMoreOptions(): selectbox="+selectbox+", text="+text);
