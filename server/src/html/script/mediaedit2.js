@@ -193,6 +193,47 @@ function callAjaxDeleteMedia(key) {
 	});
 }
 
+function callAjaxAssignToStages(key,selectedStages) {
+	
+	log.debug("callAjaxAssignStages(): key="+key+", selectedStages="+selectedStages);
+	
+	$.ajax({type: "POST",
+		url: url+"?ajax=assign_media_to_stage",
+		data: {
+        	'select_key': key,
+        	'select_stages': selectedStages,
+        },
+        success: function(response) {
+        	alert("Response Success: response="+response);
+        	if(response.status == 200) {
+        		
+        		// TODO
+        		
+        		// close colorbox
+        		$.fn.colorbox.close(); //return false;
+        		
+        	} else {
+        		// TODO handle known errors
+        		alert("Error while retrieving data: status="+response.status+", timestamp="+ response.timestamp +", data="+response.data);
+        		
+        		// TODO
+        		
+        		// close colorbox
+        		$.fn.colorbox.close(); //return false;
+        	}
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            // TODO handle unknown errors (may be 'no connection')
+        	alert("An error occured: textStatus="+textStatus+", errorThrown="+errorThrown);
+        	
+        	// TODO
+        	
+        	// close colorbox
+    		$.fn.colorbox.close(); //return false;
+        },
+	});
+}
+
 /*
 function callAjaxGetDetails(key) {
 	log.debug("callAjaxGetDetails(): key="+key);
@@ -341,7 +382,6 @@ function setupDataGrid() {
 						//callAjaxDeleteMedia(selectedMediaData['key'],deleteIfInUse);
 						callAjaxDeleteMedia(selectedMediaData['key']);
 						
-						// TODO close confirmation dialog?
 					}
 					
 					// bind click handler for final deletion
@@ -423,17 +463,16 @@ function setupDataGrid() {
 					
 					// set click handler for confirmation dialog
 					clickHandlerConfirmAssign = function(e) {
-						log.debug("clickHandlerConfirmAssign: click: #buttonConfirmAssign");
+						log.debug("clickHandlerConfirmAssign: click: #buttonConfirmAssign: key="+selectedMediaData['key']);
 						
-						// TODO get selected values
+						// get selected values
 						var selectedValues = $('#assignMediaToStage').val() || [];
 						
 						alert("Assign clicked: " + selectedValues.join(", "));
 						
-						// TODO pass selected stages
-						//callAjaxAssignMedia();
+						// pass selected stages
+						callAjaxAssignToStages(selectedMediaData['key'],selectedValues);
 						
-						// TODO close confirmation dialog?
 					}
 					
 					// bind click handler for final deletion
