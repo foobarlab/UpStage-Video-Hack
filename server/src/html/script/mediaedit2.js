@@ -386,51 +386,58 @@ function setupDataGrid() {
 					// split string to array and trim all values
 					var stagesAssigned = [];
 					$.each(stagesAssignedData.split(","), function(){
-					    stagesAssigned.push($.trim(this));
+					    
+						log.debug("clickHandlerAssignMedia: found assigned stages: '" + $.trim(this) + "'");
+						
+						stagesAssigned.push($.trim(this));
 					});
 					
-					
-					// TODO: unused: replaced with other method as this kind of multi-select requires jquery 1.8+
-					/*
-					// create HTML elements for multi-selector
-					
+					// create HTML elements for multi-selector with chosen
 					var selectorHTML;
-					selectorHTML = '<select multiple="multiple" id="assignMediaToStageSelector" name="assignStages[]">';
+					selectorHTML = '<select id="assignMediaToStage" data-placeholder="No stages assigned" multiple>';
 					
 					for (i = 0; i < stages.length; i += 1) {
 		                var stageName = stages[i];
 		                
-		                *//*
 		                // determine if media has stage already assigned
-		                if($.inArray(stages[i], stagesAssigned)) {
+		                if($.inArray(stageName, stagesAssigned) > -1) {
 		                	// stage is assigned: preselect stage
+		                	log.debug("clickHandlerAssignMedia: create HTML: assigned stage is selected: '" + stageName + "'");
 		                	selectorHTML += '<option value="'+stageName+'" selected>'+stageName+'</option>';
 		                } else {
 		                	// stage is unassigned
+		                	log.debug("clickHandlerAssignMedia: create HTML: unassigned stage is not selected: '" + stageName + "'");
 		                	selectorHTML += '<option value="'+stageName+'">'+stageName+'</option>';
 		                }
-		                *//*
-		                selectorHTML += '<option value="'+stageName+'">'+stageName+'</option>';
 		            }
 					selectorHTML += '</stage>';
 					
+					// set html
 					$('#assignMediaToStageSelectorPanel').html(selectorHTML);
 					
-					// set multiselect options
+					// start "chosen"
+					$('#assignMediaToStage').chosen();
 					
-					var selectorOptions = {
-						// headers
-						selectableHeader: "<div class='selector-header'>Unassigned</div>",
-						selectionHeader: "<div class='selector-header'>Assigned</div>",
-					};
-					$('#assignMediaToStageSelector').multiSelect(selectorOptions);
+					// unbind confirm button first
+					$("#buttonConfirmAssign").unbind('click',clickHandlerConfirmDelete);
 					
-					// reset all selections
-					$('#assignMediaToStageSelector').multiSelect('deselect');
+					// set click handler for confirmation dialog
+					clickHandlerConfirmAssign = function(e) {
+						log.debug("clickHandlerConfirmAssign: click: #buttonConfirmAssign");
+						
+						// TODO get selected values
+						var selectedValues = $('#assignMediaToStage').val() || [];
+						
+						alert("Assign clicked: " + selectedValues.join(", "));
+						
+						// TODO pass selected stages
+						//callAjaxAssignMedia();
+						
+						// TODO close confirmation dialog?
+					}
 					
-					// select assigned stages
-					$('#assignMediaToStageSelector').multiSelect('select',stagesAssigned);
-					*/
+					// bind click handler for final deletion
+					$("#buttonConfirmAssign").bind('click',clickHandlerConfirmAssign);
 					
 					// show assign panel
 					$.colorbox({
@@ -440,10 +447,10 @@ function setupDataGrid() {
 						scrolling: false,
 						opacity: 0.5,
 						open: true,
-						initialWidth: 500,
-						initialHeight: 400,
-						width: 500,
-						height: 400,
+						initialWidth: 750,
+						initialHeight: 380,
+						width: 750,
+						height: 380,
 						inline: true,
 						href: "#assignMediaPanel",
 						

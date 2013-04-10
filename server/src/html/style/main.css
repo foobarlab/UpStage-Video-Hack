@@ -1197,14 +1197,20 @@ table#tableDetails {
 }
 
 #assignMediaToStageSelectorPanel {
-	text-align:center;
-	margin:0 auto;
-	width:370px;
+	width:680px;
+	height:200px;
+	display:block;
+	/*
+	overflow: auto;
+	overflow-y: auto;
+	overflow-x: auto;
+	*/
+	background-color:#efefef;
+	z-index:9990;
 }
 
-.selector-header {
-	color:#333;
-	font-weight:bold;
-	background-color:#eee;
-	padding:5px 0;
+#assignMediaToStage {
+	display:block;
+	width:655px;
+	z-index:9991;
 }
