@@ -233,7 +233,7 @@ class AdminRealm:
     def __init__(self, data):
         self.data = data
 
-
+    # FIXME the method name seems misleading and seems not to represent what it actually does! why is it not called 'buildWebTree' or similiar?
     def requestAvatar(self, username, mind, *interfaces):
         """Put together a web tree based on player admin permissions
 		@param username: username of player
@@ -301,7 +301,7 @@ class AdminRealm:
 # XXX remove references to woven.guard. sometime.
 def adminWrapper(data):
     """Ties it together"""
-    p = Portal(AdminRealm(data))
+    p = Portal(AdminRealm(data))    # found in twisted.cred.Portal
     p.registerChecker(AllowAnonymousAccess(), IAnonymous)
     p.registerChecker(data.players, IUsernamePassword)
     upw = guard.UsernamePasswordWrapper(p, callback=dumbRedirect)

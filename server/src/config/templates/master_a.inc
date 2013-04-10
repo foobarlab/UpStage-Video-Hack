@@ -16,6 +16,11 @@
 <link rel="stylesheet" type="text/css" href="/style/slickgrid.css" />
 <link rel="stylesheet" type="text/css" href="/style/colorbox.css" />
 
+<!-- UNUSED: remove sooner or later: -->
+<!--
+<link rel="stylesheet" type="text/css" href="/script/jquery.multiselect/css/multi-select.css" />
+-->
+
 <!-- include html5shiv -->
 <!--[if lt IE 9]>
 <script src="/script/html5shiv/html5shiv.js"></script>

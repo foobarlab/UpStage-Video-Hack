@@ -1195,3 +1195,16 @@ table#tableDetails {
 	float:right;
 	margin:10px 0 20px 0;
 }
+
+#assignMediaToStageSelectorPanel {
+	text-align:center;
+	margin:0 auto;
+	width:370px;
+}
+
+.selector-header {
+	color:#333;
+	font-weight:bold;
+	background-color:#eee;
+	padding:5px 0;
+}

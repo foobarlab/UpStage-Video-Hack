@@ -9,8 +9,11 @@ var MEDIA_TYPE_STREAM = 'stream';
 
 //global variables
 
+
+
 var url;	// current url for the page
 var user;	// current user
+var stages;	// all current stages
 
 var selectedMediaData = null;	// currently selected media dataset
 
@@ -25,16 +28,22 @@ var clickHandlerAssignMedia = null;
 var clickHandlerDownloadMedia = null;
 var clickHandlerTagMedia = null;
 
+// Delete Media
 var clickHandlerConfirmDelete = null;
+
+// Assign Media To Stage
+var clickHandlerConfirmAssign = null;	// TODO unused for now
+
 
 var previewType = null;
 var previewThumbnailType = null;
 
-function setupMediaEdit2(url_path,current_user) {
+function setupMediaEdit2(url_path,current_user,current_stages) {
 	
 	// set global variables
 	url = url_path;
 	user = current_user;
+	stages = current_stages;
 
 	// setup data grid
 	setupDataGrid();
@@ -137,10 +146,51 @@ function callAjaxUpdateData() {
 	
 }
 
-function callAjaxDeleteMedia(key,deleteIfInUse) {
-	log.debug("callAjaxDeleteMedia(): key="+key+", deleteIfInUse="+deleteIfInUse);
+// TODO deleteIfInUse is unused
+//function callAjaxDeleteMedia(key,deleteIfInUse) {
+function callAjaxDeleteMedia(key) {
+	
+	//log.debug("callAjaxDeleteMedia(): key="+key+", deleteIfInUse="+deleteIfInUse);
+	log.debug("callAjaxDeleteMedia(): key="+key);
+	
 	// TODO
-	alert("delete key: " + key + ", deleteIfInUse: " + deleteIfInUse);
+
+	//alert("delete key: " + key + ", deleteIfInUse: " + deleteIfInUse);
+	$.ajax({type: "POST",
+		url: url+"?ajax=delete_media",
+		data: {
+        	'select_key': key,
+        	//'deleteIfInUse': deleteIfInUse,
+        },
+        success: function(response) {
+        	alert("Response Success: response="+response);
+        	if(response.status == 200) {
+        		
+        		// TODO
+        		
+        		// close colorbox
+        		$.fn.colorbox.close(); //return false;
+        		
+        	} else {
+        		// TODO handle known errors
+        		alert("Error while retrieving data: status="+response.status+", timestamp="+ response.timestamp +", data="+response.data);
+        		
+        		// TODO
+        		
+        		// close colorbox
+        		$.fn.colorbox.close(); //return false;
+        	}
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+            // TODO handle unknown errors (may be 'no connection')
+        	alert("An error occured: textStatus="+textStatus+", errorThrown="+errorThrown);
+        	
+        	// TODO
+        	
+        	// close colorbox
+    		$.fn.colorbox.close(); //return false;
+        },
+	});
 }
 
 /*
@@ -284,10 +334,12 @@ function setupDataGrid() {
 					// set click handler for confirmation dialog
 					clickHandlerConfirmDelete = function(e) {
 						log.debug("clickHandlerConfirmDelete: click: #buttonConfirmDelete, key="+selectedMediaData['key']);
+						// TODO unused 
 						// get if we want to delete even if in use
-						var deleteIfInUse = $("#deleteEvenIfInUse").prop('checked');
+						//var deleteIfInUse = $("#deleteEvenIfInUse").prop('checked');
 						// actually delete the media
-						callAjaxDeleteMedia(selectedMediaData['key'],deleteIfInUse);
+						//callAjaxDeleteMedia(selectedMediaData['key'],deleteIfInUse);
+						callAjaxDeleteMedia(selectedMediaData['key']);
 						
 						// TODO close confirmation dialog?
 					}
@@ -298,8 +350,9 @@ function setupDataGrid() {
 					// set media name in confirmation dialog
 					$("#deleteMediaName").html(selectedMediaData['name']);
 					
+					// TODO unused
 					// reset checkbox (delete even if in use)
-					$("#deleteEvenIfInUse").attr('checked', false);
+					//$("#deleteEvenIfInUse").attr('checked', false);
 					
 					// open confirmation dialog
 					$.colorbox({
@@ -325,7 +378,59 @@ function setupDataGrid() {
 					
 					log.debug("clickHandlerAssignMedia: click: #buttonAssignMedia, key="+selectedMediaData['key']);
 					
-					// TODO
+					// check which stages the media is assigned to
+					
+					// stages are stored as comma-separated values in a string
+					var stagesAssignedData = selectedMediaData['stages'];
+					
+					// split string to array and trim all values
+					var stagesAssigned = [];
+					$.each(stagesAssignedData.split(","), function(){
+					    stagesAssigned.push($.trim(this));
+					});
+					
+					
+					// TODO: unused: replaced with other method as this kind of multi-select requires jquery 1.8+
+					/*
+					// create HTML elements for multi-selector
+					
+					var selectorHTML;
+					selectorHTML = '<select multiple="multiple" id="assignMediaToStageSelector" name="assignStages[]">';
+					
+					for (i = 0; i < stages.length; i += 1) {
+		                var stageName = stages[i];
+		                
+		                *//*
+		                // determine if media has stage already assigned
+		                if($.inArray(stages[i], stagesAssigned)) {
+		                	// stage is assigned: preselect stage
+		                	selectorHTML += '<option value="'+stageName+'" selected>'+stageName+'</option>';
+		                } else {
+		                	// stage is unassigned
+		                	selectorHTML += '<option value="'+stageName+'">'+stageName+'</option>';
+		                }
+		                *//*
+		                selectorHTML += '<option value="'+stageName+'">'+stageName+'</option>';
+		            }
+					selectorHTML += '</stage>';
+					
+					$('#assignMediaToStageSelectorPanel').html(selectorHTML);
+					
+					// set multiselect options
+					
+					var selectorOptions = {
+						// headers
+						selectableHeader: "<div class='selector-header'>Unassigned</div>",
+						selectionHeader: "<div class='selector-header'>Assigned</div>",
+					};
+					$('#assignMediaToStageSelector').multiSelect(selectorOptions);
+					
+					// reset all selections
+					$('#assignMediaToStageSelector').multiSelect('deselect');
+					
+					// select assigned stages
+					$('#assignMediaToStageSelector').multiSelect('select',stagesAssigned);
+					*/
 					
 					// show assign panel
 					$.colorbox({
@@ -336,9 +441,9 @@ function setupDataGrid() {
 						opacity: 0.5,
 						open: true,
 						initialWidth: 500,
-						initialHeight: 550,
+						initialHeight: 400,
 						width: 500,
-						height: 550,
+						height: 400,
 						inline: true,
 						href: "#assignMediaPanel",
 						
@@ -453,6 +558,12 @@ function updateData(update_data) {
 	dataGrid.setData(data,true);
 	dataGrid.getSelectionModel().setSelectedRanges([]);	// deselect any selections
 	dataGrid.invalidate();
+}
+
+function deleteData(delete_data) {
+	
+	// TODO delete data by key? remove from slick grid? reload panel?
+
 }
 
 function showDetails(single_data) {

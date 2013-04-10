@@ -896,22 +896,47 @@ class MediaEditPage2(Workshop):
     def __init__(self, player, collection):
         AdminBase.__init__(self, player, collection)
         self.player = player
-        self.collection = collection
+        self.collection = collection    # dict from globalmedia.py
         self.set_defaults()
         
     def set_defaults(self):
+        
+        # --- external values ---
+        
+        # update data
         self.filter_user = ''
         self.filter_stage = ''
         self.filter_type = ''
         self.filter_medium = ''
+        
+        # delete data
+        self.select_key = ''
+        
+        # --- internal values ---
+        
+        # FIXME underscore internal variable names ("private" access)
+        
+        # update data
         self.apply_filter = False
+        
+        # delete media
+        self.selected_media = None
+        
+        # meta response values
         self.status = 500   # default error code, using HTTP error codes for status
         self.error_msg = 'Unknonw error'    # default message
     
     def text_user(self, request):
         if (self.player):
             return self.player.name
-    
+        
+    def text_list_stages_as_json(self, request):
+        keys = self.collection.stages.getKeys()
+        data_list = []
+        for key in keys:
+            data_list.append(key)
+        return json.dumps(data_list)
+        
     def text_list_stages_as_html_option_tag(self, request):
         keys = self.collection.stages.getKeys()
         data_list = []
@@ -970,6 +995,16 @@ class MediaEditPage2(Workshop):
             else:
                 self.apply_filter = True
             
+            # get selected media
+            if 'select_key' in args:
+                self.select_key = args['select_key'][0]
+            
+            # was an existing media selected?
+            if(self.select_key != ''):
+                # TODO try to select key from collection
+                self.selected_media = self.collection
+            
+            
             # get type of call
             ajax_call = args['ajax'][0]
             
@@ -990,7 +1025,7 @@ class MediaEditPage2(Workshop):
             elif ajax_call == 'delete_media':
                 self.status = 200
                 # TODO hand over key for which media should be deleted
-                # TODO evaluate flag 'delete_even_if_in_use'
+                # TODO evaluate flag 'delete_even_if_in_use' (currently unused, see globalmedia.py:update_from_form how it may be used ...)
                 data = self._delete_media()
             
             else:
