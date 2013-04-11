@@ -395,10 +395,11 @@ class MediaDict(Xml2Dict):
                             'stages':'',
                             'tags':v.tags, # Vibhu and Heath (01/09/2011) - Added tags attribute to return associated tags for a media.
                             
-                            # TODO add stream parameters?
+                            # add stream parameters:
+                            'streamname':v.streamname,
+                            'streamserver':v.streamserver,
                             
-                            })
-          for k, v in self.iteritems()]
+                            }) for k, v in self.iteritems()]
         if things:
             things.sort()
             
