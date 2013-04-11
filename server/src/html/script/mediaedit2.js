@@ -260,6 +260,8 @@ function setupDataGrid() {
 	       {id: "date", name: "Date", field: "date", width:200},
 	       {id: "type", name: "Type", field: "type", width:100},
 	       {id: "medium", name: "Medium", field: "medium", width:100},
+	       {id: "streamserver", name: "Stream Server", field: "streamserver", width:200},
+	       {id: "streamname", name: "Stream Name", field: "streamname", width:200},
 	       {id: "thumbnail", name: "Thumbnail", field: "thumbnail", width:200},
 	       {id: "thumbnail_original", name: "Thumbnail (Original)", field: "thumbnail_original", width:200},
 	       {id: "thumbnail_icon", name: "Thumbnail (Icon)", field: "thumbnail_icon", width:200},
@@ -417,6 +419,9 @@ function setupDataGrid() {
 				clickHandlerAssignMedia = function(e) {
 					
 					log.debug("clickHandlerAssignMedia: click: #buttonAssignMedia, key="+selectedMediaData['key']);
+					
+					// set media name in dialog
+					$("#assignMediaName").html(selectedMediaData['name']);
 					
 					// check which stages the media is assigned to
 					
@@ -632,6 +637,8 @@ function showDetails(single_data) {
 	var thumbnail_icon = "";
 	var file = "";
 	var date = "";
+	var streamname = "";
+	var streamserver = "";
 	
 	// extract given data
 	if(single_data != null) {
@@ -650,6 +657,8 @@ function showDetails(single_data) {
 		file = single_data['file'];
 		file_original = single_data['file_original'];
 		date = single_data['date'];
+		streamname = single_data['streamname'];
+		streamserver = single_data['streamserver'];
 	}
 	
 	// set text in details table
@@ -660,7 +669,8 @@ function showDetails(single_data) {
 	$('#detailVoice').html(voice);
 	$('#detailStages').html(stages);
 	$('#detailDate').html(date);
-	
+	$('#detailStreamname').html(streamname);
+	$('#detailStreamserver').html(streamserver);
 
 	// TODO remove previous active previews
 
