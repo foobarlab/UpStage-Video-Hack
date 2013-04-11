@@ -83,6 +83,9 @@ import os, re, datetime, time
 from urllib import urlencode
 import tempfile # natasha
 
+# pretty print for debugging (see: http://docs.python.org/2/library/pprint.html)
+import pprint
+
 # json
 try:
     import json
@@ -272,7 +275,7 @@ class AdminBase(Template):
                 stage = self.collection.stages.get(k)
                 num_players += stage.num_players()
                 num_audience += stage.num_audience()
-            return '%d#%d' %(num_players,num_audience)
+            return '%d#%d' %(num_players,num_audience)  # FIXME unchecked types?
         except:
             return ''
 
@@ -896,8 +899,9 @@ class MediaEditPage2(Workshop):
     def __init__(self, player, collection):
         AdminBase.__init__(self, player, collection)
         self.player = player
-        self.collection = collection    # dict from globalmedia.py
+        self.collection = collection    # UpstageData
         self.set_defaults()
+        
         
     def set_defaults(self):
         
@@ -911,9 +915,6 @@ class MediaEditPage2(Workshop):
         
         # delete data / assign stages
         self.select_key = ''
-        
-        # assign stages
-        self.select_stages = ''
         
         # --- internal values ---
         
@@ -1007,16 +1008,30 @@ class MediaEditPage2(Workshop):
             
             # was an existing media selected?
             if(self.select_key != ''):
-                # TODO try to select key from collection
-                self.selected_media = self.collection   # TODO FIXME set selected media
+                # collect data
+                media = self.collection.avatars.get_media_list()
+                media.extend(self.collection.props.get_media_list())
+                media.extend(self.collection.backdrops.get_media_list())
+                media.extend(self.collection.audios.get_media_list())
+                
+                log.msg("MediaEditPage2: render_POST(): media collection: media=%s" % pprint.saferepr(media))
+                
+                # process all list elements
+                for media_item in media:
+                    log.msg("MediaEditPage2: render_POST(): key=%s, media_item=%s" % (pprint.saferepr(media_item[0]),pprint.saferepr(media_item)))
+                    # check if key exists in media
+                    if self.select_key == media_item[0]:
+                        log.msg("MediaEditPage2: render_POST(): select_key '%s' found in media collection" % self.select_key)
+                        self.selected_media = media[1]
+                
+                log.msg("MediaEditPage2: render_POST(): selected_media=%s" % pprint.saferepr(self.selected_media))
+                
             
             # any stages selected?
-            if 'select_stages' in args:
-                self.select_stages = args['select_stages'][0]
-            
-            # extract and validate selected stages
-            if(self.select_stages != ''):
-                self.selected_stages = self.collection  # TODO FIXME set selected stages
+            if 'select_stages[]' in args:
+                self.selected_stages = args['select_stages[]']
+
+            log.msg("MediaEditPage2: render_POST(): selected_stages=%s" % (pprint.saferepr(self.selected_stages)))
             
             # get type of call
             ajax_call = args['ajax'][0]
@@ -1131,7 +1146,9 @@ class MediaEditPage2(Workshop):
                            date=value['dateTime'],
                            type=typename,
                            voice=value['voice'],
-                           medium=value['type']
+                           medium=value['type'],
+                           streamserver=value['streamserver'],
+                           streamname=value['streamname'],
                            )
             
             # apply filtering
@@ -1228,6 +1245,7 @@ class MediaEditPage2(Workshop):
         log.msg("MediaEditPage2: _delete_media: selected_media=%s" % selected_media)
         
         # TODO delete given media
+        # TODO see globalmedia __delitem__
         
         pass
 
