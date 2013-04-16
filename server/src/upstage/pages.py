@@ -1073,7 +1073,12 @@ class MediaEditPage2(Workshop):
             
             # "deleteIfInUse" force flag?
             if 'deleteIfInUse' in args:
-                self.deleteIfInUse = args['deleteIfInUse']
+                #self.deleteIfInUse = False    # already reset by setting defaults ...
+                # FIXME safer type casting to bool please
+                argDeleteIfInUse = args['deleteIfInUse']
+                if (argDeleteIfInUse == ['true']):
+                    self.deleteIfInUse = True
+                    
             log.msg("MediaEditPage2: render_POST(): deleteIfInUse=%s" % (pprint.saferepr(self.deleteIfInUse)))
             
             

@@ -117,7 +117,7 @@ function callAjaxGetData() {
         success: function(response) {
         	//alert("Response Success: response="+response);
         	if(response.status == 200) {
-        		updateData(response.data);
+        		refreshData(response.data);
         		
         		// hide loading panel
         		$('#spinner').stop();
@@ -126,7 +126,7 @@ function callAjaxGetData() {
         	} else {
         		// TODO handle known errors
         		alert("Error while retrieving data: status="+response.status+", timestamp="+ response.timestamp +", data="+response.data);
-        		updateData(null);
+        		refreshData(null);
         		
         		// hide loading panel
         		$('#spinner').stop();
@@ -136,7 +136,7 @@ function callAjaxGetData() {
         error: function(XMLHttpRequest, textStatus, errorThrown){
             // TODO handle unknown errors (may be 'no connection')
         	alert("An error occured: textStatus="+textStatus+", errorThrown="+errorThrown);
-        	updateData(null);
+        	refreshData(null);
         	
         	// hide loading panel
         	$('#spinner').stop();
@@ -157,10 +157,11 @@ function callAjaxDeleteData(key,deleteIfInUse) {
         	'deleteIfInUse': deleteIfInUse,
         },
         success: function(response) {
-        	alert("Response Success: response="+response);
+        	//alert("Response Success: response="+response);
         	if(response.status == 200) {
         		
-        		// TODO
+        		// TODO gracefully refresh data
+        		setupMediaEdit2(url,user,stages);	// FIXME replace with better function!
         		
         		// close colorbox
         		$.fn.colorbox.close(); //return false;
@@ -169,7 +170,8 @@ function callAjaxDeleteData(key,deleteIfInUse) {
         		// TODO handle known errors
         		alert("Error while retrieving data: status="+response.status+", timestamp="+ response.timestamp +", data="+response.data);
         		
-        		// TODO
+        		// TODO gracefully refresh data
+        		setupMediaEdit2(url,user,stages);	// FIXME replace with better function!
         		
         		// close colorbox
         		$.fn.colorbox.close(); //return false;
@@ -179,8 +181,9 @@ function callAjaxDeleteData(key,deleteIfInUse) {
             // TODO handle unknown errors (may be 'no connection')
         	alert("An error occured: textStatus="+textStatus+", errorThrown="+errorThrown);
         	
-        	// TODO
-        	
+        	// TODO gracefully refresh data
+    		setupMediaEdit2(url,user,stages);	// FIXME replace with better function!
+    		
         	// close colorbox
     		$.fn.colorbox.close(); //return false;
         },
@@ -580,12 +583,12 @@ function setupDataGrid() {
 	
 }
 
-function updateData(update_data) {
+function refreshData(new_data) {
 	
-	log.debug("updateData(): update_data="+update_data);
+	log.debug("refreshData(): new_data="+new_data);
 	
-	if (update_data != null) {
-		data = update_data;
+	if (new_data != null) {
+		data = new_data;
 	} else {
 		data = [];
 	}

@@ -43,6 +43,9 @@ Notes:
 
 import os, inspect
 
+# pretty print for debugging (see: http://docs.python.org/2/library/pprint.html)
+import pprint
+
 #siblings
 from upstage.misc import Xml2Dict, UpstageError
 from upstage.util import get_template
@@ -217,6 +220,7 @@ class MediaDict(Xml2Dict):
         """Deletes an item from XML dictionary and from the file system
         Won't work if f is a directory name not a file
         @param f file name"""
+        
         try:
             if config.SAVE_DELETED_MEDIA:
                 if not os.path.exists(config.OLD_MEDIA_DIR):
@@ -225,7 +229,19 @@ class MediaDict(Xml2Dict):
             else:
                 os.remove(self.path(f))
         except OSError, e:
-            if not f.startswith(config.WEBCAM_SUBURL):
+            #if not f.startswith(config.WEBCAM_SUBURL):
+            #    raise KeyError("%s: %s" %(self.path(f), e))
+            
+            # webcam images for video avatars get nbot deleted ...
+            if f.startswith(config.WEBCAM_SUBURL):
+                pass
+            
+            # builtin library items are no files so nothing to delete ...
+            elif f.startswith(config.LIBRARY_PREFIX):
+                pass
+            
+            # all other errors are probably real errors
+            else:
                 raise KeyError("%s: %s" %(self.path(f), e))
 
         return Xml2Dict.__delitem__(self, f)
@@ -286,7 +302,7 @@ class MediaDict(Xml2Dict):
 
 
     def delete(self, key=None, player=None, force=False):
-        """Rewritten function: Delete 'this Thing' and return True if successful."""
+        """Rewritten function: Delete a Thing identified by 'file key' and return True if successful. If force is False do not delete media which is assigned to stages."""
         success = False
         
         log.msg("MediaDict: delete(): key=%s, player=%s, force=%s" % (key,player,force))
@@ -306,16 +322,51 @@ class MediaDict(Xml2Dict):
             log.msg("MediaDict: delete(): player is not admin!")
             return success
         
-        # TODO delete entry
+        # evaluate force flag:
+        if (force):
+            log.msg("MediaDict: delete(): force flags set - removing from all stages even when in use")
+            # delete entry and naively assume all went well (well, that's what always was done anyway)
+            if not self[key] is None:
+                del self[key]
+                success = True
+                log.msg("MediaDict: delete(): actually media with key '%s' was forcibly deleted!" % key)
+                # ugly clean method for things left on stages: if files do not exist they will be cleaned up! may cause unwanted side-effects as it is smelly... 
+                thing_stage_tuple = self._get_stage_collections()
+                for things, stage in thing_stage_tuple:
+                    if things.reap_zombies():
+                        log.msg("MediaDict: delete(): reaping zombies and soft resetting stage!")   # well, some better logging would be good
+                        stage.soft_reset()
+                        stage.save()
         
-        # TODO evaluate force flag: if forced, remove even when in use
-        
-        
+        # if not forced, do not remove when in use on a stage
+        else:
+            log.msg("MediaDict: delete(): force flags NOT set - removing only when NOT in use on a stage")
+            #log.msg("MediaDict: delete(): self[key]=%s" % self[key])
+            if not self[key] is None:
+                
+                # check if this media is used on any stage:
+                
+                thing_stage_tuple = self._get_stage_collections()
+                
+                # DEBUG:
+                for things, stage in thing_stage_tuple:
+                    log.msg("MediaDict: delete(): collection=%s, stage=%s" % (things,stage))
+                
+                assigned_stages = [stage.ID for things, stage in thing_stage_tuple if key in things.media]
+                for stage in assigned_stages:
+                    log.msg("MediaDict: delete(): assigned stage=%s" % stage)
+                
+                if not assigned_stages:
+                    del self[key]
+                    success = True
+                    log.msg("MediaDict: delete(): actually media with key '%s' was deleted!" % key)
+                else:
+                    log.msg("MediaDict: delete(): actually media with key '%s' was NOT deleted as it is used on some stages!" % key)
+                
         return success
 
-
     def assign_stages(self, key=None, player=None, new_stages=None):
-        """Rewritten function: Assign 'this Thing' to new stages and return True if successful."""
+        """Rewritten function: Assign a Thing identified by 'file key' to new stages and return True if successful."""
         success = False
         
         log.msg("MediaDict: assign_stages(): key=%s, player=%s, new_stages=%s" % (key,player,new_stages))
