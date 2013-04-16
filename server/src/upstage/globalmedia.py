@@ -285,6 +285,60 @@ class MediaDict(Xml2Dict):
         return '<br />\n'.join(messages)
 
 
+    def delete(self, key=None, player=None, force=False):
+        """Rewritten function: Delete 'this Thing' and return True if successful."""
+        success = False
+        
+        log.msg("MediaDict: delete(): key=%s, player=%s, force=%s" % (key,player,force))
+        
+        # key must be given
+        if key is None:
+            log.msg("MediaDict: delete(): no key given!")
+            return success
+        
+        # player must be given
+        if player is None:
+            log.msg("MediaDict: delete(): no player given!")
+            return success
+        
+        # only admins are allowed to delete data
+        if not player.can_admin():
+            log.msg("MediaDict: delete(): player is not admin!")
+            return success
+        
+        # TODO delete entry
+        
+        # TODO evaluate force flag: if forced, remove even when in use
+        
+        
+        return success
+
+
+    def assign_stages(self, key=None, player=None, new_stages=None):
+        """Rewritten function: Assign 'this Thing' to new stages and return True if successful."""
+        success = False
+        
+        log.msg("MediaDict: assign_stages(): key=%s, player=%s, new_stages=%s" % (key,player,new_stages))
+        
+        # only admins are allowed to delete data
+        if not player.can_admin():
+            return success
+        
+        return success
+    
+
+#    def update(self,player=None,new_data=None):
+#        """Rewritten function: Update 'this Thing' with new data and return True if successful."""
+#        success = False
+#        
+#        log.msg("globalmedia.py: update(): player=%s, new_data=%s" % (player,new_data))
+#        
+#        # only admins are allowed to delete data
+#        if not player.can_admin():
+#            return success
+#        
+#        return success
+
     """
 
     Modified by: Heath Behrens 16/08/2011 - Added code lines 309 onwards to extract the assigned/unassigned

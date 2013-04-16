@@ -52,7 +52,7 @@ function setupMediaEdit2(url_path,current_user,current_stages) {
 	
 	$("#buttonUpdateView").click(function(e){
 		log.debug("click: #buttonUpdateView");
-		callAjaxUpdateData();
+		callAjaxGetData();
 	});
 
 	$("#buttonResetView").click(function(e){
@@ -65,11 +65,11 @@ function setupMediaEdit2(url_path,current_user,current_stages) {
 		$("#filterTags").val("");
 		
 		setCurrentUserInFilter();	// set default user
-		callAjaxUpdateData();
+		callAjaxGetData();
 	});
 	
 	setCurrentUserInFilter();	// set default user
-	callAjaxUpdateData();		// set initial data
+	callAjaxGetData();		// set initial data
 	
 }
 
@@ -94,10 +94,10 @@ function setCurrentUserInFilter() {
 	}
 }
 
-/* do ajax 'updata_data' call */
-function callAjaxUpdateData() {
+/* do ajax 'get_data' call */
+function callAjaxGetData() {
 	
-	log.debug("callAjaxUpdateData()");
+	log.debug("callAjaxGetData()");
 	
 	// hide details
 	showDetails(null);
@@ -107,7 +107,7 @@ function callAjaxUpdateData() {
 	$('#spinner').spin("huge");
 	
 	$.ajax({type: "POST",
-		url: url+"?ajax=update_data",
+		url: url+"?ajax=get_data",
 		data: {
         	'filter_user': $("#filterUser").val(),
         	'filter_stage': $("#filterStage").val(),
@@ -146,21 +146,15 @@ function callAjaxUpdateData() {
 	
 }
 
-// TODO deleteIfInUse is unused
-//function callAjaxDeleteMedia(key,deleteIfInUse) {
-function callAjaxDeleteMedia(key) {
+function callAjaxDeleteData(key,deleteIfInUse) {
 	
-	//log.debug("callAjaxDeleteMedia(): key="+key+", deleteIfInUse="+deleteIfInUse);
-	log.debug("callAjaxDeleteMedia(): key="+key);
+	log.debug("callAjaxDeleteData(): key="+key+", deleteIfInUse="+deleteIfInUse);
 	
-	// TODO
-
-	//alert("delete key: " + key + ", deleteIfInUse: " + deleteIfInUse);
 	$.ajax({type: "POST",
-		url: url+"?ajax=delete_media",
+		url: url+"?ajax=delete_data",
 		data: {
         	'select_key': key,
-        	//'deleteIfInUse': deleteIfInUse,
+        	'deleteIfInUse': deleteIfInUse,
         },
         success: function(response) {
         	alert("Response Success: response="+response);
@@ -193,12 +187,12 @@ function callAjaxDeleteMedia(key) {
 	});
 }
 
-function callAjaxAssignToStages(key,selectedStages) {
+function callAjaxAssignToStage(key,selectedStages) {
 	
-	log.debug("callAjaxAssignStages(): key="+key+", selectedStages="+selectedStages);
+	log.debug("callAjaxAssignStage(): key="+key+", selectedStages="+selectedStages);
 	
 	$.ajax({type: "POST",
-		url: url+"?ajax=assign_media_to_stage",
+		url: url+"?ajax=assign_to_stage",
 		data: {
         	'select_key': key,
         	'select_stages': selectedStages,
@@ -233,13 +227,6 @@ function callAjaxAssignToStages(key,selectedStages) {
         },
 	});
 }
-
-/*
-function callAjaxGetDetails(key) {
-	log.debug("callAjaxGetDetails(): key="+key);
-	// TODO
-}
-*/
 
 function testCallback(params) {
 	alert("testCallback: params=" + params);
@@ -377,13 +364,10 @@ function setupDataGrid() {
 					// set click handler for confirmation dialog
 					clickHandlerConfirmDelete = function(e) {
 						log.debug("clickHandlerConfirmDelete: click: #buttonConfirmDelete, key="+selectedMediaData['key']);
-						// TODO unused 
 						// get if we want to delete even if in use
-						//var deleteIfInUse = $("#deleteEvenIfInUse").prop('checked');
+						var deleteIfInUse = $("#deleteEvenIfInUse").prop('checked');
 						// actually delete the media
-						//callAjaxDeleteMedia(selectedMediaData['key'],deleteIfInUse);
-						callAjaxDeleteMedia(selectedMediaData['key']);
-						
+						callAjaxDeleteData(selectedMediaData['key'],deleteIfInUse);	
 					}
 					
 					// bind click handler for final deletion
@@ -392,9 +376,8 @@ function setupDataGrid() {
 					// set media name in confirmation dialog
 					$("#deleteMediaName").html(selectedMediaData['name']);
 					
-					// TODO unused
 					// reset checkbox (delete even if in use)
-					//$("#deleteEvenIfInUse").attr('checked', false);
+					$("#deleteEvenIfInUse").attr('checked', false);
 					
 					// open confirmation dialog
 					$.colorbox({
@@ -476,7 +459,7 @@ function setupDataGrid() {
 						alert("Assign clicked: " + selectedValues.join(", "));
 						
 						// pass selected stages
-						callAjaxAssignToStages(selectedMediaData['key'],selectedValues);
+						callAjaxAssignToStage(selectedMediaData['key'],selectedValues);
 						
 					}
 					

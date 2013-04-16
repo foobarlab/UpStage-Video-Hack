@@ -905,7 +905,7 @@ class MediaEditPage2(Workshop):
         
     def set_defaults(self):
         
-        # --- external values ---
+        # --- external values (given) ---
         
         # update data
         self.filter_user = ''
@@ -916,17 +916,23 @@ class MediaEditPage2(Workshop):
         # delete data / assign stages
         self.select_key = ''
         
-        # --- internal values ---
+        # --- internal values (determined) ---
         
         # FIXME underscore internal variable names ("private" access)
         
-        # update data
+        # filter update data
         self.apply_filter = False
         
-        # delete media / assign stages
-        self.selected_media = None
+        # force flag: deleteIfInUse (delete media)
+        self.deleteIfInUse = False
         
-        # assign stages
+        # selected media (update, delete, assign stages)
+        self.selected_media = None
+        self.selected_media_type = None
+        self.selected_media_key = None
+        self.selected_collection = None
+        
+        # selected stages (assign stages)
         self.selected_stages = None
         
         # meta response values
@@ -1008,6 +1014,7 @@ class MediaEditPage2(Workshop):
             
             # was an existing media selected?
             if(self.select_key != ''):
+                
                 # collect data
                 media = self.collection.avatars.get_media_list()
                 media.extend(self.collection.props.get_media_list())
@@ -1021,17 +1028,54 @@ class MediaEditPage2(Workshop):
                     log.msg("MediaEditPage2: render_POST(): key=%s, media_item=%s" % (pprint.saferepr(media_item[0]),pprint.saferepr(media_item)))
                     # check if key exists in media
                     if self.select_key == media_item[0]:
-                        log.msg("MediaEditPage2: render_POST(): select_key '%s' found in media collection" % self.select_key)
-                        self.selected_media = media[1]
+                        log.msg("MediaEditPage2: render_POST(): select_key='%s' - found in global media collection" % self.select_key)
+                        
+                        # TODO check if media_item[1] exists ...
+                        
+                        # get the selected_media_key
+                        self.selected_media_key = media_item[1].get('media')
+                        break
+                
+                log.msg("MediaEditPage2: render_POST(): selected_media_key=%s" % self.selected_media_key)            
+                
+                # determine which collection holds the selected media
+                if (self.collection.avatars.get(self.selected_media_key)):
+                    self.selected_media_type = 'avatars'
+                    self.selected_collection = self.collection.avatars
+                     
+                elif (self.collection.backdrops.get(self.selected_media_key)):
+                    self.selected_media_type = 'backdrops'
+                    self.selected_collection = self.collection.backdrops
+                
+                elif (self.collection.props.get(self.selected_media_key)):
+                    self.selected_media_type = 'props'
+                    self.selected_collection = self.collection.props
+                
+                elif (self.collection.audios.get(self.selected_media_key)):
+                    self.selected_media_type = 'audios'
+                    self.selected_collection = self.collection.audios
+                
+                else:
+                    # TODO throw error
+                    log.msg("MediaEditPage2: render_POST(): selected media key '%s' not found! unable to determine selected media type!" % self.selected_media_key)
+                    
+                log.msg("MediaEditPage2: render_POST(): selected_media_type=%s, selected_collection=%s" % (self.selected_media_type,pprint.saferepr(self.selected_collection)))
+                
+                self.selected_media = self.selected_collection.get(self.selected_media_key)
                 
                 log.msg("MediaEditPage2: render_POST(): selected_media=%s" % pprint.saferepr(self.selected_media))
-                
+            
             
             # any stages selected?
             if 'select_stages[]' in args:
                 self.selected_stages = args['select_stages[]']
-
             log.msg("MediaEditPage2: render_POST(): selected_stages=%s" % (pprint.saferepr(self.selected_stages)))
+            
+            # "deleteIfInUse" force flag?
+            if 'deleteIfInUse' in args:
+                self.deleteIfInUse = args['deleteIfInUse']
+            log.msg("MediaEditPage2: render_POST(): deleteIfInUse=%s" % (pprint.saferepr(self.deleteIfInUse)))
+            
             
             # get type of call
             ajax_call = args['ajax'][0]
@@ -1041,23 +1085,18 @@ class MediaEditPage2(Workshop):
             
             log.msg("MediaEditPage2: render_POST(): ajax call for '%s'!" % ajax_call)
             
-            if ajax_call == 'update_data':
+            if ajax_call == 'get_data':
                 self.status = 200
-                data = self._update_data()
-                
-#            elif ajax_call == 'get_detail':
-#                self.status = 200
-#                # TODO hand over key for which details should be returned
-#                data = self._get_detail()
+                data = self._get_data()
             
-            elif ajax_call == 'delete_media':
+            elif ajax_call == 'delete_data':
                 self.status = 200
-                # TODO evaluate flag 'delete_even_if_in_use' (currently unused, see globalmedia.py:update_from_form how it may be used ...)
-                data = self._delete_media(self.selected_media)
+                # TODO flag 'delete_even_if_in_use': see globalmedia.py:update_from_form how it may be used ...
+                data = self._delete_data(self.selected_media_key, self.selected_collection, self.deleteIfInUse)
                 
-            elif ajax_call == 'assign_media_to_stage':
+            elif ajax_call == 'assign_to_stage':
                 self.status = 200
-                data = self._assign_media_to_stage(self.selected_media, self.selected_stages)
+                data = self._assign_to_stage(self.selected_media_key, self.selected_collection, self.selected_stages)
             
             else:
                 log.msg("MediaEditPage2: render_POST(): ajax call for '%s' not understood." % ajax_call)
@@ -1090,7 +1129,7 @@ class MediaEditPage2(Workshop):
         else:
             return response
     
-    def _update_data(self):
+    def _get_data(self):
         """ collect data while applying filters """ 
         
         result = []
@@ -1103,7 +1142,7 @@ class MediaEditPage2(Workshop):
         
         for key, value in media:
             
-            log.msg("MediaEditPage2: _update_data(): key=%s, value=%s" % (key,value))
+            log.msg("MediaEditPage2: _get_data(): key=%s, value=%s" % (key,value))
             
             # prepare data (like resolve thumbnail and file paths, etc.)
             
@@ -1155,7 +1194,7 @@ class MediaEditPage2(Workshop):
             add_dataset = False
             if self.apply_filter:
                 
-                log.msg("MediaEditPage2: _update_data(): apply filtering ...");
+                log.msg("MediaEditPage2: _get_data(): apply filtering ...");
                 
                 match_user = False
                 match_stage = False
@@ -1169,7 +1208,7 @@ class MediaEditPage2(Workshop):
                 else:
                     match_user = True
                 
-                log.msg("MediaEditPage2: _update_data(): filter_user matched: %s" % match_user);
+                log.msg("MediaEditPage2: _get_data(): filter_user matched: %s" % match_user);
                 
                 # check if type matches    
                 if self.filter_type != '':
@@ -1178,7 +1217,7 @@ class MediaEditPage2(Workshop):
                 else:
                     match_type = True
                 
-                log.msg("MediaEditPage2: _update_data(): filter_type matched: %s" % match_type);
+                log.msg("MediaEditPage2: _get_data(): filter_type matched: %s" % match_type);
                     
                 # check if stage matches
                 if self.filter_stage != '':
@@ -1198,18 +1237,18 @@ class MediaEditPage2(Workshop):
                     # stages exist, so media has stages assigned
                     else:
                         # is the stage in the list?
-                        log.msg("MediaEditPage2: _update_data(): looking for stage '%s', stages found: %s" % (self.filter_stage, stages))
+                        log.msg("MediaEditPage2: _get_data(): looking for stage '%s', stages found: %s" % (self.filter_stage, stages))
                         
                         # we want exact string matches so using regex
                         for stage in stages:
                             matching = re.findall('\\b'+self.filter_stage+'\\b', stage)
                             if matching:
-                                log.msg("MediaEditPage2: _update_data(): matched stage %s" % stage)
+                                log.msg("MediaEditPage2: _get_data(): matched stage %s" % stage)
                                 match_stage = True
                 else:
                     match_stage = True
                     
-                log.msg("MediaEditPage2: _update_data(): filter_stage matched: %s" % match_stage);
+                log.msg("MediaEditPage2: _get_data(): filter_stage matched: %s" % match_stage);
                     
                 # check if medium matches
                 if self.filter_medium != '':
@@ -1218,7 +1257,7 @@ class MediaEditPage2(Workshop):
                 else:
                     match_medium = True
                     
-                log.msg("MediaEditPage2: _update_data(): filter_medium matched: %s" % match_medium);
+                log.msg("MediaEditPage2: _get_data(): filter_medium matched: %s" % match_medium);
                     
                 # add record if all matches
                 add_dataset = match_user & match_type & match_stage & match_medium
@@ -1227,12 +1266,12 @@ class MediaEditPage2(Workshop):
                 add_dataset = True
                 
             if add_dataset:
-                log.msg("MediaEditPage2: _update_data(): adding dataset=%s" % dataset);
+                log.msg("MediaEditPage2: _get_data(): adding dataset=%s" % dataset);
                 result.append(dataset)
             else:
-                log.msg("MediaEditPage2: _update_data(): skipping dataset=%s" % dataset);
+                log.msg("MediaEditPage2: _get_data(): skipping dataset=%s" % dataset);
         
-        log.msg("MediaEditPage2: _update_data(): result=%s" % result);
+        log.msg("MediaEditPage2: _get_data(): result=%s" % result);
         return result
    
 #    def _get_detail(self):
@@ -1241,20 +1280,37 @@ class MediaEditPage2(Workshop):
 #        
 #        pass
     
-    def _delete_media(self,selected_media=None):
-        log.msg("MediaEditPage2: _delete_media: selected_media=%s" % selected_media)
+    def _delete_data(self,selected_media_key=None, selected_collection=None, force_delete=False):
+        log.msg("MediaEditPage2: _delete_data: selected_media_key=%s" % selected_media_key)
+        log.msg("MediaEditPage2: _delete_data: selected_collection=%s" % pprint.saferepr(selected_collection))
+        log.msg("MediaEditPage2: _delete_data: force_delete=%s" % force_delete)
+        log.msg("MediaEditPage2: _delete_data: player=%s" % self.player)
         
-        # TODO delete given media
-        # TODO see globalmedia __delitem__
+        success = selected_collection.delete(selected_media_key,self.player,force_delete)
         
-        pass
-
-    def _assign_media_to_stage(self,selected_media=None,selected_stages=None):
-        log.msg("MediaEditPage2: _assign_media_to_stage: selected_media=%s, selected_stages=%s" % (selected_media,selected_stages))
+        if not success:
+            # we had an error
+            log.msg("MediaEditPage2: _delete_data: no success! nothing deleted ...")
+            
+        # TODO return error code?
+        
+        
+    def _assign_to_stage(self,selected_media_key=None,selected_collection=None,selected_stages=None):
         
         # TODO assign given media to given stages
         
         pass
+
+#    # TODO
+#    def _update_data(self,selected_media=None,update_data=None):
+#        log.msg("MediaEditPage2: _update_data: selected_media=%s, update_data=%s" % (selected_media,update_data))
+#        
+#        # TODO update data of given media
+#        
+#        selected_media.update(update_data)
+#        
+#        pass
+    
     
 """ Shaun Narayan (02/16/10) - Handles medrequest.argsia editing.
     Should probably move media list HTML into a template."""
