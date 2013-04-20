@@ -20,7 +20,13 @@
 <script type="text/javascript" src="/script/spin.js/spin.js"></script>
 <script type="text/javascript" src="/script/jquery.spin.js/jquery.spin.js"></script>
 <script type="text/javascript" src="/script/jquery.colorbox/jquery.colorbox-min.js"></script>
+
+<!-- 
 <script type="text/javascript" src="/script/chosen/chosen.jquery.min.js"></script>
+-->
+
+<script type="text/javascript" src="/script/jquery.multiselect/jquery.multi-select.js"></script>
+
 
 <h1 style="margin:20px 0">Edit/View Media</h1>
 
@@ -198,11 +204,10 @@
 	<div id="assignMediaPanel" class="colorboxPanel">
 	
 		<div class="dialogContent">
-			<h1>Assign Media to Stage(s)</h1>
-			<p>Click input field to choose stages to assign to &quot;<span id="assignMediaName"></span>&quot;:</p>
+			<h1>Assign &quot;<span id="assignMediaName"></span>&quot; to stages</h1>
 			<div id="assignMediaToStageSelectorPanel">
 				
-				<!-- TEST: -->
+				<!-- chosen lib test: -->
 				<!-- 
 				<select id="assignMediaToStage" data-placeholder="Click here to choose assigned stages" multiple>
 	                <option value=""></option>
@@ -229,13 +234,90 @@
               	</select>
 				-->
 				
+				<!-- loudev.com multiselect test -->
+				
+				<select multiple="multiple" id="assignMediaToStageSelector" name="assignedStages[]">
+					<option value="elem_1">elem 1 with very long text lalalalalalala text text text</option>
+					<option value="elem_2" selected="selected">elem 2</option>
+					<option value="elem_3">elem 3</option>
+					<option value="elem_4">elem 4 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</option>
+					<option value="elem_5">elem 5</option>
+					<option value="elem_6">elem 6</option>
+					<option value="elem_7">elem 7</option>
+					<option value="elem_8">elem 8</option>
+					<option value="elem_9">elem 9</option>
+					<option value="elem_10">elem 10</option>
+					<option value="elem_11">elem 11</option>
+					<option value="elem_12">elem 12</option>
+					<option value="elem_13">elem 13</option>
+					<option value="elem_14">elem 14</option>
+					<option value="elem_15">elem 15</option>
+					<option value="elem_16">elem 16</option>
+					<option value="elem_17">elem 17</option>
+					<option value="elem_18">elem 18</option>
+					<option value="elem_19">elem 19</option>
+					<option value="elem_20">elem 20</option>
+					<option value="elem_21">elem 21</option>
+					<option value="elem_22">elem 22</option>
+					<option value="elem_23">elem 23</option>
+					<option value="elem_24">elem 24</option>
+					<option value="elem_25">elem 25</option>
+					<option value="elem_26">elem 26</option>
+					<option value="elem_27">elem 27</option>
+					<option value="elem_28">elem 28</option>
+					<option value="elem_29">elem 29</option>
+					<option value="elem_30">elem 30</option>
+					<option value="elem_31">elem 31</option>
+					<option value="elem_32">elem 32</option>
+					<option value="elem_33">elem 33</option>
+					<option value="elem_34">elem 34</option>
+					<option value="elem_35">elem 35</option>
+					<option value="elem_36">elem 36</option>
+					<option value="elem_37">elem 37</option>
+					<option value="elem_38">elem 38</option>
+					<option value="elem_39">elem 39</option>
+					<option value="elem_40">elem 40</option>
+					<option value="elem_41">elem 41</option>
+					<option value="elem_42" selected>elem 42</option>
+					<option value="elem_43">elem 43</option>
+					<option value="elem_44">elem 44</option>
+					<option value="elem_45">elem 45</option>
+					<option value="elem_46">elem 46</option>
+					<option value="elem_47">elem 47</option>
+					<option value="elem_48">elem 48</option>
+					<option value="elem_49">elem 49</option>
+					<option value="elem_50">elem 50</option>
+					<option value="elem_51">elem 51</option>
+					<option value="elem_52">elem 52</option>
+					<option value="elem_53">elem 53</option>
+					<option value="elem_54">elem 54</option>
+					<option value="elem_55">elem 55</option>
+					<option value="elem_56">elem 56</option>
+					<option value="elem_57">elem 57</option>
+					<option value="elem_58">elem 58</option>
+					<option value="elem_59">elem 59</option>
+					<option value="elem_60">elem 60</option>
+					<option value="elem_61">elem 61</option>
+					<option value="elem_62">elem 62</option>
+					<option value="elem_63">elem 63</option>
+					<option value="elem_64">elem 64</option>
+					<option value="elem_65">elem 65</option>
+					<option value="elem_66">elem 66</option>
+					<option value="elem_67">elem 67</option>
+					<option value="elem_68">elem 68</option>
+					<option value="elem_69">elem 69</option>
+					<option value="elem_70">elem 70</option>
+					
+				</select>
+				
+				
 			</div>
 			
 		</div>
 		
 		<div class="dialogButtonRow">
 			<input type="button" style="width:100px" id="buttonCancelAssign" value="Cancel" />
-			<input type="button" style="width:100px" id="buttonConfirmAssign" value="Apply" />
+			<input type="button" style="width:100px" id="buttonExecuteAssign" value="Apply" />
 		</div>
 		
 		<script type="text/javascript">
@@ -296,14 +378,17 @@
 	<div id="deleteMediaPanel" class="colorboxPanel">
 	
 		<div class="dialogContent">
-			<h1>Are you sure you want to delete &quot;<span id="deleteMediaName"></span>&quot;?</h1>
-			<input type="checkbox" name="deleteEvenIfInUse" id="deleteEvenIfInUse" />
-			<label for="deleteEvenIfInUse">Force removal: delete even if assigned to stage(s)</label>
+			<h1>Delete &quot;<span id="deleteMediaName"></span>&quot;?</h1>
+			<div id="deleteEvenIfInUseDisplay">
+				<p>Assigned to <strong><span id="deleteMediaAssignedStages"></span></strong>.</p>
+				<input type="checkbox" name="deleteEvenIfInUse" id="deleteEvenIfInUse" />
+				<label for="deleteEvenIfInUse">confirm to delete from all assigned stages <em>(forces stage reload)</em></label>
+			</div>
 		</div>
 		
 		<div class="dialogButtonRow">
 			<input type="button" style="width:100px" id="buttonCancelDelete" value="Cancel" />
-			<input type="button" style="width:100px" id="buttonConfirmDelete" value="Delete" />
+			<input type="button" style="width:100px" id="buttonExecuteDelete" value="Delete" />
 		</div>
 		
 		<script type="text/javascript">
@@ -320,7 +405,7 @@
 <script type="text/javascript">
 var stageList = %(list_stages_as_json)s;
 $(document).ready(function(){
-	setupMediaEdit2("%(req:path)s","%(user)s",stageList);
+	setupMediaEdit2("%(req:path)s","%(user)s",stageList,true);
 })
 </script>
 

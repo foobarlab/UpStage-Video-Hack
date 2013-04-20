@@ -1122,6 +1122,13 @@ a#previewLink:hover {
 	/*background: white;*/
 }
 
+input[type=checkbox] {
+	display:inline-block;
+	margin-top:1px;
+	margin-right:6px;
+	vertical-align:top;
+}
+
 #controlButtons {
 	height:55px;
 	display:block;
@@ -1196,15 +1203,12 @@ table#tableDetails {
 	margin:10px 0 20px 0;
 }
 
+/* old code for chosen */
+/*
 #assignMediaToStageSelectorPanel {
 	width:680px;
 	height:200px;
 	display:block;
-	/*
-	overflow: auto;
-	overflow-y: auto;
-	overflow-x: auto;
-	*/
 	background-color:#efefef;
 	z-index:9990;
 }
@@ -1214,3 +1218,4 @@ table#tableDetails {
 	width:655px;
 	z-index:9991;
 }
+*/

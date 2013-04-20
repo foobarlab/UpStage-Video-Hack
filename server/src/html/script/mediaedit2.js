@@ -29,16 +29,17 @@ var clickHandlerDownloadMedia = null;
 var clickHandlerTagMedia = null;
 
 // Delete Media
+var clickHandlerExecuteDelete = null;
 var clickHandlerConfirmDelete = null;
 
 // Assign Media To Stage
-var clickHandlerConfirmAssign = null;	// TODO unused for now
+var clickHandlerExecuteAssign = null;	// TODO unused for now
 
 
 var previewType = null;
 var previewThumbnailType = null;
 
-function setupMediaEdit2(url_path,current_user,current_stages) {
+function setupMediaEdit2(url_path,current_user,current_stages,set_filter_to_current_user) {
 	
 	// set global variables
 	url = url_path;
@@ -68,7 +69,9 @@ function setupMediaEdit2(url_path,current_user,current_stages) {
 		callAjaxGetData();
 	});
 	
-	setCurrentUserInFilter();	// set default user
+	if(set_filter_to_current_user) {
+		setCurrentUserInFilter();	// set default user
+	}
 	callAjaxGetData();		// set initial data
 	
 }
@@ -160,8 +163,8 @@ function callAjaxDeleteData(key,deleteIfInUse) {
         	//alert("Response Success: response="+response);
         	if(response.status == 200) {
         		
-        		// TODO gracefully refresh data
-        		setupMediaEdit2(url,user,stages);	// FIXME replace with better function!
+        		// gracefully refresh data
+        		setupMediaEdit2(url,user,stages,false);
         		
         		// close colorbox
         		$.fn.colorbox.close(); //return false;
@@ -170,8 +173,8 @@ function callAjaxDeleteData(key,deleteIfInUse) {
         		// TODO handle known errors
         		alert("Error while retrieving data: status="+response.status+", timestamp="+ response.timestamp +", data="+response.data);
         		
-        		// TODO gracefully refresh data
-        		setupMediaEdit2(url,user,stages);	// FIXME replace with better function!
+        		// gracefully refresh data
+        		setupMediaEdit2(url,user,stages,false);
         		
         		// close colorbox
         		$.fn.colorbox.close(); //return false;
@@ -181,8 +184,8 @@ function callAjaxDeleteData(key,deleteIfInUse) {
             // TODO handle unknown errors (may be 'no connection')
         	alert("An error occured: textStatus="+textStatus+", errorThrown="+errorThrown);
         	
-        	// TODO gracefully refresh data
-    		setupMediaEdit2(url,user,stages);	// FIXME replace with better function!
+        	// gracefully refresh data
+        	setupMediaEdit2(url,user,stages,false);
     		
         	// close colorbox
     		$.fn.colorbox.close(); //return false;
@@ -361,26 +364,55 @@ function setupDataGrid() {
 				clickHandlerDeleteMedia = function(e) {
 					log.debug("clickHandlerDeleteMedia: click: #buttonDeleteMedia, key="+selectedMediaData['key']);
 					
-					// unbind confirm button first
-					$("#buttonConfirmDelete").unbind('click',clickHandlerConfirmDelete);
+					// unbind confirm/execution button first
+					$("#buttonExecuteDelete").unbind('click',clickHandlerExecuteDelete);
+					$("#deleteEvenIfInUse").unbind('click',clickHandlerConfirmDelete);
 					
-					// set click handler for confirmation dialog
-					clickHandlerConfirmDelete = function(e) {
-						log.debug("clickHandlerConfirmDelete: click: #buttonConfirmDelete, key="+selectedMediaData['key']);
+					// always enable execution button at first
+					$("#buttonExecuteDelete").removeAttr("disabled");
+					
+					// set click handler for execution dialog
+					clickHandlerExecuteDelete = function(e) {
+						log.debug("clickHandlerExecuteDelete: click: #buttonExecuteDelete, key="+selectedMediaData['key']);
 						// get if we want to delete even if in use
 						var deleteIfInUse = $("#deleteEvenIfInUse").prop('checked');
 						// actually delete the media
 						callAjaxDeleteData(selectedMediaData['key'],deleteIfInUse);	
 					}
 					
-					// bind click handler for final deletion
-					$("#buttonConfirmDelete").bind('click',clickHandlerConfirmDelete);
+					// set click handler for confirmation dialog
+					clickHandlerConfirmDelete = function(e) {
+						log.debug("clickHandlerConfirmDelete: click: #deleteEvenIfInUse");
+						
+						// enable/disable execution button	
+						if($("#deleteEvenIfInUse").prop('checked')) {
+							$("#buttonExecuteDelete").removeAttr("disabled");
+						} else {
+							$("#buttonExecuteDelete").attr("disabled", "disabled");
+						}
+					}
 					
 					// set media name in confirmation dialog
 					$("#deleteMediaName").html(selectedMediaData['name']);
 					
 					// reset checkbox (delete even if in use)
 					$("#deleteEvenIfInUse").attr('checked', false);
+					
+					// hide checkbox if not assigned to any stage
+					if(selectedMediaData['stages'] == '') {
+						$("#deleteMediaAssignedStages").html('');
+						$("#deleteEvenIfInUseDisplay").hide();
+					} else {
+						$("#buttonExecuteDelete").attr("disabled", "disabled");
+						$("#deleteMediaAssignedStages").html(selectedMediaData['stages']);
+						$("#deleteEvenIfInUseDisplay").show();
+					}
+					
+					// bind click handler for confirmation
+					$("#deleteEvenIfInUse").bind('click',clickHandlerConfirmDelete);
+
+					// bind click handler for final deletion
+					$("#buttonExecuteDelete").bind('click',clickHandlerExecuteDelete);
 					
 					// open confirmation dialog
 					$.colorbox({
@@ -409,6 +441,66 @@ function setupDataGrid() {
 					// set media name in dialog
 					$("#assignMediaName").html(selectedMediaData['name']);
 					
+					// USE loudev.com multiselect:
+					
+					// check which stages the media is assigned to
+					
+					// stages are stored as comma-separated values in a string
+					var stagesAssignedData = selectedMediaData['stages'];
+					
+					// split string to array and trim all values
+					var stagesAssigned = [];
+					$.each(stagesAssignedData.split(","), function(){
+					    stagesAssigned.push($.trim(this));
+					});
+					
+					// DEBUG:
+					//alert("AVAILABLE STAGES: " + stages + "\n\nASSIGNED STAGES: " + stagesAssigned);
+					
+					// create HTML elements for multi-selector
+					
+					var selectorHTML;
+					selectorHTML = '<select multiple="multiple" id="assignMediaToStageSelector" name="assignStages[]">\n';
+					
+					for (i = 0; i < stages.length; i += 1) {
+		                var stageName = stages[i];
+		                
+		                // determine if media has stage already assigned
+		                if($.inArray(stageName, stagesAssigned) > -1) {
+		                	// stage is assigned: preselect stage
+		                	selectorHTML += '<option value="'+stageName+'" selected="selected">'+stageName+'</option>\n';
+		                } else {
+		                	// stage is unassigned
+		                	selectorHTML += '<option value="'+stageName+'">'+stageName+'</option>\n';
+		                }
+		                //selectorHTML += '<option value="'+stageName+'">'+stageName+'</option>';
+		            }
+					selectorHTML += '</select>\n';
+					
+					// DEBUG:
+					//alert("HTML: " +selectorHTML);
+					
+					// TODO: replace dummy html
+					//$('#assignMediaToStageSelectorPanel').html(selectorHTML);
+					
+					// set multiselect options
+					
+					var selectorOptions = {
+						// headers
+						selectableHeader: "<div class='selector-header'>Available</div>",
+						selectedHeader: "<div class='selector-header'>Assigned</div>",
+					};
+					$('#assignMediaToStageSelector').multiSelect(selectorOptions);
+					
+					// reset all selections
+					//$('#assignMediaToStageSelector').multiSelect('deselect_all');
+					
+					// select assigned stages
+					//$('#assignMediaToStageSelector').multiSelect('select',stagesAssigned);
+					
+					// USE chosen:
+					
+					/*
 					// check which stages the media is assigned to
 					
 					// stages are stored as comma-separated values in a string
@@ -449,17 +541,20 @@ function setupDataGrid() {
 					// start "chosen"
 					$('#assignMediaToStage').chosen();
 					
-					// unbind confirm button first
-					$("#buttonConfirmAssign").unbind('click',clickHandlerConfirmDelete);
+					*/
 					
-					// set click handler for confirmation dialog
-					clickHandlerConfirmAssign = function(e) {
-						log.debug("clickHandlerConfirmAssign: click: #buttonConfirmAssign: key="+selectedMediaData['key']);
+					// unbind execute button first
+					$("#buttonExecuteAssign").unbind('click',clickHandlerExecuteAssign);
+					
+					// set click handler for execution dialog
+					clickHandlerExecuteAssign = function(e) {
+						log.debug("clickHandlerExecuteAssign: click: #buttonExecuteAssign: key="+selectedMediaData['key']);
 						
 						// get selected values
-						var selectedValues = $('#assignMediaToStage').val() || [];
+						//var selectedValues = $('#assignMediaToStage').val() || [];	// old code for chosen
+						var selectedValues = $('#assignMediaToStageSelector').val() || [];
 						
-						alert("Assign clicked: " + selectedValues.join(", "));
+						//alert("Assign clicked: " + selectedValues.join(", "));
 						
 						// pass selected stages
 						callAjaxAssignToStage(selectedMediaData['key'],selectedValues);
@@ -467,7 +562,7 @@ function setupDataGrid() {
 					}
 					
 					// bind click handler for final deletion
-					$("#buttonConfirmAssign").bind('click',clickHandlerConfirmAssign);
+					$("#buttonExecuteAssign").bind('click',clickHandlerExecuteAssign);
 					
 					// show assign panel
 					$.colorbox({
@@ -477,10 +572,10 @@ function setupDataGrid() {
 						scrolling: false,
 						opacity: 0.5,
 						open: true,
-						initialWidth: 750,
-						initialHeight: 380,
-						width: 750,
-						height: 380,
+						initialWidth: 550,
+						initialHeight: 500,
+						width: 550,
+						height: 500,
 						inline: true,
 						href: "#assignMediaPanel",
 						
