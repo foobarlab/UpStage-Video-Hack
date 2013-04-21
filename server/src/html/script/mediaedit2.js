@@ -619,10 +619,26 @@ function setupDataGrid() {
 					clickHandlerExecuteTag = function(e) {
 						log.debug("clickHandlerExecuteTag: click: #buttonExecuteTag: key="+selectedMediaData['key']);
 						
-						// get selected values
+						// get selected values (may be empty or contain duplicates!)
 						var selectedValues = $('#tagMediaSelector').val() || [];
+
+						// remove empty ones and duplicates
+						var selectedTags = [];
+						for (i = 0; i < selectedValues.length; i += 1) {
+							var tagName = selectedValues[i];
+							if(tagName != '') {
+								if(jQuery.inArray(tagName, selectedTags) == -1) {
+									log.debug("clickHandlerExecuteTag: selected unique tag: '" + tagName + "'");
+									selectedTags.push(tagName);
+								} else {
+									log.debug("clickHandlerExecuteTag: skipping selected duplicate tag: '" + tagName + "'");
+								}
+							} else {
+								log.debug("clickHandlerExecuteTag: skipping selected empty tag");
+							}
+						}
 						
-						alert("Tag clicked: " + selectedValues.join(", "));
+						alert("selected tags: " + selectedTags.join(", "));
 						
 						// TODO pass selected tags
 						//callAjaxTag(selectedMediaData['key'],selectedValues);
