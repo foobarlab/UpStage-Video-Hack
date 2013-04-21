@@ -1,4 +1,4 @@
 <props>
-<prop medium="" name="name_prop" tags="" url="/media/megaphone.swf" streamname="" dateTime="" file="megaphone.swf" voice="" uploader="admin" thumbnail="" streamserver="">
+<prop medium="" name="name_prop" tags="tag1, tag2, tag3, prop" url="/media/megaphone.swf" streamname="" dateTime="" file="megaphone.swf" voice="" uploader="admin" thumbnail="" streamserver="">
 </prop>
 </props>

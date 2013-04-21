@@ -1,18 +1,18 @@
 <avatars>
-<avatar medium="stream" name="name_stream_mp3" tags="" url="library:SFWuHKCb:VideoOverlay" streamname="song40.mp3" dateTime="" file="library:SFWuHKCb:VideoOverlay" voice="" uploader="admin" thumbnail="library:BkKNrbUp:IconAudioStream" streamserver="rtmp://localhost/oflaDemo">
+<avatar medium="stream" name="name_stream_mp3" tags="tag1, tag2, tag3, avatar" url="library:SFWuHKCb:VideoOverlay" streamname="song40.mp3" dateTime="" file="library:SFWuHKCb:VideoOverlay" voice="" uploader="admin" thumbnail="library:BkKNrbUp:IconAudioStream" streamserver="rtmp://localhost/oflaDemo">
 </avatar>
-<avatar medium="stream" name="name_stream_flv" tags="" url="library:CrdDf6jn:VideoOverlay" streamname="big_buck_bunny_480p_flv1.flv" dateTime="" file="library:CrdDf6jn:VideoOverlay" voice="" uploader="admin" thumbnail="library:tMKv4nCe:IconVideoStream" streamserver="rtmp://localhost/oflaDemo">
+<avatar medium="stream" name="name_stream_flv" tags="tag1, tag2, tag3, avatar" url="library:CrdDf6jn:VideoOverlay" streamname="big_buck_bunny_480p_flv1.flv" dateTime="" file="library:CrdDf6jn:VideoOverlay" voice="" uploader="admin" thumbnail="library:tMKv4nCe:IconVideoStream" streamserver="rtmp://localhost/oflaDemo">
 </avatar>
-<avatar medium="stream" name="name_stream_live" tags="" url="library:a39Udxdf:VideoOverlay" streamname="helloworld" dateTime="" file="library:a39Udxdf:VideoOverlay" voice="" uploader="admin" thumbnail="library:iiG9abcf:IconLiveStream" streamserver="rtmp://localhost/oflaDemo">
+<avatar medium="stream" name="name_stream_live" tags="tag1, tag2, tag3, avatar" url="library:a39Udxdf:VideoOverlay" streamname="helloworld" dateTime="" file="library:a39Udxdf:VideoOverlay" voice="" uploader="admin" thumbnail="library:iiG9abcf:IconLiveStream" streamserver="rtmp://localhost/oflaDemo">
 </avatar>
-<avatar medium="video" name="name_video" tags="" url="/media/video/video.jpg" streamname="" dateTime="" file="video/video.jpg" voice="" uploader="admin" thumbnail="/media/video-still/video.jpg" streamserver="">
+<avatar medium="video" name="name_video" tags="tag3, avatar" url="/media/video/video.jpg" streamname="" dateTime="" file="video/video.jpg" voice="" uploader="admin" thumbnail="/media/video-still/video.jpg" streamserver="">
 </avatar>
-<avatar medium="" name="name_avatar" tags="" url="/media/helen_av.swf" streamname="" dateTime="" file="helen_av.swf" voice="e_en-n" uploader="admin" thumbnail="" streamserver="">
+<avatar medium="" name="name_avatar" tags="tag2, tag4, avatar" url="/media/helen_av.swf" streamname="" dateTime="" file="helen_av.swf" voice="e_en-n" uploader="admin" thumbnail="" streamserver="">
 </avatar>
 <avatar medium="stream" name="name_avatar_with_stream" tags="" url="/media/helen_av2.swf" streamname="test" dateTime="" file="helen_av2.swf" voice="e_en-n" uploader="admin" thumbnail="" streamserver="rtmp://localhost/oflaDemo">
 </avatar>
-<avatar medium="stream" name="name_unassigned" tags="" url="library:4FciETtF:VideoOverlay" streamname="test" dateTime="" file="library:4FciETtF:VideoOverlay" voice="" uploader="admin" thumbnail="library:u9xYHuEj:IconLiveStream" streamserver="rtmp://localhost/oflaDemo">
+<avatar medium="stream" name="name_unassigned" tags="avatar" url="library:4FciETtF:VideoOverlay" streamname="test" dateTime="" file="library:4FciETtF:VideoOverlay" voice="" uploader="admin" thumbnail="library:u9xYHuEj:IconLiveStream" streamserver="rtmp://localhost/oflaDemo">
 </avatar>
-<avatar medium="stream" name="name_unassigned2" tags="" url="library:5FciETtF:VideoOverlay" streamname="test2" dateTime="" file="library:5FciETtF:VideoOverlay" voice="" uploader="user" thumbnail="library:u0xYHuEj:IconLiveStream" streamserver="rtmp://localhost/oflaDemo">
+<avatar medium="stream" name="name_unassigned2" tags="tag1, tag2, tag3, avatar, deleteme" url="library:5FciETtF:VideoOverlay" streamname="test2" dateTime="" file="library:5FciETtF:VideoOverlay" voice="" uploader="user" thumbnail="library:u0xYHuEj:IconLiveStream" streamserver="rtmp://localhost/oflaDemo">
 </avatar>
 </avatars>

@@ -20,13 +20,8 @@
 <script type="text/javascript" src="/script/spin.js/spin.js"></script>
 <script type="text/javascript" src="/script/jquery.spin.js/jquery.spin.js"></script>
 <script type="text/javascript" src="/script/jquery.colorbox/jquery.colorbox-min.js"></script>
-
-<!-- 
-<script type="text/javascript" src="/script/chosen/chosen.jquery.min.js"></script>
--->
-
 <script type="text/javascript" src="/script/jquery.multiselect/jquery.multi-select.js"></script>
-
+<script type="text/javascript" src="/script/chosen/chosen.jquery.min.js"></script>
 
 <h1 style="margin:20px 0">Edit/View Media</h1>
 
@@ -90,7 +85,7 @@
 
 	<div id="dataPanel">
 	
-		<!-- TODO SlickGrid Live Update -->
+		<!-- TODO SlickGrid Live Update, Clear Button -->
 		
 		<div class="filterRow">
 	
@@ -104,6 +99,10 @@
 			<div class="filterBlock">
 				<label for="filterTags">Tags:</label>
 				<input type="text" size="20" id="filterTags" name="filterTags" />
+	 		</div>
+	 		
+	 		<div class="filterBlock">
+		    	<input id="buttonClearQuickSearch" type="button" style="width:60px" value="Clear" />
 	 		</div>
 	 
 		</div>
@@ -207,35 +206,8 @@
 			<h1>Assign &quot;<span id="assignMediaName"></span>&quot; to stages</h1>
 			<div id="assignMediaToStageSelectorPanel">
 				
-				<!-- chosen lib test: -->
-				<!-- 
-				<select id="assignMediaToStage" data-placeholder="Click here to choose assigned stages" multiple>
-	                <option value=""></option>
-	                <option value="1">American Black Bear</option>
-	                <option value="2">Asiatic Black Bear</option>
-	                <option value="3">Brown Bear</option>
-	                <option value="4">Giant Panda</option>
-	                <option value="5" selected>Sloth Bear</option>
-	                <option value="6" disabled>Sun Bear</option>
-	                <option value="7" selected>Polar Bear</option>
-	                <option value="8" disabled>Spectacled Bear</option>
-	                <option value="9">American Black Bear 1</option>
-	                <option value="10">Asiatic Black Bear 1</option>
-	                <option value="11">Brown Bear 1</option>
-	                <option value="12">Giant Panda 1</option>
-	                <option value="13">American Black Bear 2</option>
-	                <option value="14">Asiatic Black Bear 2</option>
-	                <option value="15">Brown Bear 2</option>
-	                <option value="16">Giant Panda 2</option>
-	                <option value="17">American Black Bear 3</option>
-	                <option value="18">Asiatic Black Bear 3</option>
-	                <option value="19">Brown Bear 3</option>
-	                <option value="20">Giant Panda 3</option>
-              	</select>
-				-->
-				
 				<!-- loudev.com multiselect test -->
-				
+				<!-- 
 				<select multiple="multiple" id="assignMediaToStageSelector" name="assignedStages[]">
 					<option value="elem_1">elem 1 with very long text lalalalalalala text text text</option>
 					<option value="elem_2" selected="selected">elem 2</option>
@@ -309,7 +281,7 @@
 					<option value="elem_70">elem 70</option>
 					
 				</select>
-				
+				-->
 				
 			</div>
 			
@@ -328,7 +300,52 @@
 	</div>
 	
 	<div id="tagMediaPanel" class="colorboxPanel">
-		<p>TAG MEDIA</p>
+		
+		<div class="dialogContent">
+			<h1>Set Tags for &quot;<span id="tagMediaName"></span>&quot;</h1>
+			<div id="tagMediaSelectorPanel">
+		
+				<!-- test chosen -->
+				<!-- 
+				<select id="tagMedia" data-placeholder="Click here to choose known tags or type in a new one" multiple>
+		               <option value=""></option>
+		               <option value="1">American Black Bear</option>
+		               <option value="2">Asiatic Black Bear</option>
+		               <option value="3">Brown Bear</option>
+		               <option value="4">Giant Panda</option>
+		               <option value="5" selected>Sloth Bear</option>
+		               <option value="6" disabled>Sun Bear</option>
+		               <option value="7" selected>Polar Bear</option>
+		               <option value="8" disabled>Spectacled Bear</option>
+		               <option value="9">American Black Bear 1</option>
+		               <option value="10">Asiatic Black Bear 1</option>
+		               <option value="11">Brown Bear 1</option>
+		               <option value="12">Giant Panda 1</option>
+		               <option value="13">American Black Bear 2</option>
+		               <option value="14">Asiatic Black Bear 2</option>
+		               <option value="15">Brown Bear 2</option>
+		               <option value="16">Giant Panda 2</option>
+		               <option value="17">American Black Bear 3</option>
+		               <option value="18">Asiatic Black Bear 3</option>
+		               <option value="19">Brown Bear 3</option>
+		               <option value="20">Giant Panda 3</option>
+				</select>
+				-->
+			
+			</div>
+			
+		</div>
+		
+		<div class="dialogButtonRow">
+			<input type="button" style="width:100px" id="buttonCancelTag" value="Cancel" />
+			<input type="button" style="width:100px" id="buttonExecuteTag" value="Apply" />
+		</div>
+		
+		<script type="text/javascript">
+			// default close function for cancel button
+			$("#buttonCancelTag").click(function(){ $.fn.colorbox.close(); return false; });
+		</script>
+
 	</div>
 
 	<div id="editMediaPanel" class="colorboxPanel">

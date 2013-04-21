@@ -16,10 +16,7 @@
 <link rel="stylesheet" type="text/css" href="/style/slickgrid.css" />
 <link rel="stylesheet" type="text/css" href="/style/colorbox.css" />
 <link rel="stylesheet" type="text/css" href="/style/multi-select.css" />
-
-<!--
-<link rel="stylesheet" type="text/css" href="/script/chosen/chosen.css" />
--->
+<link rel="stylesheet" type="text/css" href="/style/chosen.css" />
 
 <!-- include html5shiv -->
 <!--[if lt IE 9]>

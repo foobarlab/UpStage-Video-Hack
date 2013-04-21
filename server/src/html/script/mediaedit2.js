@@ -33,7 +33,10 @@ var clickHandlerExecuteDelete = null;
 var clickHandlerConfirmDelete = null;
 
 // Assign Media To Stage
-var clickHandlerExecuteAssign = null;	// TODO unused for now
+var clickHandlerExecuteAssign = null;
+
+// Tag Media
+var clickHandlerExecuteTag = null;
 
 
 var previewType = null;
@@ -480,68 +483,16 @@ function setupDataGrid() {
 					// DEBUG:
 					//alert("HTML: " +selectorHTML);
 					
-					// TODO: replace dummy html
-					//$('#assignMediaToStageSelectorPanel').html(selectorHTML);
+					$('#assignMediaToStageSelectorPanel').html(selectorHTML);
 					
 					// set multiselect options
 					
 					var selectorOptions = {
 						// headers
-						selectableHeader: "<div class='selector-header'>Available</div>",
-						selectedHeader: "<div class='selector-header'>Assigned</div>",
+						selectableHeader: "<div class='ms-selector-header'>Available</div>",
+						selectedHeader: "<div class='ms-selector-header'>Assigned</div>",
 					};
 					$('#assignMediaToStageSelector').multiSelect(selectorOptions);
-					
-					// reset all selections
-					//$('#assignMediaToStageSelector').multiSelect('deselect_all');
-					
-					// select assigned stages
-					//$('#assignMediaToStageSelector').multiSelect('select',stagesAssigned);
-					
-					// USE chosen:
-					
-					/*
-					// check which stages the media is assigned to
-					
-					// stages are stored as comma-separated values in a string
-					var stagesAssignedData = selectedMediaData['stages'];
-					
-					// split string to array and trim all values
-					var stagesAssigned = [];
-					$.each(stagesAssignedData.split(","), function(){
-					    
-						log.debug("clickHandlerAssignMedia: found assigned stages: '" + $.trim(this) + "'");
-						
-						stagesAssigned.push($.trim(this));
-					});
-					
-					// create HTML elements for multi-selector with chosen
-					var selectorHTML;
-					selectorHTML = '<select id="assignMediaToStage" data-placeholder="No stages assigned" multiple>';
-					
-					for (i = 0; i < stages.length; i += 1) {
-		                var stageName = stages[i];
-		                
-		                // determine if media has stage already assigned
-		                if($.inArray(stageName, stagesAssigned) > -1) {
-		                	// stage is assigned: preselect stage
-		                	log.debug("clickHandlerAssignMedia: create HTML: assigned stage is selected: '" + stageName + "'");
-		                	selectorHTML += '<option value="'+stageName+'" selected>'+stageName+'</option>';
-		                } else {
-		                	// stage is unassigned
-		                	log.debug("clickHandlerAssignMedia: create HTML: unassigned stage is not selected: '" + stageName + "'");
-		                	selectorHTML += '<option value="'+stageName+'">'+stageName+'</option>';
-		                }
-		            }
-					selectorHTML += '</stage>';
-					
-					// set html
-					$('#assignMediaToStageSelectorPanel').html(selectorHTML);
-					
-					// start "chosen"
-					$('#assignMediaToStage').chosen();
-					
-					*/
 					
 					// unbind execute button first
 					$("#buttonExecuteAssign").unbind('click',clickHandlerExecuteAssign);
@@ -590,7 +541,96 @@ function setupDataGrid() {
 					
 					log.debug("clickHandlerTagMedia: click: #buttonTagMedia, key="+selectedMediaData['key']);
 					
-					// TODO
+					// set media name in dialog
+					$("#tagMediaName").html(selectedMediaData['name']);
+					
+					// USE chosen:
+					
+					// check tags of selected media
+					
+					// tags are stored as comma-separated values in a string
+					var tagsData = selectedMediaData['tags'];
+					
+					// split string to array and trim all values
+					var preselectedTags = [];
+					$.each(tagsData.split(","), function(){
+					    log.debug("clickHandlerTagMedia: found tag in selected media: '" + $.trim(this) + "'");
+					    preselectedTags.push($.trim(this));
+					});
+					
+					// create HTML elements for multi-selector with chosen
+					var selectorHTML;
+					selectorHTML = '<select id="tagMediaSelector" data-placeholder="Click here to choose known tags or type in a new one" multiple>';
+					
+					// collect all tags of the current available (filtered) data
+					
+					var allTags = [];
+					for (i = 0; i < data.length; i += 1) {
+						var tagsData = data[i]['tags'];
+						if(tagsData != '') {
+							log.debug("clickHandlerTagMedia: found tags in available data: '" + tagsData + "'");
+							$.each(tagsData.split(","), function(){
+								var candidateTag = $.trim(this);
+							    // add to array if not yet existant
+							    if(jQuery.inArray(candidateTag, allTags) == -1) {
+							    	log.debug("clickHandlerTagMedia: collecting new tag: '" + candidateTag + "'");
+							    	allTags.push(candidateTag);
+							    } else {
+							    	log.debug("clickHandlerTagMedia: skipping already added tag: '" + candidateTag + "'");
+							    }
+							});
+						}
+					}
+					
+					// output selected ones
+					for (i = 0; i < preselectedTags.length; i += 1) {
+						var tagName = preselectedTags[i];
+						if(tagName != '') {
+							log.debug("clickHandlerTagMedia: output selected tag: '" + tagName + "'");
+			                selectorHTML += '<option value="'+tagName+'" selected>'+tagName+'</option>';
+						}
+					}
+					
+					// output available ones
+					for (i = 0; i < allTags.length; i += 1) {
+						var candidateTagName = allTags[i];
+						log.debug("clickHandlerTagMedia: checking candidate tag: '" + candidateTagName + "'");
+						if(jQuery.inArray(candidateTagName, preselectedTags) == -1) {
+							log.debug("clickHandlerTagMedia: output candidate tag: '" + candidateTagName + "'");
+							selectorHTML += '<option value="'+candidateTagName+'">'+candidateTagName+'</option>';
+						}
+					}
+					
+					selectorHTML += '</select>';
+					
+					// DEBUG:
+					//alert("HTML: " + selectorHTML);
+					
+					// set html
+					$('#tagMediaSelectorPanel').html(selectorHTML);
+					
+					// start "chosen"
+					$('#tagMediaSelector').chosen({allow_custom_value: true});
+					
+					// unbind execute button first
+					$("#buttonExecuteTag").unbind('click',clickHandlerExecuteTag);
+					
+					// set click handler for execution dialog
+					clickHandlerExecuteTag = function(e) {
+						log.debug("clickHandlerExecuteTag: click: #buttonExecuteTag: key="+selectedMediaData['key']);
+						
+						// get selected values
+						var selectedValues = $('#tagMediaSelector').val() || [];
+						
+						alert("Tag clicked: " + selectedValues.join(", "));
+						
+						// TODO pass selected tags
+						//callAjaxTag(selectedMediaData['key'],selectedValues);
+						
+					}
+					
+					// bind click handler for final deletion
+					$("#buttonExecuteTag").bind('click',clickHandlerExecuteTag);
 					
 					// show tag panel
 					$.colorbox({
@@ -600,10 +640,10 @@ function setupDataGrid() {
 						scrolling: false,
 						opacity: 0.5,
 						open: true,
-						initialWidth: 500,
-						initialHeight: 350,
-						width: 500,
-						height: 350,
+						initialWidth: 550,
+						initialHeight: 500,
+						width: 550,
+						height: 500,
 						inline: true,
 						href: "#tagMediaPanel",
 						

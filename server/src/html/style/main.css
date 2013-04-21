@@ -187,7 +187,8 @@ p.error
 	/*height:100%;*/
 	border: 2px #669900 solid;
 	background-color : #FFFFFF;
-	min-width:960px;
+	/*min-width:960px;*/
+	min-width:1004px;
 	max-width:1120px;
 	width:auto;
 	/*overflow:auto;*/
@@ -383,7 +384,7 @@ label {
 }
 
 input, select, button {
-	margin-right:10px;
+	margin-right:5px;
 	display:inline-block;
 	padding:2px;
 }
@@ -1163,6 +1164,8 @@ input[type=checkbox] {
 table#tableDetails {
 	width:100%;
 	margin-top:15px;
+	max-width:350px;
+	overflow:hidden;
 }
 
 #tableDetails tr:nth-child(even) {
@@ -1176,6 +1179,7 @@ table#tableDetails {
 #tableDetails td {
 	padding:3px;
 	text-align:left;
+	max-width:247px;
 }
 
 #tableDetails td.head {
@@ -1203,19 +1207,15 @@ table#tableDetails {
 	margin:10px 0 20px 0;
 }
 
-/* old code for chosen */
-/*
-#assignMediaToStageSelectorPanel {
-	width:680px;
-	height:200px;
+#tagMediaSelectorPanel {
+	width:480px;
+	height:350px;
 	display:block;
 	background-color:#efefef;
-	z-index:9990;
+	overflow:auto;
 }
 
-#assignMediaToStage {
+#tagMediaSelector {
 	display:block;
-	width:655px;
-	z-index:9991;
+	width:455px;
 }
-*/
