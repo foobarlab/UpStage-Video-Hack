@@ -1034,6 +1034,10 @@ a.IconButton
 	z-index:0;
 }
 
+#dataSummary {
+	font-size:11px;
+}
+
 #dataLoadingPanel {
 	position:relative;
 	top:-550px;

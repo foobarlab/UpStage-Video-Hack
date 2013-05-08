@@ -9,8 +9,6 @@ var MEDIA_TYPE_STREAM = 'stream';
 
 //global variables
 
-
-
 var url;	// current url for the page
 var user;	// current user
 var stages;	// all current stages
@@ -794,13 +792,35 @@ function refreshData(new_data) {
 	dataGrid.setData(data,true);
 	dataGrid.getSelectionModel().setSelectedRanges([]);	// deselect any selections
 	dataGrid.invalidate();
+	
+	// refresh summary info display
+	updateDataSummary();
 }
 
+function updateDataSummary() {
+	
+	var total_media_count = data.length;
+	var total_file_size = 0;
+	
+	$.each(data, function(){
+	    total_file_size += parseInt(this['size']);
+	});
+	
+	total_file_size = getBytesWithUnit(total_file_size);
+	
+	//alert(total_media_count + " " + total_file_size);
+	
+	$("#infoTotalMediaCount").html(total_media_count);
+	$("#infoTotalMediaSize").html(total_file_size);
+}
+
+/*
 function deleteData(delete_data) {
 	
 	// TODO delete data by key? remove from slick grid? reload panel?
 
 }
+*/
 
 function showDetails(single_data) {
 	
