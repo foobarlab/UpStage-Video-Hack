@@ -299,7 +299,7 @@ function setupDataGrid() {
 	       {id: "voice", name: "Voice", field: "voice", width:100},
 	       {id: "tags", name: "Tags", field: "tags", width:200},
 	       {id: "file", name: "File", field: "file", width:200},
-	       {id: "size", name: "Filesize", field: "size", width:200},
+	       {id: "size", name: "Filesize (Bytes)", field: "size", width:200},
 	       {id: "file_original", name: "File (Original)", field: "file_original", width:200},
 	       {id: "date", name: "Date", field: "date", width:200},
 	       {id: "type", name: "Type", field: "type", width:100},
