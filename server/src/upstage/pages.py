@@ -1178,6 +1178,14 @@ class MediaEditPage2(Workshop):
             elif thumbnail == config.SFX_ICON_IMAGE_URL:
                 thumbnail_icon = config.SFX_ICON
             
+            
+            # determine file size (in bytes)
+            size = 0    # default
+            relative_file_path = self.collection.avatars.path(value['media'])   # TODO better use utility function?
+            log.msg('MediaEditPage2: relative_file_path=%s' % relative_file_path)
+            if(relative_file_path != ""):
+                size = os.path.getsize(relative_file_path)
+            
             # create dataset as dictionary
             
             dataset = dict(key=key,
@@ -1189,6 +1197,7 @@ class MediaEditPage2(Workshop):
                            stages=value['stages'],
                            file_original=value['media'],
                            file=file_path,
+                           size=size,
                            name=value['name'],
                            date=value['dateTime'],
                            type=typename,

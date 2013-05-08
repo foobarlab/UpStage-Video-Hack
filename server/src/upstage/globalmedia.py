@@ -189,6 +189,13 @@ class MediaDict(Xml2Dict):
 
     def path(self, f):
         """Convert a relative path to absolute."""
+        # obviously it is rather relative than absolute
+        
+        # if there is no file return empty string:
+        library_prefix_length = len(config.LIBRARY_PREFIX)
+        if(f[:library_prefix_length] == config.LIBRARY_PREFIX):   # handle library items (included in client.swf)
+            return ""
+        
         # PQ & EB: Added 13.10.07
         # If it's an audio file (ends with .mp3) add in the folder 'audio' in front so it's /media/audio/
         if (f[-4:] == '.mp3') :

@@ -299,6 +299,7 @@ function setupDataGrid() {
 	       {id: "voice", name: "Voice", field: "voice", width:100},
 	       {id: "tags", name: "Tags", field: "tags", width:200},
 	       {id: "file", name: "File", field: "file", width:200},
+	       {id: "size", name: "Filesize", field: "size", width:200},
 	       {id: "file_original", name: "File (Original)", field: "file_original", width:200},
 	       {id: "date", name: "Date", field: "date", width:200},
 	       {id: "type", name: "Type", field: "type", width:100},
@@ -808,6 +809,7 @@ function showDetails(single_data) {
 	// reset data
 	var key = "";
 	var file = "";
+	var size = "";
 	var file_original = "";
 	var name = "";
 	var user = "";
@@ -839,10 +841,18 @@ function showDetails(single_data) {
 		thumbnail_original = single_data['thumbnail_original'];
 		thumbnail_icon = single_data['thumbnail_icon'];
 		file = single_data['file'];
+		size = single_data['size'];
 		file_original = single_data['file_original'];
 		date = single_data['date'];
 		streamname = single_data['streamname'];
 		streamserver = single_data['streamserver'];
+	}
+	
+	// convert 'size' to readable format
+	if (size == 0) {
+		size = '';
+	}  else {
+		size = getBytesWithUnit(size);
 	}
 	
 	// set text in details table
@@ -853,6 +863,7 @@ function showDetails(single_data) {
 	$('#detailVoice').html(voice);
 	$('#detailStages').html(stages);
 	$('#detailDate').html(date);
+	$('#detailSize').html(size);
 	$('#detailStreamname').html(streamname);
 	$('#detailStreamserver').html(streamserver);
 
@@ -1082,4 +1093,20 @@ function showDetails(single_data) {
 function getFileExtension(filename) {
 	var ext = /^.+\.([^.]+)$/.exec(filename);
 	return ext == null ? "" : ext[1];
+}
+
+function getBytesWithUnit(bytes) {
+	
+	if(isNaN(bytes)){ return; }
+	var units = [' Bytes', ' KB', ' MB', ' GB', ' TB', ' PB', ' EB', ' ZB', ' YB' ];
+	var amountOf2s = Math.floor(Math.log(+bytes)/Math.log(2));
+	if(amountOf2s < 1) {amountOf2s = 0; }
+	var i = Math.floor(amountOf2s / 10);
+	bytes = +bytes / Math.pow(2, 10*i);
+ 
+	// Rounds to 1 decimals places.
+	if(bytes.toString().length > bytes.toFixed(1).toString().length) {
+		bytes = bytes.toFixed(1);
+	}
+	return bytes + units[i];
 }
