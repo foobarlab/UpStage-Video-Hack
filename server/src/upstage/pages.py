@@ -937,7 +937,7 @@ class MediaEditPage2(Workshop):
         
         # meta response values
         self.status = 500   # default error code, using HTTP error codes for status
-        self.error_msg = 'Unknonw error'    # default message
+        self.error_msg = 'Unknown error'    # default message
     
     def text_user(self, request):
         if (self.player):

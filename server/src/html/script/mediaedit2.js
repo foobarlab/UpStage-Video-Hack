@@ -121,7 +121,7 @@ function callAjaxGetData() {
         	'filter_medium': $("#filterMedium").val(),
         },
         success: function(response) {
-        	//alert("Response Success: response="+response);
+        	
         	if(response.status == 200) {
         		refreshData(response.data);
         		
@@ -130,8 +130,10 @@ function callAjaxGetData() {
         		$('#dataLoadingPanel').hide();
         		
         	} else {
-        		// TODO handle known errors
-        		alert("Error while retrieving data: status="+response.status+", timestamp="+ response.timestamp +", data="+response.data);
+        		
+        		// handle known errors
+        		showKnownError(response.timestamp,response.status,response.data);
+        		
         		refreshData(null);
         		
         		// hide loading panel
@@ -140,8 +142,10 @@ function callAjaxGetData() {
         	}
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            // TODO handle unknown errors (may be 'no connection')
-        	alert("An error occured: textStatus="+textStatus+", errorThrown="+errorThrown);
+        	
+        	// handle unknown errors (may be 'no connection')
+        	showUnknownError(textStatus,errorThrown);
+        	
         	refreshData(null);
         	
         	// hide loading panel
@@ -163,7 +167,7 @@ function callAjaxDeleteData(key,deleteIfInUse) {
         	'deleteIfInUse': deleteIfInUse,
         },
         success: function(response) {
-        	//alert("Response Success: response="+response);
+        	
         	if(response.status == 200) {
         		
         		// gracefully refresh data
@@ -174,29 +178,20 @@ function callAjaxDeleteData(key,deleteIfInUse) {
         		
         	} else {
         		
-        		// TODO handle known errors
-        		alert("Error while retrieving data: status="+response.status+", timestamp="+ response.timestamp +", data="+response.data);
+        		// handle known errors
+        		showKnownError(response.timestamp,response.status,response.data);
         		
         		// gracefully refresh data
         		setupMediaEdit2(url,user,stages,false);
-        		
-        		// close colorbox
-        		$.fn.colorbox.close(); //return false;
-        		
-        		// TODO show error message with colorbox
         	}
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            // TODO handle unknown errors (may be 'no connection')
-        	alert("An unexpected error occured: textStatus="+textStatus+", errorThrown="+errorThrown);
+            
+        	// handle unknown errors (may be 'no connection')
+        	showUnknownError(textStatus,errorThrown);
         	
         	// gracefully refresh data
         	setupMediaEdit2(url,user,stages,false);
-    		
-        	// close colorbox
-    		$.fn.colorbox.close(); //return false;
-    		
-    		// TODO show error message with colorbox
         },
 	});
 }
@@ -212,7 +207,7 @@ function callAjaxAssignToStage(key,selectedStages) {
         	'select_stages': selectedStages,
         },
         success: function(response) {
-        	//alert("Response Success: response="+response);
+
         	if(response.status == 200) {
         		
         		// gracefully refresh data
@@ -220,37 +215,77 @@ function callAjaxAssignToStage(key,selectedStages) {
             	
         		// close colorbox
         		$.fn.colorbox.close(); //return false;
-        		
+            	
         	} else {
-        		// TODO handle known errors
-        		alert("Error while retrieving data: status="+response.status+", timestamp="+ response.timestamp +", data="+response.data);
+        		
+        		// handle known errors
+        		showKnownError(response.timestamp,response.status,response.data);
         		
         		// gracefully refresh data
             	setupMediaEdit2(url,user,stages,false);
-        		
-        		// close colorbox
-        		$.fn.colorbox.close(); //return false;
-        		
-        		// TODO show error message with colorbox
         	}
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
-            // TODO handle unknown errors (may be 'no connection')
-        	alert("An unexpected error occured: textStatus="+textStatus+", errorThrown="+errorThrown);
+        	
+        	// handle unknown errors (may be 'no connection')
+        	showUnknownError(textStatus,errorThrown);
         	
         	// gracefully refresh data
         	setupMediaEdit2(url,user,stages,false);
-        	
-        	// close colorbox
-    		$.fn.colorbox.close(); //return false;
-    		
-    		// TODO show error message with colorbox
         },
 	});
 }
 
 function testCallback(params) {
 	alert("testCallback: params=" + params);
+}
+
+function showErrorPanel(title,message) {
+	
+	// set text
+	$('#errorTitle').html(title);
+	$('#errorMessage').html(message);
+	
+	// show error panel
+	$.colorbox({
+		animation:false,
+		returnFocus: false,
+		transition: 'fade',
+		scrolling: false,
+		opacity: 0.5,
+		open: true,
+		initialWidth: 500,
+		initialHeight: 206,
+		width: 500,
+		height: 206,
+		inline: true,
+		href: "#errorPanel",
+		
+		// hide loading indicator:
+		onOpen: function(){ $("#colorbox").css("opacity", 0); },
+        onComplete: function(){ $("#colorbox").css("opacity", 1);$.colorbox.resize(); }
+	});
+	
+}
+
+function showKnownError(timestamp,status,response) {
+	var date = new Date(timestamp*1000);
+	var title = "An error occurred";
+	var message = "";
+	message += "<p><strong>Date and time:</strong> "+date+"</p>";
+	message += "<p><strong>Status code:</strong> "+status+"</p>";
+	message += "<p><strong>Error:</strong> "+response+"</p>";
+	showErrorPanel(title,message);
+}
+
+function showUnknownError(status,error) {
+	var title = "An unknown error occurred";
+	var message = "";
+	message += "<p><strong>Status:</strong> "+status+"</p>";
+	if(error != "") {
+		message += "<p><strong>Error:</strong><br />"+error+"</p>";
+	}
+	showErrorPanel(title,message);
 }
 
 function setupDataGrid() {
@@ -444,7 +479,7 @@ function setupDataGrid() {
 						
 						// hide loading indicator:
 						onOpen: function(){ $("#colorbox").css("opacity", 0); },
-				        onComplete: function(){ $("#colorbox").css("opacity", 1); }
+				        onComplete: function(){ $("#colorbox").css("opacity", 1);$.colorbox.resize(); }
 					});
 					
 				};
@@ -536,15 +571,15 @@ function setupDataGrid() {
 						opacity: 0.5,
 						open: true,
 						initialWidth: 550,
-						initialHeight: 500,
+						initialHeight: 492,
 						width: 550,
-						height: 500,
+						height: 492,
 						inline: true,
 						href: "#assignMediaPanel",
 						
 						// hide loading indicator:
 						onOpen: function(){ $("#colorbox").css("opacity", 0); },
-				        onComplete: function(){ $("#colorbox").css("opacity", 1); }
+				        onComplete: function(){ $("#colorbox").css("opacity", 1);$.colorbox.resize(); }
 					});
 					
 				};
@@ -669,15 +704,15 @@ function setupDataGrid() {
 						opacity: 0.5,
 						open: true,
 						initialWidth: 550,
-						initialHeight: 500,
+						initialHeight: 490,
 						width: 550,
-						height: 500,
+						height: 490,
 						inline: true,
 						href: "#tagMediaPanel",
 						
 						// hide loading indicator:
 						onOpen: function(){ $("#colorbox").css("opacity", 0); },
-				        onComplete: function(){ $("#colorbox").css("opacity", 1); }
+				        onComplete: function(){ $("#colorbox").css("opacity", 1);$.colorbox.resize(); }
 					});
 					
 				};

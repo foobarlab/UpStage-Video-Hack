@@ -181,23 +181,23 @@
 <div style="display:none">
 
 	<div id="previewMediaPanel" class="colorboxPanel">
-		
-		<div id="previewPanelImage">
-			<p>IMAGE PREVIEW</p>
+		<div class="dialogContent">
+			<div id="previewPanelImage">
+				<p>IMAGE PREVIEW</p>
+			</div>
+			
+			<div id="previewPanelFlash">
+				<p>FLASH PREVIEW</p>
+			</div>
+			
+			<div id="previewPanelAudio">
+				<p>AUDIO PREVIEW</p>
+			</div>
+			
+			<div id="previewPanelStream">
+				<p>STREAM PREVIEW</p>
+			</div>
 		</div>
-		
-		<div id="previewPanelFlash">
-			<p>FLASH PREVIEW</p>
-		</div>
-		
-		<div id="previewPanelAudio">
-			<p>AUDIO PREVIEW</p>
-		</div>
-		
-		<div id="previewPanelStream">
-			<p>STREAM PREVIEW</p>
-		</div>
-		
 	</div>
 	
 	<div id="assignMediaPanel" class="colorboxPanel">
@@ -285,11 +285,11 @@
 				
 			</div>
 			
-		</div>
+			<div class="dialogButtonRow">
+				<input type="button" style="width:100px" id="buttonCancelAssign" value="Cancel" />
+				<input type="button" style="width:100px" id="buttonExecuteAssign" value="Apply" />
+			</div>
 		
-		<div class="dialogButtonRow">
-			<input type="button" style="width:100px" id="buttonCancelAssign" value="Cancel" />
-			<input type="button" style="width:100px" id="buttonExecuteAssign" value="Apply" />
 		</div>
 		
 		<script type="text/javascript">
@@ -334,11 +334,11 @@
 			
 			</div>
 			
-		</div>
-		
-		<div class="dialogButtonRow">
-			<input type="button" style="width:100px" id="buttonCancelTag" value="Cancel" />
-			<input type="button" style="width:100px" id="buttonExecuteTag" value="Apply" />
+			<div class="dialogButtonRow">
+				<input type="button" style="width:100px" id="buttonCancelTag" value="Cancel" />
+				<input type="button" style="width:100px" id="buttonExecuteTag" value="Apply" />
+			</div>
+			
 		</div>
 		
 		<script type="text/javascript">
@@ -349,45 +349,46 @@
 	</div>
 
 	<div id="editMediaPanel" class="colorboxPanel">
+		<div class="dialogContent">
+			<div id="editPanelAvatar">
+				<p>EDIT AVATAR</p>
+				<ul>
+					<li>Name</li>
+					<li>Voice</li>
+					<li>Streamserver (if medium = stream)</li>
+					<li>Streamname (if medium = stream)</li>
+					<li>Image (if medium = video)</li>
+				</ul>
+			</div>
 			
-		<div id="editPanelAvatar">
-			<p>EDIT AVATAR</p>
-			<ul>
-				<li>Name</li>
-				<li>Voice</li>
-				<li>Streamserver (if medium = stream)</li>
-				<li>Streamname (if medium = stream)</li>
-				<li>Image (if medium = video)</li>
-			</ul>
-		</div>
-		
-		<div id="editPanelProp">
-			<p>EDIT PROP</p>
-			<ul>
-				<li>Name</li>
-			</ul>
-		</div>
-		
-		<div id="editPanelBackdrop">
-			<p>EDIT BACKDROP</p>
-			<ul>
-				<li>Name</li>
-			</ul>
-		</div>
-		
-		<div id="editPanelAudio">
-			<p>EDIT AUDIO</p>
-			<ul>
-				<li>Name</li>
-				<li>Audio Type</li>
-			</ul>
-		</div>
-		
-		<div id="editPanelVideo">
-			<p>EDIT VIDEO AVATAR</p>
-			<ul>
-				<li>Name</li>
-			</ul>
+			<div id="editPanelProp">
+				<p>EDIT PROP</p>
+				<ul>
+					<li>Name</li>
+				</ul>
+			</div>
+			
+			<div id="editPanelBackdrop">
+				<p>EDIT BACKDROP</p>
+				<ul>
+					<li>Name</li>
+				</ul>
+			</div>
+			
+			<div id="editPanelAudio">
+				<p>EDIT AUDIO</p>
+				<ul>
+					<li>Name</li>
+					<li>Audio Type</li>
+				</ul>
+			</div>
+			
+			<div id="editPanelVideo">
+				<p>EDIT VIDEO AVATAR</p>
+				<ul>
+					<li>Name</li>
+				</ul>
+			</div>
 		</div>
 		
 	</div>
@@ -401,11 +402,12 @@
 				<input type="checkbox" name="deleteEvenIfInUse" id="deleteEvenIfInUse" />
 				<label for="deleteEvenIfInUse">confirm to delete from all assigned stages <em>(forces stage reload)</em></label>
 			</div>
-		</div>
+			
+			<div class="dialogButtonRow">
+				<input type="button" style="width:100px" id="buttonCancelDelete" value="Cancel" />
+				<input type="button" style="width:100px" id="buttonExecuteDelete" value="Delete" />
+			</div>	
 		
-		<div class="dialogButtonRow">
-			<input type="button" style="width:100px" id="buttonCancelDelete" value="Cancel" />
-			<input type="button" style="width:100px" id="buttonExecuteDelete" value="Delete" />
 		</div>
 		
 		<script type="text/javascript">
@@ -413,6 +415,25 @@
 			$("#buttonCancelDelete").click(function(){ $.fn.colorbox.close(); return false; });
 		</script>
 		
+	</div>
+	
+	<div id="errorPanel" class="colorboxPanel colorboxErrorPanel">
+		
+		<div class="dialogContent errorContent">
+			<h1><span id="errorTitle"></span></h1>
+			<span id="errorMessage"></span>
+		
+			<div class="dialogButtonRow">
+				<input type="button" style="width:100px" id="buttonErrorClose" value="Close" />
+			</div>
+		
+		</div>
+		
+		<script type="text/javascript">
+			// default close function for close button
+			$("#buttonErrorClose").click(function(){ $.fn.colorbox.close(); return false; });
+		</script>
+	
 	</div>
 	
 </div>
