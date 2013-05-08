@@ -933,7 +933,7 @@ class MediaEditPage2(Workshop):
         self.selected_collection = None
         
         # selected stages (assign stages)
-        self.selected_stages = None
+        self.selected_stages = []
         
         # meta response values
         self.status = 500   # default error code, using HTTP error codes for status
@@ -1068,9 +1068,10 @@ class MediaEditPage2(Workshop):
             
             # any stages selected?
             if 'select_stages[]' in args:
-                self.selected_stages = args['select_stages[]']
+                self.selected_stages = args['select_stages[]']    
             log.msg("MediaEditPage2: render_POST(): selected_stages=%s" % (pprint.saferepr(self.selected_stages)))
             
+            # TODO rename flag "deleteIfInUse" to "force_stage_reload" for consistency 
             # "deleteIfInUse" force flag?
             if 'deleteIfInUse' in args:
                 #self.deleteIfInUse = False    # already reset by setting defaults ...
@@ -1090,24 +1091,26 @@ class MediaEditPage2(Workshop):
             
             log.msg("MediaEditPage2: render_POST(): ajax call for '%s'!" % ajax_call)
             
+            # assume default is successful status (200)
+            self.status = 200
+            
             if ajax_call == 'get_data':
-                self.status = 200
                 data = self._get_data()
             
             elif ajax_call == 'delete_data':
-                self.status = 200
                 # TODO flag 'delete_even_if_in_use': see globalmedia.py:update_from_form how it may be used ...
                 data = self._delete_data(self.selected_media_key, self.selected_collection, self.deleteIfInUse)
                 
             elif ajax_call == 'assign_to_stage':
-                self.status = 200
+                # TODO add flag 'force_stage_reload' to reload newly assigned and unassigned stages (just concerning changes to assignments!)
                 data = self._assign_to_stage(self.selected_media_key, self.selected_collection, self.selected_stages)
             
             else:
+                self.status = 500
                 log.msg("MediaEditPage2: render_POST(): ajax call for '%s' not understood." % ajax_call)
             
             # return the data
-            if self.status == 200:
+            if self.status == 200:  # success (200)
                 return self.__format_ajax_response(request, self.status, data)
             else:
                 return self.__format_ajax_response(request, self.status, self.error_msg)
@@ -1294,18 +1297,28 @@ class MediaEditPage2(Workshop):
         success = selected_collection.delete(selected_media_key,self.player,force_delete)
         
         if not success:
-            # we had an error
-            log.msg("MediaEditPage2: _delete_data: no success! nothing deleted ...")
-            
-        # TODO return error code?
-        
+            self.status = 500
+            log.msg("MediaEditPage2: _delete_data: no success! deletion failed.")
+        else:
+            log.msg("MediaEditPage2: _delete_data: successfully deleted.")
         
     def _assign_to_stage(self,selected_media_key=None,selected_collection=None,selected_stages=None):
         
         # TODO assign given media to given stages
         
-        pass
-
+        log.msg("MediaEditPage2: _assign_to_stage: selected_media_key=%s" % selected_media_key)
+        log.msg("MediaEditPage2: _assign_to_stage: selected_collection=%s" % pprint.saferepr(selected_collection))
+        log.msg("MediaEditPage2: _assign_to_stage: selected_stages=%s" % pprint.saferepr(selected_stages))
+        
+        success = selected_collection.assign_stages(selected_media_key,self.player,selected_stages)
+        
+        if not success:
+            self.status = 500
+            log.msg("MediaEditPage2: _assign_to_stage: no success! assigning failed.")
+        else:
+            log.msg("MediaEditPage2: _assign_to_stage: successfully assigned.")
+            
+        
 #    # TODO
 #    def _update_data(self,selected_media=None,update_data=None):
 #        log.msg("MediaEditPage2: _update_data: selected_media=%s, update_data=%s" % (selected_media,update_data))

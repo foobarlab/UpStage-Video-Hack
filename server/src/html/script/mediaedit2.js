@@ -173,6 +173,7 @@ function callAjaxDeleteData(key,deleteIfInUse) {
         		$.fn.colorbox.close(); //return false;
         		
         	} else {
+        		
         		// TODO handle known errors
         		alert("Error while retrieving data: status="+response.status+", timestamp="+ response.timestamp +", data="+response.data);
         		
@@ -181,17 +182,21 @@ function callAjaxDeleteData(key,deleteIfInUse) {
         		
         		// close colorbox
         		$.fn.colorbox.close(); //return false;
+        		
+        		// TODO show error message with colorbox
         	}
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             // TODO handle unknown errors (may be 'no connection')
-        	alert("An error occured: textStatus="+textStatus+", errorThrown="+errorThrown);
+        	alert("An unexpected error occured: textStatus="+textStatus+", errorThrown="+errorThrown);
         	
         	// gracefully refresh data
         	setupMediaEdit2(url,user,stages,false);
     		
         	// close colorbox
     		$.fn.colorbox.close(); //return false;
+    		
+    		// TODO show error message with colorbox
         },
 	});
 }
@@ -207,11 +212,12 @@ function callAjaxAssignToStage(key,selectedStages) {
         	'select_stages': selectedStages,
         },
         success: function(response) {
-        	alert("Response Success: response="+response);
+        	//alert("Response Success: response="+response);
         	if(response.status == 200) {
         		
-        		// TODO
-        		
+        		// gracefully refresh data
+            	setupMediaEdit2(url,user,stages,false);
+            	
         		// close colorbox
         		$.fn.colorbox.close(); //return false;
         		
@@ -219,20 +225,26 @@ function callAjaxAssignToStage(key,selectedStages) {
         		// TODO handle known errors
         		alert("Error while retrieving data: status="+response.status+", timestamp="+ response.timestamp +", data="+response.data);
         		
-        		// TODO
+        		// gracefully refresh data
+            	setupMediaEdit2(url,user,stages,false);
         		
         		// close colorbox
         		$.fn.colorbox.close(); //return false;
+        		
+        		// TODO show error message with colorbox
         	}
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
             // TODO handle unknown errors (may be 'no connection')
-        	alert("An error occured: textStatus="+textStatus+", errorThrown="+errorThrown);
+        	alert("An unexpected error occured: textStatus="+textStatus+", errorThrown="+errorThrown);
         	
-        	// TODO
+        	// gracefully refresh data
+        	setupMediaEdit2(url,user,stages,false);
         	
         	// close colorbox
     		$.fn.colorbox.close(); //return false;
+    		
+    		// TODO show error message with colorbox
         },
 	});
 }

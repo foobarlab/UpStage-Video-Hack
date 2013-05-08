@@ -328,7 +328,6 @@ class MediaDict(Xml2Dict):
             # delete entry and naively assume all went well (well, that's what always was done anyway)
             if not self[key] is None:
                 del self[key]
-                success = True
                 log.msg("MediaDict: delete(): actually media with key '%s' was forcibly deleted!" % key)
                 # ugly clean method for things left on stages: if files do not exist they will be cleaned up! may cause unwanted side-effects as it is smelly... 
                 thing_stage_tuple = self._get_stage_collections()
@@ -345,7 +344,6 @@ class MediaDict(Xml2Dict):
             if not self[key] is None:
                 
                 # check if this media is used on any stage:
-                
                 thing_stage_tuple = self._get_stage_collections()
                 
                 # DEBUG:
@@ -358,14 +356,30 @@ class MediaDict(Xml2Dict):
                 
                 if not assigned_stages:
                     del self[key]
-                    success = True
                     log.msg("MediaDict: delete(): actually media with key '%s' was deleted!" % key)
                 else:
                     log.msg("MediaDict: delete(): actually media with key '%s' was NOT deleted as it is used on some stages!" % key)
-                
+        
+        # finally confirm success by inspecting dict if media is still contained
+        if not (key in self):
+            # dict does not contain media, at first this looks like successful deletion
+            success = True
+            # also check if media is still assigned to any of the stages (this would mean deletion was not successful)
+            thing_stage_tuple = self._get_stage_collections()
+            for things, stage in thing_stage_tuple:
+                stage_name = stage.ID
+                log.msg("MediaDict: delete(): checking stage '%s': things=%s" % (stage_name,pprint.saferepr(things)))
+                for media in things.media:
+                    # DEBUG:
+                    log.msg("MediaDict: delete(): checking stage '%s': media=%s" % (stage_name,pprint.saferepr(media)))
+                    if key in media:
+                        success = False # media still assigned to a stage
+                        break
+            
         return success
 
-    def assign_stages(self, key=None, player=None, new_stages=None):
+    # TODO add and evaluate flag 'force_stage_reload'
+    def assign_stages(self, key=None, player=None, new_stages=[]):
         """Rewritten function: Assign a Thing identified by 'file key' to new stages and return True if successful."""
         success = False
         
@@ -375,6 +389,39 @@ class MediaDict(Xml2Dict):
         if not player.can_admin():
             return success
         
+        # get already assigned stages
+        thing_stage_tuple = self._get_stage_collections()
+        current_assigned_stages = [stage.ID for things, stage in thing_stage_tuple if key in things.media]
+        log.msg("MediaDict: assign_stages(): current_assigned_stages=%s" % current_assigned_stages)
+        
+        # get newly added (assigned) stages
+        new_assigned_stages = [x for x in new_stages if x not in current_assigned_stages]
+        log.msg("MediaDict: assign_stages(): new_assigned_stages=%s" % new_assigned_stages)
+        
+        # get newly removed (unassigned) stages
+        new_removed_stages = [x for x in current_assigned_stages if x not in new_stages]
+        log.msg("MediaDict: assign_stages(): new_removed_stages=%s" % new_removed_stages)
+        
+        if self.stages is not None:
+            
+            # assign media: add media to those stages
+            for assign_stage in new_assigned_stages:
+                stage = self.stages.get(assign_stage)
+                if stage is not None:
+                    stage.add_mediato_stage(key)
+       
+            # unassign media: remove media from those stages     
+            for unassign_stage in new_removed_stages:
+                stage = self.stages.get(unassign_stage)
+                if stage is not None:
+                    stage.remove_media_from_stage(key)
+         
+        # confirm success
+        thing_stage_tuple = self._get_stage_collections()
+        current_assigned_stages = [stage.ID for things, stage in thing_stage_tuple if key in things.media]
+        if sorted(current_assigned_stages) == sorted(new_stages):
+            success = True
+            
         return success
     
 
