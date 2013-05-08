@@ -722,6 +722,9 @@ function setupDataGrid() {
 					var downloadFile = selectedMediaData['file'];
 					if(downloadFile != '') {
 						var downloadUrl = downloadFile+"?download=true";
+						
+						// TODO create iframe dynamically (#89)
+						
 						$("#downloadIFrame").attr("src",downloadUrl);
 					}
 				};
