@@ -577,9 +577,9 @@ function setupDataGrid() {
 						opacity: 0.5,
 						open: true,
 						initialWidth: 550,
-						initialHeight: 492,
+						initialHeight: 516,
 						width: 550,
-						height: 492,
+						height: 516,
 						inline: true,
 						href: "#assignMediaPanel",
 						

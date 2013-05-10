@@ -386,7 +386,7 @@ class MediaDict(Xml2Dict):
         return success
 
     # TODO add and evaluate flag 'force_stage_reload'
-    def assign_stages(self, key=None, player=None, new_stages=[]):
+    def assign_stages(self, key=None, player=None, new_stages=[], force_reload=True):
         """Rewritten function: Assign a Thing identified by 'file key' to new stages and return True if successful."""
         success = False
         
@@ -416,12 +416,16 @@ class MediaDict(Xml2Dict):
                 stage = self.stages.get(assign_stage)
                 if stage is not None:
                     stage.add_mediato_stage(key)
+                    if(force_reload):
+                        stage.soft_reset()  # broadcast "reload" on stage
        
             # unassign media: remove media from those stages     
             for unassign_stage in new_removed_stages:
                 stage = self.stages.get(unassign_stage)
                 if stage is not None:
                     stage.remove_media_from_stage(key)
+                    if(force_reload):
+                        stage.soft_reset()  # broadcast "reload" on stage
          
         # confirm success
         thing_stage_tuple = self._get_stage_collections()

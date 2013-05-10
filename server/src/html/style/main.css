@@ -1202,6 +1202,11 @@ table#tableDetails {
 	border: 5px solid #444;
 }
 
+.dialogNote {
+	margin:10px 0 6px 0;
+	font-style: italic;
+}
+
 .errorContent {
 	border:5px solid red !important;
 }
