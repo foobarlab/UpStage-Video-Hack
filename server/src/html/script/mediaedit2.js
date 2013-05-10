@@ -809,9 +809,10 @@ function setupDataGrid() {
 				dataGrid.getSelectionModel().setSelectedRanges([]);	// deselect any selections
 				dataGrid.invalidate();
 				
-				e.preventDefault();
+				//e.preventDefault();
 				
-				// TODO allow deletion of multiple selected media?
+				// TODO allow deletion of multiple selected media (#102)
+				// TODO allow assignment of multiple media to a single stage (#102)
 				
 			} else {
 				
