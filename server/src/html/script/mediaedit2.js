@@ -738,7 +738,7 @@ function setupDataGrid() {
 						
 					}
 					
-					// bind click handler for final deletion
+					// bind click handler for final tagging
 					$("#buttonExecuteTag").bind('click',clickHandlerExecuteTag);
 					
 					// show tag panel
@@ -750,9 +750,9 @@ function setupDataGrid() {
 						opacity: 0.5,
 						open: true,
 						initialWidth: 550,
-						initialHeight: 490,
+						initialHeight: 350,
 						width: 550,
-						height: 490,
+						height: 350,
 						inline: true,
 						href: "#tagMediaPanel",
 						
@@ -760,8 +760,17 @@ function setupDataGrid() {
 						onOpen: function(){ $("#colorbox").css("opacity", 0); },
 				        onComplete: function(){
 				        	$("#colorbox").css("opacity", 1);
+				        	var calculatedHeight = $('.chzn-choices').height();
+							$('#tagMediaSelectorPanel').height(calculatedHeight+125);
 				        	$.colorbox.resize();
 				        }
+					});
+					
+					// bind chosen change events to resize colorbox:
+					$("#tagMediaSelector").chosen().change(function() {
+						var calculatedHeight = $('.chzn-choices').height();
+						$('#tagMediaSelectorPanel').height(calculatedHeight+125);
+						$.colorbox.resize();
 					});
 					
 				};

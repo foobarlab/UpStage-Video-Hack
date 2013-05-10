@@ -1219,10 +1219,10 @@ table#tableDetails {
 
 #tagMediaSelectorPanel {
 	width:480px;
-	height:350px;
+	height:auto;
 	display:block;
 	background-color:#efefef;
-	overflow:auto;
+	overflow:visible;
 }
 
 #tagMediaSelector {
