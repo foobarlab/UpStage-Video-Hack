@@ -534,8 +534,6 @@ function setupDataGrid() {
 					// set media name in dialog
 					$("#assignMediaName").html(selectedMediaData['name']);
 					
-					// USE loudev.com multiselect:
-					
 					// check which stages the media is assigned to
 					
 					// stages are stored as comma-separated values in a string
@@ -547,8 +545,8 @@ function setupDataGrid() {
 					    stagesAssigned.push($.trim(this));
 					});
 					
-					// DEBUG:
-					//alert("AVAILABLE STAGES: " + stages + "\n\nASSIGNED STAGES: " + stagesAssigned);
+					// just to be safe, sort the list
+					stagesAssigned.sort();
 					
 					// create HTML elements for multi-selector
 					
@@ -566,12 +564,8 @@ function setupDataGrid() {
 		                	// stage is unassigned
 		                	selectorHTML += '<option value="'+stageName+'">'+stageName+'</option>\n';
 		                }
-		                //selectorHTML += '<option value="'+stageName+'">'+stageName+'</option>';
 		            }
 					selectorHTML += '</select>\n';
-					
-					// DEBUG:
-					//alert("HTML: " +selectorHTML);
 					
 					$('#assignMediaToStageSelectorPanel').html(selectorHTML);
 					
@@ -592,14 +586,10 @@ function setupDataGrid() {
 						log.debug("clickHandlerExecuteAssign: click: #buttonExecuteAssign: key="+selectedMediaData['key']);
 						
 						// get selected values
-						//var selectedValues = $('#assignMediaToStage').val() || [];	// old code for chosen
 						var selectedValues = $('#assignMediaToStageSelector').val() || [];
 						
-						//alert("Assign clicked: " + selectedValues.join(", "));
-						
 						// pass selected stages
-						callAjaxAssignToStage(selectedMediaData['key'],selectedValues);
-						
+						callAjaxAssignToStage(selectedMediaData['key'],selectedValues);	
 					}
 					
 					// bind click handler for final deletion
@@ -636,8 +626,6 @@ function setupDataGrid() {
 					
 					// set media name in dialog
 					$("#tagMediaName").html(selectedMediaData['name']);
-					
-					// USE chosen:
 					
 					// check tags of selected media
 					
@@ -695,9 +683,6 @@ function setupDataGrid() {
 					}
 					
 					selectorHTML += '</select>';
-					
-					// DEBUG:
-					//alert("HTML: " + selectorHTML);
 					
 					// set html
 					$('#tagMediaSelectorPanel').html(selectorHTML);

@@ -417,7 +417,7 @@
 <script type="text/javascript">
 var stageList = %(list_stages_as_json)s;
 $(document).ready(function(){
-	setupMediaEdit2("%(req:path)s","%(user)s",stageList,true);
+	setupMediaEdit2("%(req:path)s","%(user)s",stageList.sort(),true);
 	
 	// default close function for all close buttons (closing colorbox)
 	$(".buttonClose").click(function(){ $.fn.colorbox.close(); return false; });

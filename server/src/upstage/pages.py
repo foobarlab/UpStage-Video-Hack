@@ -955,7 +955,7 @@ class MediaEditPage2(Workshop):
         data_list = []
         for key in keys:
             data_list.append(key)
-        return createHTMLOptionTags(set(data_list))
+        return createHTMLOptionTags(sorted(set(data_list)))
     
     def text_list_users_as_html_option_tag(self, request):
         keys = self.collection.stages.getKeys()
@@ -966,7 +966,7 @@ class MediaEditPage2(Workshop):
                 for user in stage.get_uploader_list():
                     data_list.append(user)
                    
-        return createHTMLOptionTags(set(data_list))
+        return createHTMLOptionTags(sorted(set(data_list)))
         
     # we want to be able to respond to ajax calls on POST requests:        
     def render_POST(self,request):
