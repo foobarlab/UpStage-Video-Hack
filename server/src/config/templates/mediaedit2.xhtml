@@ -207,11 +207,42 @@
 					<li id="tabPreviewAudio" class="tab"><a href="#panelPreviewAudio">Audio</a></li>
 					<li id="tabPreviewFlash" class="tab"><a href="#panelPreviewFlash">Flash</a></li>
 					<li id="tabPreviewStream" class="tab"><a href="#panelPreviewStream">Stream</a></li>
-					<li id="tabPreviewThumbnail" class="tab"><a href="#panelPreviewThumbnail">Thumbnail</a></li>
+					<li id="tabPreviewDetails" class="tab"><a href="#panelPreviewDetails">Details</a></li>
 				</ul>
 
-				<div id="panelPreviewThumbnail">
-					<p>THUMBNAIL PREVIEW</p>
+				<div id="panelPreviewDetails">
+					<div class="tab-panel">
+					
+						<!-- TODO using dummy data for now -->
+						
+						<table>
+							<tr>
+								<td>Filetype</td>
+								<td>SWF</td>
+							</tr>
+							<tr>
+								<td>Media file size</td>
+								<td>0 Bytes</td>
+							</tr>
+							<tr>
+								<td>Dimensions</td>
+								<td>100 x 100 Pixel</td>
+							</tr>
+							<tr>
+								<td>Total number of frames</td>
+								<td>1</td>
+							</tr>
+							<tr>
+								<td>Autoplay</td>
+								<td>true</td>
+							</tr>
+							<tr>
+								<td>Thumbnail file size</td>
+								<td>0 Bytes</td>
+							</tr>
+						</table>
+						
+					</div>
 				</div>
 
 				<div id="panelPreviewImage">
@@ -230,6 +261,10 @@
 					<p>FLASH PREVIEW</p>
 				</div>
 				
+				<div class="dialogButtonRow">
+					<input type="button" style="width:100px" class="buttonClose" value="Close" />
+				</div>
+				
 			</div>
 			
 		</div>
@@ -245,17 +280,12 @@
 			<p class="dialogNote"><strong>Note:</strong> Changes will force a reload only of the newly assigned and unassigned stages</p>
 			
 			<div class="dialogButtonRow">
-				<input type="button" style="width:100px" id="buttonCancelAssign" value="Cancel" />
+				<input type="button" style="width:100px" class="buttonClose" value="Cancel" />
 				<input type="button" style="width:100px" id="buttonExecuteAssign" value="Apply" />
 			</div>
 		
 		</div>
 		
-		<script type="text/javascript">
-			// default close function for cancel button
-			$("#buttonCancelAssign").click(function(){ $.fn.colorbox.close(); return false; });
-		</script>
-
 	</div>
 	
 	<div id="tagMediaPanel" class="colorboxPanel">
@@ -266,60 +296,82 @@
 			<div id="tagMediaSelectorPanel"></div>
 			
 			<div class="dialogButtonRow">
-				<input type="button" style="width:100px" id="buttonCancelTag" value="Cancel" />
+				<input type="button" style="width:100px" class="buttonClose" value="Cancel" />
 				<input type="button" style="width:100px" id="buttonExecuteTag" value="Apply" />
 			</div>
 			
 		</div>
-		
-		<script type="text/javascript">
-			// default close function for cancel button
-			$("#buttonCancelTag").click(function(){ $.fn.colorbox.close(); return false; });
-		</script>
 
 	</div>
 
 	<div id="editMediaPanel" class="colorboxPanel">
 		<div class="dialogContent">
-			<div id="editPanelAvatar">
-				<p>EDIT AVATAR</p>
-				<ul>
-					<li>Name</li>
-					<li>Voice</li>
-					<li>Streamserver (if medium = stream)</li>
-					<li>Streamname (if medium = stream)</li>
-					<li>Image (if medium = video)</li>
-				</ul>
-			</div>
+		
+			<h1>Edit &quot;<span id="editMediaName"></span>&quot;</h1>
 			
-			<div id="editPanelProp">
-				<p>EDIT PROP</p>
-				<ul>
-					<li>Name</li>
-				</ul>
-			</div>
+			<div id="editTabsContainer" class="tab-container">
 			
-			<div id="editPanelBackdrop">
-				<p>EDIT BACKDROP</p>
-				<ul>
-					<li>Name</li>
+				<ul class="easytabs">
+					<li id="tabEditName" class="tab"><a href="#panelEditName">Name</a></li>
+					<li id="tabEditVoice" class="tab"><a href="#panelEditVoice">Voice</a></li>
+					<li id="tabEditStream" class="tab"><a href="#panelEditStream">Stream settings</a></li>
+					<li id="tabEditAudio" class="tab"><a href="#panelEditAudio">Type</a></li>
+					<li id="tabEditVideo" class="tab"><a href="#panelEditVideo">Image Path</a></li>
 				</ul>
-			</div>
+
+				<div id="panelEditName">
+					<div class="tab-panel">
+						<p>NAME</p>
+					</div>
+				</div>
+				
+				<div id="panelEditVoice">
+					<div class="tab-panel">
+						<p>VOICE</p>
+					</div>
+				</div>
+				
+				<div id="panelEditStream">
+					<div class="tab-panel">
+						<p>STREAM</p>
+						<ul>
+							<li>Streamserver (if medium = stream)</li>
+							<li>Streamname (if medium = stream)</li>
+						</ul>
+					</div>
+				</div>
+				
+				<div id="panelEditAudio">
+					<div class="tab-panel">
+						<p>AUDIO</p>
+						<ul>
+							<li>Audio Type (medium = music/sfx)</li>
+						</ul>
+					</div>
+				</div>
+				
+				<div id="panelEditVideo">
+					<div class="tab-panel">
+						<p>VIDEO</p>
+						<ul>
+							<li>Image path (if medium = video)</li>
+						</ul>
+					</div>
+				</div>
+				
+				<div id="editMediaForceReloadDisplay">
+					<p>Assigned to <strong><span id="editMediaAssignedStages"></span></strong>.</p>
+					<input type="checkbox" name="editMediaForceReload" id="editMediaForceReload" />
+					<label for="editMediaForceReload">confirm to force reload of all assigned stages</label>
+				</div>
+				
+				<div class="dialogButtonRow">
+					<input type="button" style="width:100px" class="buttonClose" value="Close" />
+					<input type="button" style="width:100px" id="buttonExecuteEdit" value="Apply" />
+				</div>
 			
-			<div id="editPanelAudio">
-				<p>EDIT AUDIO</p>
-				<ul>
-					<li>Name</li>
-					<li>Audio Type</li>
-				</ul>
 			</div>
-			
-			<div id="editPanelVideo">
-				<p>EDIT VIDEO AVATAR</p>
-				<ul>
-					<li>Name</li>
-				</ul>
-			</div>
+		
 		</div>
 		
 	</div>
@@ -335,16 +387,11 @@
 			</div>
 			
 			<div class="dialogButtonRow">
-				<input type="button" style="width:100px" id="buttonCancelDelete" value="Cancel" />
+				<input type="button" style="width:100px" class="buttonClose" value="Cancel" />
 				<input type="button" style="width:100px" id="buttonExecuteDelete" value="Delete" />
 			</div>	
 		
 		</div>
-		
-		<script type="text/javascript">
-			// default close function for cancel button
-			$("#buttonCancelDelete").click(function(){ $.fn.colorbox.close(); return false; });
-		</script>
 		
 	</div>
 	
@@ -355,16 +402,11 @@
 			<span id="errorMessage"></span>
 		
 			<div class="dialogButtonRow">
-				<input type="button" style="width:100px" id="buttonErrorClose" value="Close" />
+				<input type="button" style="width:100px" class="buttonClose" value="Close" />
 			</div>
 		
 		</div>
-		
-		<script type="text/javascript">
-			// default close function for close button
-			$("#buttonErrorClose").click(function(){ $.fn.colorbox.close(); return false; });
-		</script>
-	
+
 	</div>
 	
 </div>
@@ -376,6 +418,10 @@
 var stageList = %(list_stages_as_json)s;
 $(document).ready(function(){
 	setupMediaEdit2("%(req:path)s","%(user)s",stageList,true);
+	
+	// default close function for all close buttons (closing colorbox)
+	$(".buttonClose").click(function(){ $.fn.colorbox.close(); return false; });
+
 })
 </script>
 

@@ -41,6 +41,8 @@ var previewType = null;
 var previewThumbnailType = null;
 var previewDefaultTab = null;
 
+var editDefaultTab = null;
+
 function setupMediaEdit2(url_path,current_user,current_stages,set_filter_to_current_user) {
 	
 	// set global variables
@@ -357,15 +359,21 @@ function setupDataGrid() {
 				// create click handlers
 				
 				clickHandlerEditMedia = function(e) {
+					
 					log.debug("clickHandlerEditMedia: click: #buttonEditMedia, key="+selectedMediaData['key']);
 					
-					// hide all edit panels
+					// initialize easytabs for edit panel
+					$("#editTabsContainer").easytabs({
+						animate: false,
+						updateHash: false,
+					});
 					
-					$('#editPanelAvatar').hide();
-					$('#editPanelProp').hide();
-					$('#editPanelBackdrop').hide();
-					$('#editPanelAudio').hide();
-					$('#editPanelVideo').hide();
+					// hide all edit tabs
+					$('#tabEditName').hide();
+					$('#tabEditVoice').hide();
+					$('#tabEditStream').hide();
+					$('#tabEditAudio').hide();
+					$('#tabEditVideo').hide();
 					
 					// show edit panel depending on type of media
 					
@@ -375,21 +383,38 @@ function setupDataGrid() {
 					switch(type) {
 						case 'avatar':
 							if (medium == 'video') {
-								$('#editPanelVideo').show();
+								// Video Avatar:
+								$('#tabEditName').show();
+								$('#tabEditVoice').show();
+								$('#tabEditVideo').show();
+								
+							} else if (medium == 'stream') {
+								// Stream Avatar
+								$('#tabEditName').show();
+								$('#tabEditVoice').show();
+								$('#tabEditStream').show();
 							} else {
-								$('#editPanelAvatar').show();
+								$('#tabEditName').show();
+								$('#tabEditVoice').show();
 							}
 							break;
 						case 'prop':
-							$('#editPanelProp').show();
+							$('#tabEditName').show();
 							break;
 						case 'backdrop':
-							$('#editPanelBackdrop').show();
+							$('#tabEditName').show();
 							break;
 						case 'audio':
-							$('#editPanelAudio').show();
+							$('#tabEditName').show();
+							$('#tabEditAudio').show();
 							break;
 					}
+					
+					// default tab for edit is always 'panelEditName'
+					editDefaultTab = '#panelEditName';
+					
+					// set media name
+					$('#editMediaName').html(selectedMediaData['name']);
 					
 					// show edit panel
 					
@@ -400,16 +425,28 @@ function setupDataGrid() {
 						scrolling: false,
 						opacity: 0.5,
 						open: true,
-						initialWidth: 700,
-						initialHeight: 450,
-						width: 700,
-						height: 450,
+						initialWidth: 500,
+						initialHeight: 300,
+						width: 500,
+						height: 300,
 						inline: true,
 						href: "#editMediaPanel",
 						
 						// hide loading indicator:
 						onOpen: function(){ $("#colorbox").css("opacity", 0); },
-				        onComplete: function(){ $("#colorbox").css("opacity", 1); }
+				        onComplete: function(){
+				        	$("#colorbox").css("opacity", 1);
+				        	
+				        	// set default active tab
+				        	$("#editTabsContainer").easytabs('select', editDefaultTab);
+				        	
+				        	// resize colorbox after tab has been clicked
+				        	//$("#editTabsContainer").bind('easytabs:after', function() { $.colorbox.resize(); });
+				        	
+				        	// initially always resize
+				        	//$.colorbox.resize();
+				        
+				        }
 					});
 					
 				};
@@ -1043,8 +1080,8 @@ function showDetails(single_data) {
 		$('#thumbnailPreview').html(thumbnail_html);
 		
 		// set preview window parameters depending on media
-		var previewWindowWidth = 750;
-		var previewWindowHeight = 550;
+		var previewWindowWidth = 600;
+		var previewWindowHeight = 500;
 		
 		switch(previewType) {
 			case MEDIA_TYPE_IMAGE:
@@ -1054,8 +1091,8 @@ function showDetails(single_data) {
 				// use defaults
 				break;
 			case MEDIA_TYPE_AUDIO:
-				previewWindowWidth = 400;
-				previewWindowHeight = 250;
+				previewWindowWidth = 600;
+				previewWindowHeight = 300;
 				break;
 		}
 		
@@ -1084,7 +1121,14 @@ function showDetails(single_data) {
 					},
 			        onComplete: function(){
 			        	$("#colorbox").css("opacity", 1);
+			        	
+			        	// set default active tab
 			        	$("#previewTabsContainer").easytabs('select', previewDefaultTab);
+			        	
+			        	// resize colorbox after tab has been clicked
+			        	//$("#previewTabsContainer").bind('easytabs:after', function() { $.colorbox.resize(); });
+			        	
+			        	// initially always resize
 			        	//$.colorbox.resize();
 			        }
 				
@@ -1094,7 +1138,7 @@ function showDetails(single_data) {
 					
 			};
 			
-			// set handler for clicking on preview (button)
+			// set handler for clicking on preview
 			clickHandlerPreviewMedia = function(e) {
 				
 				log.debug("clickHandlerPreviewMedia: click: #buttonPreviewMedia or #thumbnailPreview, key="+selectedMediaData['key']);
