@@ -39,6 +39,7 @@ var clickHandlerExecuteTag = null;
 
 var previewType = null;
 var previewThumbnailType = null;
+var previewDefaultTab = null;
 
 function setupMediaEdit2(url_path,current_user,current_stages,set_filter_to_current_user) {
 	
@@ -261,7 +262,10 @@ function showErrorPanel(title,message) {
 		
 		// hide loading indicator:
 		onOpen: function(){ $("#colorbox").css("opacity", 0); },
-        onComplete: function(){ $("#colorbox").css("opacity", 1);$.colorbox.resize(); }
+        onComplete: function(){
+        	$("#colorbox").css("opacity", 1);
+        	$.colorbox.resize();
+        }
 	});
 	
 }
@@ -478,7 +482,10 @@ function setupDataGrid() {
 						
 						// hide loading indicator:
 						onOpen: function(){ $("#colorbox").css("opacity", 0); },
-				        onComplete: function(){ $("#colorbox").css("opacity", 1);$.colorbox.resize(); }
+				        onComplete: function(){
+				        	$("#colorbox").css("opacity", 1);
+				        	$.colorbox.resize();
+				        }
 					});
 					
 				};
@@ -578,7 +585,10 @@ function setupDataGrid() {
 						
 						// hide loading indicator:
 						onOpen: function(){ $("#colorbox").css("opacity", 0); },
-				        onComplete: function(){ $("#colorbox").css("opacity", 1);$.colorbox.resize(); }
+				        onComplete: function(){
+				        	$("#colorbox").css("opacity", 1);
+				        	$.colorbox.resize();
+				        }
 					});
 					
 				};
@@ -711,7 +721,10 @@ function setupDataGrid() {
 						
 						// hide loading indicator:
 						onOpen: function(){ $("#colorbox").css("opacity", 0); },
-				        onComplete: function(){ $("#colorbox").css("opacity", 1);$.colorbox.resize(); }
+				        onComplete: function(){
+				        	$("#colorbox").css("opacity", 1);
+				        	$.colorbox.resize();
+				        }
 					});
 					
 				};
@@ -890,13 +903,20 @@ function showDetails(single_data) {
 	$('#detailStreamname').html(streamname);
 	$('#detailStreamserver').html(streamserver);
 
-	// TODO remove previous active previews
-
-	// hide all preview type
-	$("#previewPanelImage").hide();
-	$("#previewPanelFlash").hide();
-	$("#previewPanelAudio").hide();
-	$("#previewPanelStream").hide();
+	
+	// TODO remove previous active previews?
+	
+	// initialize easytabs for preview panel
+	$("#previewTabsContainer").easytabs({
+		animate: false,
+		updateHash: false,
+	});
+	
+	// hide all preview tabs
+	$("#tabPreviewImage").hide();
+	$("#tabPreviewFlash").hide();
+	$("#tabPreviewAudio").hide();
+	$("#tabPreviewStream").hide();
 	
 	// set preview type
 	if(single_data != null) {
@@ -910,34 +930,37 @@ function showDetails(single_data) {
 			case 'jpeg':
 			case 'gif':
 			case 'png':
-				previewType = self.MEDIA_TYPE_IMAGE;
-				$("#previewPanelImage").show();
+				previewType = MEDIA_TYPE_IMAGE;
+				previewDefaultTab = "#panelPreviewImage";
+				$("#tabPreviewImage").show();
 				break;
 				
 			// swf type
 			case 'swf':
-				previewType = self.MEDIA_TYPE_FLASH;
-				
-				$("#previewPanelFlash").show();
+				previewType = MEDIA_TYPE_FLASH;
+				previewDefaultTab = "#panelPreviewFlash";
+				$("#tabPreviewFlash").show();
 				
 				// additional stream available?
 				if(medium == 'stream') {
-					$("#previewPanelStream").show();
+					$("#tabPreviewStream").show();
 				}
 				break;
 				
 			// audio types
 			case 'mp3':
-				previewType = self.MEDIA_TYPE_AUDIO;
-				$("#previewPanelAudio").show();
+				previewType = MEDIA_TYPE_AUDIO;
+				previewDefaultTab = "#panelPreviewAudio";
+				$("#tabPreviewAudio").show();
 				break;
 				
 			// no file existant
 			default:
 				if(medium == 'stream') {
 					// stream only
-					previewType = self.MEDIA_TYPE_STREAM;
-					$("#previewPanelStream").show();
+					previewType = MEDIA_TYPE_STREAM;
+					previewDefaultTab = "#panelPreviewStream";
+					$("#tabPreviewStream").show();
 				} else {
 					//no preview available
 					previewType = null;
@@ -947,16 +970,15 @@ function showDetails(single_data) {
 	} else {
 		
 		previewType = null;	// reset preview type
+		previewDefaultTab = null;	// reset default tab
 	
 	}
 	
-	
-	
 	// remove thumbnail preview colorbox handler
-	$("#previewLink.inline").removeClass('inline cboxElement');
+	//$("#previewLink.inline").removeClass('inline cboxElement');
 	
 	// remove existing swf?
-	if(previewThumbnailType == self.MEDIA_TYPE_FLASH) {
+	if(previewThumbnailType == MEDIA_TYPE_FLASH) {
 		$('#thumbnailPreview').flash().remove();
 	}
 	
@@ -981,7 +1003,7 @@ function showDetails(single_data) {
 				} else {
 					thumbnail_html = '<img src="'+thumbnail+'" alt="'+ name +'" />';
 				}
-				previewThumbnailType = self.MEDIA_TYPE_IMAGE;
+				previewThumbnailType = MEDIA_TYPE_IMAGE;
 				break;
 		
 			// handle shockwave flash
@@ -1005,7 +1027,7 @@ function showDetails(single_data) {
 					}
 				});
 				
-				previewThumbnailType = self.MEDIA_TYPE_FLASH;
+				previewThumbnailType = MEDIA_TYPE_FLASH;
 				
 				// TODO add alternative content (download flash player)
 				
@@ -1025,13 +1047,13 @@ function showDetails(single_data) {
 		var previewWindowHeight = 550;
 		
 		switch(previewType) {
-			case self.MEDIA_TYPE_IMAGE:
+			case MEDIA_TYPE_IMAGE:
 				// use defaults
 				break;
-			case self.MEDIA_TYPE_FLASH:
+			case MEDIA_TYPE_FLASH:
 				// use defaults
 				break;
-			case self.MEDIA_TYPE_AUDIO:
+			case MEDIA_TYPE_AUDIO:
 				previewWindowWidth = 400;
 				previewWindowHeight = 250;
 				break;
@@ -1057,27 +1079,39 @@ function showDetails(single_data) {
 					width: previewWindowWidth,
 					height: previewWindowHeight,
 					// hide loading indicator:
-					onOpen: function(){ $("#colorbox").css("opacity", 0); },
-			        onComplete: function(){ $("#colorbox").css("opacity", 1); }
+					onOpen: function(){
+						$("#colorbox").css("opacity", 0);
+					},
+			        onComplete: function(){
+			        	$("#colorbox").css("opacity", 1);
+			        	$("#previewTabsContainer").easytabs('select', previewDefaultTab);
+			        	//$.colorbox.resize();
+			        }
 				
-					// TODO add onClose handler to remove all preview data
-					// TODO add onComplete handler to add all preview data
+					// TODO add onOpen handler to remove preview from page?
+					// TODO add onClose handler to remove preview from panel and add to page?
+					// TODO add onComplete handler to add preview to panel?
+					
 			};
-			
-			// set handler for clicking on thumbnail
-			$("#previewLink").addClass('inline');
-			$("#previewLink.inline").colorbox(previewColorbox);
 			
 			// set handler for clicking on preview (button)
 			clickHandlerPreviewMedia = function(e) {
-				log.debug("clickHandlerPreviewMedia: click: #buttonPreviewMedia, key="+selectedMediaData['key']);
 				
-				// open confirmation dialog
+				log.debug("clickHandlerPreviewMedia: click: #buttonPreviewMedia or #thumbnailPreview, key="+selectedMediaData['key']);
+				
+				// set media name
+				$('#previewMediaName').html(selectedMediaData['name']);
+				
+				// open dialog box
 				$.colorbox(previewColorbox);
+				
 			}
 		
 			// bind click handler to preview button
 			$("#buttonPreviewMedia").bind('click',clickHandlerPreviewMedia);
+		
+			// bind handler to thumbnail preview
+			$("#thumbnailPreview").bind('click',clickHandlerPreviewMedia);
 		}
 		
 	} else {

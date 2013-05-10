@@ -12,6 +12,10 @@
 <script type="text/javascript" src="/script/slickgrid/slick.grid.js"></script>
 <script type="text/javascript" src="/script/slickgrid/plugins/slick.rowselectionmodel.js"></script>
 
+<!-- include jquery.easytabs -->
+<script type="text/javascript" src="/script/jquery.easytabs/jquery.hashchange.min.js"></script>
+<script type="text/javascript" src="/script/jquery.easytabs/jquery.easytabs.min.js"></script>
+
 <!-- include various third party libs -->
 <!-- 
 <script type="text/javascript" src="/script/swfobject/swfobject.js"></script>
@@ -22,6 +26,7 @@
 <script type="text/javascript" src="/script/jquery.colorbox/jquery.colorbox-min.js"></script>
 <script type="text/javascript" src="/script/jquery.multiselect/jquery.multi-select.js"></script>
 <script type="text/javascript" src="/script/chosen/chosen.jquery.min.js"></script>
+
 
 <h1 style="margin:20px 0">Edit/View Media</h1>
 
@@ -135,7 +140,7 @@
 		
 		<h4 id="displayName"></h4>
 		
-		<a class="inline" id="previewLink" href="#previewMediaPanel"><div id="thumbnailPreview"></div></a>
+		<div id="thumbnailPreview"></div>
 		
 		<table id="tableDetails">
 		
@@ -192,21 +197,41 @@
 
 	<div id="previewMediaPanel" class="colorboxPanel">
 		<div class="dialogContent">
-			<div id="previewPanelImage">
-				<p>IMAGE PREVIEW</p>
+		
+			<h1>Preview &quot;<span id="previewMediaName"></span>&quot;</h1>
+			
+			<div id="previewTabsContainer" class="tab-container">
+			
+				<ul class="easytabs">
+					<li id="tabPreviewImage" class="tab"><a href="#panelPreviewImage">Image</a></li>
+					<li id="tabPreviewAudio" class="tab"><a href="#panelPreviewAudio">Audio</a></li>
+					<li id="tabPreviewFlash" class="tab"><a href="#panelPreviewFlash">Flash</a></li>
+					<li id="tabPreviewStream" class="tab"><a href="#panelPreviewStream">Stream</a></li>
+					<li id="tabPreviewThumbnail" class="tab"><a href="#panelPreviewThumbnail">Thumbnail</a></li>
+				</ul>
+
+				<div id="panelPreviewThumbnail">
+					<p>THUMBNAIL PREVIEW</p>
+				</div>
+
+				<div id="panelPreviewImage">
+					<p>IMAGE PREVIEW</p>
+				</div>
+				
+				<div id="panelPreviewAudio">
+					<p>AUDIO PREVIEW</p>
+				</div>
+				
+				<div id="panelPreviewStream">
+					<p>STREAM PREVIEW</p>
+				</div>
+				
+				<div id="panelPreviewFlash">
+					<p>FLASH PREVIEW</p>
+				</div>
+				
 			</div>
 			
-			<div id="previewPanelFlash">
-				<p>FLASH PREVIEW</p>
-			</div>
-			
-			<div id="previewPanelAudio">
-				<p>AUDIO PREVIEW</p>
-			</div>
-			
-			<div id="previewPanelStream">
-				<p>STREAM PREVIEW</p>
-			</div>
 		</div>
 	</div>
 	

@@ -1086,18 +1086,6 @@ a.IconButton
 	height:30px;
 }
 
-a#previewLink {
-	z-index:5;
-	display:inline-block;
-	cursor:pointer;
-	cursor:-moz-zoom-in;
-	cursor:-webkit-zoom-in;
-}
-
-a#previewLink:hover {
-	background-color:#efefef;
-}
-
 #thumbnailPreview {
 	display:block;
 	width:300px;
@@ -1106,7 +1094,14 @@ a#previewLink:hover {
 	padding:5px;
 	border:2px solid #999;
 	border-radius:5px;
+	cursor:pointer;
+	cursor:-moz-zoom-in;
+	cursor:-webkit-zoom-in;
 	/*background: white url(../image/ajax-loader.gif) no-repeat center center;*/
+}
+
+#thumbnailPreview:hover {
+	background-color:#efefef;
 }
 
 #thumbnailPreview img {

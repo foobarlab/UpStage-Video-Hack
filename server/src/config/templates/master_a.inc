@@ -17,6 +17,7 @@
 <link rel="stylesheet" type="text/css" href="/style/colorbox.css" />
 <link rel="stylesheet" type="text/css" href="/style/multi-select.css" />
 <link rel="stylesheet" type="text/css" href="/style/chosen.css" />
+<link rel="stylesheet" type="text/css" href="/style/easytabs.css" />
 
 <!-- include html5shiv -->
 <!--[if lt IE 9]>
