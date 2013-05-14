@@ -7,9 +7,9 @@
 </avatar>
 <avatar medium="video" name="name_video" tags="tag3, avatar" url="/media/video/video.jpg" streamname="" dateTime="" file="video/video.jpg" voice="" uploader="admin" thumbnail="/media/video-still/video.jpg" streamserver="">
 </avatar>
-<avatar medium="" name="name_avatar" tags="tag2, tag4, avatar" url="/media/helen_av.swf" streamname="" dateTime="" file="helen_av.swf" voice="e_en-n" uploader="admin" thumbnail="" streamserver="">
+<avatar medium="" name="name_avatar" tags="tag2, tag4, avatar" url="/media/helen_av.swf" streamname="" dateTime="" file="helen_av.swf" voice="nonexistant" uploader="admin" thumbnail="" streamserver="">
 </avatar>
-<avatar medium="stream" name="name_avatar_with_stream" tags="" url="/media/helen_av2.swf" streamname="test" dateTime="" file="helen_av2.swf" voice="e_en-n" uploader="admin" thumbnail="" streamserver="rtmp://localhost/oflaDemo">
+<avatar medium="stream" name="name_avatar_with_stream" tags="" url="/media/helen_av2.swf" streamname="test" dateTime="" file="helen_av2.swf" voice="default" uploader="admin" thumbnail="" streamserver="rtmp://localhost/oflaDemo">
 </avatar>
 <avatar medium="stream" name="name_unassigned" tags="avatar" url="library:4FciETtF:VideoOverlay" streamname="test" dateTime="" file="library:4FciETtF:VideoOverlay" voice="" uploader="admin" thumbnail="library:u9xYHuEj:IconLiveStream" streamserver="rtmp://localhost/oflaDemo">
 </avatar>
