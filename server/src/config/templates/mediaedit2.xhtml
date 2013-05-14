@@ -76,7 +76,7 @@
 		</div>
 	
 		<div class="filterBlock">
-		    <input id="buttonUpdateView" type="button" style="width:100px" value="Apply Filter" />
+		    <input id="buttonUpdateView" type="button" class="button-standard" value="Apply Filter" />
 	    	<input id="buttonResetView" type="button" style="width:60px" value="Reset" />
 	 	</div>
 	 
@@ -262,7 +262,7 @@
 				</div>
 				
 				<div class="dialogButtonRow">
-					<input type="button" style="width:100px" class="buttonClose" value="Close" />
+					<input type="button" class="buttonClose button-standard" value="Close" />
 				</div>
 				
 			</div>
@@ -280,8 +280,8 @@
 			<p class="dialogNote"><strong>Note:</strong> Changes will force a reload only of the newly assigned and unassigned stages</p>
 			
 			<div class="dialogButtonRow">
-				<input type="button" style="width:100px" class="buttonClose" value="Cancel" />
-				<input type="button" style="width:100px" id="buttonExecuteAssign" value="Apply" />
+				<input type="button" class="buttonClose button-standard" value="Cancel" />
+				<input type="button" class="button-standard" id="buttonExecuteAssign" value="Apply" />
 			</div>
 		
 		</div>
@@ -296,8 +296,8 @@
 			<div id="tagMediaSelectorPanel"></div>
 			
 			<div class="dialogButtonRow">
-				<input type="button" style="width:100px" class="buttonClose" value="Cancel" />
-				<input type="button" style="width:100px" id="buttonExecuteTag" value="Apply" />
+				<input type="button" class="buttonClose button-standard" value="Cancel" />
+				<input type="button" class="button-standard" id="buttonExecuteTag" value="Apply" />
 			</div>
 			
 		</div>
@@ -314,60 +314,104 @@
 				<ul class="easytabs">
 					<li id="tabEditName" class="tab"><a href="#panelEditName">Name</a></li>
 					<li id="tabEditVoice" class="tab"><a href="#panelEditVoice">Voice</a></li>
-					<li id="tabEditStream" class="tab"><a href="#panelEditStream">Stream settings</a></li>
+					<li id="tabEditStream" class="tab"><a href="#panelEditStream">Stream</a></li>
 					<li id="tabEditAudio" class="tab"><a href="#panelEditAudio">Type</a></li>
-					<li id="tabEditVideo" class="tab"><a href="#panelEditVideo">Image Path</a></li>
+					<li id="tabEditVideo" class="tab"><a href="#panelEditVideo">Video Image</a></li>
 				</ul>
 
 				<div id="panelEditName">
 					<div class="tab-panel">
-						<p>NAME</p>
+						<div class="fieldrow">
+							<label class="field-label" for="editName">Name:</label>
+							<input type="text" name="editName" id="inputEditName" value="" size="65" />
+						</div>
 					</div>
 				</div>
 				
 				<div id="panelEditVoice">
 					<div class="tab-panel">
-						<p>VOICE</p>
+						<div class="fieldrow">
+				
+							<label class="field-label" for="editVoice">Voice:</label>
+							<select name="editVoice" size="1" id="selectEditVoice" class="field-select">%(list_voices_as_html_option_tag)s</select>
+							
+							<!-- TODO add voice test for preview -->
+							<!-- 
+							<div id="voiceTestPanel" style="display:inline-block">
+								<input type="text" name="text" id="text" maxlength="128" value="The quick brown fox jumps over the lazy dog" style="width:45%" />
+							 	<input type="button" value="Test voice"  id="buttonEditVoiceTest" />
+							 	<input type="button" value="Cancel" style="display:none" id="buttonCancelEditVoiceTest" />
+								<div id="editVoiceTest"> 
+							        <div id="editVoiceTestDiv"></div>
+							        <div id="editVoiceTestError"></div>
+								</div>
+							</div>
+						 	-->
+						 
+						 </div>
+						
 					</div>
 				</div>
 				
 				<div id="panelEditStream">
 					<div class="tab-panel">
-						<p>STREAM</p>
-						<ul>
-							<li>Streamserver (if medium = stream)</li>
-							<li>Streamname (if medium = stream)</li>
-						</ul>
+						
+						<div class="fieldrow">
+							<label for="editStreamserver" class="field-label-large">Stream server:</label>
+							<input type="text" name="editStreamserver" id="inputEditStreamserver" maxlength="256" class="field-input" />
+							<br />
+							<label for="editStreamname" class="field-label-large">Stream name:</label>
+							<input type="text" name="editStreamname" id="inputEditStreamname" maxlength="1024" class="field-input" />
+						</div>
+						
+						<!-- TODO add stream test later -->
+						<!-- 
+						<div class="fieldrow">
+							<label for="editStreamserverTypeSelector">Stream type:</label>
+							<select name="editStreamserverTypeSelector" id="selectStreamserverType">
+								<option value="auto">Auto-detect</option>
+								<option value="live">Live</option>
+								<option value="audio">Audio</option>
+								<option value="video">Video</option>
+							</select>
+							<input type="button" value="Test stream" id="buttonEditStreamTest" />
+							<input type="button" value="Cancel" style="display:none" id="buttonCancelStreamTest" />
+						</div>
+						
+						<div id="editStreamTest" class="fieldrow"> 
+							<div id="editStreamTestDiv"></div>
+						</div>
+						-->
+						
 					</div>
 				</div>
 				
 				<div id="panelEditAudio">
 					<div class="tab-panel">
-						<p>AUDIO</p>
-						<ul>
-							<li>Audio Type (medium = music/sfx)</li>
-						</ul>
+						<div class="fieldrow">
+							<input type="radio" name="editAudioType" id="inputEditAudioTypeSfx" value="sfx" /><label for="inputEditAudioTypeSfx">Sound Effect</label>
+							<br />
+							<input type="radio" name="editAudioType" id="inputEditAudioTypeMusic" value="music" /><label for="inputEditAudioTypeMusic">Music</label>
+						</div>
 					</div>
 				</div>
 				
 				<div id="panelEditVideo">
 					<div class="tab-panel">
-						<p>VIDEO</p>
-						<ul>
-							<li>Image path (if medium = video)</li>
-						</ul>
+						<p>Choose from existing files in the <a href="/media/video">/media/video</a> directory.</p>
+						<select name="editVideoImage" id="selectEditVideoImage" class="field-select">%(list_video_images_as_html_option_tag)s</select>
 					</div>
 				</div>
 				
 				<div id="editMediaForceReloadDisplay">
 					<p>Assigned to <strong><span id="editMediaAssignedStages"></span></strong>.</p>
 					<input type="checkbox" name="editMediaForceReload" id="editMediaForceReload" />
-					<label for="editMediaForceReload">confirm to force reload of all assigned stages</label>
+					<label for="editMediaForceReload"><em>force reload of all assigned stages</em></label>
 				</div>
 				
 				<div class="dialogButtonRow">
-					<input type="button" style="width:100px" class="buttonClose" value="Close" />
-					<input type="button" style="width:100px" id="buttonExecuteEdit" value="Apply" />
+					<input type="button" class="buttonClose button-standard" value="Cancel" />
+					<input type="button" class="button-standard" id="buttonExecuteEdit" value="Apply" />
 				</div>
 			
 			</div>
@@ -387,8 +431,8 @@
 			</div>
 			
 			<div class="dialogButtonRow">
-				<input type="button" style="width:100px" class="buttonClose" value="Cancel" />
-				<input type="button" style="width:100px" id="buttonExecuteDelete" value="Delete" />
+				<input type="button" class="buttonClose button-standard" value="Cancel" />
+				<input type="button" class="button-standard" id="buttonExecuteDelete" value="Delete" />
 			</div>	
 		
 		</div>
@@ -402,7 +446,7 @@
 			<span id="errorMessage"></span>
 		
 			<div class="dialogButtonRow">
-				<input type="button" style="width:100px" class="buttonClose" value="Close" />
+				<input type="button" class="buttonClose button-standard" value="Close" />
 			</div>
 		
 		</div>

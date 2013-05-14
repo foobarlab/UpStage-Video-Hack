@@ -942,7 +942,32 @@ class MediaEditPage2(Workshop):
     def text_user(self, request):
         if (self.player):
             return self.player.name
+    
+    def text_list_voices_as_html_option_tag(self,request):
+        voicelist = ['<option value=""> -- none -- </option>']
+        voices = VOICES.keys()
+        voices.sort()
+        for voice in voices:
+            voicelist.extend('<option value="%s">%s</option>' % (voice, voice))
+        return ''.join(voicelist)
+    
+    def text_list_video_images_as_html_option_tag(self,request):
         
+        if os.path.exists(config.WEBCAM_DIR):
+            files = os.listdir(config.WEBCAM_DIR)
+        else:
+            files = []
+        
+        out = []
+        if files:
+            #out = ['<option value=""> -- select -- </option>']
+            for _file in files:
+                out.append('<option value="%s">%s</option>' % (_file, _file))      
+        else:
+            out = ['<option value=""> [none available] </option>']
+        
+        return '\n'.join(out)
+    
     def text_list_stages_as_json(self, request):
         keys = self.collection.stages.getKeys()
         data_list = []

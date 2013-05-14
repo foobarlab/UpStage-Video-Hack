@@ -36,6 +36,9 @@ var clickHandlerExecuteAssign = null;
 // Tag Media
 var clickHandlerExecuteTag = null;
 
+// Edit Media
+var clickHandlerExecuteEdit = null;
+
 
 var previewType = null;
 var previewThumbnailType = null;
@@ -416,6 +419,99 @@ function setupDataGrid() {
 					// set media name
 					$('#editMediaName').html(selectedMediaData['name']);
 					
+					// reset checkbox (force reload)
+					$("#editMediaForceReload").attr('checked', false);
+					
+					// hide checkbox if not assigned to any stage
+					if(selectedMediaData['stages'] == '') {
+						$("#editMediaAssignedStages").html('');
+						$("#editMediaForceReloadDisplay").hide();
+					} else {
+						$("#editMediaForceReload").attr('checked', true);
+						$("#editMediaAssignedStages").html(selectedMediaData['stages']);
+						$("#editMediaForceReloadDisplay").show();
+					}
+					
+					// prefill form fields
+					
+					// panelEditName
+					$('#inputEditName').val(selectedMediaData['name']);
+					
+					// panelEditVoice
+					var preselectedVoice = selectedMediaData['voice'];
+					// is a voice selected?
+					if(preselectedVoice != "") {
+						// does the voice exist in the list?
+						if( $("option[value='" + preselectedVoice + "']", "select#selectEditVoice").length == 0 ) {
+							// TODO add voice to list and mark it as unavailable?
+							// DEBUG:
+							//alert("voice '"+ preselectedVoice +"' doesn't exist!");
+							$("#selectEditVoice").append("<option class='select-unavailable' value='"+preselectedVoice+"'>"+preselectedVoice+"</option>");
+						}
+					}
+					$('#selectEditVoice').val(preselectedVoice);
+					
+					// panelEditStream
+					$('#inputEditStreamserver').val(selectedMediaData['streamserver']);
+					$('#inputEditStreamname').val(selectedMediaData['streamname']);
+					
+					// panelEditAudio
+					var audioType = selectedMediaData['medium'];
+					if(audioType == 'sfx') {
+						$('input[name="editAudioType"]')[0].checked = true;
+					} else if (audioType == 'music') {
+						$('input[name="editAudioType"]')[1].checked = true;
+					}
+					
+					// panelEditVideo
+					var selectedImage = getFilenameFromPath(selectedMediaData['file']);
+					// does the image exist in the list?
+					if( $("option[value='" + selectedImage + "']", "select#selectEditVideoImage").length == 0 ) {
+						// TODO add image to list and mark it as unavailable?
+						// DEBUG:
+						//alert("video image '"+ selectedImage +"' doesn't exist!");
+						$("#selectEditVideoImage").append("<option class='select-unavailable' value='"+selectedImage+"'>"+selectedImage+"</option>");
+					}
+					$('#selectEditVideoImage').val(selectedImage);
+					
+					// unbind previous click handler first
+					$("#buttonExecuteEdit").unbind('click',clickHandlerExecuteEdit);
+					
+					clickHandlerExecuteEdit = function(e) {
+					
+						log.debug("clickHandlerExecuteEdit: click: #buttonExecuteEdit, key="+selectedMediaData['key']);
+						
+						// get values
+						var name = $('#inputEditName').val();
+						var voice = $('#selectEditVoice').val();
+						var streamserver = $('#inputEditStreamserver').val();
+						var streamname = $('#inputEditStreamname').val();
+						var audiotype = $('input[name="editAudioType"]:radio:checked').val();
+						var videoimagepath = $('#selectEditVideoImage').val();
+						var forceReload = true;	// TODO
+						
+						// DEBUG:
+						alert(
+								'Name: '+ name +'\n'+
+								'Voice:'+ voice +'\n'+
+								'Streamserver:'+ streamserver +'\n'+
+								'Streamname:'+ streamname +'\n'+
+								'Audiotype:'+ audiotype +'\n'+
+								'Videoimagepath:'+ videoimagepath +'\n'
+						);
+						
+						// TODO remove unavailable options (class .select-unavailable) from selects (voice, video image) 
+						
+						// TODO create data array
+						
+						// pass data via ajax
+						//callAjaxEditData(selectedMediaData['key'],data);	
+					
+					}
+					
+					// bind click handler for final deletion
+					$("#buttonExecuteEdit").bind('click',clickHandlerExecuteEdit);
+					
 					// show edit panel
 					
 					$.colorbox({
@@ -425,9 +521,9 @@ function setupDataGrid() {
 						scrolling: false,
 						opacity: 0.5,
 						open: true,
-						initialWidth: 500,
+						initialWidth: 600,
 						initialHeight: 300,
-						width: 500,
+						width: 600,
 						height: 300,
 						inline: true,
 						href: "#editMediaPanel",
@@ -441,10 +537,10 @@ function setupDataGrid() {
 				        	$("#editTabsContainer").easytabs('select', editDefaultTab);
 				        	
 				        	// resize colorbox after tab has been clicked
-				        	//$("#editTabsContainer").bind('easytabs:after', function() { $.colorbox.resize(); });
+				        	$("#editTabsContainer").bind('easytabs:after', function() { $.colorbox.resize(); });
 				        	
 				        	// initially always resize
-				        	//$.colorbox.resize();
+				        	$.colorbox.resize();
 				        
 				        }
 					});
@@ -735,9 +831,9 @@ function setupDataGrid() {
 						opacity: 0.5,
 						open: true,
 						initialWidth: 550,
-						initialHeight: 350,
+						initialHeight: 260,
 						width: 550,
-						height: 350,
+						height: 260,
 						inline: true,
 						href: "#tagMediaPanel",
 						
@@ -757,7 +853,6 @@ function setupDataGrid() {
 						$('#tagMediaSelectorPanel').height(calculatedHeight+125);
 						$.colorbox.resize();
 					});
-					
 				};
 				
 				clickHandlerDownloadMedia = function(e) {
@@ -1093,6 +1188,7 @@ function showDetails(single_data) {
 		
 		// remove click handlers for preview
 		$("#buttonPreviewMedia").unbind('click',clickHandlerPreviewMedia);
+		$("#thumbnailPreview").unbind('click',clickHandlerPreviewMedia);
 		
 		if(previewType != null) {
 			
@@ -1189,6 +1285,11 @@ function showDetails(single_data) {
 function getFileExtension(filename) {
 	var ext = /^.+\.([^.]+)$/.exec(filename);
 	return ext == null ? "" : ext[1];
+}
+
+function getFilenameFromPath(path) {
+	var index = path.lastIndexOf("/") + 1;
+	return path.substr(index);
 }
 
 function getBytesWithUnit(bytes) {

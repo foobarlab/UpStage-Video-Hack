@@ -1219,7 +1219,7 @@ table#tableDetails {
 
 #tagMediaSelectorPanel {
 	width:480px;
-	height:auto;
+	/*height:auto;*/
 	display:block;
 	background-color:#efefef;
 	overflow:visible;
@@ -1228,4 +1228,37 @@ table#tableDetails {
 #tagMediaSelector {
 	display:block;
 	width:455px;
+}
+
+.button-standard {
+	width:100px;
+}
+
+.field-label {
+	width:60px;
+	display:inline-block;
+}
+
+.field-label-large {
+	width:80px;
+	display:inline-block;
+}
+
+.field-select {
+	min-width:100px;
+	max-width:66%;
+}
+
+.field-input {
+	width:75%;
+}
+
+.select-unavailable {
+	color:red;
+	font-weight:bold;
+}
+
+#editMediaForceReloadDisplay {
+	margin-top:20px;
+	display:inline-block;
 }
