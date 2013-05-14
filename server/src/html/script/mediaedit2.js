@@ -38,7 +38,7 @@ var clickHandlerExecuteTag = null;
 
 // Edit Media
 var clickHandlerExecuteEdit = null;
-
+var clickHandlerExecuteEditCancel = null;
 
 var previewType = null;
 var previewThumbnailType = null;
@@ -476,6 +476,15 @@ function setupDataGrid() {
 					
 					// unbind previous click handler first
 					$("#buttonExecuteEdit").unbind('click',clickHandlerExecuteEdit);
+					$('#buttonExecuteEditCancel').unbind('click',clickHandlerExecuteEditCancel);
+					
+					clickHandlerExecuteEditCancel = function(e) {
+						
+						log.debug("clickHandlerExecuteEditCancel: click: #buttonExecuteEditCancel, key="+selectedMediaData['key']);
+						
+						$.fn.colorbox.close();
+						$('.select-unavailable').remove(); // remove unavailable options from selectors: voice, video image path
+					}
 					
 					clickHandlerExecuteEdit = function(e) {
 					
@@ -500,7 +509,9 @@ function setupDataGrid() {
 								'Videoimagepath:'+ videoimagepath +'\n'
 						);
 						
-						// TODO remove unavailable options (class .select-unavailable) from selects (voice, video image) 
+						// remove unavailable options from selectors: voice, video image path
+						$('.select-unavailable').remove();
+						
 						
 						// TODO create data array
 						
@@ -511,6 +522,7 @@ function setupDataGrid() {
 					
 					// bind click handler for final deletion
 					$("#buttonExecuteEdit").bind('click',clickHandlerExecuteEdit);
+					$("#buttonExecuteEditCancel").bind('click',clickHandlerExecuteEditCancel);
 					
 					// show edit panel
 					
@@ -522,9 +534,9 @@ function setupDataGrid() {
 						opacity: 0.5,
 						open: true,
 						initialWidth: 600,
-						initialHeight: 300,
+						initialHeight: 160,
 						width: 600,
-						height: 300,
+						height: 160,
 						inline: true,
 						href: "#editMediaPanel",
 						
