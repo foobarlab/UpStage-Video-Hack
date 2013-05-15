@@ -497,16 +497,17 @@ function setupDataGrid() {
 						var streamname = $('#inputEditStreamname').val();
 						var audiotype = $('input[name="editAudioType"]:radio:checked').val();
 						var videoimagepath = $('#selectEditVideoImage').val();
-						var forceReload = true;	// TODO
+						var forceReload = $('#editMediaForceReload').is(':checked');
 						
 						// DEBUG:
 						alert(
 								'Name: '+ name +'\n'+
-								'Voice:'+ voice +'\n'+
-								'Streamserver:'+ streamserver +'\n'+
-								'Streamname:'+ streamname +'\n'+
-								'Audiotype:'+ audiotype +'\n'+
-								'Videoimagepath:'+ videoimagepath +'\n'
+								'Voice: '+ voice +'\n'+
+								'Streamserver: '+ streamserver +'\n'+
+								'Streamname: '+ streamname +'\n'+
+								'Audiotype: '+ audiotype +'\n'+
+								'Videoimagepath: '+ videoimagepath +'\n'+
+								'Force reload:'+ forceReload
 						);
 						
 						// remove unavailable options from selectors: voice, video image path
