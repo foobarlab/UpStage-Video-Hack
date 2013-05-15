@@ -926,6 +926,9 @@ class MediaEditPage2(Workshop):
         # force flag: deleteIfInUse (delete media)
         self.deleteIfInUse = False
         
+        # force flag: forceReload (edit media)
+        self.force_reload = False
+        
         # selected media (update, delete, assign stages)
         self.selected_media = None
         self.selected_media_type = None
@@ -934,6 +937,9 @@ class MediaEditPage2(Workshop):
         
         # selected stages (assign stages)
         self.selected_stages = []
+        
+        # data to update (tag media, edit media)
+        self.update_data = {}
         
         # meta response values
         self.status = 500   # default error code, using HTTP error codes for status
@@ -997,7 +1003,6 @@ class MediaEditPage2(Workshop):
     def render_POST(self,request):
         
         args = request.args
-        
         log.msg("MediaEditPage2: render_POST(): args=%s" % args)
         
         # handle ajax calls
@@ -1104,9 +1109,28 @@ class MediaEditPage2(Workshop):
                 argDeleteIfInUse = args['deleteIfInUse']
                 if (argDeleteIfInUse == ['true']):
                     self.deleteIfInUse = True
-                    
             log.msg("MediaEditPage2: render_POST(): deleteIfInUse=%s" % (pprint.saferepr(self.deleteIfInUse)))
             
+            if 'force_reload' in args:
+                forceReload = args['force_reload']
+                if(forceReload == ['true']):
+                    self.force_reload = True
+            log.msg("MediaEditPage2: render_POST(): force_reload=%s" % (pprint.saferepr(self.force_reload)))
+            
+            # parse args for update_data
+            for arg in args:
+                if 'update_data' in arg:
+                    log.msg("MediaEditPage2: render_POST(): found update data: arg=%s" % (arg))
+                    entry = {}
+                    # extract key from arg
+                    match = re.search(r"\[(\w+)\]", arg)
+                    key = match.group(1)
+                    if(key != ""):
+                        value = args[arg]
+                        entry[key] = value
+                        log.msg("MediaEditPage2: render_POST(): add update data: entry=%s" % (pprint.saferepr(entry)))
+                        self.update_data.update(entry)
+            log.msg("MediaEditPage2: render_POST(): update_data=%s" % (pprint.saferepr(self.update_data)))
             
             # get type of call
             ajax_call = args['ajax'][0]
@@ -1131,9 +1155,7 @@ class MediaEditPage2(Workshop):
                 data = self._assign_to_stage(self.selected_media_key, self.selected_collection, self.selected_stages)
                 
             elif ajax_call == 'update_data':
-                # TODO pass more parameters (the data, force reload)
-                # signature is: selected_media_key,selected_collection,update_data,force_reload
-                data = self._update_data(self.selected_media_key, self.selected_collection)
+                data = self._update_data(self.selected_media_key, self.selected_collection, self.update_data, self.force_reload)
             
             else:
                 self.status = 500
@@ -1362,7 +1384,7 @@ class MediaEditPage2(Workshop):
         log.msg("MediaEditPage2: _update_data: force_reload=%s" % force_reload)
         
         # TODO update data of given media#        
-#        selected_media.update(update_data)
+        #selected_media.update(update_data)
         
         pass
     

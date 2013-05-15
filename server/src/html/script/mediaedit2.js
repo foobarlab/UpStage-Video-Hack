@@ -239,7 +239,7 @@ function callAjaxAssignToStage(key,selectedStages) {
 	});
 }
 
-function callAjaxUpdateData(key,updateData) {
+function callAjaxUpdateData(key,updateData,forceStagesReload) {
 	
 	log.debug("callAjaxUpdateData(): key="+key+", updateData="+updateData);
 	
@@ -247,6 +247,7 @@ function callAjaxUpdateData(key,updateData) {
 		url: url+"?ajax=update_data",
 		data: {
         	'select_key': key,
+        	'force_reload': forceStagesReload,
         	'update_data': updateData,
         },
         success: function(response) {
@@ -254,7 +255,7 @@ function callAjaxUpdateData(key,updateData) {
         	if(response.status == 200) {
         		
         		// gracefully refresh data
-            	setupMediaEdit2(url,user,stages,false);
+            	//setupMediaEdit2(url,user,stages,false);	// TODO commented out for testing
             	
         		// close colorbox
         		$.fn.colorbox.close(); //return false;
@@ -265,7 +266,7 @@ function callAjaxUpdateData(key,updateData) {
         		showKnownError(response.timestamp,response.status,response.data);
         		
         		// gracefully refresh data
-            	setupMediaEdit2(url,user,stages,false);
+        		//setupMediaEdit2(url,user,stages,false);	// TODO commented out for testing
         	}
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -274,7 +275,7 @@ function callAjaxUpdateData(key,updateData) {
         	showUnknownError(textStatus,errorThrown);
         	
         	// gracefully refresh data
-        	setupMediaEdit2(url,user,stages,false);
+        	//setupMediaEdit2(url,user,stages,false);	// TODO commented out for testing
         },
 	});
 	
@@ -531,13 +532,13 @@ function setupDataGrid() {
 						log.debug("clickHandlerExecuteEdit: click: #buttonExecuteEdit, key="+selectedMediaData['key']);
 						
 						// get values
-						var name = $('#inputEditName').val();
-						var voice = $('#selectEditVoice').val();
-						var streamserver = $('#inputEditStreamserver').val();
-						var streamname = $('#inputEditStreamname').val();
-						var audiotype = $('input[name="editAudioType"]:radio:checked').val();
-						var videoimagepath = $('#selectEditVideoImage').val();
-						var forceReload = $('#editMediaForceReload').is(':checked');
+						var name = $('#inputEditName').val() || '';
+						var voice = $('#selectEditVoice').val() || '';
+						var streamserver = $('#inputEditStreamserver').val() || '';
+						var streamname = $('#inputEditStreamname').val() || '';
+						var audiotype = $('input[name="editAudioType"]:radio:checked').val() || '';
+						var videoimagepath = $('#selectEditVideoImage').val() || '';
+						var forceReload = $('#editMediaForceReload').is(':checked') || false;
 						
 						// DEBUG:
 						alert(
@@ -553,12 +554,20 @@ function setupDataGrid() {
 						// remove unavailable options from selectors: voice, video image path
 						$('.select-unavailable').remove();
 						
+						// TODO ensure even empty values are passed
 						
-						// TODO create data array
-						var editData = [];
+						// create data array
+						var editData ={
+							"name":name,
+							"voice":voice,
+							"streamserver":streamserver,
+							"streamname":streamname,
+							"audiotype":audiotype,
+							"videoimagepath":videoimagepath
+						};
 						
 						// pass data via ajax
-						callAjaxUpdateData(selectedMediaData['key'],editData);	
+						callAjaxUpdateData(selectedMediaData['key'],editData,forceReload);	
 					
 					}
 					
@@ -848,7 +857,7 @@ function setupDataGrid() {
 						log.debug("clickHandlerExecuteTag: click: #buttonExecuteTag: key="+selectedMediaData['key']);
 						
 						// get selected values (may be empty or contain duplicates!)
-						var selectedValues = $('#tagMediaSelector').val() || [];
+						var selectedValues = $('#tagMediaSelector').val() || [''];
 
 						// remove empty ones and duplicates
 						var selectedTags = [];
@@ -868,14 +877,11 @@ function setupDataGrid() {
 						
 						alert("selected tags: " + selectedTags.join(", "));
 						
-						// TODO pass selected tags
-						//callAjaxTag(selectedMediaData['key'],selectedValues);
-						
-						// TODO create data array
-						var tagData = [];
+						// create data array
+						var tagsData = { "tags":selectedTags.join(", ") };
 						
 						// pass data via ajax
-						callAjaxUpdateData(selectedMediaData['key'],tagData);
+						callAjaxUpdateData(selectedMediaData['key'],tagsData,false);
 						
 					}
 					
