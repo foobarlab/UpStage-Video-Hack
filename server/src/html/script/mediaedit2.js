@@ -104,7 +104,6 @@ function setCurrentUserInFilter() {
 	}
 }
 
-/* do ajax 'get_data' call */
 function callAjaxGetData() {
 	
 	log.debug("callAjaxGetData()");
@@ -238,6 +237,47 @@ function callAjaxAssignToStage(key,selectedStages) {
         	setupMediaEdit2(url,user,stages,false);
         },
 	});
+}
+
+function callAjaxUpdateData(key,updateData) {
+	
+	log.debug("callAjaxUpdateData(): key="+key+", updateData="+updateData);
+	
+	$.ajax({type: "POST",
+		url: url+"?ajax=update_data",
+		data: {
+        	'select_key': key,
+        	'update_data': updateData,
+        },
+        success: function(response) {
+
+        	if(response.status == 200) {
+        		
+        		// gracefully refresh data
+            	setupMediaEdit2(url,user,stages,false);
+            	
+        		// close colorbox
+        		$.fn.colorbox.close(); //return false;
+            	
+        	} else {
+        		
+        		// handle known errors
+        		showKnownError(response.timestamp,response.status,response.data);
+        		
+        		// gracefully refresh data
+            	setupMediaEdit2(url,user,stages,false);
+        	}
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+        	
+        	// handle unknown errors (may be 'no connection')
+        	showUnknownError(textStatus,errorThrown);
+        	
+        	// gracefully refresh data
+        	setupMediaEdit2(url,user,stages,false);
+        },
+	});
+	
 }
 
 function testCallback(params) {
@@ -515,9 +555,10 @@ function setupDataGrid() {
 						
 						
 						// TODO create data array
+						var editData = [];
 						
 						// pass data via ajax
-						//callAjaxEditData(selectedMediaData['key'],data);	
+						callAjaxUpdateData(selectedMediaData['key'],editData);	
 					
 					}
 					
@@ -829,6 +870,12 @@ function setupDataGrid() {
 						
 						// TODO pass selected tags
 						//callAjaxTag(selectedMediaData['key'],selectedValues);
+						
+						// TODO create data array
+						var tagData = [];
+						
+						// pass data via ajax
+						callAjaxUpdateData(selectedMediaData['key'],tagData);
 						
 					}
 					

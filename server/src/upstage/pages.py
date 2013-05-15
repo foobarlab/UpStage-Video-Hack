@@ -1129,6 +1129,11 @@ class MediaEditPage2(Workshop):
             elif ajax_call == 'assign_to_stage':
                 # TODO add flag 'force_stage_reload' to reload newly assigned and unassigned stages (just concerning changes to assignments!)
                 data = self._assign_to_stage(self.selected_media_key, self.selected_collection, self.selected_stages)
+                
+            elif ajax_call == 'update_data':
+                # TODO pass more parameters (the data, force reload)
+                # signature is: selected_media_key,selected_collection,update_data,force_reload
+                data = self._update_data(self.selected_media_key, self.selected_collection)
             
             else:
                 self.status = 500
@@ -1337,9 +1342,6 @@ class MediaEditPage2(Workshop):
             log.msg("MediaEditPage2: _delete_data: successfully deleted.")
         
     def _assign_to_stage(self,selected_media_key=None,selected_collection=None,selected_stages=None):
-        
-        # TODO assign given media to given stages
-        
         log.msg("MediaEditPage2: _assign_to_stage: selected_media_key=%s" % selected_media_key)
         log.msg("MediaEditPage2: _assign_to_stage: selected_collection=%s" % pprint.saferepr(selected_collection))
         log.msg("MediaEditPage2: _assign_to_stage: selected_stages=%s" % pprint.saferepr(selected_stages))
@@ -1351,17 +1353,18 @@ class MediaEditPage2(Workshop):
             log.msg("MediaEditPage2: _assign_to_stage: no success! assigning failed.")
         else:
             log.msg("MediaEditPage2: _assign_to_stage: successfully assigned.")
-            
+
+
+    def _update_data(self,selected_media_key=None,selected_collection=None,update_data=None,force_reload=False):
+        log.msg("MediaEditPage2: _update_data: selected_media_key=%s" % selected_media_key)
+        log.msg("MediaEditPage2: _update_data: selected_collection=%s" % pprint.saferepr(selected_collection))
+        log.msg("MediaEditPage2: _update_data: update_data=%s" % pprint.saferepr(update_data))
+        log.msg("MediaEditPage2: _update_data: force_reload=%s" % force_reload)
         
-#    # TODO
-#    def _update_data(self,selected_media=None,update_data=None):
-#        log.msg("MediaEditPage2: _update_data: selected_media=%s, update_data=%s" % (selected_media,update_data))
-#        
-#        # TODO update data of given media
-#        
+        # TODO update data of given media#        
 #        selected_media.update(update_data)
-#        
-#        pass
+        
+        pass
     
     
 """ Shaun Narayan (02/16/10) - Handles medrequest.argsia editing.
