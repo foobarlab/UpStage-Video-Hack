@@ -446,16 +446,26 @@ class MediaDict(Xml2Dict):
         return success
 
 
-    def update_data(self,key=None,player=None,update_data=None,force_reload=False):
+    def update_data(self,key=None,player=None,update_data=None,force_reload=False,media_type=None):
         """Rewritten function: Update media attributes and return True if successful."""
         
         success = False
         
-        log.msg("MediaDict: update_data(): key=%s, player=%s, update_data=%s, force_reload=%s" % (key,player,update_data,force_reload))
+        log.msg("MediaDict: update_data(): key=%s, player=%s, update_data=%s, force_reload=%s, media_type=%s" % (key,player,update_data,force_reload,media_type))
         
         # key must be given
         if key is None:
             log.msg("MediaDict: update_data(): no media key given!")
+            return success
+        
+        # media type must be given
+        if media_type is None:
+            log.msg("MediaDict: update_data(): no media type given!")
+            return success
+        
+        # validate media type
+        if not media_type in ('avatars','props','backdrops','audios'):
+            log.msg("MediaDict: update_data(): invalid media type '%s' given!" % media_type)
             return success
         
         # player must be given
@@ -482,9 +492,7 @@ class MediaDict(Xml2Dict):
         
         log.msg("MediaDict: update_data(): Found media='%s'." % pprint.saferepr(media))
         
-        # TODO determine type of media to be able to restrict attributes for updates?
-        
-        # prepare data step 1: check values
+        # prepare data step 1: check and transform values if needed
         prepare_data = dict()
         for datakey, newvalue in update_data.items():
             
@@ -504,37 +512,76 @@ class MediaDict(Xml2Dict):
                 if(datakey == 'audiotype'):
                     log.msg("MediaDict: update_data(): processing data key '%s' ... " % datakey)
                     
-                    # TODO prepare data for audio (change 'type', change 'thumbnail')
-                    
-                    
+                    # prepare data for audios
+                    if (newvalue != '') and (media_type == 'audios'):
+                        if(newvalue == 'music'):
+                            prepare_data['medium'] = 'music'
+                            prepare_data['web_thumbnail'] = config.MUSIC_ICON_IMAGE_URL
+                        elif (newvalue == 'sfx'):
+                            prepare_data['medium'] = 'sfx'
+                            prepare_data['web_thumbnail'] = config.SFX_ICON_IMAGE_URL
+                        else:
+                            log.msg("MediaDict: update_data(): invalid value '%s' for data key '%s' ... " % (newvalue,datakey))
+                            return success
+                        
                 elif (datakey == 'videoimagepath'):
                     log.msg("MediaDict: update_data(): processing data key '%s' ... " % datakey)
                     
-                    # TODO prepare data for video (change media path)
-                    
+                    # prepare data for video
+                    if (newvalue != '') and (media_type == 'avatars') and (media.medium == 'video'):
+                        prepare_data['file'] = ('%s/%s' % (config.WEBCAM_SUBURL, newvalue))
+                        prepare_data['web_thumbnail'] = ('%s%s' % (config.WEBCAM_STILL_URL, newvalue))
                     
                 else:
                     log.msg("MediaDict: update_data(): unknown data key '%s'. Unable to update data." % datakey)
                     return success            
         
-        # prepare data step2: modify values
+        # prepare data step 2: remove items not relevant for media type
+        allowed_keys = ['name','tags']
+        if media_type == 'avatars':
+            allowed_keys.extend(['voice'])
+            if media.medium == 'stream':
+                allowed_keys.extend(['streamserver','streamname'])
+            elif media.medium == 'video':
+                allowed_keys.extend(['file','web_thumbnail'])
+        elif media_type == 'audios':
+            allowed_keys.extend(['medium','web_thumbnail'])
+        
+        log.msg("MediaDict: update_data(): allowed_keys='%s'." % pprint.saferepr(allowed_keys))
+        
+        for datakey in prepare_data.keys():
+            if not datakey in allowed_keys:
+                prepare_data.pop(datakey)
+                log.msg("MediaDict: update_data(): data key %s removed because it is not allowed to be modified for this kind of media type (%s)." % (pprint.saferepr(datakey),media_type))
+
+
+        # prepare data step 3: check "illegal" keys (e.g. unmodifyable or nonempty attributes)
         for datakey, newvalue in prepare_data.items():
             
-            # check keys which should not be modified (e.g. stages) and remove from prepare_data dict
+            # check keys which should not be modified (e.g. stages) and always remove from prepare_data dict
             if (datakey == 'stages'):
-                removedkey, _removedvalue = prepare_data.popitem()
-                log.msg("MediaDict: update_data(): prepare data: removed data key '%s' because it is not allowed to be modified by this method." % removedkey)
+                _removedvalue = prepare_data.pop(datakey)
+                log.msg("MediaDict: update_data(): prepare data: removed data key '%s' because it is not allowed in general to be modified by this method." % datakey)
             
             # check for empty values where nonempty values are expected
-            if(datakey == 'name'):
+            if((datakey == 'name') or
+               #(datakey == 'streamserver') or
+               #(datakey == 'streamname') or
+               (datakey == 'file')):
                 if (newvalue == ''):
                     log.msg("MediaDict: update_data(): prepare data: expected data key '%s' to contain nonempty value." % datakey)
-                    prepare_data[datakey] = 'noname'
+                    return success
             
+            # set default if no value is given
+            if(datakey == 'web_thumbnail'):
+                if (newvalue == ''):
+                    prepare_data[datakey] = config.MISSING_THUMB_URL
+
             # TODO: check for duplicate values which should be modified (TODO maybe this is handled in another class or duplicate names are allowed [globally?, on a single stage?])
             #if(datakey == 'name'):
             #    # TODO check if name already exists and create new name if needed? there are only unique names allowed as the name is used as unique key
             #    pass
+
 
         log.msg("MediaDict: update_data(): prepare_data=%s" % pprint.saferepr(prepare_data))
 
@@ -547,34 +594,39 @@ class MediaDict(Xml2Dict):
                 setattr(media,attrkey,newvalue)
                 modified_global = True
                 log.msg("MediaDict: update_data(): updated global attribute '%s'." % attrkey)
-            
-        # save changes to global config
+            else:
+                log.msg("MediaDict: update_data(): attribute '%s' has not changed: '%s'='%s'." % (attrkey,oldvalue,newvalue))
+
         if modified_global:
+            
+            # save changes to global config
             self.save()
        
-        # get assigned stages
-        thing_stage_tuple = self._get_stage_collections()
-        current_assigned_stages = [stage for things, stage in thing_stage_tuple if key in things.media]
-        log.msg("MediaDict: update_data(): current_assigned_stages=%s" % current_assigned_stages)
-        
-        # check attributes which may be existing on stages and should be changed too (e.g. name, voice)
-        if(len(current_assigned_stages)>0):
-            # iterate through stages
-            for assigned_stage in current_assigned_stages:
-                log.msg("MediaDict: update_data(): checking things on assigned stage '%s'." % assigned_stage.ID)
-                for thingcollection in (assigned_stage.avatars, assigned_stage.props, assigned_stage.backdrops, assigned_stage.audios):
-                    #log.msg("MediaDict: update_data(): collection=%s." %  pprint.saferepr(thingcollection))
-                    medialist = thingcollection.media
-                    for mediakey in medialist:
-                        #log.msg("MediaDict: update_data(): checking mediakey=%s." % pprint.saferepr(mediakey))
-                        if mediakey == key:
-                            #log.msg("MediaDict: update_data(): found mediakey=%s." % pprint.saferepr(mediakey))
-                            # newly add media to collection to overwrite old media
-                            thing = thingcollection.add_media(media)
-                            log.msg("MediaDict: update_data(): updated thing=%s." % pprint.saferepr(thing))
-                            assigned_stage.save()
-                            if(force_reload):
-                                assigned_stage.soft_reset()
+            # get assigned stages
+            thing_stage_tuple = self._get_stage_collections()
+            current_assigned_stages = [stage for things, stage in thing_stage_tuple if key in things.media]
+            log.msg("MediaDict: update_data(): current_assigned_stages=%s" % current_assigned_stages)
+            
+            # check attributes which may be existing on stages and should be changed too (e.g. name, voice)
+            if(len(current_assigned_stages)>0):
+                # iterate through stages
+                for assigned_stage in current_assigned_stages:
+                    log.msg("MediaDict: update_data(): checking things on assigned stage '%s'." % assigned_stage.ID)
+                    for thingcollection in (assigned_stage.avatars, assigned_stage.props, assigned_stage.backdrops, assigned_stage.audios):
+                        #log.msg("MediaDict: update_data(): collection=%s." %  pprint.saferepr(thingcollection))
+                        medialist = thingcollection.media
+                        for mediakey in medialist:
+                            #log.msg("MediaDict: update_data(): checking mediakey=%s." % pprint.saferepr(mediakey))
+                            if mediakey == key:
+                                #log.msg("MediaDict: update_data(): found mediakey=%s." % pprint.saferepr(mediakey))
+                                # newly add media to collection to overwrite old media
+                                thing = thingcollection.add_media(media)
+                                log.msg("MediaDict: update_data(): updated thing=%s." % pprint.saferepr(thing))
+                                assigned_stage.save()
+                                if(force_reload):
+                                    assigned_stage.soft_reset()
+        else:
+            log.msg("MediaDict: update_data(): nothing changed: no need to change attributes.")
         
         # check if changes were successfully applied to global config
         success = True

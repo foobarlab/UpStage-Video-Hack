@@ -1155,7 +1155,7 @@ class MediaEditPage2(Workshop):
                 data = self._assign_to_stage(self.selected_media_key, self.selected_collection, self.selected_stages)
                 
             elif ajax_call == 'update_data':
-                data = self._update_data(self.selected_media_key, self.selected_collection, self.update_data, self.force_reload)
+                data = self._update_data(self.selected_media_key, self.selected_collection, self.update_data, self.force_reload, self.selected_media_type)
             
             else:
                 self.status = 500
@@ -1377,13 +1377,14 @@ class MediaEditPage2(Workshop):
             log.msg("MediaEditPage2: _assign_to_stage: successfully assigned.")
 
 
-    def _update_data(self,selected_media_key=None,selected_collection=None,update_data=None,force_reload=False):
+    def _update_data(self,selected_media_key=None,selected_collection=None,update_data=None,force_reload=False,media_type=None):
         log.msg("MediaEditPage2: _update_data: selected_media_key=%s" % selected_media_key)
         log.msg("MediaEditPage2: _update_data: selected_collection=%s" % pprint.saferepr(selected_collection))
         log.msg("MediaEditPage2: _update_data: update_data=%s" % pprint.saferepr(update_data))
         log.msg("MediaEditPage2: _update_data: force_reload=%s" % force_reload)
+        log.msg("MediaEditPage2: _update_data: media_type=%s" % media_type)
         
-        success = selected_collection.update_data(selected_media_key,self.player,update_data,force_reload)
+        success = selected_collection.update_data(selected_media_key,self.player,update_data,force_reload,media_type)
         
         if not success:
             self.status = 500
