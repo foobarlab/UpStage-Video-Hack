@@ -255,7 +255,7 @@ function callAjaxUpdateData(key,updateData,forceStagesReload) {
         	if(response.status == 200) {
         		
         		// gracefully refresh data
-            	//setupMediaEdit2(url,user,stages,false);	// TODO commented out for testing
+            	setupMediaEdit2(url,user,stages,false);
             	
         		// close colorbox
         		$.fn.colorbox.close(); //return false;
@@ -266,7 +266,7 @@ function callAjaxUpdateData(key,updateData,forceStagesReload) {
         		showKnownError(response.timestamp,response.status,response.data);
         		
         		// gracefully refresh data
-        		//setupMediaEdit2(url,user,stages,false);	// TODO commented out for testing
+        		setupMediaEdit2(url,user,stages,false);
         	}
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -275,7 +275,7 @@ function callAjaxUpdateData(key,updateData,forceStagesReload) {
         	showUnknownError(textStatus,errorThrown);
         	
         	// gracefully refresh data
-        	//setupMediaEdit2(url,user,stages,false);	// TODO commented out for testing
+        	setupMediaEdit2(url,user,stages,false);
         },
 	});
 	
