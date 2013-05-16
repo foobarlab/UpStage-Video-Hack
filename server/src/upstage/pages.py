@@ -1126,7 +1126,7 @@ class MediaEditPage2(Workshop):
                     match = re.search(r"\[(\w+)\]", arg)
                     key = match.group(1)
                     if(key != ""):
-                        value = args[arg]
+                        value = args[arg][0]
                         entry[key] = value
                         log.msg("MediaEditPage2: render_POST(): add update data: entry=%s" % (pprint.saferepr(entry)))
                         self.update_data.update(entry)
@@ -1383,11 +1383,14 @@ class MediaEditPage2(Workshop):
         log.msg("MediaEditPage2: _update_data: update_data=%s" % pprint.saferepr(update_data))
         log.msg("MediaEditPage2: _update_data: force_reload=%s" % force_reload)
         
-        # TODO update data of given media#        
-        #selected_media.update(update_data)
+        success = selected_collection.update_data(selected_media_key,self.player,update_data,force_reload)
         
-        pass
-    
+        if not success:
+            self.status = 500
+            log.msg("MediaEditPage2: _update_data: no success! update failed.")
+        else:
+            log.msg("MediaEditPage2: _update_data: successfully updated.")
+        
     
 """ Shaun Narayan (02/16/10) - Handles medrequest.argsia editing.
     Should probably move media list HTML into a template."""

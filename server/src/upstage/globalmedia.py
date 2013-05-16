@@ -316,7 +316,7 @@ class MediaDict(Xml2Dict):
         
         # key must be given
         if key is None:
-            log.msg("MediaDict: delete(): no key given!")
+            log.msg("MediaDict: delete(): no media key given!")
             return success
         
         # player must be given
@@ -326,7 +326,7 @@ class MediaDict(Xml2Dict):
         
         # only admins are allowed to delete data
         if not player.can_admin():
-            log.msg("MediaDict: delete(): player is not admin!")
+            log.msg("MediaDict: delete(): Insufficient rights. Player '%s' is not in role 'admin'." % player.name)
             return success
         
         # evaluate force flag:
@@ -385,15 +385,25 @@ class MediaDict(Xml2Dict):
             
         return success
 
-    # TODO add and evaluate flag 'force_stage_reload'
     def assign_stages(self, key=None, player=None, new_stages=[], force_reload=True):
         """Rewritten function: Assign a Thing identified by 'file key' to new stages and return True if successful."""
         success = False
         
         log.msg("MediaDict: assign_stages(): key=%s, player=%s, new_stages=%s" % (key,player,new_stages))
         
-        # only admins are allowed to delete data
+        # key must be given
+        if key is None:
+            log.msg("MediaDict: assign_stages(): no media key given!")
+            return success
+        
+        # player must be given
+        if player is None:
+            log.msg("MediaDict: assign_stages(): no player given!")
+            return success
+        
+        # only admins are allowed to assign stages
         if not player.can_admin():
+            log.msg("MediaDict: assign_stages(): Insufficient rights. Player '%s' is not in role 'admin'." % player.name)
             return success
         
         # get already assigned stages
@@ -434,19 +444,181 @@ class MediaDict(Xml2Dict):
             success = True
             
         return success
-    
 
-#    def update(self,player=None,new_data=None):
-#        """Rewritten function: Update 'this Thing' with new data and return True if successful."""
-#        success = False
-#        
-#        log.msg("globalmedia.py: update(): player=%s, new_data=%s" % (player,new_data))
-#        
-#        # only admins are allowed to delete data
-#        if not player.can_admin():
-#            return success
-#        
-#        return success
+
+    def update_data(self,key=None,player=None,update_data=None,force_reload=False):
+        """Rewritten function: Update media attributes and return True if successful."""
+        
+        success = False
+        
+        log.msg("MediaDict: update_data(): key=%s, player=%s, update_data=%s, force_reload=%s" % (key,player,update_data,force_reload))
+        
+        # key must be given
+        if key is None:
+            log.msg("MediaDict: update_data(): no media key given!")
+            return success
+        
+        # player must be given
+        if player is None:
+            log.msg("MediaDict: update_data(): no player given!")
+            return success
+        
+        # only admins are allowed to edit data
+        if not player.can_admin():
+            log.msg("MediaDict: update_data(): Insufficient rights. Player '%s' is not in role 'admin'." % player.name)
+            return success
+        
+        # try to get media
+        media = None
+        try:
+            media = self[key]
+        except KeyError:
+            log.msg("MediaDict: update_data(): Can not edit '%s' (media not present in %s)" % (key, self))
+            return success
+        
+        if media is None:
+            log.msg("MediaDict: update_data(): Media was not found.")
+            return success
+        
+        log.msg("MediaDict: update_data(): Found media='%s'." % pprint.saferepr(media))
+        
+        # TODO determine type of media to be able to restrict attributes for updates?
+        
+        # prepare data step 1: check values
+        prepare_data = dict()
+        for datakey, newvalue in update_data.items():
+            
+            log.msg("MediaDict: update_data(): prepare data: datakey='%s', newvalue='%s'." % (datakey, newvalue))
+            
+            # check for 'None' values
+            if ((datakey is None) or (newvalue is None)):
+                log.msg("MediaDict: update_data(): data key or new value is None.")
+                return success
+            
+            # check if attribute exists
+            try:
+                oldvalue = getattr(media,datakey)
+                prepare_data[datakey] = newvalue
+            except AttributeError:
+                # attribute does not exist: check special keys which require transformation (audiotype, videoimagepath)
+                if(datakey == 'audiotype'):
+                    log.msg("MediaDict: update_data(): processing data key '%s' ... " % datakey)
+                    
+                    # TODO prepare data for audio (change 'type', change 'thumbnail')
+                    
+                    
+                elif (datakey == 'videoimagepath'):
+                    log.msg("MediaDict: update_data(): processing data key '%s' ... " % datakey)
+                    
+                    # TODO prepare data for video (change media path)
+                    
+                    
+                else:
+                    log.msg("MediaDict: update_data(): unknown data key '%s'. Unable to update data." % datakey)
+                    return success            
+        
+        # prepare data step2: modify values
+        for datakey, newvalue in prepare_data.items():
+            
+            # check keys which should not be modified (e.g. stages) and remove from prepare_data dict
+            if (datakey == 'stages'):
+                removedkey, _removedvalue = prepare_data.popitem()
+                log.msg("MediaDict: update_data(): prepare data: removed data key '%s' because it is not allowed to be modified by this method." % removedkey)
+            
+            # check for empty values where nonempty values are expected
+            if(datakey == 'name'):
+                if (newvalue == ''):
+                    log.msg("MediaDict: update_data(): prepare data: expected data key '%s' to contain nonempty value." % datakey)
+                    prepare_data[datakey] = 'noname'
+            
+            # TODO: check for duplicate values which should be modified (TODO maybe this is handled in another class or duplicate names are allowed [globally?, on a single stage?])
+            #if(datakey == 'name'):
+            #    # TODO check if name already exists and create new name if needed? there are only unique names allowed as the name is used as unique key
+            #    pass
+
+        log.msg("MediaDict: update_data(): prepare_data=%s" % pprint.saferepr(prepare_data))
+
+        # iterate over data dictionary and apply new values
+        modified_global = False
+        # update global config
+        for attrkey, newvalue in prepare_data.items():
+            oldvalue = getattr(media,attrkey)
+            if oldvalue != newvalue:
+                setattr(media,attrkey,newvalue)
+                modified_global = True
+                log.msg("MediaDict: update_data(): updated global attribute '%s'." % attrkey)
+            
+#             # check attributes which may be existing on stages and should be changed too (e.g. name, voice)
+#             
+#             for assigned_stage in current_assigned_stages:
+#                 # check stage if it contains related things
+#                 log.msg("MediaDict: update_data(): checking things on assigned stage '%s' for relevance of attribute '%s'." % (assigned_stage,attrkey))
+#                 for thingcollection in (stage.avatars, stage.props, stage.backdrops, stage.audios):
+#                     #log.msg("MediaDict: update_data(): collection=%s." %  pprint.saferepr(thingcollection))
+#                     #things = thingcollection.things
+#                     #for thingid in things:
+#                     #    thing = thingcollection.get(thingid)
+#                     #    log.msg("MediaDict: update_data(): checking thing='%s'." % (pprint.saferepr(thing)))
+#                     #    
+#                     #    # TODO
+#                         
+#                     medialist = thingcollection.media
+#                     for mediakey in medialist:
+#                         log.msg("MediaDict: update_data(): checking mediakey=%s." % (pprint.saferepr(mediakey)))
+#                    
+#                         # TODO
+            
+        # save changes to global config
+        if modified_global:
+            self.save()
+       
+        # get assigned stages
+        thing_stage_tuple = self._get_stage_collections()
+        current_assigned_stages = [stage for things, stage in thing_stage_tuple if key in things.media]
+        log.msg("MediaDict: update_data(): current_assigned_stages=%s" % current_assigned_stages)
+        
+        # check attributes which may be existing on stages and should be changed too (e.g. name, voice)
+        if(len(current_assigned_stages)>0):
+            
+#             # prepare data for stages
+#             prepare_data_stages = dict()
+#             for datakey, newvalue in prepare_data.items():
+#                 # only add special attributes, currently name and voice
+#                 if ((datakey == 'name') or (datakey =='voice')):
+#                     prepare_data_stages[datakey] = newvalue
+#             log.msg("MediaDict: update_data(): prepare_data_stages=%s." % pprint.saferepr(prepare_data_stages))
+            
+            # iterate through stages
+            for assigned_stage in current_assigned_stages:
+                log.msg("MediaDict: update_data(): checking things on assigned stage '%s'." % assigned_stage.ID)
+                for thingcollection in (assigned_stage.avatars, assigned_stage.props, assigned_stage.backdrops, assigned_stage.audios):
+                    #log.msg("MediaDict: update_data(): collection=%s." %  pprint.saferepr(thingcollection))
+                    #things = thingcollection.things
+                    #for thingid in things:
+                    #    thing = thingcollection.get(thingid)
+                    #    log.msg("MediaDict: update_data(): checking thing='%s'." % (pprint.saferepr(thing)))
+                    medialist = thingcollection.media
+                    for mediakey in medialist:
+                        #log.msg("MediaDict: update_data(): checking mediakey=%s." % pprint.saferepr(mediakey))
+                        if mediakey == key:
+                            #log.msg("MediaDict: update_data(): found mediakey=%s." % pprint.saferepr(mediakey))
+                            # newly add media to collection to overwrite old media
+                            thing = thingcollection.add_media(media)
+                            log.msg("MediaDict: update_data(): updated thing=%s." % pprint.saferepr(thing))
+                            assigned_stage.save()
+                            if(force_reload):
+                                assigned_stage.soft_reset()
+        
+        # check if changes were successfully applied to global config
+        success = True
+        for attribute, value in prepare_data.items():
+            if getattr(media,attribute) != value:
+                success = False
+                break
+            
+        # TODO check if changes were successfully applied to stage configs?
+        
+        return success
 
     """
 
