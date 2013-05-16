@@ -540,6 +540,7 @@ function setupDataGrid() {
 						var videoimagepath = $('#selectEditVideoImage').val() || '';
 						var forceReload = $('#editMediaForceReload').is(':checked') || false;
 						
+						/*
 						// DEBUG:
 						alert(
 								'Name: '+ name +'\n'+
@@ -550,6 +551,7 @@ function setupDataGrid() {
 								'Videoimagepath: '+ videoimagepath +'\n'+
 								'Force reload:'+ forceReload
 						);
+						*/
 						
 						// remove unavailable options from selectors: voice, video image path
 						$('.select-unavailable').remove();
@@ -875,7 +877,8 @@ function setupDataGrid() {
 							}
 						}
 						
-						alert("selected tags: " + selectedTags.join(", "));
+						// DEBUG:
+						//alert("selected tags: " + selectedTags.join(", "));
 						
 						// create data array
 						var tagsData = { "tags":selectedTags.join(", ") };
