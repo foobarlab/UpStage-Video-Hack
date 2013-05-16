@@ -548,26 +548,6 @@ class MediaDict(Xml2Dict):
                 modified_global = True
                 log.msg("MediaDict: update_data(): updated global attribute '%s'." % attrkey)
             
-#             # check attributes which may be existing on stages and should be changed too (e.g. name, voice)
-#             
-#             for assigned_stage in current_assigned_stages:
-#                 # check stage if it contains related things
-#                 log.msg("MediaDict: update_data(): checking things on assigned stage '%s' for relevance of attribute '%s'." % (assigned_stage,attrkey))
-#                 for thingcollection in (stage.avatars, stage.props, stage.backdrops, stage.audios):
-#                     #log.msg("MediaDict: update_data(): collection=%s." %  pprint.saferepr(thingcollection))
-#                     #things = thingcollection.things
-#                     #for thingid in things:
-#                     #    thing = thingcollection.get(thingid)
-#                     #    log.msg("MediaDict: update_data(): checking thing='%s'." % (pprint.saferepr(thing)))
-#                     #    
-#                     #    # TODO
-#                         
-#                     medialist = thingcollection.media
-#                     for mediakey in medialist:
-#                         log.msg("MediaDict: update_data(): checking mediakey=%s." % (pprint.saferepr(mediakey)))
-#                    
-#                         # TODO
-            
         # save changes to global config
         if modified_global:
             self.save()
@@ -579,24 +559,11 @@ class MediaDict(Xml2Dict):
         
         # check attributes which may be existing on stages and should be changed too (e.g. name, voice)
         if(len(current_assigned_stages)>0):
-            
-#             # prepare data for stages
-#             prepare_data_stages = dict()
-#             for datakey, newvalue in prepare_data.items():
-#                 # only add special attributes, currently name and voice
-#                 if ((datakey == 'name') or (datakey =='voice')):
-#                     prepare_data_stages[datakey] = newvalue
-#             log.msg("MediaDict: update_data(): prepare_data_stages=%s." % pprint.saferepr(prepare_data_stages))
-            
             # iterate through stages
             for assigned_stage in current_assigned_stages:
                 log.msg("MediaDict: update_data(): checking things on assigned stage '%s'." % assigned_stage.ID)
                 for thingcollection in (assigned_stage.avatars, assigned_stage.props, assigned_stage.backdrops, assigned_stage.audios):
                     #log.msg("MediaDict: update_data(): collection=%s." %  pprint.saferepr(thingcollection))
-                    #things = thingcollection.things
-                    #for thingid in things:
-                    #    thing = thingcollection.get(thingid)
-                    #    log.msg("MediaDict: update_data(): checking thing='%s'." % (pprint.saferepr(thing)))
                     medialist = thingcollection.media
                     for mediakey in medialist:
                         #log.msg("MediaDict: update_data(): checking mediakey=%s." % pprint.saferepr(mediakey))
