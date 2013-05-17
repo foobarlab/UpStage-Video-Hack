@@ -366,6 +366,8 @@ class AudioThing(Resource):
         
         # FIXME see AvatarThing: prepare form data
         
+        # FIXME: trim spaces from form values? (#104)
+        
         # Natasha - get assigned stages
         self.assignedstages = request.args.get('assigned')
         name = args.pop('name',[''])[0]
@@ -454,6 +456,8 @@ class VideoThing(Resource):
         
         # FIXME see AvatarThing: prepare form data
         
+        # FIXME: trim spaces from form values? (#104)
+        
         # Natasha - Obtain assigned stages list
         self.assignedstages = request.args.get('assigned')
         name = args.pop('name',[''])[0]
@@ -538,6 +542,8 @@ class AvatarThing(Resource):
                 value = "'" + value + "'"
             log.msg("AvatarThing: render(): form: '%s' = %s" % (key, value))
         
+        # FIXME: trim spaces from form values? (#104)
+        
         # handle kind of images: upload or library:
         imagetype = form.get('imagetype','unknown')
         
@@ -581,7 +587,7 @@ class AvatarThing(Resource):
                 
                 # imported from misc.py
                 swf = new_filename(suffix='.swf')
-                thumbnail = swf.replace('.swf', '.jpg')
+                thumbnail = swf.replace('.swf', '.jpg')         # FIXME: see #20 (Uploaded media is not converted to JPEG)
                 swf_full = os.path.join(config.MEDIA_DIR, swf)
                 thumbnail_full = os.path.join(config.THUMBNAILS_DIR, thumbnail)
     
