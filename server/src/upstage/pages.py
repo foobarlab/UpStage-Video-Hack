@@ -1386,7 +1386,20 @@ class MediaEditPage2(Workshop):
         log.msg("MediaEditPage2: _update_data: force_reload=%s" % force_reload)
         log.msg("MediaEditPage2: _update_data: media_type=%s" % media_type)
         
-        success = selected_collection.update_data(selected_media_key,self.player,update_data,force_reload,media_type)
+        # workaround for #105: get names for all media
+        media = self.collection.avatars.get_media_list()
+        media.extend(self.collection.props.get_media_list())
+        media.extend(self.collection.backdrops.get_media_list())
+        media.extend(self.collection.audios.get_media_list())
+        all_media_names = dict()
+        for _key, value in media:
+            mediakey = value['media']
+            name = value['name']
+            all_media_names[mediakey] = name
+                
+        log.msg("MediaEditPage2: _update_data: collected all_media_names=%s" % pprint.saferepr(all_media_names))
+        
+        success = selected_collection.update_data(selected_media_key,self.player,update_data,force_reload,media_type,all_media_names)
         
         if not success:
             self.status = 500

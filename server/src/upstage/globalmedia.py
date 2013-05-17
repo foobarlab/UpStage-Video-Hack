@@ -446,7 +446,7 @@ class MediaDict(Xml2Dict):
         return success
 
 
-    def update_data(self,key=None,player=None,update_data=None,force_reload=False,media_type=None):
+    def update_data(self,key=None,player=None,update_data=None,force_reload=False,media_type=None,all_media_names={}):
         """Rewritten function: Update media attributes and return True if successful."""
         
         success = False
@@ -584,11 +584,19 @@ class MediaDict(Xml2Dict):
                 if (newvalue == ''):
                     prepare_data[datakey] = config.MISSING_THUMB_URL
 
-            # TODO: check for duplicate values which should be modified (TODO maybe this is handled in another class or duplicate names are allowed [globally?, on a single stage?])
-            #if(datakey == 'name'):
-            #    # TODO check if name already exists and create new name if needed? there are only unique names allowed as the name is used as unique key
-            #    pass
-
+            # check for duplicate values for name
+            # TODO try to fix by appending digits to the name?
+            # TODO use list comprehension to gather reserved name values?
+            if(datakey == 'name'):
+                log.msg("MediaDict: update_data(): prepare data: all_media_names=%s" % pprint.saferepr(all_media_names))
+                reserved_media_names_dict = all_media_names
+                reserved_media_names_dict.pop(media.file)
+                reserved_media_names = [x for x in reserved_media_names_dict.values()]
+                log.msg("MediaDict: update_data(): prepare data: reserved_media_names=%s" % pprint.saferepr(reserved_media_names))
+                if newvalue in reserved_media_names:
+                    log.msg("MediaDict: update_data(): prepare data: name '%s' already used for another media." % newvalue)
+                    return success
+            
 
         log.msg("MediaDict: update_data(): prepare_data=%s" % pprint.saferepr(prepare_data))
 
