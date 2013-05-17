@@ -68,6 +68,7 @@ AUDIO_URL =          MEDIA_URL + AUDIO_PATH
 WEBCAM_URL =         '/media/video/'
 WEBCAM_STILL_URL =   '/media/video-still/'
 MISSING_THUMB_URL =  '/image/icon/icon-warning-sign.png'
+MISSING_THUMB_ICON = 'icon-warning-sign'
 WEBCAM_SUBURL =      'video'
 WEBCAM_STILL_SUBURL ='video-still'
 

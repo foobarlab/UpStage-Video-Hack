@@ -1229,7 +1229,9 @@ class MediaEditPage2(Workshop):
                 thumbnail_icon = config.MUSIC_ICON
             elif thumbnail == config.SFX_ICON_IMAGE_URL:
                 thumbnail_icon = config.SFX_ICON
-            
+            # hardcode missing image
+            elif thumbnail == config.MISSING_THUMB_URL:
+                thumbnail_icon = config.MISSING_THUMB_ICON
             
             # determine file size (in bytes)
             size = 0    # default
