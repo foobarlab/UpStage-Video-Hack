@@ -1298,7 +1298,7 @@ function setHiddenFields() {
 		log.err("setHiddenFields(): Unable to determine if avatar is upload image or library image");
 	}
 	
-	log.debug("setHiddenFields(): value before in hidden field hasstreaming: " + hiddenHasStreaming.value);
+	log.debug("setHiddenFields(): value after in hidden field hasstreaming: " + hiddenHasStreaming.value);
 	log.debug("setHiddenFields(): value after in hidden field streamtype: " + hiddenStreamType.value);
 	log.debug("setHiddenFields(): value after in hidden field imagetype: " + hiddenImageType.value);
 	
