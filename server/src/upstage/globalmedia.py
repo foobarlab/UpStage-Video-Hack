@@ -101,22 +101,22 @@ class _MediaFile(object):
         else:
             self.web_thumbnail = self.thumbnail
                     
-        self.name = kwargs.pop('name', 'nameless')
+        self.name = kwargs.pop('name', 'nameless').strip()
         self.voice = kwargs.pop('voice', None)
         self._type = kwargs.pop('type', None)
         self.height = kwargs.pop('height', None)
         self.width = kwargs.pop('width', None)
         self.medium = kwargs.pop('medium', None) # medium: 'video' for video, 'stream' for streaming, None for stills.
-        self.description = kwargs.pop('description', '') # no form entry for it.
+        self.description = kwargs.pop('description', '').strip() # no form entry for it.
         
         # AC (29.09.07) - 
-        self.uploader = kwargs.pop('uploader', '') # user name of uploader.
-        self.dateTime = kwargs.pop('dateTime', '') # Date and time of upload.
-        self.tags = kwargs.pop('tags', '') # Karena, Corey, Heath
+        self.uploader = kwargs.pop('uploader', '').strip() # user name of uploader.
+        self.dateTime = kwargs.pop('dateTime', '').strip() # Date and time of upload.
+        self.tags = kwargs.pop('tags', '').strip() # Karena, Corey, Heath
         
         # add stream parameters
-        self.streamserver = kwargs.pop('streamserver','')
-        self.streamname = kwargs.pop('streamname','')
+        self.streamserver = kwargs.pop('streamserver','').strip()
+        self.streamname = kwargs.pop('streamname','').strip()
         
         if kwargs:
             log.msg('left over arguments in _MediaFile', kwargs)
@@ -502,6 +502,9 @@ class MediaDict(Xml2Dict):
             if ((datakey is None) or (newvalue is None)):
                 log.msg("MediaDict: update_data(): data key or new value is None.")
                 return success
+            
+            # always strip spaces from string values
+            newvalue = newvalue.strip()
             
             # check if attribute exists
             try:
