@@ -1273,8 +1273,10 @@ function showDetails(single_data) {
 					href: "#previewMediaPanel",
 					animation: false,
 					returnFocus: false,
-					width: previewWindowWidth,
-					height: previewWindowHeight,
+					//width: previewWindowWidth,
+					//height: previewWindowHeight,
+					width:600,	// FIXME temporary set to fixed size
+					height:206, // FIXME temporary set to fixed size
 					// hide loading indicator:
 					onOpen: function(){
 						$("#colorbox").css("opacity", 0);
