@@ -1029,6 +1029,7 @@ function checkFileSize(fileNo, mediaType, prefix)
 
 // -------------------------- UNUSED METHODS ------------------------- //
 
+/*
 function createFrameCount(textValue, prefix)
 {
 	log.debug("createFrameCount(): textValue="+textValue+", prefix="+prefix);
@@ -1054,7 +1055,9 @@ function createFrameCount(textValue, prefix)
 	
 	document.getElementById("muLeftContent").innerHTML = html;
 }
+*/
 
+/*
 function displayFrameFields(selectbox, prefix) //doesnt work in innerhtml
 {
 	log.debug("displayFrameFields(): selectbox="+selectbox+", prefix="+prefix);
@@ -1080,7 +1083,9 @@ function displayFrameFields(selectbox, prefix) //doesnt work in innerhtml
 	
 	}
 }
+*/
 
+/*
 function checkStageList()
 {
 	log.debug("checkStageList()");
@@ -1096,7 +1101,9 @@ function checkStageList()
 		document.getElementById("unassigned").disabled = 'enabled';
 	}
 }
+*/
 
+/*
 function saveInformation()
 {
 	log.debug("saveInformation()");
@@ -1147,8 +1154,9 @@ function saveInformation()
 		}
 	}
 }
+*/
 
-// ------------- new stuff TODO
+// ------------- new stuff
 
 /* ---- generic functions */
 
