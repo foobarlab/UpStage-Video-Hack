@@ -836,7 +836,8 @@ function resetVoiceTest() {
 }
 
 
-/* FIXME unused? */
+// FIXME obviously unused
+/*
 function voiceTesting()
 {
 	log.debug("voiceTesting()");
@@ -847,8 +848,10 @@ function voiceTesting()
 	window.open(voiceForm.submit(), 'name','height=100,width=200');
 	//document.natasha.action = action;
 }
+*/
 
-/* FIXME unused? */
+// FIXME now unused - was used on old media edit page (pages.py)
+/*
 function redirect_submit(form, action)
 {
 	log.debug("redirectSubmit(): form="+form+", action="+action);
@@ -858,8 +861,10 @@ function redirect_submit(form, action)
     form.submit();
     form.action = a;
 }
+*/
 
-/* FIXME unused? */
+// FIXME obviously unused?
+/*
 function submitVoice(form, action)//(form, action)
 {
 	log.debug("submitVoice(): form="+form+", action="+action);
@@ -869,18 +874,23 @@ function submitVoice(form, action)//(form, action)
 	voiceform.action = action;
 	testVoice(voiceform);
 }
+*/
 
-/* FIXME unused? */
+// FIXME obviously unused?
+/*
 function testVoice(form)
 {
 	log.debug("testVoice(): form="+form);
 	
 	window.open(form.submit(),'name','height=100,width=200');
 }
+*/
 
 // ------------------------------ AJAX STUFF ---------------------------------//
 
 
+// FIXME obviously unused
+/*
 function getMediaDetails()
 {
 	log.debug("getMediaDetails()");
@@ -888,7 +898,10 @@ function getMediaDetails()
 	var uname = 'admin';
 	requestInfo("GET", '/admin/workshop/mediaupload?name='+uname+'&submit=getmedia', renderUploadedMedia);
 }
+*/
 
+// FIXME obviously unused
+/*
 function renderUploadedMedia()
 {
 	log.debug("renderUploadedMedia()");
@@ -923,13 +936,14 @@ function renderUploadedMedia()
 		}
 	}
 }
-
+*/
 
 
 
 // -------------------------------- OLD METHODS ----------------------------------//
 
-
+// FIXME obviously unused
+/*
 function showForm(name)
 {
 	log.debug("showForm(): name="+name);
@@ -956,6 +970,10 @@ function showForm(name)
 	//var table = document.getElementById(name);
 	//table.style.visibility = 'visible'
 }
+*/
+
+//FIXME obviously unused
+/*
 function showTable(name)
 {
 	log.debug("showTable(): name="+name);
@@ -978,7 +996,10 @@ function showTable(name)
 	//table.style.display = 'block';
 	//hideTables(name);
 }
+*/
 
+// FIXME obviously unused
+/*
 // FIXME: this looks like a function therefore it should be starting with a lowercase letter
 function Display()
 {
@@ -1007,8 +1028,10 @@ function Display()
 		}
 	}
 }
+*/
 
-
+// FIXME obviously unused
+/*
 function checkFileSize(fileNo, mediaType, prefix)
 {
 	log.debug("checkFileSize(): fileno="+fileno+", mediaType="+mediaType+", prefix="+prefix);
@@ -1026,6 +1049,7 @@ function checkFileSize(fileNo, mediaType, prefix)
 	}
 	
 }
+*/
 
 // -------------------------- UNUSED METHODS ------------------------- //
 
