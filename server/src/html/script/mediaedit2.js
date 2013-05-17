@@ -558,14 +558,14 @@ function setupDataGrid() {
 						
 						// TODO ensure even empty values are passed
 						
-						// create data array
+						// create data array and strip values
 						var editData ={
-							"name":name,
-							"voice":voice,
-							"streamserver":streamserver,
-							"streamname":streamname,
-							"audiotype":audiotype,
-							"videoimagepath":videoimagepath
+							"name":$.trim(name),
+							"voice":$.trim(voice),
+							"streamserver":$.trim(streamserver),
+							"streamname":$.trim(streamname),
+							"audiotype":$.trim(audiotype),
+							"videoimagepath":$.trim(videoimagepath)
 						};
 						
 						// pass data via ajax
@@ -864,7 +864,7 @@ function setupDataGrid() {
 						// remove empty ones and duplicates
 						var selectedTags = [];
 						for (i = 0; i < selectedValues.length; i += 1) {
-							var tagName = selectedValues[i];
+							var tagName = $.trim(selectedValues[i]);
 							if(tagName != '') {
 								if(jQuery.inArray(tagName, selectedTags) == -1) {
 									log.debug("clickHandlerExecuteTag: selected unique tag: '" + tagName + "'");
