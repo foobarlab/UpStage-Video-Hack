@@ -76,7 +76,7 @@
 		<div id="header">
 			<div id="logo">
 				<!-- Daniel Han (26/06/2012) - Fixed logo link to upstage.org.nz -->
-				<a href="http://www.upstage.org.nz"><img border="0" src="/image/upstagelogo.jpg" alt="Upstage" /></a>
+				<a href="http://www.upstage.org.nz"><img border="0" src="/image/upstagelogo.jpg" alt="Upstage" width="140" height="89" /></a>
 			</div>
 			<!-- FIXME empty action prevents browsers from saving passwords -->
 			<!-- FIXME relying on JavaScript for a login form seems like a bad behaviour -->
