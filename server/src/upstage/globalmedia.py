@@ -505,8 +505,12 @@ class MediaDict(Xml2Dict):
             
             # check if attribute exists
             try:
+                # attribute exists
                 oldvalue = getattr(media,datakey)
                 prepare_data[datakey] = newvalue
+                
+                # TODO change web_thumbnail for stream?
+                
             except AttributeError:
                 # attribute does not exist: check special keys which require transformation (audiotype, videoimagepath)
                 if(datakey == 'audiotype'):
@@ -541,7 +545,7 @@ class MediaDict(Xml2Dict):
         if media_type == 'avatars':
             allowed_keys.extend(['voice'])
             if media.medium == 'stream':
-                allowed_keys.extend(['streamserver','streamname'])
+                allowed_keys.extend(['streamserver','streamname'])  # TODO add web_thumbnail
             elif media.medium == 'video':
                 allowed_keys.extend(['file','web_thumbnail'])
         elif media_type == 'audios':
