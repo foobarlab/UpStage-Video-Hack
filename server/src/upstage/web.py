@@ -434,6 +434,10 @@ class AudioThing(Resource):
                 except OSError, e:
                     log.err("Error removing temp file %s (already gone?):\n %s" % (tfn, e))
 
+        # always finish request
+        request.finish()
+        return server.NOT_DONE_YET
+
     def refresh(self, request):
         
         ''' Refreshes the media upload page after uploading media '''
