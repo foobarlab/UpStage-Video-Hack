@@ -92,7 +92,7 @@ class _MediaFile(object):
         self.thumbnail = kwargs.pop('thumbnail',None)
         if(self.thumbnail is None):
             self.thumbnail = ''
-            self.web_thumbnail = config.MISSING_THUMB_URL
+            self.web_thumbnail = config.MEDIA_URL + self.file   # config.MISSING_THUMB_URL    # FIXME hanlde thumbnails (see also #20)
             tn = kwargs.pop('thumbnail', None)  #or self.file.replace('.swf','.jpg')
             if tn:
                 if not config.CHECK_THUMB_SANITY or _check_thumb_sanity(tn):
