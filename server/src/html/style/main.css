@@ -1262,3 +1262,39 @@ table#tableDetails {
 	margin-top:20px;
 	display:inline-block;
 }
+
+.tab-container {
+	display:block;
+}
+
+#previewFlash {
+	
+}
+
+.movie {
+	display:block;
+	height:400px;
+}
+
+#previewFlashInfo {
+	height:12px;
+}
+
+.movie-controls {
+	display:block;
+	margin:5px 0;
+	height:30px;
+}
+
+.movie-controls .controlButton {
+	width:40px;
+	height:40px;
+	/*margin:0 2px;*/
+	padding:0;
+	border-radius:10px;
+}
+
+.spacer {
+	display:inline-block;
+	width:12px;
+}

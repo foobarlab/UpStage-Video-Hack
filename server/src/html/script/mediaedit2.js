@@ -5,7 +5,7 @@
 var MEDIA_TYPE_IMAGE = 'image';
 var MEDIA_TYPE_FLASH = 'flash';
 var MEDIA_TYPE_AUDIO = 'audio';
-var MEDIA_TYPE_STREAM = 'stream';
+var MEDIA_TYPE_NOFILE = 'nofile';
 
 //global variables
 
@@ -39,12 +39,22 @@ var clickHandlerExecuteTag = null;
 // Edit Media
 var clickHandlerExecuteEdit = null;
 var clickHandlerExecuteEditCancel = null;
+var editDefaultTab = null;
 
+// Preview Media
 var previewType = null;
+var previewTypeHasStream = false;
 var previewThumbnailType = null;
 var previewDefaultTab = null;
 
-var editDefaultTab = null;
+// Preview Media Flash Movie Controls
+var clickHandlerPreviewFlashFirstFrame = null;
+var clickHandlerPreviewFlashPrevFrame = null;
+var clickHandlerPreviewFlashPlay = null;
+var clickHandlerPreviewFlashPause = null;
+var clickHandlerPreviewFlashNextFrame = null;
+var clickHandlerPreviewFlashLastFrame = null;
+
 
 function setupMediaEdit2(url_path,current_user,current_stages,set_filter_to_current_user) {
 	
@@ -1127,6 +1137,7 @@ function showDetails(single_data) {
 			case 'gif':
 			case 'png':
 				previewType = MEDIA_TYPE_IMAGE;
+				previewTypeHasStream = false;
 				previewDefaultTab = "#panelPreviewImage";
 				$("#tabPreviewImage").show();
 				break;
@@ -1134,11 +1145,13 @@ function showDetails(single_data) {
 			// swf type
 			case 'swf':
 				previewType = MEDIA_TYPE_FLASH;
+				previewTypeHasStream = false;
 				previewDefaultTab = "#panelPreviewFlash";
 				$("#tabPreviewFlash").show();
 				
 				// additional stream available?
 				if(medium == 'stream') {
+					previewTypeHasStream = true;
 					$("#tabPreviewStream").show();
 				}
 				break;
@@ -1146,6 +1159,7 @@ function showDetails(single_data) {
 			// audio types
 			case 'mp3':
 				previewType = MEDIA_TYPE_AUDIO;
+				previewTypeHasStream = false;
 				previewDefaultTab = "#panelPreviewAudio";
 				$("#tabPreviewAudio").show();
 				break;
@@ -1154,18 +1168,21 @@ function showDetails(single_data) {
 			default:
 				if(medium == 'stream') {
 					// stream only
-					previewType = MEDIA_TYPE_STREAM;
+					previewType = MEDIA_TYPE_NOFILE;
+					previewTypeHasStream = true;
 					previewDefaultTab = "#panelPreviewStream";
 					$("#tabPreviewStream").show();
 				} else {
 					//no preview available
 					previewType = null;
+					previewTypeHasStream = false;
 				}
 		}
 		
 	} else {
 		
 		previewType = null;	// reset preview type
+		previewTypeHasStream = false;	// default: no stream
 		previewDefaultTab = null;	// reset default tab
 	
 	}
@@ -1233,24 +1250,23 @@ function showDetails(single_data) {
 			default:
 				//thumbnail_html = '<img src="/image/icon/icon-warning-sign.png" alt="preview not available" />';
 				thumbnail_html = '<i class="icon-warning-sign"></i>';
-				previewThumbnailType = null;
+				previewThumbnailType = MEDIA_TYPE_NOFILE;
 		}
 		
 		$('#thumbnailPreview').html(thumbnail_html);
 		
 		// set preview window parameters depending on media
 		var previewWindowWidth = 600;
-		var previewWindowHeight = 500;
+		var previewWindowHeight = 206;
 		
 		switch(previewType) {
 			case MEDIA_TYPE_IMAGE:
 				// use defaults
 				break;
 			case MEDIA_TYPE_FLASH:
-				// use defaults
+				previewWindowHeight = 500;
 				break;
 			case MEDIA_TYPE_AUDIO:
-				previewWindowWidth = 600;
 				previewWindowHeight = 300;
 				break;
 		}
@@ -1273,10 +1289,8 @@ function showDetails(single_data) {
 					href: "#previewMediaPanel",
 					animation: false,
 					returnFocus: false,
-					//width: previewWindowWidth,
-					//height: previewWindowHeight,
-					width:600,	// FIXME temporary set to fixed size
-					height:206, // FIXME temporary set to fixed size
+					width: previewWindowWidth,
+					height: previewWindowHeight,
 					// hide loading indicator:
 					onOpen: function(){
 						$("#colorbox").css("opacity", 0);
@@ -1288,10 +1302,10 @@ function showDetails(single_data) {
 			        	$("#previewTabsContainer").easytabs('select', previewDefaultTab);
 			        	
 			        	// resize colorbox after tab has been clicked
-			        	//$("#previewTabsContainer").bind('easytabs:after', function() { $.colorbox.resize(); });
+			        	$("#previewTabsContainer").bind('easytabs:after', function() { $.colorbox.resize(); });
 			        	
 			        	// initially always resize
-			        	//$.colorbox.resize();
+			        	$.colorbox.resize();
 			        }
 				
 					// TODO add onOpen handler to remove preview from page?
@@ -1300,19 +1314,194 @@ function showDetails(single_data) {
 					
 			};
 			
-			// set handler for clicking on preview
-			clickHandlerPreviewMedia = function(e) {
+			// set handler for images
+			if(previewType == MEDIA_TYPE_IMAGE) {
 				
-				log.debug("clickHandlerPreviewMedia: click: #buttonPreviewMedia or #thumbnailPreview, key="+selectedMediaData['key']);
+				clickHandlerPreviewMedia = function(e) {
+					
+					log.debug("clickHandlerPreviewMedia: click for image preview: #buttonPreviewMedia or #thumbnailPreview, key="+selectedMediaData['key']);
+					
+					// set media name
+					$('#previewMediaName').html(selectedMediaData['name']);
+					
+					// TODO add image-specific preview data here
+					
+					// open dialog box
+					$.colorbox(previewColorbox);
+					
+				} 
+			
+			// set handler for audio files
+			} else if (previewType == MEDIA_TYPE_AUDIO) {
+			
+				clickHandlerPreviewMedia = function(e) {
+					
+					log.debug("clickHandlerPreviewMedia: click for audio preview: #buttonPreviewMedia or #thumbnailPreview, key="+selectedMediaData['key']);
+					
+					// set media name
+					$('#previewMediaName').html(selectedMediaData['name']);
+					
+					// TODO add audio-specific preview data here
+					
+					// open dialog box
+					$.colorbox(previewColorbox);
+					
+				}
 				
-				// set media name
-				$('#previewMediaName').html(selectedMediaData['name']);
+			// set handler for "nofile" (probably only stream)
+			else if (previewType == MEDIA_TYPE_NOFILE) {
 				
-				// open dialog box
-				$.colorbox(previewColorbox);
+				clickHandlerPreviewMedia = function(e) {
+					
+					log.debug("clickHandlerPreviewMedia: click for 'nofile' preview: #buttonPreviewMedia or #thumbnailPreview, key="+selectedMediaData['key']);
+					
+					// set media name
+					$('#previewMediaName').html(selectedMediaData['name']);
+					
+					// TODO add nofile-specific preview data here
+					
+					// open dialog box
+					$.colorbox(previewColorbox);
+					
+				}
 				
+			// set handler for flash movies
+			} else if (previewType == MEDIA_TYPE_FLASH) {
+				
+				clickHandlerPreviewMedia = function(e) {
+					
+					log.debug("clickHandlerPreviewMedia: click for flash preview: #buttonPreviewMedia or #thumbnailPreview, key="+selectedMediaData['key']);
+					
+					// set media name
+					$('#previewMediaName').html(selectedMediaData['name']);
+					
+					// add flash-specific preview data here
+					
+					// TODO
+					
+					flashMovie = $('#previewFlash .movie');
+
+					flashMovie.flash({
+						swf: selectedMediaData['file'],
+						width: 534, height: 400,	// keep 4:3 aspect ratio
+						play: true,					// automatically start playing
+						allowFullScreen: true,		// TODO not used yet
+						allowScriptAccess: true,	// allow accessing flash from javascript (needed for controls)
+						wmode: 'opaque',			// TODO needs testing ...
+						bgcolor: '#FFFFFF',			// TODO allow setting custom color or transparency, or set to a assigned stage color
+						scale: 'showall',			// automatically fit to size
+					});
+					
+					// TODO add event listener when flash has been loaded
+					
+					// unbind previous bound flash controls
+					$('#previewFlashFirstFrame').unbind('click',clickHandlerPreviewFlashFirstFrame);
+					$('#previewFlashPrevFrame').unbind('click',clickHandlerPreviewFlashPrevFrame);
+					$('#previewFlashPlay').unbind('click',clickHandlerPreviewFlashPlay);
+					$('#previewFlashPause').unbind('click',clickHandlerPreviewFlashPause);
+					$('#previewFlashNextFrame').unbind('click',clickHandlerPreviewFlashNextFrame);
+					$('#previewFlashLastFrame').unbind('click',clickHandlerPreviewFlashLastFrame);
+					
+					// create click handlers
+					
+					clickHandlerPreviewFlashPlay = function(e) {
+						flashMovie.flash(function() {
+							if(this.PercentLoaded() == 100) {
+								this.Play();
+								$('#previewFlashInfo').html('Playing ...');
+							}
+						});
+					}
+					clickHandlerPreviewFlashPause = function(e) {
+						flashMovie.flash(function() {
+							if(this.PercentLoaded() == 100) {
+								this.StopPlay();
+								var totalFrames = this.TGetProperty('/', 12);
+								var currentFrame = this.TGetProperty('/',4);
+								$('#previewFlashInfo').html('Frame '+currentFrame+'/'+totalFrames);
+							}
+						});
+					}
+					
+					clickHandlerPreviewFlashFirstFrame = function(e) {
+						flashMovie.flash(function() {
+							if(this.PercentLoaded() == 100) {
+								var totalFrames = this.TGetProperty('/', 12);
+								this.GotoFrame(0);
+								$('#previewFlashInfo').html('Frame 1/'+totalFrames);
+							}
+						});
+					}
+					
+					clickHandlerPreviewFlashLastFrame = function(e) {
+						flashMovie.flash(function() {
+							// check if media has been already fully loaded
+							if(this.PercentLoaded() == 100) {
+								var totalFrames = this.TGetProperty("/",12);
+								this.GotoFrame(totalFrames);
+								$('#previewFlashInfo').html('Frame '+totalFrames+'/'+totalFrames);
+							}
+						});
+					}
+					
+					clickHandlerPreviewFlashPrevFrame = function(e) {
+					
+						flashMovie.flash(function() {
+							if(this.PercentLoaded() == 100) {
+								var totalFrames = this.TGetProperty('/', 12);
+								var currentFrame = this.TGetProperty('/', 4);
+								var	previousFrame = parseInt(currentFrame) - 2;
+								$('#previewFlashInfo').html('Frame '+(parseInt(previousFrame)+1)+'/'+totalFrames);
+								if (previousFrame < 0) {
+									previousFrame = totalFrames;
+									$('#previewFlashInfo').html('Frame '+totalFrames+'/'+totalFrames);
+								}
+								this.GotoFrame(previousFrame);
+							}
+						});
+						
+					}
+					
+					clickHandlerPreviewFlashNextFrame = function(e) {
+						
+						flashMovie.flash(function() {
+							if(this.PercentLoaded() == 100) {
+								var totalFrames = this.TGetProperty('/', 12);
+								var currentFrame = this.TGetProperty('/', 4);
+								var nextFrame = parseInt(currentFrame);
+	
+								if (nextFrame >= totalFrames) {
+									nextFrame = 0;
+								}
+								this.GotoFrame(nextFrame);
+								$('#previewFlashInfo').html('Frame '+(nextFrame+1)+'/'+totalFrames);
+							}
+						});
+					}
+					
+					// register flash control buttons
+					$('#previewFlashFirstFrame').bind('click',clickHandlerPreviewFlashFirstFrame);
+					$('#previewFlashPrevFrame').bind('click',clickHandlerPreviewFlashPrevFrame);
+					$('#previewFlashPlay').bind('click',clickHandlerPreviewFlashPlay);
+					$('#previewFlashPause').bind('click',clickHandlerPreviewFlashPause);
+					$('#previewFlashNextFrame').bind('click',clickHandlerPreviewFlashNextFrame);
+					$('#previewFlashLastFrame').bind('click',clickHandlerPreviewFlashLastFrame);
+					
+					// display initial infos
+					
+					$('#previewFlashInfo').html('Playing ...');
+					
+					// open dialog box
+					$.colorbox(previewColorbox);
+					
+				}
+				
+			} else {
+				
+				// default: no handler for unknown preview type
+				clickHandlerPreviewMedia = null;
 			}
-		
+			
 			// bind click handler to preview button
 			$("#buttonPreviewMedia").bind('click',clickHandlerPreviewMedia);
 		
@@ -1322,7 +1511,12 @@ function showDetails(single_data) {
 		
 	} else {
 
-		previewThumbnailType = null;	// reset thumbnail preview type
+		// reset thumbnail preview type
+		previewThumbnailType = null;	
+		
+		// reset preview type
+		previewType = null;
+		previewTypeHasStreaming = false;
 		
 	}
 	
