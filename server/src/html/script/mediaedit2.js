@@ -1349,7 +1349,7 @@ function showDetails(single_data) {
 				}
 				
 			// set handler for "nofile" (probably only stream)
-			else if (previewType == MEDIA_TYPE_NOFILE) {
+			} else if (previewType == MEDIA_TYPE_NOFILE) {
 				
 				clickHandlerPreviewMedia = function(e) {
 					
