@@ -1086,9 +1086,15 @@ a.IconButton
 	height:30px;
 }
 
-#thumbnailPreview {
-	display:block;
+#thumbnailPreviewContainer {
 	width:333px;
+	display:inline-block;
+}
+
+#thumbnailPreview {
+	margin:0 auto;
+	display:block;
+	width:267px;
 	height:200px;
 	z-index:1;
 	padding:5px;
