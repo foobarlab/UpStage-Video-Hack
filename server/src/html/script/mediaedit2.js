@@ -1377,8 +1377,6 @@ function showDetails(single_data) {
 					
 					// add flash-specific preview data here
 					
-					// TODO
-					
 					flashMovie = $('#previewFlash .movie');
 
 					flashMovie.flash({
@@ -1387,7 +1385,7 @@ function showDetails(single_data) {
 						play: true,					// automatically start playing
 						allowFullScreen: true,		// TODO not used yet
 						allowScriptAccess: true,	// allow accessing flash from javascript (needed for controls)
-						wmode: 'opaque',			// TODO needs testing ...
+						wmode: 'opaque',			// default (other possible options are 'transparent' or 'direct')
 						bgcolor: '#FFFFFF',			// TODO allow setting custom color or transparency, or set to a assigned stage color
 						scale: 'showall',			// automatically fit to size
 					});
@@ -1546,6 +1544,38 @@ function showDetails(single_data) {
 }
 
 /* helper functions */
+
+/*
+// see: http://learnswfobject.com/advanced-topics/executing-javascript-when-the-swf-has-finished-loading/
+function swfLoadEvent(fn){
+	
+	// DEBUG:
+	alert("swfLoadEvent");
+	
+    //Ensure fn is a valid function
+    if(typeof fn !== "function"){ return false; }
+    
+    // DEBUG:
+	alert("is valid");
+    
+    //This timeout ensures we don't try to access PercentLoaded too soon
+    var initialTimeout = setTimeout(function (){
+        //Ensure Flash Player's PercentLoaded method is available and returns a value
+        if(typeof e.ref.PercentLoaded !== "undefined" && e.ref.PercentLoaded()){
+            //Set up a timer to periodically check value of PercentLoaded
+            var loadCheckInterval = setInterval(function (){
+                //Once value == 100 (fully loaded) we can do whatever we want
+                if(e.ref.PercentLoaded() === 100){
+                    //Execute function
+                    fn();
+                    //Clear timer
+                    clearInterval(loadCheckInterval);
+                }
+            }, 1500);
+        }
+    }, 200);
+}
+*/
 
 function getFileExtension(filename) {
 	var ext = /^.+\.([^.]+)$/.exec(filename);
