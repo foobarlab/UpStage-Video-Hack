@@ -1111,9 +1111,10 @@ a.IconButton
 }
 
 #thumbnailPreview img {
-	max-width:290px;
+	max-width:257px;
 	max-height:190px;
 	margin:5px;
+	width:257px;
 	/*background: white;*/
 }
 
@@ -1280,6 +1281,7 @@ table#tableDetails {
 .movie {
 	display:block;
 	height:400px;
+	background: url('images/transparent_background.gif') repeat scroll right bottom #EEEEEE; 
 }
 
 #previewFlashInfo {
