@@ -79,7 +79,7 @@ Modified by: Scott/Craig/Gavin          10/10/2012  - Added stage_saved variable
 """
 
 #standard lib
-import os, re, datetime, time
+import os, re, datetime, time, string
 from urllib import urlencode
 import tempfile # natasha
 
@@ -1239,6 +1239,24 @@ class MediaEditPage2(Workshop):
             log.msg('MediaEditPage2: relative_file_path=%s' % relative_file_path)
             if(relative_file_path != ""):
                 size = os.path.getsize(relative_file_path)
+                
+            # determine a safe save_filename for downloading the media as file
+            save_filename = value['media']
+            if config.LIBRARY_PREFIX in save_filename:
+                save_filename = ''
+            else:
+                # get file extension
+                _fileName, fileExtension = os.path.splitext(save_filename)
+                # make a safe file name
+                safechars = '_-()' + string.digits + string.ascii_letters
+                allchars = string.maketrans('', '')
+                deletions = ''.join(set(allchars) - set(safechars))
+                filename = value['name']
+                safe_filename = string.translate(filename, allchars, deletions)
+                if safe_filename == '':
+                    safe_filename = 'media'
+                # make save filename by adding the extension to the safe filename
+                save_filename = '%s%s' % (safe_filename, fileExtension)
             
             # create dataset as dictionary
             
@@ -1251,6 +1269,7 @@ class MediaEditPage2(Workshop):
                            stages=value['stages'],
                            file_original=value['media'],
                            file=file_path,
+                           save_filename=save_filename,
                            size=size,
                            name=value['name'],
                            date=value['dateTime'],

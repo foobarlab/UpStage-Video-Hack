@@ -42,7 +42,7 @@ Modified by: Gavin          5/10/2012   - Imported AdminError class from pages.p
 """Defines the web tree."""
 
 #standard lib
-import os, random, datetime, tempfile
+import os, random, datetime, tempfile, string
 from urllib import urlencode
 
 # TODO for compressing
@@ -128,8 +128,22 @@ class CachedFile(static.File):
         if not self.isdir():
             download = request.args.get('download', [None])[0]
             if(download):
-                filename = os.path.basename(self.path)  
-                request.setHeader('Content-Disposition', ('attachment; filename=%s' % filename))
+                
+                # check if a name was explicitly given
+                filename = request.args.get('name', [None])[0]
+                if filename is None:
+                    filename = os.path.basename(self.path)
+                
+                # ensure the filename does not contain illegal characters
+                safechars = '_-.()' + string.digits + string.ascii_letters
+                allchars = string.maketrans('', '')
+                deletions = ''.join(set(allchars) - set(safechars))
+                safe_filename = string.translate(filename, allchars, deletions)
+                if safe_filename.startswith('.'):
+                    safe_filename = 'download%s' % safe_filename
+                
+                # set headers
+                request.setHeader('Content-Disposition', ('attachment; filename=%s' % safe_filename))
                 request.setHeader('Content-Transfer-Encoding','binary')
                 request.setHeader('Content-Type','application/octet-stream')
                 
@@ -141,7 +155,7 @@ class CachedFile(static.File):
                 request.setHeader('Pragma','private')
                 request.setLastModified(time())   # set Last-Modified to current time
                 
-                log.msg("CachedFile: sending file '%s' as download attachment" % filename)
+                log.msg("CachedFile: sending file from path '%s' named '%s' as download attachment" % (self.path, safe_filename))
             else:
                 cache_duration = 60 * 60 * 24 * 7    # cache for at least one week
                 expire_time = datetime.timedelta(seconds=cache_duration)

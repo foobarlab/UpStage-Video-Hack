@@ -359,6 +359,7 @@ function setupDataGrid() {
 	       {id: "file", name: "File", field: "file", width:200},
 	       {id: "size", name: "Filesize (Bytes)", field: "size", width:200},
 	       {id: "file_original", name: "File (Original)", field: "file_original", width:200},
+	       {id: "save_filename", name: "Save Filename", field: "save_filename", width:200},
 	       {id: "date", name: "Date", field: "date", width:200},
 	       {id: "type", name: "Type", field: "type", width:100},
 	       {id: "medium", name: "Medium", field: "medium", width:100},
@@ -939,13 +940,14 @@ function setupDataGrid() {
 					
 					var downloadFile = selectedMediaData['file'];
 					if(downloadFile != '') {
-						var downloadUrl = downloadFile+"?download=true";
-						
-						// TODO create iframe dynamically (#89)
-						
-						$("#downloadIFrame").attr("src",downloadUrl);
+						var downloadName = selectedMediaData['save_filename'];
+						var downloadUrl = downloadFile+"?download=true&name="+downloadName;
+						$('#downloadContainer').html('<iframe src="'+downloadUrl+'"></iframe>');
 					}
 				};
+				
+				// always remove download iframe
+				$('#downloadContainer').html('');
 				
 				// bind button controls to click event
 				
