@@ -1281,7 +1281,9 @@ table#tableDetails {
 .movie {
 	display:block;
 	height:400px;
-	background: url('images/transparent_background.gif') repeat scroll right bottom #EEEEEE; 
+	width:534px;
+	background: url('images/transparent_background.gif') repeat scroll right bottom #EEEEEE;
+	border:1px solid #ccc;
 }
 
 #previewFlashInfo {
