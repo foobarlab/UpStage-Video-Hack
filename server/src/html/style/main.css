@@ -1226,7 +1226,6 @@ table#tableDetails {
 
 #tagMediaSelectorPanel {
 	width:480px;
-	/*height:auto;*/
 	display:block;
 	background-color:#efefef;
 	overflow:visible;
@@ -1311,7 +1310,7 @@ table#tableDetails {
 	width:19px;
 }
 
-.color-button {
+.inner-color-button {
 	border: 1px solid #999;
 	border-radius:5px;
 	display:inline-block;
@@ -1321,6 +1320,6 @@ table#tableDetails {
 	padding:0;
 }
 
-.color-button:hover {
+.inner-color-button:hover {
 	border-color:#333;
 }

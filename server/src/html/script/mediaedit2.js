@@ -1196,9 +1196,6 @@ function showDetails(single_data) {
 	
 	}
 	
-	// remove thumbnail preview colorbox handler
-	//$("#previewLink.inline").removeClass('inline cboxElement');
-	
 	// remove existing swf?
 	if(previewThumbnailType == MEDIA_TYPE_FLASH) {
 		$('#thumbnailPreview').flash().remove();
@@ -1231,38 +1228,15 @@ function showDetails(single_data) {
 		
 			// handle shockwave flash
 			case 'swf':
-				/*
-				thumbnail_html = $.flash.create({
-					swf: thumbnail,
-					height: 190,
-					width: 257,
-					allowFullScreen: true,
-					wmode: "transparent",
-					menu: false,
-					play: true,
-					encodeParams: true,
-					//flashvars: {},
-					hasVersion: 6, // requires minimum Flash 6
-					expressInstaller: '/script/swfobject/expressInstall.swf',
-					hasVersionFail: function (options) {
-						log.debug(options);
-						//return false; // returning false means the expressInstaller document will not be used
-						return true; // would have let the expressInstaller document be used
-					}
-				});
-				*/
 				previewFlashThumbnail = createFlashObject(thumbnail, 257, 190, true, 'transparent', '');	// TODO use later
 				thumbnail_html = previewFlashThumbnail;
 				
 				previewThumbnailType = MEDIA_TYPE_FLASH;
 				
-				// TODO add alternative content (download flash player)
-				
 				break;
 		
 			// default: missing icon
 			default:
-				//thumbnail_html = '<img src="/image/icon/icon-warning-sign.png" alt="preview not available" />';
 				thumbnail_html = '<i class="icon-warning-sign"></i>';
 				previewThumbnailType = MEDIA_TYPE_NOFILE;
 				previewFlashThumbnail = null;
@@ -1402,25 +1376,25 @@ function showDetails(single_data) {
 						livePreview: true,			// disable to improve performance
 				        
 				        onShow: function (colpkr) {
-				            //$(colpkr).fadeIn(500);
-				        	$(colpkr).show();
+				            $(colpkr).show();
 				            return false;
 				        },
 				        
 				        onHide: function (colpkr) {
-				            //$(colpkr).fadeOut(500);
 				        	$(colpkr).hide();
 				            return false;
 				        },
 				        
-				        onSubmit: function(hsb, hex, rgb) {
-				        	$('.color-button').css('backgroundColor', '#' + hex);
-				        	$('.colorpicker').hide();	// quite hackish as no reference to colpkr is given
+				        onSubmit: function(hsb, hex, rgb, el, parent) {
+				        	$('.inner-color-button').css('backgroundColor', '#' + hex);
+				        	$(el).ColorPickerHide();
 				        	
-				        	// TODO refresh flash preview if background is not transparent
+				        	// DEBUG:
+				        	//alert("Color: " + hex);
 				        	
+				        	// refresh flash preview if background is not transparent
 				        	
-				        	// set defaults
+				        	// TODO set defaults from global values
 							
 							var wmode = 'opaque';
 							var swf = selectedMediaData['file'];
@@ -1428,11 +1402,11 @@ function showDetails(single_data) {
 							var height = 400;
 							var play = true;
 							
-							var backgroundColor = $('.color-button').css("background-color");
+							var backgroundColor = $('.inner-color-button').css("background-color");
 							var backgroundColorHex = hexc(backgroundColor);
 							
 							// DEBUG:
-							//alert("Background color:" + backgroundColor + " HEX: " + backgroundColorHex);
+							//alert("BC: " + backgroundColor + " BCH: " + backgroundColorHex);
 							
 							// replace existing movie with new parameters
 							flashMovie.flash().remove();
@@ -1451,30 +1425,17 @@ function showDetails(single_data) {
 					
 					flashMovie = $('#previewFlash .movie');
 
-					/*
-					flashMovie.flash({
-						swf: selectedMediaData['file'],
-						width: 534, height: 400,	// keep 4:3 aspect ratio
-						play: true,					// automatically start playing
-						allowFullScreen: true,		// TODO not used yet
-						allowScriptAccess: true,	// allow accessing flash from javascript (needed for controls)
-						wmode: 'window',			// default is 'window' (other possible options are 'transparent', 'direct', 'opaque', 'gpu')
-						//bgcolor: '#FFFFFF',			// TODO allow setting custom color or transparency, or set to a assigned stage color
-						scale: 'showall',			// "showall" automatically fits to size, other possible values are: "noborder", "exactfit"
-					});
-					*/
-					
-					var backgroundColor = $('.color-button').css("background-color");
+					var backgroundColor = $('.inner-color-button').css("background-color");
 					var backgroundColorHex = hexc(backgroundColor);
 					
 					// DEBUG:
-					//alert("Background color:" + backgroundColor + " HEX: " + backgroundColorHex);
+					//alert("BC: " + backgroundColor + " BCH: " + backgroundColorHex);
+					
+					// TODO set defaults from global values
 					
 					var previewFlash = createFlashObject(selectedMediaData['file'], 534, 400, true, 'opaque', backgroundColorHex);
 					
 					flashMovie.html(previewFlash);
-					
-					// TODO add event listener when flash has been loaded
 					
 					// unbind previous bound flash controls
 					$('#previewFlashFirstFrame').unbind('click',clickHandlerPreviewFlashFirstFrame);
@@ -1594,31 +1555,7 @@ function showDetails(single_data) {
 					
 					clickHandlerPreviewFlashToggleTransparency  = function(e) {
 						
-						/*
-						flashMovie.flash(function() {
-							if(this.PercentLoaded() == 100) {
-								
-								// get value of "wmode"
-								var currentMode = $("#previewFlash .movie object param[name*='wmode']").attr("value");
-								var newMode = 'window';	// default
-								
-								switch(currentMode) {
-								
-									case 'transparent':
-										newMode = 'window';
-										break;
-									case 'window':
-										newMode = 'transparent';
-										break;
-								}
-								
-								$("#previewFlash .movie object param[name*='wmode']").attr("value",newMode);
-								
-							}
-						});
-						*/
-						
-						// set defaults
+						// TODO set defaults from global values
 						
 						var wmode = 'opaque';
 						var swf = selectedMediaData['file'];
@@ -1626,11 +1563,11 @@ function showDetails(single_data) {
 						var height = 400;
 						var play = true;
 						
-						var backgroundColor = $('.color-button').css("background-color");
+						var backgroundColor = $('.inner-color-button').css("background-color");
 						var backgroundColorHex = hexc(backgroundColor);
 						
 						// DEBUG:
-						//alert("Background color:" + backgroundColor + " HEX: " + backgroundColorHex);
+						//alert("BC: " + backgroundColor + " BCH: " + backgroundColorHex);
 						
 						flashMovie.flash(function() {
 							if(this.PercentLoaded() == 100) {
@@ -1762,42 +1699,9 @@ function swfLoadEvent(fn){
 */
 
 function createFlashObject(swf, width, height, play, wmode, bgcolor) {
-	
-	/*
-	
-	swf: thumbnail,
-					height: 190,
-					width: 257,
-					allowFullScreen: true,
-					wmode: "transparent",
-					menu: false,
-					play: true,
-					encodeParams: true,
-					//flashvars: {},
-					hasVersion: 6, // requires minimum Flash 6
-					expressInstaller: '/script/swfobject/expressInstall.swf',
-					hasVersionFail: function (options) {
-						log.debug(options);
-						//return false; // returning false means the expressInstaller document will not be used
-						return true; // would have let the expressInstaller document be used
-					}
-	
-	 */
-	
-	/*
-
-	 swf: selectedMediaData['file'],
-	 width: 534, height: 400,	// keep 4:3 aspect ratio
-	 play: true,					// automatically start playing
-	 allowFullScreen: true,		// TODO not used yet
-	 allowScriptAccess: true,	// allow accessing flash from javascript (needed for controls)
-	 wmode: 'window',			// default is 'window' (other possible options are 'transparent', 'direct', 'opaque', 'gpu')
-	 //bgcolor: '#FFFFFF',			// TODO allow setting custom color or transparency, or set to a assigned stage color
-	 scale: 'showall',			// "showall" automatically fits to size, other possible values are: "noborder", "exactfit"
-	 
-	 */
-	
-	// TODO add swfLoadEvent
+		
+	// TODO add swfLoadEvent? show loading indicator?
+	// TODO add alternative content (download flash player) - to be tested
 	
 	var flashObject = $.flash.create({
 		swf: swf,
@@ -1818,7 +1722,7 @@ function createFlashObject(swf, width, height, play, wmode, bgcolor) {
 			return true; // would have let the expressInstaller document be used
 		},
 		/*
-		// TODO callback when embedding was successful
+		// TODO callback when embedding was successful (swfLoadedEvent)
 		hasEmbedded: function(options) {
 			alert("Embedded!");
 		}
@@ -1828,7 +1732,7 @@ function createFlashObject(swf, width, height, play, wmode, bgcolor) {
 	return flashObject;
 }
 
-// convert rgb to hex
+// convert color: rgb to hex
 function hexc(colorval) {
     var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
     delete(parts[0]);
