@@ -1275,7 +1275,7 @@ table#tableDetails {
 }
 
 #previewFlash {
-	
+	margin:-10px 0;
 }
 
 .movie {
@@ -1288,23 +1288,39 @@ table#tableDetails {
 
 #previewFlashInfo {
 	height:12px;
+	text-align: center;
 }
 
 .movie-controls {
 	display:block;
-	margin:5px 0;
-	height:30px;
+	margin:10px 0 0 0;
+	height:40px;
+	width:560px;
 }
 
 .movie-controls .controlButton {
 	width:40px;
 	height:40px;
-	/*margin:0 2px;*/
+	margin:0 1px 0 0;
 	padding:0;
 	border-radius:10px;
 }
 
 .spacer {
 	display:inline-block;
-	width:12px;
+	width:19px;
+}
+
+.color-button {
+	border: 1px solid #999;
+	border-radius:5px;
+	display:inline-block;
+	width:25px;
+	height:25px;
+	margin:-3px;
+	padding:0;
+}
+
+.color-button:hover {
+	border-color:#333;
 }

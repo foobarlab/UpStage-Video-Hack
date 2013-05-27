@@ -26,9 +26,10 @@
 <script type="text/javascript" src="/script/jquery.colorbox/jquery.colorbox-min.js"></script>
 <script type="text/javascript" src="/script/jquery.multiselect/jquery.multi-select.js"></script>
 <script type="text/javascript" src="/script/chosen/chosen.jquery.min.js"></script>
+<script type="text/javascript" src="/script/jquery.colorpicker/colorpicker.min.js"></script>
 
 
-<h1 style="margin:20px 0">Edit/View Media</h1>
+<h1 style="margin:20px 0;">Edit/View Media</h1>
 
 <div id="filterDiv">
 
@@ -38,7 +39,7 @@
 		
 		<div class="filterBlock">
 			<label for="filterUser">User:</label>
-			<select id="filterUser" name="filterUser" style="width:150px">
+			<select id="filterUser" name="filterUser" style="width:150px;">
 				<option value=""></option>
 				%(list_users_as_html_option_tag)s
 			</select>
@@ -46,7 +47,7 @@
 		
 		<div class="filterBlock">
 			<label for="filterStage">Stage:</label>
-			<select id="filterStage" name="filterStage" style="width:150px">
+			<select id="filterStage" name="filterStage" style="width:150px;">
 				<option value=""></option>
 				<option value="^"> -- not assigned -- </option><!-- dummy char '^' used for unassigned stages, see pages.py -->
 				%(list_stages_as_html_option_tag)s
@@ -55,7 +56,7 @@
 		
 		<div class="filterBlock">
 			<label for="filterType">Type:</label>
-			<select id="filterType" name="filterType" style="width:100px">
+			<select id="filterType" name="filterType" style="width:100px;">
 				<option value=""></option>
 				<option value="avatar">Avatar</option>
 				<option value="prop">Prop</option>
@@ -66,7 +67,7 @@
 			
 		<div class="filterBlock">
 			<label for="filterMedium">Medium:</label>
-			<select id="filterMedium" name="filterMedium" style="width:100px">
+			<select id="filterMedium" name="filterMedium" style="width:100px;">
 				<option value=""></option>
 				<option value="stream">Stream</option>
 				<option value="video">Video</option>
@@ -77,7 +78,7 @@
 	
 		<div class="filterBlock">
 		    <input id="buttonUpdateView" type="button" class="button-standard" value="Apply Filter" />
-	    	<input id="buttonResetView" type="button" style="width:60px" value="Reset" />
+	    	<input id="buttonResetView" type="button" style="width:60px;" value="Reset" />
 	 	</div>
 	 
 	</div>
@@ -111,7 +112,7 @@
 	 		</div>
 	 		
 	 		<div class="filterBlock">
-		    	<input id="buttonClearQuickSearch" type="button" style="width:60px" value="Clear" />
+		    	<input id="buttonClearQuickSearch" type="button" style="width:60px;" value="Clear" />
 	 		</div>
 	 		-->
 	 
@@ -279,9 +280,9 @@
 						
 						<div id="previewFlash">
 						
-							<div class="movie"></div>
-							
 							<p id="previewFlashInfo"></p>
+						
+							<div class="movie"></div>
 							
 							<div class="movie-controls">
 								<button id="previewFlashFirstFrame" type="button" title="Go to first frame" class="controlButton"><i class="icon-backward icon-2x"></i></button>
@@ -290,14 +291,14 @@
 								<button id="previewFlashPlay" type="button" title="Play flash movie" class="controlButton"><i class="icon-play icon-2x"></i></button>
 								<button id="previewFlashNextFrame" type="button" title="Go to next frame" class="controlButton"><i class="icon-step-forward icon-2x"></i></button>
 								<button id="previewFlashLastFrame" type="button" title="Go to last frame" class="controlButton"><i class="icon-forward icon-2x"></i></button>
-								<!-- 
 								<div class="spacer"></div>
 								<button id="previewFlashZoomIn" type="button" title="Zoom in" class="controlButton"><i class="icon-plus icon-2x"></i></button>
 								<button id="previewFlashZoomOut" type="button" title="Zoom out" class="controlButton"><i class="icon-minus icon-2x"></i></button>
-								<button id="previewFlashFullscreen" type="button" title="Resize to full size" class="controlButton"><i class="icon-fullscreen icon-2x"></i></button>
+								<button id="previewFlashFitSize" type="button" title="Fit size" class="controlButton"><i class="icon-fullscreen icon-2x"></i></button>
 								<div class="spacer"></div>
-								<button id="previewFlashBackgroundColor" type="button" title="Adjust background color" class="controlButton"><i class="icon-adjust icon-2x"></i></button>
-								-->
+								<button id="previewFlashToggleTransparency" type="button" title="Toggle transparency" class="controlButton"><i class="icon-adjust icon-2x"></i></button>
+								<button id="previewFlashBackgroundColorSelector" type="button" title="Change background color" class="controlButton"><div class="color-button" style="background-color: rgb(255,255,255)"></div></button>
+								
 							</div>
 							
 						</div>

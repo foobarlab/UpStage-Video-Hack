@@ -9,15 +9,16 @@
 
 <link rel="shortcut icon" href="/favicon.ico" />
 
-<link rel="stylesheet" type="text/css" href="/script/slickgrid/slick.grid.css" />
-<link rel="stylesheet" type="text/css" href="/script/slickgrid/css/smoothness/jquery-ui-1.8.16.custom.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="/script/slickgrid/slick.grid.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="/script/slickgrid/css/smoothness/jquery-ui-1.8.16.custom.css" />
 
-<link rel="stylesheet" type="text/css" href="/style/main.css" />
-<link rel="stylesheet" type="text/css" href="/style/slickgrid.css" />
-<link rel="stylesheet" type="text/css" href="/style/colorbox.css" />
-<link rel="stylesheet" type="text/css" href="/style/multi-select.css" />
-<link rel="stylesheet" type="text/css" href="/style/chosen.css" />
-<link rel="stylesheet" type="text/css" href="/style/easytabs.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="/style/main.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="/style/slickgrid.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="/style/colorbox.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="/style/multi-select.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="/style/chosen.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="/style/easytabs.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="/style/colorpicker.css" />
 
 <!-- include html5shiv -->
 <!--[if lt IE 9]>
@@ -25,9 +26,9 @@
 <![endif]-->
 
 <!-- include font "Font Awesome" -->
-<link rel="stylesheet" href="/font/font-awesome/css/font-awesome.css">
+<link rel="stylesheet" media="screen" href="/font/font-awesome/css/font-awesome.css">
 <!--[if IE 7]>
-<link rel="stylesheet" href="/font/font-awesome/css/font-awesome-ie7.min.css">
+<link rel="stylesheet" media="screen" href="/font/font-awesome/css/font-awesome-ie7.min.css">
 <![endif]-->
 
 <!-- FIXME to increase page performance some scripts should be loaded in an async way or put at the bottom -->

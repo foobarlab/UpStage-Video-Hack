@@ -47,6 +47,9 @@ var previewTypeHasStream = false;
 var previewThumbnailType = null;
 var previewDefaultTab = null;
 
+// Object holder for embedded flash movie in thumbnail preview
+var previewFlashThumbnail = null;
+
 // Preview Media Flash Movie Controls
 var clickHandlerPreviewFlashFirstFrame = null;
 var clickHandlerPreviewFlashPrevFrame = null;
@@ -54,6 +57,10 @@ var clickHandlerPreviewFlashPlay = null;
 var clickHandlerPreviewFlashPause = null;
 var clickHandlerPreviewFlashNextFrame = null;
 var clickHandlerPreviewFlashLastFrame = null;
+var clickHandlerPreviewFlashZoomIn = null;
+var clickHandlerPreviewFlashZoomOut = null;
+var clickHandlerPreviewFlashFitSize = null;
+var clickHandlerPreviewFlashToggleTransparency = null;
 
 
 function setupMediaEdit2(url_path,current_user,current_stages,set_filter_to_current_user) {
@@ -1219,20 +1226,22 @@ function showDetails(single_data) {
 					thumbnail_html = '<img src="'+thumbnail+'" alt="'+ name +'" />';
 				}
 				previewThumbnailType = MEDIA_TYPE_IMAGE;
+				previewFlashThumbnail = null;
 				break;
 		
 			// handle shockwave flash
 			case 'swf':
+				/*
 				thumbnail_html = $.flash.create({
 					swf: thumbnail,
 					height: 190,
-					width: 290,
+					width: 257,
 					allowFullScreen: true,
 					wmode: "transparent",
 					menu: false,
 					play: true,
 					encodeParams: true,
-					flashvars: {},
+					//flashvars: {},
 					hasVersion: 6, // requires minimum Flash 6
 					expressInstaller: '/script/swfobject/expressInstall.swf',
 					hasVersionFail: function (options) {
@@ -1241,6 +1250,9 @@ function showDetails(single_data) {
 						return true; // would have let the expressInstaller document be used
 					}
 				});
+				*/
+				previewFlashThumbnail = createFlashObject(thumbnail, 257, 190, true, 'transparent', '');	// TODO use later
+				thumbnail_html = previewFlashThumbnail;
 				
 				previewThumbnailType = MEDIA_TYPE_FLASH;
 				
@@ -1253,6 +1265,7 @@ function showDetails(single_data) {
 				//thumbnail_html = '<img src="/image/icon/icon-warning-sign.png" alt="preview not available" />';
 				thumbnail_html = '<i class="icon-warning-sign"></i>';
 				previewThumbnailType = MEDIA_TYPE_NOFILE;
+				previewFlashThumbnail = null;
 		}
 		
 		$('#thumbnailPreview').html(thumbnail_html);
@@ -1294,10 +1307,14 @@ function showDetails(single_data) {
 					width: previewWindowWidth,
 					height: previewWindowHeight,
 					// hide loading indicator:
-					onOpen: function(){
+					onOpen: function() {
+						
+						// remove thumbnail preview if it is a flash movie
+						if(previewFlashThumbnail != null) { $('#thumbnailPreview').flash().remove(); }
+						
 						$("#colorbox").css("opacity", 0);
 					},
-			        onComplete: function(){
+			        onComplete: function() {
 			        	$("#colorbox").css("opacity", 1);
 			        	
 			        	// set default active tab
@@ -1308,12 +1325,11 @@ function showDetails(single_data) {
 			        	
 			        	// initially always resize
 			        	$.colorbox.resize();
-			        }
-				
-					// TODO add onOpen handler to remove preview from page?
-					// TODO add onClose handler to remove preview from panel and add to page?
-					// TODO add onComplete handler to add preview to panel?
-					
+			        },
+			        onClosed: function() {
+			        	// put back thumbnail preview if it is a flash movie
+			        	if(previewFlashThumbnail != null) { $('#thumbnailPreview').html(previewFlashThumbnail); }
+			        }	
 			};
 			
 			// set handler for images
@@ -1379,18 +1395,84 @@ function showDetails(single_data) {
 					
 					// add flash-specific preview data here
 					
+					// setup colorpicker for changing the background color of the embedded flash
+					$('#previewFlashBackgroundColorSelector').ColorPicker({
+				        
+						color: '#FFFFFF',			// default color
+						livePreview: true,			// disable to improve performance
+				        
+				        onShow: function (colpkr) {
+				            //$(colpkr).fadeIn(500);
+				        	$(colpkr).show();
+				            return false;
+				        },
+				        
+				        onHide: function (colpkr) {
+				            //$(colpkr).fadeOut(500);
+				        	$(colpkr).hide();
+				            return false;
+				        },
+				        
+				        onSubmit: function(hsb, hex, rgb) {
+				        	$('.color-button').css('backgroundColor', '#' + hex);
+				        	$('.colorpicker').hide();	// quite hackish as no reference to colpkr is given
+				        	
+				        	// TODO refresh flash preview if background is not transparent
+				        	
+				        	
+				        	// set defaults
+							
+							var wmode = 'opaque';
+							var swf = selectedMediaData['file'];
+							var width = 534;
+							var height = 400;
+							var play = true;
+							
+							var backgroundColor = $('.color-button').css("background-color");
+							var backgroundColorHex = hexc(backgroundColor);
+							
+							// DEBUG:
+							//alert("Background color:" + backgroundColor + " HEX: " + backgroundColorHex);
+							
+							// replace existing movie with new parameters
+							flashMovie.flash().remove();
+							var previewFlash = createFlashObject(swf, width, height, play, wmode, backgroundColorHex);
+							flashMovie.html(previewFlash);
+							
+							// reset info display (now in "playing" state again)
+							$('#previewFlashInfo').html('Playing ...');
+				        	
+				        	return false;
+				        }
+				        
+				    });
+				    
+					// add flash preview
+					
 					flashMovie = $('#previewFlash .movie');
 
+					/*
 					flashMovie.flash({
 						swf: selectedMediaData['file'],
 						width: 534, height: 400,	// keep 4:3 aspect ratio
 						play: true,					// automatically start playing
 						allowFullScreen: true,		// TODO not used yet
 						allowScriptAccess: true,	// allow accessing flash from javascript (needed for controls)
-						wmode: 'opaque',			// default (other possible options are 'transparent' or 'direct')
-						bgcolor: '#FFFFFF',			// TODO allow setting custom color or transparency, or set to a assigned stage color
-						scale: 'showall',			// automatically fit to size
+						wmode: 'window',			// default is 'window' (other possible options are 'transparent', 'direct', 'opaque', 'gpu')
+						//bgcolor: '#FFFFFF',			// TODO allow setting custom color or transparency, or set to a assigned stage color
+						scale: 'showall',			// "showall" automatically fits to size, other possible values are: "noborder", "exactfit"
 					});
+					*/
+					
+					var backgroundColor = $('.color-button').css("background-color");
+					var backgroundColorHex = hexc(backgroundColor);
+					
+					// DEBUG:
+					//alert("Background color:" + backgroundColor + " HEX: " + backgroundColorHex);
+					
+					var previewFlash = createFlashObject(selectedMediaData['file'], 534, 400, true, 'opaque', backgroundColorHex);
+					
+					flashMovie.html(previewFlash);
 					
 					// TODO add event listener when flash has been loaded
 					
@@ -1401,6 +1483,10 @@ function showDetails(single_data) {
 					$('#previewFlashPause').unbind('click',clickHandlerPreviewFlashPause);
 					$('#previewFlashNextFrame').unbind('click',clickHandlerPreviewFlashNextFrame);
 					$('#previewFlashLastFrame').unbind('click',clickHandlerPreviewFlashLastFrame);
+					$('#previewFlashZoomIn').unbind('click',clickHandlerPreviewFlashZoomIn);
+					$('#previewFlashZoomOut').unbind('click',clickHandlerPreviewFlashZoomOut);
+					$('#previewFlashFitSize').unbind('click',clickHandlerPreviewFlashFitSize);
+					$('#previewFlashToggleTransparency').unbind('click',clickHandlerPreviewFlashToggleTransparency);
 					
 					// create click handlers
 					
@@ -1479,6 +1565,98 @@ function showDetails(single_data) {
 						});
 					}
 					
+					clickHandlerPreviewFlashZoomIn = function(e) {
+						
+						flashMovie.flash(function() {
+							if(this.PercentLoaded() == 100) {
+								this.Zoom(71);
+							}
+						});
+					}
+					
+					clickHandlerPreviewFlashZoomOut = function(e) {
+						
+						flashMovie.flash(function() {
+							if(this.PercentLoaded() == 100) {
+								this.Zoom(144);
+							}
+						});
+					}
+					
+					clickHandlerPreviewFlashFitSize = function(e) {
+						
+						flashMovie.flash(function() {
+							if(this.PercentLoaded() == 100) {
+								this.SetZoomRect (0, 0, 0, 0);
+							}
+						});
+					}
+					
+					clickHandlerPreviewFlashToggleTransparency  = function(e) {
+						
+						/*
+						flashMovie.flash(function() {
+							if(this.PercentLoaded() == 100) {
+								
+								// get value of "wmode"
+								var currentMode = $("#previewFlash .movie object param[name*='wmode']").attr("value");
+								var newMode = 'window';	// default
+								
+								switch(currentMode) {
+								
+									case 'transparent':
+										newMode = 'window';
+										break;
+									case 'window':
+										newMode = 'transparent';
+										break;
+								}
+								
+								$("#previewFlash .movie object param[name*='wmode']").attr("value",newMode);
+								
+							}
+						});
+						*/
+						
+						// set defaults
+						
+						var wmode = 'opaque';
+						var swf = selectedMediaData['file'];
+						var width = 534;
+						var height = 400;
+						var play = true;
+						
+						var backgroundColor = $('.color-button').css("background-color");
+						var backgroundColorHex = hexc(backgroundColor);
+						
+						// DEBUG:
+						//alert("Background color:" + backgroundColor + " HEX: " + backgroundColorHex);
+						
+						flashMovie.flash(function() {
+							if(this.PercentLoaded() == 100) {
+								
+								var currentWmode = $("#previewFlash .movie object param[name*='wmode']").attr("value");
+								switch(currentWmode) {
+								
+									case 'transparent':
+										wmode = 'opaque';
+										break;
+									case 'opaque':
+										wmode = 'transparent';
+										break;
+								}
+							}
+						});
+						
+						// replace existing movie with new parameters
+						flashMovie.flash().remove();
+						var previewFlash = createFlashObject(swf, width, height, play, wmode, backgroundColorHex);
+						flashMovie.html(previewFlash);
+						
+						// reset info display (now in "playing" state again)
+						$('#previewFlashInfo').html('Playing ...');
+					}
+					
 					// register flash control buttons
 					$('#previewFlashFirstFrame').bind('click',clickHandlerPreviewFlashFirstFrame);
 					$('#previewFlashPrevFrame').bind('click',clickHandlerPreviewFlashPrevFrame);
@@ -1486,6 +1664,10 @@ function showDetails(single_data) {
 					$('#previewFlashPause').bind('click',clickHandlerPreviewFlashPause);
 					$('#previewFlashNextFrame').bind('click',clickHandlerPreviewFlashNextFrame);
 					$('#previewFlashLastFrame').bind('click',clickHandlerPreviewFlashLastFrame);
+					$('#previewFlashZoomIn').bind('click',clickHandlerPreviewFlashZoomIn);
+					$('#previewFlashZoomOut').bind('click',clickHandlerPreviewFlashZoomOut);
+					$('#previewFlashFitSize').bind('click',clickHandlerPreviewFlashFitSize);
+					$('#previewFlashToggleTransparency').bind('click',clickHandlerPreviewFlashToggleTransparency);
 					
 					// display initial infos
 					
@@ -1578,6 +1760,85 @@ function swfLoadEvent(fn){
     }, 200);
 }
 */
+
+function createFlashObject(swf, width, height, play, wmode, bgcolor) {
+	
+	/*
+	
+	swf: thumbnail,
+					height: 190,
+					width: 257,
+					allowFullScreen: true,
+					wmode: "transparent",
+					menu: false,
+					play: true,
+					encodeParams: true,
+					//flashvars: {},
+					hasVersion: 6, // requires minimum Flash 6
+					expressInstaller: '/script/swfobject/expressInstall.swf',
+					hasVersionFail: function (options) {
+						log.debug(options);
+						//return false; // returning false means the expressInstaller document will not be used
+						return true; // would have let the expressInstaller document be used
+					}
+	
+	 */
+	
+	/*
+
+	 swf: selectedMediaData['file'],
+	 width: 534, height: 400,	// keep 4:3 aspect ratio
+	 play: true,					// automatically start playing
+	 allowFullScreen: true,		// TODO not used yet
+	 allowScriptAccess: true,	// allow accessing flash from javascript (needed for controls)
+	 wmode: 'window',			// default is 'window' (other possible options are 'transparent', 'direct', 'opaque', 'gpu')
+	 //bgcolor: '#FFFFFF',			// TODO allow setting custom color or transparency, or set to a assigned stage color
+	 scale: 'showall',			// "showall" automatically fits to size, other possible values are: "noborder", "exactfit"
+	 
+	 */
+	
+	// TODO add swfLoadEvent
+	
+	var flashObject = $.flash.create({
+		swf: swf,
+		height: height,
+		width: width,
+		wmode: wmode,
+		play: play,
+		bgcolor: bgcolor,
+		allowFullScreen: false,		// always disable fullscreen mode
+		menu: false,				// always hide menu
+		scale: 'showall',			// always fit to size
+		allowScriptAccess: true,	// allow javascript access
+		hasVersion: 6, 				// requires minimum Flash 6
+		expressInstaller: '/script/swfobject/expressInstall.swf',
+		hasVersionFail: function (options) {
+			log.debug(options);
+			//return false; // returning false means the expressInstaller document will not be used
+			return true; // would have let the expressInstaller document be used
+		},
+		/*
+		// TODO callback when embedding was successful
+		hasEmbedded: function(options) {
+			alert("Embedded!");
+		}
+		*/
+	});
+	
+	return flashObject;
+}
+
+// convert rgb to hex
+function hexc(colorval) {
+    var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    delete(parts[0]);
+    for (var i = 1; i <= 3; ++i) {
+        parts[i] = parseInt(parts[i]).toString(16);
+        if (parts[i].length == 1) parts[i] = '0' + parts[i];
+    }
+    color = '#' + parts.join('');
+    return color;
+}
 
 function getFileExtension(filename) {
 	var ext = /^.+\.([^.]+)$/.exec(filename);
