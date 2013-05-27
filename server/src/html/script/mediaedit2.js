@@ -1707,7 +1707,7 @@ function createFlashObject(swf, width, height, play, wmode, bgcolor) {
 		play: play,
 		bgcolor: bgcolor,
 		allowFullScreen: false,		// always disable fullscreen mode
-		menu: false,				// always hide menu
+		menu: true,					// always show menu
 		scale: 'showall',			// always fit to size
 		allowScriptAccess: true,	// allow javascript access
 		hasVersion: 6, 				// requires minimum Flash 6
