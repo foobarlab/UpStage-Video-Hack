@@ -50,7 +50,7 @@ var previewDefaultTab = null;
 // Object holder for embedded flash movie in thumbnail preview
 var previewFlashThumbnail = null;
 
-// Preview Media Flash Movie Controls
+// Preview Flash Media Movie Controls
 var clickHandlerPreviewFlashFirstFrame = null;
 var clickHandlerPreviewFlashPrevFrame = null;
 var clickHandlerPreviewFlashPlay = null;
@@ -61,6 +61,12 @@ var clickHandlerPreviewFlashZoomIn = null;
 var clickHandlerPreviewFlashZoomOut = null;
 var clickHandlerPreviewFlashFitSize = null;
 var clickHandlerPreviewFlashToggleTransparency = null;
+
+// Preview Flash Media Defaults
+var DEFAULT_PREVIEW_FLASH_WIDTH = 534;
+var DEFAULT_PREVIEW_FLASH_HEIGHT = 400;
+var DEFAULT_PREVIEW_FLASH_WMODE = 'opaque';	// could possibly be 'opaque', 'window', 'direct' or 'gpu'
+
 
 
 function setupMediaEdit2(url_path,current_user,current_stages,set_filter_to_current_user) {
@@ -1390,27 +1396,24 @@ function showDetails(single_data) {
 				        	$(el).ColorPickerHide();
 				        	
 				        	// DEBUG:
-				        	//alert("Color: " + hex);
+				        	//alert("Selected Color: #" + hex);
 				        	
 				        	// refresh flash preview if background is not transparent
 				        	
-				        	// TODO set defaults from global values
+				        	var swf = selectedMediaData['file'];
 							
-							var wmode = 'opaque';
-							var swf = selectedMediaData['file'];
-							var width = 534;
-							var height = 400;
-							var play = true;
-							
-							var backgroundColor = $('.inner-color-button').css("background-color");
+				        	/*
+				        	var backgroundColor = $('.inner-color-button').css("background-color");
 							var backgroundColorHex = hexc(backgroundColor);
+							*/
+				        	var backgroundColorHex = '#'+hex;
 							
 							// DEBUG:
 							//alert("BC: " + backgroundColor + " BCH: " + backgroundColorHex);
 							
 							// replace existing movie with new parameters
 							flashMovie.flash().remove();
-							var previewFlash = createFlashObject(swf, width, height, play, wmode, backgroundColorHex);
+							var previewFlash = createFlashObject(swf, DEFAULT_PREVIEW_FLASH_WIDTH, DEFAULT_PREVIEW_FLASH_HEIGHT, true, DEFAULT_PREVIEW_FLASH_WMODE, backgroundColorHex);
 							flashMovie.html(previewFlash);
 							
 							// reset info display (now in "playing" state again)
@@ -1431,9 +1434,7 @@ function showDetails(single_data) {
 					// DEBUG:
 					//alert("BC: " + backgroundColor + " BCH: " + backgroundColorHex);
 					
-					// TODO set defaults from global values
-					
-					var previewFlash = createFlashObject(selectedMediaData['file'], 534, 400, true, 'opaque', backgroundColorHex);
+					var previewFlash = createFlashObject(selectedMediaData['file'], DEFAULT_PREVIEW_FLASH_WIDTH, DEFAULT_PREVIEW_FLASH_HEIGHT, true, DEFAULT_PREVIEW_FLASH_WMODE, backgroundColorHex);
 					
 					flashMovie.html(previewFlash);
 					
@@ -1555,13 +1556,8 @@ function showDetails(single_data) {
 					
 					clickHandlerPreviewFlashToggleTransparency  = function(e) {
 						
-						// TODO set defaults from global values
-						
-						var wmode = 'opaque';
 						var swf = selectedMediaData['file'];
-						var width = 534;
-						var height = 400;
-						var play = true;
+						var wmode = DEFAULT_PREVIEW_FLASH_WMODE;
 						
 						var backgroundColor = $('.inner-color-button').css("background-color");
 						var backgroundColorHex = hexc(backgroundColor);
@@ -1576,9 +1572,9 @@ function showDetails(single_data) {
 								switch(currentWmode) {
 								
 									case 'transparent':
-										wmode = 'opaque';
+										wmode = DEFAULT_PREVIEW_FLASH_WMODE;
 										break;
-									case 'opaque':
+									case DEFAULT_PREVIEW_FLASH_WMODE:
 										wmode = 'transparent';
 										break;
 								}
@@ -1587,7 +1583,7 @@ function showDetails(single_data) {
 						
 						// replace existing movie with new parameters
 						flashMovie.flash().remove();
-						var previewFlash = createFlashObject(swf, width, height, play, wmode, backgroundColorHex);
+						var previewFlash = createFlashObject(swf, DEFAULT_PREVIEW_FLASH_WIDTH, DEFAULT_PREVIEW_FLASH_HEIGHT, true, wmode, backgroundColorHex);
 						flashMovie.html(previewFlash);
 						
 						// reset info display (now in "playing" state again)
