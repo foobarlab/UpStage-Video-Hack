@@ -2233,10 +2233,13 @@ class StagePage(Resource):
         #Shaun Narayan (02/16/10) - Removed reference to URLEncode to build the URL as it input ampersands without escaping.
         params = 'stageID=%s&amp;policyport=%d&amp;mode=%s&amp;swfport=%d' %(stage.ID, config.POLICY_FILE_PORT,  mode, config.SWF_PORT)
         
+        bgcolor = stage.pageBgColour.replace('0x','#')
+        
         #Daniel Han (17/09/2012) - Added bgcolor and stage_message for page to display.
-        self.html = html % {'stagename': stage.name, 
+        self.html = html % {
+            'stagename': stage.name, 
             'params': params, 
-            'bgcolor': stage.pageBgColour.replace('0x','#'),
+            'bgcolor': bgcolor,
             'stage_message': stage.splash_message
             }
         self.player = player

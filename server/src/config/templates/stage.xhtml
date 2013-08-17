@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="X-UA-Compatible" content="IE=8" />
-	<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 	<title>%(stagename)s</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link rel="stylesheet" type="text/css" href="/style/main.css" />
-	<script language="javascript" type="text/javascript" src="/script/stage.js"></script>
+	<link rel="stylesheet" type="text/css" href="/style/stage.css" />
+	<script type="text/javascript" src="/script/jquery/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="/script/jquery.swfobject/jquery.swfobject.1-1-1.min.js"></script>
+	<script type="text/javascript" src="/script/stage.js"></script>
 </head>
-<body class="full" onload="onStageLoad()">
+<body class="full">
 <div id="stagePopUp">
     <div class="loadingBox">
         <h2>%(stagename)s</h2>
@@ -18,23 +20,51 @@
         <p><span id="loading">Loading ...</span></p>
     </div>
 </div>
-<div class="swfstage" style="background-color:%(bgcolor)s;">
-    <object width="100%%" height="100%%" scale="showAll"
-      classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" 
-      codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0">
-     <param name="allowscriptaccess" value="samedomain" />
-     <param name="allownetworking" value="all" />
-     <param name="movie" value="/swf/client.swf?%(params)s" />
-     <param name="quality" value="high" />
-     <param name="wmode" value="transparent" />
-     <embed src="/swf/client.swf?%(params)s" 
-       width="100%%" height="100%%" scale="showAll" 
-       type="application/x-shockwave-flash" 
-       allowscriptaccess="samedomain"
-       allownetworking="all"
-       pluginspage="http://www.macromedia.com/go/getflashplayer" 
-       wmode="transparent" />
-    </object>
+<!-- 
+<div id="menu-container">
+    <div id="menu">
+        MENU GOES HERE
+    </div>
 </div>
+-->
+<div id="swfstage" style="background-color:%(bgcolor)s"></div>
+<script type="text/javascript">
+	
+	$(document).ready(function() {
+		
+		//onStageLoad();
+		
+		$('#stagePopUp').css('opacity','1.0');
+		
+		$('#swfstage').flash({
+			swf: "/swf/client.swf?%(params)s",
+			height: "100%%",	// double "%%" needed because of templating
+			width: "100%%",		// double "%%" needed because of templating
+			wmode: "direct",
+			play: true,
+			bgcolor: "%(bgcolor)s",
+			allowFullScreen: true,
+			menu: true,
+			scale: 'showall',
+			allowScriptAccess: "samedomain",
+			allowNetworking: "all",
+			hasVersion: 10,
+			expressInstaller: '/script/swfobject/expressInstall.swf',
+			hasVersionFail: function (options) {
+				log.debug(options);
+				//return false; // returning false means the expressInstaller document will not be used
+				return true; // would have let the expressInstaller document be used
+			}
+		},function() {
+			if(this.PercentLoaded() == 100) {
+				$('#swfstage').show();
+			//} else if(this.PercentLoaded() == 1) {
+			//	$('#swfstage').hide();		
+			}
+		});
+		
+	});
+	
+</script>
 </body>
 </html>

@@ -12,12 +12,16 @@
                     0.2 - stage_error() added.   
  **/
  
+// TODO: replace plain js with jquery
+
  var hasError = false;
  
+ /*
  function onStageLoad()
  {
     document.getElementById('stagePopUp').style.opacity = 1;
  }
+ */
  
  function stage_loaded()
  {
