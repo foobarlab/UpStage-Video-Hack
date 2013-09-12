@@ -60,13 +60,16 @@ var clickHandlerPreviewFlashLastFrame = null;
 var clickHandlerPreviewFlashZoomIn = null;
 var clickHandlerPreviewFlashZoomOut = null;
 var clickHandlerPreviewFlashFitSize = null;
+var clickHandlerPreviewFlashNoScale = null;
 var clickHandlerPreviewFlashToggleTransparency = null;
 
 // Preview Flash Media Defaults
-var DEFAULT_PREVIEW_FLASH_WIDTH = 534;
+var DEFAULT_PREVIEW_FLASH_WIDTH = 600;
 var DEFAULT_PREVIEW_FLASH_HEIGHT = 400;
 var DEFAULT_PREVIEW_FLASH_WMODE = 'opaque';	// could possibly be 'opaque', 'window', 'direct' or 'gpu'
-
+var DEFAULT_PREVIEW_FLASH_SCALE = 'showall'; // default scaling, see: http://helpx.adobe.com/flash/kb/flash-object-embed-tag-attributes.html
+var DEFAULT_PREVIEW_FLASH_NOSCALE = 'noscale'; // disabled scaling
+var DEFAULT_PREVIEW_FLASH_QUALITY = 'high';
 
 
 function setupMediaEdit2(url_path,current_user,current_stages,set_filter_to_current_user) {
@@ -1234,7 +1237,7 @@ function showDetails(single_data) {
 		
 			// handle shockwave flash
 			case 'swf':
-				previewFlashThumbnail = createFlashObject(thumbnail, 257, 190, true, 'transparent', '');	// TODO use later
+				previewFlashThumbnail = createFlashObject(thumbnail, 257, 190, true, 'transparent', '', 'showall', 'autolow');	// TODO use later
 				thumbnail_html = previewFlashThumbnail;
 				
 				previewThumbnailType = MEDIA_TYPE_FLASH;
@@ -1251,7 +1254,7 @@ function showDetails(single_data) {
 		$('#thumbnailPreview').html(thumbnail_html);
 		
 		// set preview window parameters depending on media
-		var previewWindowWidth = 600;
+		var previewWindowWidth = 672;
 		var previewWindowHeight = 206;
 		
 		switch(previewType) {
@@ -1333,7 +1336,7 @@ function showDetails(single_data) {
 			} else if (previewType == MEDIA_TYPE_AUDIO) {
 			
 				clickHandlerPreviewMedia = function(e) {
-					
+				
 					log.debug("clickHandlerPreviewMedia: click for audio preview: #buttonPreviewMedia or #thumbnailPreview, key="+selectedMediaData['key']);
 					
 					// set media name
@@ -1373,6 +1376,15 @@ function showDetails(single_data) {
 					// set media name
 					$('#previewMediaName').html(selectedMediaData['name']);
 					
+					// TODO initialize default values for zooming
+					/*
+					var zoomPercent = 1.0;	// equals 100% as default
+					var zoomPosX = 0;
+					var zoomPosY = 0;
+					var zoomScaleX = Math.round(zoomPercent*100);
+					var zoomScaleY = Math.round(zoomPercent*100);
+					*/
+					
 					// add flash-specific preview data here
 					
 					// setup colorpicker for changing the background color of the embedded flash
@@ -1410,21 +1422,50 @@ function showDetails(single_data) {
 							
 							// DEBUG:
 							//alert("BC: " + backgroundColor + " BCH: " + backgroundColorHex);
+				        	
+				        	var scale = $("#previewFlash .movie object param[name*='scale']").attr("value");	// read-only
+				        	var quality = $("#previewFlash .movie object param[name*='quality']").attr("value");	// read-only
 							
 							// replace existing movie with new parameters
 							flashMovie.flash().remove();
-							var previewFlash = createFlashObject(swf, DEFAULT_PREVIEW_FLASH_WIDTH, DEFAULT_PREVIEW_FLASH_HEIGHT, true, DEFAULT_PREVIEW_FLASH_WMODE, backgroundColorHex);
+							var previewFlash = createFlashObject(swf, DEFAULT_PREVIEW_FLASH_WIDTH, DEFAULT_PREVIEW_FLASH_HEIGHT, true, DEFAULT_PREVIEW_FLASH_WMODE, backgroundColorHex, scale, quality);
 							flashMovie.html(previewFlash);
 							
 							// reset info display (now in "playing" state again)
 							$('#previewFlashInfo').html('Playing ...');
-				        	
+							
 				        	return false;
 				        }
 				        
 				    });
 				    
 					// add flash preview
+					
+					/*
+					 * Short notes about properties set in *.swf files (in JavaScript TGetProperty, TSetProperty methods are used):
+					 * see also: http://stackoverflow.com/questions/6177411/is-there-anyway-that-i-can-put-an-movie-clip-on-mouse-over-to-autoplay-my-movie
+					 * 
+					 * 0 - pos x
+					 * 1 - pos y
+					 * 2 - scale x
+					 * 3 - scale y
+					 * 4 - next frame (current frame = next frame - 1, numbering starts from zero)
+					 * 5 - total frames
+					 * 6 - alpha
+					 * 7 - visibility
+					 * 8 - width
+					 * 9 - height
+					 * 10 - rotation
+					 * 11 - target
+					 * 12 - frames loaded
+					 * 13 - name
+					 * 14 - drop target
+					 * 15 - url
+					 * 16 - quality
+					 * 17 - focus rectangle
+					 * 18 - sound buffer time
+					 * 
+					 */
 					
 					flashMovie = $('#previewFlash .movie');
 
@@ -1434,7 +1475,7 @@ function showDetails(single_data) {
 					// DEBUG:
 					//alert("BC: " + backgroundColor + " BCH: " + backgroundColorHex);
 					
-					var previewFlash = createFlashObject(selectedMediaData['file'], DEFAULT_PREVIEW_FLASH_WIDTH, DEFAULT_PREVIEW_FLASH_HEIGHT, true, DEFAULT_PREVIEW_FLASH_WMODE, backgroundColorHex);
+					var previewFlash = createFlashObject(selectedMediaData['file'], DEFAULT_PREVIEW_FLASH_WIDTH, DEFAULT_PREVIEW_FLASH_HEIGHT, true, DEFAULT_PREVIEW_FLASH_WMODE, backgroundColorHex, DEFAULT_PREVIEW_FLASH_SCALE, DEFAULT_PREVIEW_FLASH_QUALITY);
 					
 					flashMovie.html(previewFlash);
 					
@@ -1448,6 +1489,7 @@ function showDetails(single_data) {
 					$('#previewFlashZoomIn').unbind('click',clickHandlerPreviewFlashZoomIn);
 					$('#previewFlashZoomOut').unbind('click',clickHandlerPreviewFlashZoomOut);
 					$('#previewFlashFitSize').unbind('click',clickHandlerPreviewFlashFitSize);
+					$('#previewFlashNoScale').unbind('click',clickHandlerPreviewFlashNoScale);
 					$('#previewFlashToggleTransparency').unbind('click',clickHandlerPreviewFlashToggleTransparency);
 					
 					// create click handlers
@@ -1464,9 +1506,12 @@ function showDetails(single_data) {
 						flashMovie.flash(function() {
 							if(this.PercentLoaded() == 100) {
 								this.StopPlay();
-								var totalFrames = this.TGetProperty('/', 12);
+								var totalFrames = this.TGetProperty('/', 5);
 								var currentFrame = this.TGetProperty('/',4);
-								$('#previewFlashInfo').html('Frame '+currentFrame+'/'+totalFrames);
+								var width = this.TGetProperty('/', 8);
+								var height = this.TGetProperty('/', 9);
+								var ratio = gcd (width*20, height*20);
+								$('#previewFlashInfo').html('Size '+width+'&times;'+height+' pixels ('+(width*20)+'&times;'+(height*20)+' twips) - Aspect '+((width*20)/ratio)+':'+((height*20)/ratio)+' ('+(width/height).toFixed(3)+') - Frame '+currentFrame+'/'+totalFrames);
 							}
 						});
 					}
@@ -1474,9 +1519,13 @@ function showDetails(single_data) {
 					clickHandlerPreviewFlashFirstFrame = function(e) {
 						flashMovie.flash(function() {
 							if(this.PercentLoaded() == 100) {
-								var totalFrames = this.TGetProperty('/', 12);
+								var totalFrames = this.TGetProperty('/', 5);
 								this.GotoFrame(0);
-								$('#previewFlashInfo').html('Frame 1/'+totalFrames);
+								
+								var width = this.TGetProperty('/', 8);
+								var height = this.TGetProperty('/', 9);
+								var ratio = gcd (width*20, height*20);
+								$('#previewFlashInfo').html('Size '+width+'&times;'+height+' pixels ('+(width*20)+'&times;'+(height*20)+' twips) - Aspect '+((width*20)/ratio)+':'+((height*20)/ratio)+' ('+(width/height).toFixed(3)+') - Frame 1/'+totalFrames);
 							}
 						});
 					}
@@ -1485,9 +1534,13 @@ function showDetails(single_data) {
 						flashMovie.flash(function() {
 							// check if media has been already fully loaded
 							if(this.PercentLoaded() == 100) {
-								var totalFrames = this.TGetProperty("/",12);
+								var totalFrames = this.TGetProperty('/', 5);
 								this.GotoFrame(totalFrames);
-								$('#previewFlashInfo').html('Frame '+totalFrames+'/'+totalFrames);
+								
+								var width = this.TGetProperty('/', 8);
+								var height = this.TGetProperty('/', 9);
+								var ratio = gcd (width*20, height*20);
+								$('#previewFlashInfo').html('Size '+width+'&times;'+height+' pixels ('+(width*20)+'&times;'+(height*20)+' twips) - Aspect '+((width*20)/ratio)+':'+((height*20)/ratio)+' ('+(width/height).toFixed(3)+') - Frame '+totalFrames+'/'+totalFrames);
 							}
 						});
 					}
@@ -1496,15 +1549,22 @@ function showDetails(single_data) {
 					
 						flashMovie.flash(function() {
 							if(this.PercentLoaded() == 100) {
-								var totalFrames = this.TGetProperty('/', 12);
+								var totalFrames = this.TGetProperty('/', 5);
 								var currentFrame = this.TGetProperty('/', 4);
 								var	previousFrame = parseInt(currentFrame) - 2;
-								$('#previewFlashInfo').html('Frame '+(parseInt(previousFrame)+1)+'/'+totalFrames);
+								var currentFrameNew = parseInt(previousFrame)+1;
+								//$('#previewFlashInfo').html('Size '+width+'&times;'+height+' pixels ('+(width*20)+'&times;'+(height*20)+' twips) - Aspect '+((width*20)/ratio)+':'+((height*20)/ratio)+' - Frame '+(parseInt(previousFrame)+1)+'/'+totalFrames);
 								if (previousFrame < 0) {
 									previousFrame = totalFrames;
-									$('#previewFlashInfo').html('Frame '+totalFrames+'/'+totalFrames);
+									currentFrameNew = totalFrames;
+									//$('#previewFlashInfo').html('Size '+width+'&times;'+height+' pixels ('+(width*20)+'&times;'+(height*20)+' twips) - Aspect '+((width*20)/ratio)+':'+((height*20)/ratio)+' - Frame '+totalFrames+'/'+totalFrames);
 								}
 								this.GotoFrame(previousFrame);
+								
+								var width = this.TGetProperty('/', 8);
+								var height = this.TGetProperty('/', 9);
+								var ratio = gcd (width*20, height*20);
+								$('#previewFlashInfo').html('Size '+width+'&times;'+height+' pixels ('+(width*20)+'&times;'+(height*20)+' twips) - Aspect '+((width*20)/ratio)+':'+((height*20)/ratio)+' ('+(width/height).toFixed(3)+') - Frame '+currentFrameNew+'/'+totalFrames);
 							}
 						});
 						
@@ -1514,7 +1574,7 @@ function showDetails(single_data) {
 						
 						flashMovie.flash(function() {
 							if(this.PercentLoaded() == 100) {
-								var totalFrames = this.TGetProperty('/', 12);
+								var totalFrames = this.TGetProperty('/', 5);
 								var currentFrame = this.TGetProperty('/', 4);
 								var nextFrame = parseInt(currentFrame);
 	
@@ -1522,7 +1582,11 @@ function showDetails(single_data) {
 									nextFrame = 0;
 								}
 								this.GotoFrame(nextFrame);
-								$('#previewFlashInfo').html('Frame '+(nextFrame+1)+'/'+totalFrames);
+								
+								var width = this.TGetProperty('/', 8);
+								var height = this.TGetProperty('/', 9);
+								var ratio = gcd (width*20, height*20);
+								$('#previewFlashInfo').html('Size '+width+'&times;'+height+' pixels ('+(width*20)+'&times;'+(height*20)+' twips) - Aspect '+((width*20)/ratio)+':'+((height*20)/ratio)+' ('+(width/height).toFixed(3)+') - Frame '+(nextFrame+1)+'/'+totalFrames);
 							}
 						});
 					}
@@ -1531,7 +1595,29 @@ function showDetails(single_data) {
 						
 						flashMovie.flash(function() {
 							if(this.PercentLoaded() == 100) {
-								this.Zoom(71);
+								
+								this.Zoom(71);	// FIXME better use TSetProperty to set zoom rect and x/y pos
+								
+								// TODO
+								/*
+								var posX = this.TGetProperty('/',0);
+								var posY = this.TGetProperty('/',1);
+								var scaleX = this.TGetProperty('/',2);
+								var scaleY = this.TGetProperty('/',3);
+								
+								zoomPercent = zoomPercent * 1.44;
+								zoomPosX = 0;	// TODO
+								zoomPosY = 0;	// TODO
+								zoomScaleX = Math.round(zoomPercent*100);
+								zoomScaleY = Math.round(zoomPercent*100)
+								
+								this.TSetProperty('/',0,zoomPosX);
+								this.TSetProperty('/',1,zoomPosY);
+								this.TSetProperty('/',2,zoomScaleX);
+								this.TSetProperty('/',3,zoomScaleY);
+								
+								$('#previewFlashInfo').html('ZoomPercent: '+Math.round(zoomPercent*100)+' ZoomPosX:'+zoomPosX+' ZoomPosY:'+zoomPosY+' ZoomScaleX:'+zoomScaleX+' ZoomScaleY:'+zoomScaleY+' - PosX:'+posX+' PosY:'+posY+' ScaleX:'+scaleX+' ScaleY:'+scaleY);
+								*/
 							}
 						});
 					}
@@ -1540,37 +1626,101 @@ function showDetails(single_data) {
 						
 						flashMovie.flash(function() {
 							if(this.PercentLoaded() == 100) {
-								this.Zoom(144);
+								
+								this.Zoom(144);	// FIXME better use TSetProperty to set zoom rect and x/y pos
+								
+								// TODO
+								/*
+								var posX = this.TGetProperty('/',0);
+								var posY = this.TGetProperty('/',1);
+								var scaleX = this.TGetProperty('/',2);
+								var scaleY = this.TGetProperty('/',3);
+								
+								zoomPercent = zoomPercent * 0.71;
+								zoomPosX = 0;	// TODO
+								zoomPosY = 0;	// TODO
+								zoomScaleX = Math.round(zoomPercent*100);
+								zoomScaleY = Math.round(zoomPercent*100)
+								
+								this.TSetProperty('/',0,zoomPosX);
+								this.TSetProperty('/',1,zoomPosY);
+								this.TSetProperty('/',2,zoomScaleX);
+								this.TSetProperty('/',3,zoomScaleY);
+
+								$('#previewFlashInfo').html('ZoomPercent: '+Math.round(zoomPercent*100)+' ZoomPosX:'+zoomPosX+' ZoomPosY:'+zoomPosY+' ZoomScaleX:'+zoomScaleX+' ZoomScaleY:'+zoomScaleY+' - PosX:'+posX+' PosY:'+posY+' ScaleX:'+scaleX+' ScaleY:'+scaleY);
+								*/							
 							}
 						});
 					}
 					
 					clickHandlerPreviewFlashFitSize = function(e) {
 						
+						/*
 						flashMovie.flash(function() {
 							if(this.PercentLoaded() == 100) {
-								this.SetZoomRect (0, 0, 0, 0);
+								//this.SetZoomRect (0, 0, 0, 0);
+								this.SetZoomRect (0, 0, (600*20),(400*20));	// left, top, right, bottom in twips (a twip is 20 times of a pixel)
 							}
 						});
+						*/
+						
+						var swf = selectedMediaData['file'];
+						var scale = DEFAULT_PREVIEW_FLASH_SCALE;
+						var wmode = $("#previewFlash .movie object param[name*='wmode']").attr("value");	// read-only
+						var quality = $("#previewFlash .movie object param[name*='quality']").attr("value");	// read-only
+						
+						// replace existing movie with new parameters
+						flashMovie.flash().remove();
+						var previewFlash = createFlashObject(swf, DEFAULT_PREVIEW_FLASH_WIDTH, DEFAULT_PREVIEW_FLASH_HEIGHT, true, wmode, backgroundColorHex, scale, quality);
+						flashMovie.html(previewFlash);
+						
+						// reset info display (now in "playing" state again)
+						$('#previewFlashInfo').html('Playing ...');
+						
+						// TODO reset zoom rect?
+						
+					}
+					
+					clickHandlerPreviewFlashNoScale = function(e) {
+						
+						var swf = selectedMediaData['file'];
+						var scale = DEFAULT_PREVIEW_FLASH_NOSCALE;
+						var wmode = $("#previewFlash .movie object param[name*='wmode']").attr("value");	// read-only
+						var quality = $("#previewFlash .movie object param[name*='quality']").attr("value");	// read-only
+						
+						// replace existing movie with new parameters
+						flashMovie.flash().remove();
+						var previewFlash = createFlashObject(swf, DEFAULT_PREVIEW_FLASH_WIDTH, DEFAULT_PREVIEW_FLASH_HEIGHT, true, wmode, backgroundColorHex, scale, quality);
+						flashMovie.html(previewFlash);
+						
+						// reset info display (now in "playing" state again)
+						$('#previewFlashInfo').html('Playing ...');
+						
+						// TODO set zoom rect?
+						
 					}
 					
 					clickHandlerPreviewFlashToggleTransparency  = function(e) {
 						
 						var swf = selectedMediaData['file'];
+						var scale = $("#previewFlash .movie object param[name*='scale']").attr("value");	// read-only
+						var quality = $("#previewFlash .movie object param[name*='quality']").attr("value");	// read-only
+						
 						var wmode = DEFAULT_PREVIEW_FLASH_WMODE;
 						
+						/*
 						var backgroundColor = $('.inner-color-button').css("background-color");
 						var backgroundColorHex = hexc(backgroundColor);
 						
 						// DEBUG:
 						//alert("BC: " + backgroundColor + " BCH: " + backgroundColorHex);
+						*/
 						
 						flashMovie.flash(function() {
 							if(this.PercentLoaded() == 100) {
 								
 								var currentWmode = $("#previewFlash .movie object param[name*='wmode']").attr("value");
 								switch(currentWmode) {
-								
 									case 'transparent':
 										wmode = DEFAULT_PREVIEW_FLASH_WMODE;
 										break;
@@ -1583,7 +1733,7 @@ function showDetails(single_data) {
 						
 						// replace existing movie with new parameters
 						flashMovie.flash().remove();
-						var previewFlash = createFlashObject(swf, DEFAULT_PREVIEW_FLASH_WIDTH, DEFAULT_PREVIEW_FLASH_HEIGHT, true, wmode, backgroundColorHex);
+						var previewFlash = createFlashObject(swf, DEFAULT_PREVIEW_FLASH_WIDTH, DEFAULT_PREVIEW_FLASH_HEIGHT, true, wmode, backgroundColorHex, scale, quality);
 						flashMovie.html(previewFlash);
 						
 						// reset info display (now in "playing" state again)
@@ -1600,6 +1750,7 @@ function showDetails(single_data) {
 					$('#previewFlashZoomIn').bind('click',clickHandlerPreviewFlashZoomIn);
 					$('#previewFlashZoomOut').bind('click',clickHandlerPreviewFlashZoomOut);
 					$('#previewFlashFitSize').bind('click',clickHandlerPreviewFlashFitSize);
+					$('#previewFlashNoScale').bind('click',clickHandlerPreviewFlashNoScale);
 					$('#previewFlashToggleTransparency').bind('click',clickHandlerPreviewFlashToggleTransparency);
 					
 					// display initial infos
@@ -1694,7 +1845,7 @@ function swfLoadEvent(fn){
 }
 */
 
-function createFlashObject(swf, width, height, play, wmode, bgcolor) {
+function createFlashObject(swf, width, height, play, wmode, bgcolor, scale, quality) {
 		
 	// TODO add swfLoadEvent? show loading indicator?
 	// TODO add alternative content (download flash player) - to be tested
@@ -1704,11 +1855,12 @@ function createFlashObject(swf, width, height, play, wmode, bgcolor) {
 		height: height,
 		width: width,
 		wmode: wmode,
+		quality: quality,
 		play: play,
 		bgcolor: bgcolor,
 		allowFullScreen: false,		// always disable fullscreen mode
 		menu: true,					// always show menu
-		scale: 'showall',			// always fit to size
+		scale: scale,				// 'showall' = always fit to size
 		allowScriptAccess: true,	// allow javascript access
 		hasVersion: 6, 				// requires minimum Flash 6
 		expressInstaller: '/script/swfobject/expressInstall.swf',
@@ -1727,6 +1879,8 @@ function createFlashObject(swf, width, height, play, wmode, bgcolor) {
 	
 	return flashObject;
 }
+
+/* HELPER FUNCTIONS: */
 
 // convert color: rgb to hex
 function hexc(colorval) {
@@ -1764,4 +1918,9 @@ function getBytesWithUnit(bytes) {
 		bytes = bytes.toFixed(1);
 	}
 	return bytes + units[i];
+}
+
+// for aspect ratio calculation
+function gcd (a, b) {
+    return (b == 0) ? a : gcd (b, a%b);
 }

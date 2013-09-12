@@ -1280,7 +1280,7 @@ table#tableDetails {
 .movie {
 	display:block;
 	height:400px;
-	width:534px;
+	width:600px;
 	background: url('images/transparent_background.gif') repeat scroll right bottom #EEEEEE;
 	border:1px solid #ccc;
 }
@@ -1294,7 +1294,7 @@ table#tableDetails {
 	display:block;
 	margin:10px 0 0 0;
 	height:40px;
-	width:560px;
+	width:600px;
 }
 
 .movie-controls .controlButton {
