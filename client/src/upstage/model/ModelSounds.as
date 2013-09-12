@@ -136,7 +136,7 @@ class upstage.model.ModelSounds implements TransportInterface
     {
         var slot :Number = undefined;
         var sounds: Array = this[arrayName];
-		var bAlready:Boolean = false;
+		var bAlready:Boolean = false;			// FIXME should be named 'queued' or similar as it holds info if the sound is already queued
 		
 		trace("Sounds LENGTH " +sounds.length);
 		
