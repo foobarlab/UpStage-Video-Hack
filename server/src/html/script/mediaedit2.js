@@ -1669,6 +1669,9 @@ function showDetails(single_data) {
 						var wmode = $("#previewFlash .movie object param[name*='wmode']").attr("value");	// read-only
 						var quality = $("#previewFlash .movie object param[name*='quality']").attr("value");	// read-only
 						
+						var backgroundColor = $('.inner-color-button').css("background-color");	// read-only
+						var backgroundColorHex = hexc(backgroundColor);
+						
 						// replace existing movie with new parameters
 						flashMovie.flash().remove();
 						var previewFlash = createFlashObject(swf, DEFAULT_PREVIEW_FLASH_WIDTH, DEFAULT_PREVIEW_FLASH_HEIGHT, true, wmode, backgroundColorHex, scale, quality);
@@ -1687,6 +1690,9 @@ function showDetails(single_data) {
 						var scale = DEFAULT_PREVIEW_FLASH_NOSCALE;
 						var wmode = $("#previewFlash .movie object param[name*='wmode']").attr("value");	// read-only
 						var quality = $("#previewFlash .movie object param[name*='quality']").attr("value");	// read-only
+						
+						var backgroundColor = $('.inner-color-button').css("background-color");	// read-only
+						var backgroundColorHex = hexc(backgroundColor);
 						
 						// replace existing movie with new parameters
 						flashMovie.flash().remove();
@@ -1708,13 +1714,11 @@ function showDetails(single_data) {
 						
 						var wmode = DEFAULT_PREVIEW_FLASH_WMODE;
 						
-						/*
-						var backgroundColor = $('.inner-color-button').css("background-color");
+						var backgroundColor = $('.inner-color-button').css("background-color");	// read-only
 						var backgroundColorHex = hexc(backgroundColor);
 						
 						// DEBUG:
 						//alert("BC: " + backgroundColor + " BCH: " + backgroundColorHex);
-						*/
 						
 						flashMovie.flash(function() {
 							if(this.PercentLoaded() == 100) {
