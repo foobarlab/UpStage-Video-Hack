@@ -165,6 +165,8 @@ class CachedFile(static.File):
                 last_modified = self.getModificationTime()
                 log.msg("CachedFile: file was last modified @ %s" % last_modified)
                 request.setLastModified(last_modified)
+                
+                # TODO add Etag for cache validation? Is the modification date sufficient for reverse-proxying?
             
             # TODO not working yet
 #            # send gzip compressed if client sends gzip Accept-Encoding header
