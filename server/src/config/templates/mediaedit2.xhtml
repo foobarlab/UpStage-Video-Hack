@@ -16,6 +16,10 @@
 <script type="text/javascript" src="/script/jquery.easytabs/jquery.hashchange.min.js"></script>
 <script type="text/javascript" src="/script/jquery.easytabs/jquery.easytabs.min.js"></script>
 
+<!--  include right.js -->
+<script type="text/javascript" src="/script/right.js/right.js"></script>
+<script type="text/javascript" src="/script/right-slider/right-slider-src.js"></script>
+
 <!-- include various third party libs -->
 <!-- 
 <script type="text/javascript" src="/script/swfobject/swfobject.js"></script>
@@ -27,7 +31,6 @@
 <script type="text/javascript" src="/script/jquery.multiselect/jquery.multi-select.js"></script>
 <script type="text/javascript" src="/script/chosen/chosen.jquery.min.js"></script>
 <script type="text/javascript" src="/script/jquery.colorpicker/colorpicker.min.js"></script>
-
 
 <h1 style="margin:20px 0;">Edit/View Media</h1>
 
@@ -279,9 +282,9 @@
 						
 							<p id="previewFlashInfo"></p>
 						
-							<div class="movie"></div>
+							<div id="movie"></div>
 							
-							<div class="movie-controls">
+							<div id="movie-controls">
 								<button id="previewFlashFirstFrame" type="button" title="Go to first frame" class="controlButton"><i class="icon-backward icon-2x"></i></button>
 								<button id="previewFlashPrevFrame" type="button" title="Go to previous frame" class="controlButton"><i class="icon-step-backward icon-2x"></i></button>
 								<button id="previewFlashPause" type="button" title="Pause flash movie" class="controlButton"><i class="icon-pause icon-2x"></i></button>
@@ -289,20 +292,31 @@
 								<button id="previewFlashNextFrame" type="button" title="Go to next frame" class="controlButton"><i class="icon-step-forward icon-2x"></i></button>
 								<button id="previewFlashLastFrame" type="button" title="Go to last frame" class="controlButton"><i class="icon-forward icon-2x"></i></button>
 								<div class="spacer"></div>
-								<button id="previewFlashZoomIn" type="button" title="Zoom in" class="controlButton"><i class="icon-plus icon-2x"></i></button>
-								<button id="previewFlashZoomOut" type="button" title="Zoom out" class="controlButton"><i class="icon-minus icon-2x"></i></button>
+								<button id="previewFlashZoomIn" type="button" title="Zoom in" class="controlButton"><i class="icon-resize-full icon-2x"></i></button>
+								<button id="previewFlashZoomOut" type="button" title="Zoom out" class="controlButton"><i class="icon-resize-small icon-2x"></i></button>
 								<button id="previewFlashNoScale" type="button" title="Show actual size (preview may be cropped and/or have borders)" class="controlButton"><i class="icon-bullseye icon-2x"></i></button>
-								<button id="previewFlashFitSize" type="button" title="Scale to fit preview window (preview shows all, uncropped, may have borders and distorsion)" class="controlButton"><i class="icon-resize-full icon-2x"></i></button>
+								<button id="previewFlashFitSize" type="button" title="Scale to fit preview window (preview shows all, uncropped, may have borders and distorsion)" class="controlButton"><i class="icon-fullscreen icon-2x"></i></button>
 								<div class="spacer"></div>
 								<button id="previewFlashToggleTransparency" type="button" title="Toggle transparency" class="controlButton"><i class="icon-adjust icon-2x"></i></button>
 								<button id="previewFlashBackgroundColorSelector" type="button" title="Change background color" class="controlButton"><div class="inner-color-button" style="background-color: rgb(204,204,204)"></div></button>
 								
-								<!-- TODO add quality slider => low, autolow, autohigh, medium, high, best, see: http://helpx.adobe.com/flash/kb/flash-object-embed-tag-attributes.html -->
-								<!-- TODO add rotate left/right button -->
-								<!-- TODO add scrollbars to emulate panning for zoomed mode -->
-								<!-- TODO add color-info for rgba values underneath mouse cursor -->
-								
 							</div>
+							
+							<!-- slider to control current frame position -->
+							<div id="movie-frame-control">
+								<!-- 
+							    <div id="movie-frame-control-slider" data-slider="{update: 'movie-current-frame'}" class="rui-slider">
+							      <div class="level"></div><div class="handle"></div>
+							    </div>
+							    -->
+							    <div id="movie-frame-control-slider"></div>
+							    <input type="text" id="movie-current-frame">
+							</div>
+							
+							<!-- TODO add quality slider => low, autolow, autohigh, medium, high, best, see: http://helpx.adobe.com/flash/kb/flash-object-embed-tag-attributes.html -->
+							<!-- TODO add rotate left/right button -->
+							<!-- TODO add scrollbars to emulate panning for zoomed mode -->
+							<!-- TODO add color-info for rgba values underneath mouse cursor -->
 							
 						</div>
 						

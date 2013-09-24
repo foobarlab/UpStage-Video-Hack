@@ -19,6 +19,7 @@
 <link rel="stylesheet" media="screen" type="text/css" href="/style/chosen.css" />
 <link rel="stylesheet" media="screen" type="text/css" href="/style/easytabs.css" />
 <link rel="stylesheet" media="screen" type="text/css" href="/style/colorpicker.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="/style/right-slider.css" />
 
 <!-- include html5shiv -->
 <!--[if lt IE 9]>

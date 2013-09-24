@@ -1277,7 +1277,7 @@ table#tableDetails {
 	margin:-10px 0;
 }
 
-.movie {
+#movie {
 	display:block;
 	height:400px;
 	width:600px;
@@ -1290,14 +1290,14 @@ table#tableDetails {
 	text-align: right;
 }
 
-.movie-controls {
+#movie-controls {
 	display:block;
 	margin:10px 0 0 0;
 	height:40px;
 	width:600px;
 }
 
-.movie-controls .controlButton {
+#movie-controls .controlButton {
 	width:40px;
 	height:40px;
 	margin:0 1px 0 0;
@@ -1322,4 +1322,7 @@ table#tableDetails {
 
 .controlButton:hover .inner-color-button {
 	border-color:#333;
+}
+
+#movie-frame-control {
 }

@@ -1423,8 +1423,8 @@ function showDetails(single_data) {
 							// DEBUG:
 							//alert("BC: " + backgroundColor + " BCH: " + backgroundColorHex);
 				        	
-				        	var scale = $("#previewFlash .movie object param[name*='scale']").attr("value");	// read-only
-				        	var quality = $("#previewFlash .movie object param[name*='quality']").attr("value");	// read-only
+				        	var scale = $("#previewFlash #movie object param[name*='scale']").attr("value");	// read-only
+				        	var quality = $("#previewFlash #movie object param[name*='quality']").attr("value");	// read-only
 							
 							// replace existing movie with new parameters
 							flashMovie.flash().remove();
@@ -1438,7 +1438,13 @@ function showDetails(single_data) {
 				        }
 				        
 				    });
-				    
+					
+					
+					// TODO setup slider for movie frame control
+					
+					$('#movie-frame-control-slider').html('');	// remove previous slider
+					var frameSlider = new Slider({min: 0, max: 100, value: 20}).insertTo('movie-frame-control-slider').assignTo('movie-current-frame');
+					
 					// add flash preview
 					
 					/*
@@ -1467,7 +1473,7 @@ function showDetails(single_data) {
 					 * 
 					 */
 					
-					flashMovie = $('#previewFlash .movie');
+					flashMovie = $('#previewFlash #movie');
 
 					var backgroundColor = $('.inner-color-button').css("background-color");
 					var backgroundColorHex = hexc(backgroundColor);
@@ -1666,8 +1672,8 @@ function showDetails(single_data) {
 						
 						var swf = selectedMediaData['file'];
 						var scale = DEFAULT_PREVIEW_FLASH_SCALE;
-						var wmode = $("#previewFlash .movie object param[name*='wmode']").attr("value");	// read-only
-						var quality = $("#previewFlash .movie object param[name*='quality']").attr("value");	// read-only
+						var wmode = $("#previewFlash #movie object param[name*='wmode']").attr("value");	// read-only
+						var quality = $("#previewFlash #movie object param[name*='quality']").attr("value");	// read-only
 						
 						var backgroundColor = $('.inner-color-button').css("background-color");	// read-only
 						var backgroundColorHex = hexc(backgroundColor);
@@ -1688,8 +1694,8 @@ function showDetails(single_data) {
 						
 						var swf = selectedMediaData['file'];
 						var scale = DEFAULT_PREVIEW_FLASH_NOSCALE;
-						var wmode = $("#previewFlash .movie object param[name*='wmode']").attr("value");	// read-only
-						var quality = $("#previewFlash .movie object param[name*='quality']").attr("value");	// read-only
+						var wmode = $("#previewFlash #movie object param[name*='wmode']").attr("value");	// read-only
+						var quality = $("#previewFlash #movie object param[name*='quality']").attr("value");	// read-only
 						
 						var backgroundColor = $('.inner-color-button').css("background-color");	// read-only
 						var backgroundColorHex = hexc(backgroundColor);
@@ -1709,8 +1715,8 @@ function showDetails(single_data) {
 					clickHandlerPreviewFlashToggleTransparency  = function(e) {
 						
 						var swf = selectedMediaData['file'];
-						var scale = $("#previewFlash .movie object param[name*='scale']").attr("value");	// read-only
-						var quality = $("#previewFlash .movie object param[name*='quality']").attr("value");	// read-only
+						var scale = $("#previewFlash #movie object param[name*='scale']").attr("value");	// read-only
+						var quality = $("#previewFlash #movie object param[name*='quality']").attr("value");	// read-only
 						
 						var wmode = DEFAULT_PREVIEW_FLASH_WMODE;
 						
@@ -1723,7 +1729,7 @@ function showDetails(single_data) {
 						flashMovie.flash(function() {
 							if(this.PercentLoaded() == 100) {
 								
-								var currentWmode = $("#previewFlash .movie object param[name*='wmode']").attr("value");
+								var currentWmode = $("#previewFlash #movie object param[name*='wmode']").attr("value");
 								switch(currentWmode) {
 									case 'transparent':
 										wmode = DEFAULT_PREVIEW_FLASH_WMODE;
